@@ -1,4 +1,4 @@
-# wsl.biodiv
+# wsl.gbif
 
 The goal of wsl.biodiv is to ...
 
