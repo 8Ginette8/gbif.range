@@ -39,13 +39,10 @@ wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is long because all=T
 
 ## References
 
-@article{chauvier2021influence,
-  title={Influence of climate, soil, and land cover on plant species distribution in the European Alps},
-  author={Chauvier, Yohann and Thuiller, Wilfried and Brun, Philipp and Lavergne, S{\'e}bastien and Descombes, Patrice and Karger, Dirk N and Renaud, Julien and Zimmermann, Niklaus E},
-  journal={Ecological monographs},
-  volume={91},
-  number={2},
-  pages={e01433},
-  year={2021},
-  publisher={Wiley Online Library}
-}
+Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the European Alps. Ecological monographs, 91(2), e01433.
+
+Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API.
+
+Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 10(5), 744-751.
+
+Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022).
