@@ -85,22 +85,22 @@
 #' data(AlpineConvention_lonlat)
 #' 
 #' # Downloading worldwide the observations of Panthera tigris
-#' test1 = wsl.gbif("Panthera tigris")
+#' test1 = wsl_gbif("Panthera tigris")
 #' 
 #' # Downloading in the Alps the observations of Cypripedium calceolus (with a 100m grain and
 #' # by adding the 'issues' column)
-#' test3 = wsl.gbif("Cypripedium calceolus", geo = shp.lonlat, grain = 100, add_infos = "issue")
+#' test3 = wsl_gbif("Cypripedium calceolus", geo = shp.lonlat, grain = 100, add_infos = "issue")
 #' plot(shp.lonlat)
 #' points(test1[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
 #' 
 #' # Downloading worlwide the observations of Ailuropoda melanoleuca (with a 100km grain, after
 #' # 1990 and by keeping duplicates and by adding the name of the person who collected the species records)
-#' test3 = wsl.gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
+#' test3 = wsl_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
 #' 	time_period = c(1990,3000), add_infos = "recordedBy")
 #' 
 #' # Downloading worlwide the observations of Phascolarctos cinereus (with a 1km grain, after 1980,
 #' # and keeping raster centroids)
-#' test4 = wsl.gbif("Phascolarctos cinereus", grain = 1000,
+#' test4 = wsl_gbif("Phascolarctos cinereus", grain = 1000,
 #' 	time_period = c(1990,3000), centroids = TRUE)
 #' 
 #' # Just an example on how to retrieve the DOI for the first downloaded dataset using
@@ -115,7 +115,7 @@
 #' 
 #' @author Yohann Chauvier
 #' @export
-wsl.gbif = function(sp_name = NULL,
+wsl_gbif = function(sp_name = NULL,
 					conf_match = 90,
 					geo = NULL,
 					grain = 1000,

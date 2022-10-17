@@ -15,11 +15,11 @@
 #' @return A data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status
 #' @author Yohann Chauvier
 #' @examples
-#' wsl.taXnames("Cypripedium calceolus",all=FALSE)
-#' wsl.taXnames("Cypripedium calceolus",all=TRUE)
+#' wsl_taXnames("Cypripedium calceolus",all=FALSE)
+#' wsl_taXnames("Cypripedium calceolus",all=TRUE)
 #' 
 #' @export
-wsl.taXnames=function(sp_name = NULL, conf_match = 90, all = FALSE)
+wsl_taXnames=function(sp_name = NULL, conf_match = 90, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
     gbif.backbone = name_backbone(sp_name)
