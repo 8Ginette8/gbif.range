@@ -33,7 +33,7 @@ Same may be done with Delphinus delphis (a species with > 100'00 observations)
 
 ``` r
 wsl_gbif("Delphinus delphis")
-wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is long because 'all=TRUE' includes every names (even doubtful)
+wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
 
