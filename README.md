@@ -43,6 +43,6 @@ Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N.
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. <a href="https://doi.org/10.5281/zenodo.6023735">10.5281/zenodo.6023735</a>
 
-Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 10(5), 744-751. href="https://doi.org/10.1111/2041-210X.13152">10.1111/2041-210X.13152</a>
+Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 10(5), 744-751. <a href="https://doi.org/10.1111/2041-210X.13152">10.1111/2041-210X.13152</a>
 
-Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022).href="https://cran.r-project.org/web/packages/terra/index.html">Terra - CRAN</a>
+Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). <a href="https://cran.r-project.org/web/packages/terra/index.html">Terra - CRAN</a>
