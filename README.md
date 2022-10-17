@@ -13,14 +13,39 @@ You can install the development version from GitHub with:
 ``` r
 remotes::install_github("8Ginette8/wsl.gbif")
 ```
+The package will soon be the object of a peer review process, and will therefore be published on CRAN.
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Let's download worldwide the observations of Panthera tigris:
 
 ``` r
-## basic example code
+wsl_gbif("Panthera tigris")
+```
+
+Or simply get all its scientific names (accepted and synonyms) from the GBIF backbone taxonomy:
+
+``` r
+wsl_taXnames("Cypripedium calceolus",all=FALSE)
+```
+
+Same may be done with Delphinus delphis (a species with > 100'00 observations)
+
+``` r
+wsl_gbif("Delphinus delphis")
+wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is long because all=TRUE inlcudes every names (even doubtful)
 ```
 
 
 ## References
+
+@article{chauvier2021influence,
+  title={Influence of climate, soil, and land cover on plant species distribution in the European Alps},
+  author={Chauvier, Yohann and Thuiller, Wilfried and Brun, Philipp and Lavergne, S{\'e}bastien and Descombes, Patrice and Karger, Dirk N and Renaud, Julien and Zimmermann, Niklaus E},
+  journal={Ecological monographs},
+  volume={91},
+  number={2},
+  pages={e01433},
+  year={2021},
+  publisher={Wiley Online Library}
+}
