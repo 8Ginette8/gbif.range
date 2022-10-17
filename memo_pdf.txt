@@ -1,0 +1,8 @@
+# To update changes
+devtools::document()
+
+# To update documentation
+system("R CMD Rd2pdf . --title=wsl.gbif --output=./wsl_gbif.pdf --force --no-clean --internals")
+
+# To install package locally from main directory
+install.packages("../wsl.gbif_r_package",repos=NULL,type="source")

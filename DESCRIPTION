@@ -1,0 +1,15 @@
+Package: wsl.gbif
+Type: Package
+Title: A toolbox to efficiently download and filter large GBIF observational datasets for sound spatial analyses
+Version: 0.1.0
+Depends: R (>= 3.1.0), raster, terra,  rgbif, CoordinateCleaner
+Description: Package aiming at easing the workflow of retrieving GBIF observations at large spatial scale for all species accepted names and synonyms, and filtering them according to the specific scale of an analysis.
+License: GPL (>=3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Authors: Yohann Chauvier [cre,aut] ----------- email: yohann.chauvier@wsl.ch
+Collate:
+    'make_tiles.R'
+    'wsl_gbif.R'
+    'wsl_taXnames.R'
