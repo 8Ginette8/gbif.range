@@ -1,6 +1,6 @@
 # wsl.gbif
 
-wsl.gbif aims at easing the work???ow of retrieving GBIF observations at large spatial scale for all species accepted names and synonyms, and filtering them according to the specific scale of an analysis.
+wsl.gbif aims at easing the workflow of retrieving GBIF observations at large spatial scale for all species accepted names and synonyms, and filtering them according to the specific scale of an analysis.
 
 On the one hand, wsl.gbif improves the data accessibility of the rgbif R package (https://cran.r-project.org/web/packages/rgbif/index.html) and allow the whole observations of a given species name (accepted and synonym names) to be retrieved. The user download limit of rgbif is a maximum of 100'000 of species observations in one go. This impends the accessibility to the GBIF database when large observational datasets for many species and region of the world are neededed. wsl.gbif therefore bypasses this limit using rgbif geographic parameters and by adopting a multiple dynamic moving window process allowing to fragment the user's study area of interest to be fragmented in several tiles that always include < 100'000 observations.
 
