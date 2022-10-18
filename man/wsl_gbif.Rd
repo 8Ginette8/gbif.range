@@ -81,11 +81,11 @@ between tries. If attempts failed, an empty data.frame is return by default.}
 R package.}
 }
 \value{
-Object of class 'data.frame' with requested GBIF information. Although the function
+Object of class data.frame with requested GBIF information. Although the function
 works accurately, error outputs might still occur depending on the 'sp_name' used.
 Therefore, default information detailed in 'add_infos' is stored so that sanity checks
 may still be applied afterwards. Although crucial preliminary checks of species records
-are done by the function, addtional post exploration with the 'CoordinateCleaner' R
+are done by the function, addtional post exploration with the CoordinateCleaner R
 package is still highly recommended.
 }
 \description{
@@ -157,8 +157,22 @@ rgbif::derived_dataset(d.summary,"GBIF_test",
     "Filetred and cleaned based on CoordinateCleaner",source_url="https://example.com/",
     user="your_gbif_user",pwd="your_gbif_password")
 
-
 }
-\author{
-Yohann Chauvier
+\references{
+Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
+N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
+European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
+
+Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
+information facility API. 10.5281/zenodo.6023735
+
+Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli,
+A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection
+databases. Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152
+
+Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
+}
+\seealso{
+The (1) rgbif and (2) CoordinateCelaner packages for additional and more general
+approaches on (1) downloading GBIF observations and (2) post-filetering those.
 }

@@ -13,7 +13,15 @@
 #' the accepted name and its synonyms?
 #' 
 #' @return A data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status
-#' @author Yohann Chauvier
+#' @references 
+#' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
+#' N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
+#' European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
+#' 
+#' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
+#' information facility API. 10.5281/zenodo.6023735
+#' @seealso The rgbif package for additional and more general approaches on how to retrieve
+#' scientific names from the GBIF backbone taxonomy.
 #' @examples
 #' wsl_taXnames("Cypripedium calceolus",all=FALSE)
 #' wsl_taXnames("Cypripedium calceolus",all=TRUE)
@@ -79,3 +87,4 @@ wsl_taXnames=function(sp_name = NULL, conf_match = 90, all = FALSE)
     }
     return(out)
 }
+
