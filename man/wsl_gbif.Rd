@@ -26,52 +26,52 @@ wsl_gbif(
 )
 }
 \arguments{
-\item{sp_name}{Object of class 'character'. Scientific name to run an online search
+\item{sp_name}{Character. Scientific name to run an online search
 (i.e. with GBIF-API) for species observations. Works also for genus and higher taxa
 levels.}
 
-\item{conf_match}{Object of class 'numeric' from 0 to 100. Determine the confidence
-threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
+\item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold of match
+of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
 
 \item{geo}{Object of class 'Extent', 'SpatExtent', 'SpatialPolygon', 'SpatialPolygonDataframe',
 or 'SpaVector' (WGS84) to define the study's area extent. Default is NULL i.e. the whole globe.}
 
-\item{grain}{Object of class 'numeric'. Specify in meters the study resolution. Used to
+\item{grain}{Numeric. Specify in meters the study resolution. Used to
 filter gbif records (x2) according to their uncertainties and number of coordinate
 decimals. Records with no information on coordinate uncertainties (column
 'coordinateUncertaintyInMeters') are be kept by default. See details.}
 
-\item{duplicates}{TRUE or FALSE. Should duplicated records be kept?}
+\item{duplicates}{Logical. Should duplicated records be kept?}
 
-\item{absences}{TRUE or FALSE. Should absence records be kept?}
+\item{absences}{Logical. Should absence records be kept?}
 
-\item{no_xy}{TRUE or FALSE. Default is FALSE i.e. only records with coordinates are
+\item{no_xy}{Logical. Default is FALSE i.e. only records with coordinates are
 downloaded. If TRUE, only records with no coordinates are downloaded.}
 
-\item{basis}{Object of class 'character'. Which basis of records should be selected?
+\item{basis}{Character. Which basis of records should be selected?
 Default is all i.e. c("OBSERVATION", "HUMAN_OBSERVATION", "MACHINE_OBSERVATION",
 "MATERIAL_SAMPLE", "PRESERVED_SPECIMEN", "FOSSIL_SPECIMEN", "LIVING_SPECIMEN", "LITERATURE",
 "UNKNOWN"). Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html}
 
-\item{add_infos}{Vector of character IDs which would add to the default output information.
-List of character IDs may be found at: https://www.gbif.org/developer/occurrence.
-Default information contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
+\item{add_infos}{Character. Infos that may be added to the default output information.
+List of IDs may be found at: https://www.gbif.org/developer/occurrence.
+Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
 'acceptedScientificName', 'individualCount', 'decimalLatitude', 'decimalLongitude',
 'basisOfRecord', 'coordinateUncertaintyInMeters', 'country', 'year', 'datasetKey', 
 'institutionCode', 'publishingOrgKey', 'taxonomicStatus' and 'taxonRank'.}
 
-\item{time_period}{Numerical 'vector'. Observations will be downloaded according to the chosen
+\item{time_period}{Numerical vector. Observations will be downloaded according to the chosen
 year range. Default is c(1000,3000). Observations with year = NA are kept by default.}
 
-\item{identic_xy}{TRUE or FALSE. Should records with identical xy be kept?}
+\item{identic_xy}{Logical. Should records with identical xy be kept?}
 
-\item{wConverted_xy}{TRUE or FALSE. Should incorrectly lon/lat converted xy be kept?
+\item{wConverted_xy}{Logical. Should incorrectly lon/lat converted xy be kept?
 Uses `cd_ddmm` from 'CoordinateCleaner' R package.}
 
-\item{centroids}{TRUE or FALSE. Should species records from raster centroids be kept?
+\item{centroids}{Logical. Should species records from raster centroids be kept?
 Uses `cd_round` from 'CoordinateCleaner' R package.}
 
-\item{ntries}{In case of failure from GBIF server or within the rgbif package, how many
+\item{ntries}{Numeric. In case of failure from GBIF server or within the rgbif package, how many
 download attempts should the function request? Default is '10' with a 2 seconds interval
 between tries. If attempts failed, an empty data.frame is return by default.}
 
@@ -90,22 +90,23 @@ package is still highly recommended.
 }
 \description{
 Implement an user-friendly workflow to download and clean gbif taxa observations.
-The function uses the 'rgbif' package but (1) implements the same search result 
+The function uses the rgbif R package but (1) implements the same search result 
 found if www.gbif.org is employed i.e., based on the input taxa name, all species
 records related to its accepted name and synonyms are extracted. The function
-also (2) bypasses the 'rgbif' limitation on number of records (100'000 max).
+also (2) bypasses rgbif hard limit on the number of records (100'000 max).
 For this purpose, a dynamic moving window is created and used across the geographic
 extent defined by the user. This window automatically fragments the specified
 study area in succesive tiles of different sizes, until all tiles include < 100'000
 observations. The function also (3) automatically applies a post-filtering of
 observations based on the chosen resolution of the study/analysis and by partly
-employing the 'CoordinateCleaner' R package. Filtering options may be chosen and
+employing the CoordinateCleaner R package. Filtering options may be chosen and
 involve several choices: study's extent, removal of duplicates, removal of absences,
 basis of records selection, removal of invalid/uncertain xy coordinates (WGS84), time
-period selection and removal of raster centroids. By default, the 'rgbif' argument
-hasGeospatialIssue is set to FALSE. To get the custom DOI of the downloaded GBIF data,
-the derived_dataset() function from the rgbif package must be used with the column
-'datasetKey'.
+period selection and removal of raster centroids. By default, the argument
+hasGeospatialIssue in occ_search() (implemented rgbif function) is set to FALSE.
+To get the custom DOI of the downloaded GBIF data, the derived_dataset() function
+from the rgbif package must be used with the column 'datasetKey' of one or several
+outputs.
 }
 \details{
 Argument `grain` used for two distinct gbif records filtering. (1) Records filtering
@@ -133,28 +134,28 @@ test1 = wsl_gbif("Panthera tigris")
 
 # Downloading in the Alps the observations of Cypripedium calceolus (with a 100m grain and
 # by adding the 'issues' column)
-test3 = wsl_gbif("Cypripedium calceolus", geo = shp.lonlat, grain = 100, add_infos = "issue")
+test3 = wsl_gbif("Cypripedium calceolus", geo = shp.lonlat, grain = 100, add_infos = c("issue"))
 plot(shp.lonlat)
 points(test1[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
 
 # Downloading worlwide the observations of Ailuropoda melanoleuca (with a 100km grain, after
 # 1990 and by keeping duplicates and by adding the name of the person who collected the species records)
 test3 = wsl_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
-	time_period = c(1990,3000), add_infos = "recordedBy")
+    time_period = c(1990,3000), add_infos = c("recordedBy","issue"))
 
 # Downloading worlwide the observations of Phascolarctos cinereus (with a 1km grain, after 1980,
 # and keeping raster centroids)
 test4 = wsl_gbif("Phascolarctos cinereus", grain = 1000,
-	time_period = c(1990,3000), centroids = TRUE)
+    time_period = c(1990,3000), centroids = TRUE)
 
 # Just an example on how to retrieve the DOI for the first downloaded dataset using
-# derived_dataset() from the rgbif R package. Summary of dataset plus number of affiliated
-# occurrences
+# derived_dataset() from the rgbif R package. Note that multiple datasets may be combined
+# and derived_dataset() used once to only obtain one unique DOI.
 d.target = table(test1$datasetKey)
 d.summary = data.frame(datasetKey = names(d.target),count = as.numeric(d.target))
 rgbif::derived_dataset(d.summary,"GBIF_test",
-	"Filetred and cleaned based on CoordinateCleaner",source_url="https://example.com/",
-	user="your_gbif_user",pwd="your_gbif_password")
+    "Filetred and cleaned based on CoordinateCleaner",source_url="https://example.com/",
+    user="your_gbif_user",pwd="your_gbif_password")
 
 
 }

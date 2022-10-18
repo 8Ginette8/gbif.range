@@ -7,7 +7,6 @@ Description: Package aiming at easing the workflow of retrieving GBIF observatio
 License: GPL (>=3)
 BugReports: https://github.com/8Ginette8/wsl.gbif/issues
 Encoding: UTF-8
-Maintainer: Yohann Chauvier --- @: yohann.chauvier@wsl.ch
 LazyData: true
 RoxygenNote: 7.1.2
 Authors: Yohann Chauvier [cre,aut] (https://orcid.org/0000-0001-9399-3192)
