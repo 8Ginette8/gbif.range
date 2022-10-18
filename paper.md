@@ -5,7 +5,7 @@ tags:
   - Ecology
   - Geographic Information Systems
   - Species records
-  - Taxonomy
+  - Scientific names
   - Global Biodiversity Information Facility
 authors:
   - name: Yohann Chauvier
