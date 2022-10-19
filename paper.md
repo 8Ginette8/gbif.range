@@ -65,7 +65,8 @@ and many taxa. Also, rgbif includes several search functions including many para
 impend everyday users to easily extract the same number of species records found on the main
 website (https://www.gbif.org/). wsl.gbif therefore aims at easing the workflow of retrieving,
 compilling GBIF observations at large spatial scale for all species accepted names and synonyms,
-and select them according to the specific scale of a spatial analysis.
+and select them according to the specific scale of a spatial analysis. The package has and is
+currently used in several publications and ongoing project (Chauvier & al. 2021, 2022; ...)
 
 On the one hand, wsl.gbif allows the whole observations of a given species name (accepted and
 synonym names) to be retrieved, and improves the data accessibility of the rgbif R package
@@ -87,29 +88,19 @@ includes a larger variety of options that should be checked and applied on wsl.g
 
 Finally, wsl.gbif offers a set of additional very useful functions meant to be used for large-scale
 studies. (1) wsl_taXnames generates, based on a given species name, a list of all its scientific names
-(accepted, synonyms, children and related) found in the GBIF backbone taxonomy. (2) Whereas the 'grain'
-parameter in wsl_gbif allows unprecise GBIF observations to be filtered, wsl_obs_filter accepts as input
-a wsl_gbif output (one or several species) and keeps for each species only one observation per pixel of a
-defined grid. (3) wsl_tiles is a function that may be used to generate a set of n geometry arguments
-POLYGON() based on a given geographic extent. This function is meant to help users who want to use the
-rgbif package and its parameter 'geometry' that use a POLYGON() argument.
+(accepted, synonyms, children and related) found in the GBIF backbone taxonomy. The function allows
+therefore taxonomy correspondancy to be made in order to merge the observations of different species
+and sub-species, but also permits efficient ways of linking external data information of a species that
+is named diffrently across databsed (2) Whereas the 'grain' parameter in wsl_gbif allows unprecise GBIF
+observations to be filtered, wsl_obs_filter accepts as input a wsl_gbif output (one or several species)
+and keeps for each species only one observation per pixel of a defined grid. (3) wsl_tiles is a function
+that may be used to generate a set of n geometry arguments POLYGON() based on a given geographic extent.
+This function is meant to help users who want to use the rgbif package and its parameter 'geometry'
+that use a POLYGON() argument.
 
 
 # Examples
 
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
 
 # Figures
 
@@ -126,3 +117,16 @@ We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
 Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
+
+Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
+
+Chauvier, Y., Descombes, P., Guéguen, M., Boulangeat, L., Thuiller, W., & Zimmermann, N. E. (2022). Resolution in species distribution models shapes spatial patterns of plant multifaceted diversity. Ecography, 2022 (10), e05973. 10.1111/ecog.05973
+
+Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. 10.5281/zenodo.6023735
+
+Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152
+
+Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
+
+Blumentrath, S., & Kudrnovsky, H. (2016). v. in. pygbif-Search and import GBIF species distribution data.
+
