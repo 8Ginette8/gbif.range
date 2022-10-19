@@ -88,18 +88,18 @@ includes a larger variety of options that should be checked and applied on *wsl.
 
 Finally, *wsl.gbif* offers a set of additional very useful functions meant to be used for large-scale
 studies using GBIF observations:
-      (1) *wsl_taXnames* generates, based on a given species name, a list of all its scientific names
-(accepted, synonyms, children and related) found in the GBIF backbone taxonomy. The function allows
-therefore taxonomy correspondency to be made between different species and sub-species to potentially
-merge their records, but also permits efficient ways of linking external data of a species which is
-named differently across databases.
-  (2) Whereas the 'grain' parameter in *wsl_gbif* allows GBIF observations to be filtered according
-to a certain spatial precision, *wsl_obs_filter* accepts as input a *wsl_gbif* output (one or several
-species) and filter the observations according to a specific given grid resolution (one observation per
-pixel grid kept).
-  (3) wsl_tiles is a function that may be used to generate a set of n geometry arguments POLYGON() based
-on a given geographic extent. This function is meant to help users who want to use the *rgbif* R package
-and its parameter *geometry* that uses a POLYGON() argument.
+  - *wsl_taXnames*: It generates, based on a given species name, a list of all its scientific names
+  (accepted, synonyms, children and related) found in the GBIF backbone taxonomy. The function allows
+  therefore taxonomy correspondency to be made between different species and sub-species to potentially
+  merge their records, but also permits efficient ways of linking external data of a species which is
+  named differently across databases.
+  - *wsl_obs_filter*: Whereas the 'grain' parameter in *wsl_gbif* allows GBIF observations to be filtered according
+  to a certain spatial precision, *wsl_obs_filter* accepts as input a *wsl_gbif* output (one or several
+  species) and filter the observations according to a specific given grid resolution (one observation per
+  pixel grid kept).
+  - *wsl_tiles*: It is a function that may be used to generate a set of n geometry arguments POLYGON() based
+  on a given geographic extent. This function is meant to help users who want to use the *rgbif* R package
+  and its parameter *geometry* that uses a POLYGON() argument.
 
 # Examples
 
