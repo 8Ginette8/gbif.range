@@ -19,13 +19,24 @@ The package will soon be the object of a peer review process, and will therefore
 
 ## Example
 
-Let's download worldwide the observations of Panthera tigris:
+Let's download worldwide the records of Panthera tigris only based on true observations:
 
 ``` r
-wsl_gbif("Panthera tigris")
+wsl.pt = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
 ```
 
-Or simply get all its scientific names (accepted and synonyms) from the GBIF backbone taxonomy:
+Note that an additional filtering needs here to be done as one observation is in the US. A lot of tigers are
+being captive in this country hence the recorded observation. Therefore *CoordinateCleaner* should here be
+tried on the *wsl_gbif* ouptut:
+
+``` r
+library(maptools)
+data(wrld_simpl)
+plot(wrld_simpl)
+points(wsl.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
+```
+
+To simply get all the tiger scientific names (accepted and synonyms) from the GBIF backbone taxonomy:
 
 ``` r
 wsl_taXnames("Panthera tigris",all=FALSE)

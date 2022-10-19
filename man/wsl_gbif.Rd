@@ -77,8 +77,7 @@ between tries. If attempts failed, an empty data.frame is return by default.}
 
 \item{error.skip}{Logical. Should the search process continues if ntries failed ?}
 
-\item{...}{Additonnal parameters for the function 'cd_round' of the 'CoordinateCleaner'
-R package.}
+\item{...}{Additonnal parameters for the function cd_round() of CoordinateCleaner.}
 }
 \value{
 Object of class data.frame with requested GBIF information. Although the function
@@ -127,7 +126,7 @@ if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
 #library(CoordinateCleaner)
 
 # Load the Alps Extend
-data(AlpineConvention_lonlat)
+data(geo_dat)
 
 # Downloading worldwide the observations of Panthera tigris
 test1 = wsl_gbif("Panthera tigris")
@@ -147,15 +146,6 @@ test3 = wsl_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
 # and keeping raster centroids)
 test4 = wsl_gbif("Phascolarctos cinereus", grain = 1000,
     time_period = c(1990,3000), centroids = TRUE)
-
-# Just an example on how to retrieve the DOI for the first downloaded dataset using
-# derived_dataset() from the rgbif R package. Note that multiple datasets may be combined
-# and derived_dataset() used once to only obtain one unique DOI.
-d.target = table(test1$datasetKey)
-d.summary = data.frame(datasetKey = names(d.target),count = as.numeric(d.target))
-rgbif::derived_dataset(d.summary,"GBIF_test",
-    "Filetred and cleaned based on CoordinateCleaner",source_url="https://example.com/",
-    user="your_gbif_user",pwd="your_gbif_password")
 
 }
 \references{

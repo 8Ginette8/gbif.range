@@ -2,12 +2,43 @@
 % Please edit documentation in R/make_tiles.R
 \name{make_tiles}
 \alias{make_tiles}
-\title{Create a specific number of tiles based on an extent}
+\title{Create a specific number of tiles based on a raster extent}
 \usage{
-make_tiles(geo, Ntiles, meta = TRUE)
+make_tiles(geo, Ntiles, sext = TRUE)
+}
+\arguments{
+\item{geo}{Object of class 'Extent', 'SpatExtent', 'SpatialPolygon', 'SpatialPolygonDataframe',
+or 'SpaVector' (WGS84 or planar) to define the study's area extent. Default is NULL i.e. the
+whole globe.}
+
+\item{Ntiles}{Numeric. In how many tiles/fragments should geo be divided approximately?}
+
+\item{sext}{Logical. Should a list of numerical extents 'c(xmin,xmax,ymin,ymax)' also be returned
+for each generated POLYGON()?}
+}
+\value{
+A list of geometry arguments POLYGON() of length Ntiles (and of numerical extents
+if sext=TRUE)
 }
 \description{
-Not to be called directly by the user
+Based on a specific extent, one or several tiles are generated. Tiles can be smaller
+numerical extents or geometry arguments POLYGON(). The original extent is therefore either
+converted into a POLYGON() argument, or divided into Ntiles of regular fragments which are
+converted into POLYGON() arguments and smaller numerical extents.
+}
+\examples{
+
+# Load the European Alps Extent
+data(geo_dat)
+
+# Apply the function to divide the extent in ~20 fragments
+make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE)
+
+}
+\references{
+Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
+N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
+European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
 }
 \author{
 Yohann Chauvier

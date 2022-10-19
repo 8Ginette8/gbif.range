@@ -15,4 +15,6 @@ Collate:
     'make_tiles.R'
     'wsl_gbif.R'
     'wsl_taXnames.R'
+    'wsl_doi.R'
+    'wsl_obs_filter.R'
 

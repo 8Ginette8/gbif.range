@@ -90,17 +90,17 @@
 #' approaches on (1) downloading GBIF observations and (2) post-filetering those.
 #' @examples
 #' 
-#' # Necessary libraries
-#' #library(raster)
-#' #library(terra)
-#' #library(rgbif)
-#' #library(CoordinateCleaner)
+#' # Load maptools for the map world
+#' library(maptools)
+#' data(wrld_simpl)
 #' 
 #' # Load the Alps Extend
-#' data(AlpineConvention_lonlat)
+#' data(geo_dat)
 #' 
 #' # Downloading worldwide the observations of Panthera tigris
-#' test1 = wsl_gbif("Panthera tigris")
+#' test1 = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
+#' plot(wrld_simpl)
+#' points(test1[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 #' 
 #' # Downloading in the Alps the observations of Cypripedium calceolus (with a 100m grain and
 #' # by adding the 'issues' column)
@@ -108,10 +108,12 @@
 #' plot(shp.lonlat)
 #' points(test1[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
 #' 
-#' # Downloading worlwide the observations of Ailuropoda melanoleuca (with a 100km grain, after
-#' # 1990 and by keeping duplicates and by adding the name of the person who collected the species records)
+#' # Downloading worlwide the observations of Ailuropoda melanoleuca (with a 100km grain, after 1990
+#' # and by keeping duplicates and by adding the name of the person who collected the panda records)
 #' test3 = wsl_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
 #'     time_period = c(1990,3000), add_infos = c("recordedBy","issue"))
+#' plot(wrld_simpl)
+#' points(test3[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 #' 
 #' # Downloading worlwide the observations of Phascolarctos cinereus (with a 1km grain, after 1980,
 #' # and keeping raster centroids)
@@ -169,8 +171,8 @@ wsl_gbif = function(sp_name = NULL,
 	# For fields
 	gbif.info = c('taxonKey','scientificName','acceptedTaxonKey','acceptedScientificName',
 		'individualCount','decimalLatitude','decimalLongitude','basisOfRecord',
-		'coordinateUncertaintyInMeters','country', 'year','datasetKey', 'institutionCode',
-		'publishingOrgKey','taxonomicStatus','taxonRank',add_infos)
+		'coordinateUncertaintyInMeters','countryCode','country', 'year','datasetKey',
+		'institutionCode','publishingOrgKey','taxonomicStatus','taxonRank',add_infos)
 	gbif.info = gbif.info[order(gbif.info)]
 
 		# For 'cd_ddmm'
@@ -233,7 +235,7 @@ wsl_gbif = function(sp_name = NULL,
 		cat(">>>>>>>> Too many records: Retrieving relevant geographic tiles...","\n")
 
 		# Start with 100 tiles
-		tile.100 = make_tiles(geo,Ntiles=100,meta=TRUE)
+		tile.100 = make_tiles(geo,Ntiles=100,sext=TRUE)
 		geo.tiles = tile.100[[1]]
 		geo.meta = tile.100[[2]]
 
@@ -267,7 +269,7 @@ wsl_gbif = function(sp_name = NULL,
 
 					# Convert to extent and create 100 new micro tiles
 					new.ext = ext(new.geo[[y]])
-					micro.100 = make_tiles(new.ext,100,meta=TRUE)
+					micro.100 = make_tiles(new.ext,Ntiles=100,sext=TRUE)
 					micro.tiles = micro.100[[1]]
 					micro.meta = micro.100[[2]]
 
@@ -330,7 +332,7 @@ wsl_gbif = function(sp_name = NULL,
 				j=0
 				while (class(gbif.search) %in% "try-error" & j<ntries)
 				{
-					cat(j,"ntries attempt...","\n")
+					cat("Attempt",j+1,"...","\n")
 					j=j+1
 					gbif.search = try(
 						occ_search(taxonKey=sp.key,limit=99000,hasCoordinate=!no_xy,
@@ -575,6 +577,10 @@ wsl_gbif = function(sp_name = NULL,
 			cat("Records removed:",gbif.nrow-nrow(gbif.correct),"\n")
 		}
 	}
-	return(cbind(input.search=sp_name,gbif.correct))
+	if (nrow(gbif.correct)==0) {
+		cat("No records left after selection...","\n")
+		return(e.output)
+	} else {
+		return(cbind(input.search=sp_name,gbif.correct))
+	}
 }
-

@@ -23,9 +23,6 @@
 #' @seealso The rgbif package for additional and more general approaches to get GBIF DOI
 #' @examples
 #' 
-#' # Necessary libraries
-#' #library(rgbif)
-#' 
 #' # Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
 #' test1 = wsl_gbif("Panthera tigris")
 #' test32 = wsl_gbif("Ailuropoda melanoleuca")
@@ -50,5 +47,5 @@ wsl_doi = function(wsl_gbif = list(),
 				   usr = "",
 				   pwd = "",
 				   ...) {
-
+return(NULL)
 }

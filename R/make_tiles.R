@@ -1,14 +1,47 @@
 ### =========================================================================
 ### make_tiles
 ### =========================================================================
-#' Create a specific number of tiles based on an extent
+#' Create a specific number of tiles based on a raster extent
 #'
-#' Not to be called directly by the user
+#' Based on a specific extent, one or several tiles are generated. Tiles can be smaller
+#' numerical extents or geometry arguments POLYGON(). The original extent is therefore either
+#' converted into a POLYGON() argument, or divided into Ntiles of regular fragments which are
+#' converted into POLYGON() arguments and smaller numerical extents.
 #'
+#' @param geo Object of class 'Extent', 'SpatExtent', 'SpatialPolygon', 'SpatialPolygonDataframe',
+#' or 'SpaVector' (WGS84 or planar) to define the study's area extent. Default is NULL i.e. the
+#' whole globe.
+#' @param Ntiles Numeric. In how many tiles/fragments should geo be divided approximately?
+#' @param sext Logical. Should a list of numerical extents 'c(xmin,xmax,ymin,ymax)' also be returned
+#' for each generated POLYGON()?
+#' @return A list of geometry arguments POLYGON() of length Ntiles (and of numerical extents
+#' if sext=TRUE)
+#' @references 
+#' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
+#' N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
+#' European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
+#' @examples
+#' 
+#' # Load the European Alps Extent
+#' data(geo_dat)
+#' 
+#' # Apply the function to divide the extent in ~20 fragments
+#' mt = make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE); mt
+#' 
+#' # How to create new SpatExtent fragments
+#' lapply(mt[[2]],function(x) ext(x))
+#' 
 #' @author Yohann Chauvier
 #' @export
 #' 
-make_tiles = function(geo, Ntiles, meta = TRUE){
+make_tiles = function(geo, Ntiles, sext = TRUE){
+
+	# For study area
+	if (!is.null(geo)) {
+		if (!(class(geo)%in%"SpatExtent")) {geo = ext(geo)}
+	} else {
+		geo = ext(-180,180,-90,90)
+	}
 
 	# Divide original extent into smaller ones otherwise
 	ntiles = seq(1:sqrt(Ntiles))
@@ -58,7 +91,7 @@ make_tiles = function(geo, Ntiles, meta = TRUE){
 	geo.meta = unlist(lapply(all.tiles,function(x) x[[2]]),recursive=FALSE)
 
 	# Return
-	if (meta) {
+	if (sext) {
 		return(list(geo.tiles,geo.meta))
 	} else {
 		return(geo.tiles)

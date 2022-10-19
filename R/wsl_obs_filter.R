@@ -1,5 +1,5 @@
 ### =========================================================================
-### wsl.obs.filter
+### wsl_obs_filter
 ### =========================================================================
 #' Filter a set of GBIF observations according to a defined grain
 #'
@@ -15,50 +15,17 @@
 #' the new set of observations filtered at grid resolution.
 #' @examples
 #' 
-#' # Load my binary observations species data
-#' data(var_select_XYtest)
+#' # Load the European Alps extent and a raster of a random resolution
+#' data(geo_dat)
 #' data(exrst)
 #' 
-#' # wsl.obs.filter(): example for the first species
-#'    # Loading observations: presences and absences
-#' presences = coordinates(mySP[[1]])[myPA[[1]] %in% "1",]
-#' absences = coordinates(mySP[[1]])[myPA[[1]] %in% "0",]
-#'
-#'    # Loading grid
-#' 
-#' r.layer = rst[[1]]
-#'
-#'    # To filter observations by the grid only
-#' 
-#' pres.filtered = wsl.obs.filter(presences,grid=r.layer)
-#' abs.filtered = wsl.obs.filter(absences,grid=r.layer)
-#'
-#'    # To filter observations by the grid & remove abs. in cells where we also find pres.
-#' 
-#' PresAbs.filtered = wsl.obs.filter(presences,absences,r.layer)
-#'
-#'    # Count presences (same filtering)
-#' 
-#' nrow(PresAbs.filtered[[1]])
-#' nrow(pres.filtered)
-#'
-#'    # Count Absences (filtering plus removal of duplicated absences)
-#' 
-#' nrow(abs.filtered)
-#' nrow(PresAbs.filtered[[2]])
-#'
-#'    # Visual
-#' 
-#' par(mfrow=c(1,2))
-#' plot(presences)
-#' plot(pres.filtered)
-#'
-#' par(mfrow=c(1,2))
-#' plot(absences)
-#' plot(abs.filtered)
+#' # Downloading in the European Alps the observations of Arctostaphylos alpinus
+#' obs.arcto = wsl_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
+#' plot(shp.lonlat)
+#' points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
 #' 
 #' @export
-wsl.obs.filter=function(wsl.gbif,grid)
+wsl_obs_filter=function(wsl.gbif,grid)
 {
     # Check 'ras' input
     if(!(class(grid)%in%c("SpatRaster"))) {

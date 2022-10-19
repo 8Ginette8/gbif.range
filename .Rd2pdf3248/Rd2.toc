@@ -1,0 +1,6 @@
+\contentsline {subsection}{make\_tiles}{2}{page.2}
+\contentsline {subsection}{wsl\_doi}{3}{page.3}
+\contentsline {subsection}{wsl\_gbif}{4}{page.4}
+\contentsline {subsection}{wsl\_obs\_filter}{7}{page.7}
+\contentsline {subsection}{wsl\_taXnames}{8}{page.8}
+\contentsline {chapter}{Index}{9}{page.9}
