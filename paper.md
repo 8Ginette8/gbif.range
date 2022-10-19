@@ -88,7 +88,7 @@ includes a larger variety of options that should be checked and applied on *wsl.
 
 Finally, *wsl.gbif* offers a set of additional very useful functions meant to be used for large-scale
 studies using GBIF observations:
-  (1) *wsl_taXnames* generates, based on a given species name, a list of all its scientific names
+     (1) *wsl_taXnames* generates, based on a given species name, a list of all its scientific names
 (accepted, synonyms, children and related) found in the GBIF backbone taxonomy. The function allows
 therefore taxonomy correspondency to be made between different species and sub-species to potentially
 merge their records, but also permits efficient ways of linking external data of a species which is
