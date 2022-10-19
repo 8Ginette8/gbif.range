@@ -87,20 +87,44 @@ note that, although a strong records filetring may be undertaken with wsl.gbif, 
 includes a larger variety of options that should be checked and applied on wsl.gbif outputs.
 
 Finally, wsl.gbif offers a set of additional very useful functions meant to be used for large-scale
-studies. (1) wsl_taXnames generates, based on a given species name, a list of all its scientific names
-(accepted, synonyms, children and related) found in the GBIF backbone taxonomy. The function allows
-therefore taxonomy correspondancy to be made in order to merge the observations of different species
-and sub-species, but also permits efficient ways of linking external data information of a species that
-is named diffrently across databsed (2) Whereas the 'grain' parameter in wsl_gbif allows unprecise GBIF
-observations to be filtered, wsl_obs_filter accepts as input a wsl_gbif output (one or several species)
-and keeps for each species only one observation per pixel of a defined grid. (3) wsl_tiles is a function
-that may be used to generate a set of n geometry arguments POLYGON() based on a given geographic extent.
-This function is meant to help users who want to use the rgbif package and its parameter 'geometry'
-that use a POLYGON() argument.
+studies using GBIF observations. (1) wsl_taXnames generates, based on a given species name, a list
+of all its scientific names (accepted, synonyms, children and related) found in the GBIF backbone
+taxonomy. The function allows therefore taxonomy correspondancy to be made in order to merge the
+observations of different species and sub-species, but also permits efficient ways of linking external
+data information of a species that is named diffrently across databsed (2) Whereas the 'grain' parameter
+in wsl_gbif allows unprecise GBIF observations to be filtered, wsl_obs_filter accepts as input a wsl_gbif
+output (one or several species) and keeps for each species only one observation per pixel of a defined grid.
+(3) wsl_tiles is a function that may be used to generate a set of n geometry arguments POLYGON()
+based on a given geographic extent. This function is meant to help users who want to use the rgbif R
+package and its parameter 'geometry' that use a POLYGON() argument.
 
 
 # Examples
 
+Load the library
+
+``` r
+library(wsl.gbif)
+```
+
+Let's download worldwide the observations of Panthera tigris:
+
+``` r
+obs.pt = wsl_gbif("Panthera tigris")
+```
+
+Or simply get all its scientific names (accepted and synonyms) from the GBIF backbone taxonomy:
+
+``` r
+wsl_taXnames("Panthera tigris",all=FALSE)
+```
+
+Same may be done with Delphinus delphis (a species with > 100'00 observations)
+
+``` r
+obs. dd = wsl_gbif("Delphinus delphis")
+wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+```
 
 
 # Acknowledgements
