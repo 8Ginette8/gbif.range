@@ -575,6 +575,6 @@ wsl_gbif = function(sp_name = NULL,
 			cat("Records removed:",gbif.nrow-nrow(gbif.correct),"\n")
 		}
 	}
-	return(gbif.correct)
+	return(cbind(input.search=sp_name,gbif.correct))
 }
 
