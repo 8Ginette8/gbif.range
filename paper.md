@@ -89,15 +89,15 @@ includes a larger variety of options that should be checked and applied on *wsl.
 Finally, *wsl.gbif* offers a set of additional very useful functions meant to be used for large-scale
 studies using GBIF observations. (1) *wsl_taXnames* generates, based on a given species name, a list
 of all its scientific names (accepted, synonyms, children and related) found in the GBIF backbone
-taxonomy. The function allows therefore taxonomy correspondancy to be made in order to merge the
-observations of different species and sub-species, but also permits efficient ways of linking external
-data information of a species that is named diffrently across databsed (2) Whereas the 'grain' parameter
-in *wsl_gbif* allows unprecise GBIF observations to be filtered, *wsl_obs_filter* accepts as input a
-*wsl_gbif* output (one or several species) and keeps for each species only one observation per pixel of
-a defined grid. (3) wsl_tiles is a function that may be used to generate a set of n geometry arguments
-POLYGON() based on a given geographic extent. This function is meant to help users who want to use the
-*rgbif* R package and its parameter *geometry* that use a POLYGON() argument.
-
+taxonomy. The function allows therefore taxonomy correspondency to be made between different species
+and sub-species to potentially merge their records, but also permits efficient ways of linking external
+data of a species which is named differently across databases. (2) Whereas the 'grain' parameter
+in *wsl_gbif* allows GBIF observations to be filtered according to a certain spatial precision,
+*wsl_obs_filter* accepts as input a *wsl_gbif* output (one or several species) and filter the observations
+according to a specific given grid resolution (one observation per pixel grid kept). (3) wsl_tiles is
+a function that may be used to generate a set of n geometry arguments POLYGON() based on a given
+geographic extent. This function is meant to help users who want to use the *rgbif* R package and its
+parameter *geometry* that uses a POLYGON() argument.
 
 # Examples
 
