@@ -93,13 +93,12 @@ studies using GBIF observations:
 therefore taxonomy correspondency to be made between different species and sub-species to potentially
 merge their records, but also permits efficient ways of linking external data of a species which is
 named differently across databases.
+    (2) Whereas the 'grain' parameter in *wsl_gbif* allows GBIF observations to be filtered according
+to a certain spatial precision, *wsl_obs_filter* accepts as input a *wsl_gbif* output (one or several
+species) and filter the observations according to a specific given grid resolution (one observation per
+pixel grid kept).
 
-(2) Whereas the 'grain' parameter
-in *wsl_gbif* allows GBIF observations to be filtered according to a certain spatial precision,
-*wsl_obs_filter* accepts as input a *wsl_gbif* output (one or several species) and filter the observations
-according to a specific given grid resolution (one observation per pixel grid kept).
-
-(3) wsl_tiles is a function that may be used to generate a set of n geometry arguments POLYGON() based
+    (3) wsl_tiles is a function that may be used to generate a set of n geometry arguments POLYGON() based
 on a given geographic extent. This function is meant to help users who want to use the *rgbif* R package
 and its parameter *geometry* that uses a POLYGON() argument.
 
