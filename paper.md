@@ -65,7 +65,7 @@ and many taxa. Also, rgbif includes several search functions including many para
 impend everyday users to easily extract the same number of species records found on the main
 website (https://www.gbif.org/). wsl.gbif therefore aims at easing the workflow of retrieving,
 compilling GBIF observations at large spatial scale for all species accepted names and synonyms,
-and select them according to the specific scale of a spatial analysis. The package has and is
+and selecting them according to the specific scale of a spatial analysis. The package has and is
 currently used in several publications and ongoing project (Chauvier & al. 2021, 2022; ...)
 
 On the one hand, wsl.gbif allows the whole observations of a given species name (accepted and
