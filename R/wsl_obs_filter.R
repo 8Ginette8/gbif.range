@@ -15,17 +15,12 @@
 #' the new set of observations filtered at grid resolution.
 #' @examples
 #' 
-#' ### Load my binary observations species data
-#' 
-#' library(terra)
-#' 
+#' # Load my binary observations species data
 #' data(var_select_XYtest)
 #' data(exrst)
 #' 
-#' ### wsl.obs.filter(): example for the first species
-#'
+#' # wsl.obs.filter(): example for the first species
 #'    # Loading observations: presences and absences
-#' 
 #' presences = coordinates(mySP[[1]])[myPA[[1]] %in% "1",]
 #' absences = coordinates(mySP[[1]])[myPA[[1]] %in% "0",]
 #'
@@ -63,19 +58,15 @@
 #' plot(abs.filtered)
 #' 
 #' @export
-wsl.obs.filter=function(o.xy,a.xy=NULL,grid)
+wsl.obs.filter=function(wsl.gbif,grid)
 {
-  # Check 'o.xy' input
-
-  if(ncol(o.xy)!=2 || !all(colnames(o.xy)%in%c("x","y"))){
-    stop("Supplied points should be a data.frame/matrix with two columns named x and y!")
-  }
-
     # Check 'ras' input
-
-    if(!(class(grid)%in%c("RasterBrick","RasterStack","RasterLayer"))) {
-      stop("env.layer should be of class RasterBrick, RasterStack or RasterLayer!")
+    if(!(class(grid)%in%c("SpatRaster"))) {
+      ras = rast(grid)
     }
+
+    # Check 'wsl.gbif' output
+    wsl.gbif$input.search
 
     # Apply simple filtering
     if (!is.null(a.xy)) {
