@@ -51,7 +51,7 @@ of these libraries are impended by their technicalities, various functions and
 parameters, and limitations in the number of species observations a user may download
 at once (< 100,000 records). Here we present *wsl.gbif*, a R package which simplifies
 the extraction and compilation of large GBIF datasets by providing a user-friendly main
-search function (*wsl_gbif*) that automatically retrieve species records linked to several
+search function *wsl_gbif* that automatically retrieve species records linked to several
 scientific names, bypasses the download hard limit of 100,000 observations, and filter
 observations quality via several simple parameters.
 
