@@ -124,7 +124,7 @@ wsl_taXnames("Panthera tigris",all=FALSE)
 Same may be done with Delphinus delphis (a species with > 100'00 observations)
 
 ``` r
-obs. dd = wsl_gbif("Delphinus delphis")
+obs.dd = wsl_gbif("Delphinus delphis")
 wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
