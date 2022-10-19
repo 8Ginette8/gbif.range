@@ -32,7 +32,10 @@ converted into POLYGON() arguments and smaller numerical extents.
 data(geo_dat)
 
 # Apply the function to divide the extent in ~20 fragments
-make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE)
+mt = make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE); mt
+
+# How to create new SpatExtent fragments
+lapply(mt[[2]],function(x) ext(x))
 
 }
 \references{
