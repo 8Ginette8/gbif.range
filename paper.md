@@ -57,7 +57,7 @@ quality via several simple parameters.
 
 # Statement of need
 
-While the rgbif package offers great solutions to efficiently extract observational datasets
+While the rgbif R package offers great solutions to efficiently extract observational datasets
 from GBIF, the package function is not meant to automatically download large GBIF datasets
 of millions of records. The downlaod hard limit is set to 100,000 observations which provide
 complications for large-scale studies or analyses that focus on several regions of the world
