@@ -58,8 +58,7 @@
 #' download attempts should the function request? Default is '10' with a 2 seconds interval
 #' between tries. If attempts failed, an empty data.frame is return by default.
 #' @param error.skip Logical. Should the search process continues if ntries failed ?
-#' @param ... Additonnal parameters for the function 'cd_round' of the 'CoordinateCleaner'
-#' R package.
+#' @param ... Additonnal parameters for the function cd_round() of CoordinateCleaner.
 #' @details Argument `grain` used for two distinct gbif records filtering. (1) Records filtering
 #' according to gbif 'coordinateUncertaintyInMeters'; every records uncertainty > grain/2
 #' are removed. Note: Records with no information on coordinate uncertainties are kept by
@@ -118,15 +117,6 @@
 #' # and keeping raster centroids)
 #' test4 = wsl_gbif("Phascolarctos cinereus", grain = 1000,
 #'     time_period = c(1990,3000), centroids = TRUE)
-#' 
-#' # Just an example on how to retrieve the DOI for the first downloaded dataset using
-#' # derived_dataset() from the rgbif R package. Note that multiple datasets may be combined
-#' # and derived_dataset() used once to only obtain one unique DOI.
-#' d.target = table(test1$datasetKey)
-#' d.summary = data.frame(datasetKey = names(d.target),count = as.numeric(d.target))
-#' rgbif::derived_dataset(d.summary,"GBIF_test",
-#'     "Filetred and cleaned based on CoordinateCleaner",source_url="https://example.com/",
-#'     user="your_gbif_user",pwd="your_gbif_password")
 #' 
 #' @export
 wsl_gbif = function(sp_name = NULL,
