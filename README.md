@@ -6,7 +6,7 @@ On the one hand, *wsl.gbif* allows the whole observations of a given species nam
 
 On the other hand, *wsl.gbif* implements easy to use preliminary filtering options implemented during the download so that the user saves some post-processing time in data cleaning. The filetring otpions (n = 11) may be chosen independently, and two of them are based on the *CoordinateCleaner* R package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to note that, although a strong records filetring may be undertaken with *wsl.gbif*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *wsl.gbif* outputs.
 
-Finally, wsl.gbif offers additional functions that post-process one or several *wsl_gbif* outputs (e.g. taxonomy, doi, density filtering according to the study's resolutio...See details in paper.md)
+Finally, wsl.gbif offers additional functions that post-process one or several *wsl_gbif* outputs (e.g. taxonomy, doi, density filtering according to the study's resolution; see details in paper.md)
 
 ## Installation
 
