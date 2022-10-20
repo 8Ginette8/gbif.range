@@ -106,7 +106,7 @@ studies using GBIF observations:
   geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
   *geometry* that uses a POLYGON() argument.
   - *wsl_doi*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
-  - for a set of several gbif species datasets.
+  for a set of several gbif species datasets.
 
 # Examples
 
