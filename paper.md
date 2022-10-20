@@ -49,35 +49,39 @@ via new packages and libraries, e.g. *rgbif* on R (Chamberlain & al. 2022) or
 *pygbif* on python (Blumentrath & Kudrnovsky 2016). However, the given accessibility
 of these libraries are impended by their technicalities, various functions and
 parameters, and limitations in the number of species observations a user may download
-at once (< 100,000 records). Here we present *wsl.gbif*, a R package which simplifies
-the extraction and compilation of large GBIF datasets by providing a user-friendly main
-search function *wsl_gbif* that automatically retrieve species records linked to several
-scientific names, bypasses the download hard limit of 100,000 observations, and filter
-observations quality via several simple parameters.
+at once when no official data request is made (< 100,000 records). Here we present
+*wsl.gbif*, a small library which simplifies the extraction and compilation of large GBIF
+datasets by providing a user-friendly main search function *wsl_gbif()* that automatically
+retrieve species records linked to several scientific names, bypasses the download hard
+limit of 100,000 observations of the *occ_data()* in *rgbif*, and filter observations
+quality via several simple parameters.
 
 # Statement of need
 
 While the *rgbif* R package offers great solutions to efficiently extract observational
-datasets from GBIF, the package function is not meant to automatically download large GBIF
-datasets of millions of records. The downlaod hard limit is set to 100,000 observations which
-provide complications for large-scale studies or analyses that focus on several regions of the
-world and many taxa. Also, *rgbif* includes several search functions including many parameters
-that impend everyday users to easily extract the same number of species records found on the main
-website (https://www.gbif.org/). wsl.gbif therefore aims at easing the workflow of retrieving,
-compilling GBIF observations at large spatial scale for all species accepted names and synonyms,
-and selecting them according to the specific scale of a spatial analysis. The package has and is
-currently used in several publications and ongoing project (Chauvier & al. 2021, 2022; ...)
+datasets from GBIF, the package occ_data() and occ_search() fast functions are not meant to
+automatically download large GBIF datasets of millions of records. The downlaod hard limit
+is set to 100,000 observations which provide complications for large-scale studies or analyses
+that focus on several regions of the world and many taxa. Also, *rgbif* includes several search
+functions including many parameters that impend everyday users to easily extract the same number
+of species records found on the main website (https://www.gbif.org/). wsl.gbif therefore aims
+at easing the workflow of retrieving, compilling GBIF observations at large spatial scale for
+all species accepted names and synonyms, and selecting them according to the specific scale of
+a spatial analysis. Our small library has and is currently used in several publications and ongoing
+project (Chauvier & al. 2021, 2022; ...)
 
-On the one hand, *wsl.gbif* allows the whole observations of a given species name (accepted and
-synonym names) to be retrieved, and improves the data accessibility of the *rgbif* R package
-(https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit of
-rgbif is a maximum of 100,000 of species observations in one go (https://www.gbif.org/developer/occurrence,
-'Searching' header). This impends the accessibility to the GBIF database when large observational
-datasets for many species and regions of the world are needed, specifically in scientifc fields
-related to macrocology, modelling or satelite imagery. wsl.gbif therefore bypasses this limit
-using geographic parameters from the *rgbif* and *terra* R packages and by adopting a dynamic moving
-window process allowing the user's study area of interest to be automatically fragmented in several
-tiles that always include < 100,000 observations.
+On the one hand, *wsl_gbif()* allows the whole observations of a given species name (accepted and
+synonym names) to be automatically retrieved, and improves the data accessibility of the rgbif R
+package (https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit
+of *rgbif* is a maximum of 100,000 of species observations in one go if the interactive functions
+*occ_search()* and *occ_data()* are used (i.e., if no official download request is made with
+*occ_download()*, https://www.gbif.org/developer/occurrence). This impends the fast accessibility
+to the GBIF database when large observational datasets for many species and regions of the world
+are needed, specifically in scientifc fields related to macrocology, modelling or satelite imagery.
+*wsl_gbif()* therefore bypasses this limit by intuitively using geographic parameters from the *rgbif*
+*occ_data()* function and *terra* R packages and adopting a dynamic moving window process allowing
+the user's study area of interest to be automatically fragmented in several tiles that always
+include < 100,000 observations.
 
 On the other hand, *wsl.gbif* implements easy to use preliminary filtering options implemented during
 the download so that the user saves some post-processing time in data cleaning. The filetring
@@ -88,53 +92,51 @@ includes a larger variety of options that should be checked and applied on *wsl.
 
 Finally, *wsl.gbif* offers a set of additional very useful functions meant to be used for large-scale
 studies using GBIF observations:
-  - *wsl_taXnames*: Generates, based on a given species name, a list of all its scientific names
-  (accepted, synonyms, children and related) found in the GBIF backbone taxonomy. The function allows
-  therefore taxonomy correspondency to be made between different species and sub-species to potentially
-  merge their records, but also permits efficient ways of linking external data of a species which is
-  named differently across databases.
-  - *wsl_obs_filter*: Whereas the 'grain' parameter in *wsl_gbif* allows GBIF observations to be filtered
-  according to a certain spatial precision, *wsl_obs_filter* accepts as input a *wsl_gbif* output (one or
+  - *wsl_taxonomy*: Generates, based on a given species name, a list of all its scientific names
+  (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
+  doubtful names not used to download the data may also be extracted. The function allows therefore taxonomy
+  correspondency to be made between different species and sub-species to potentially merge their records,
+  but also permits efficient ways of linking external data of a species which is named differently across databases.
+  - *wsl_obs_filter*: Whereas the 'grain' parameter in *wsl_gbif()* allows GBIF observations to be filtered
+  according to a certain spatial precision, *wsl_obs_filter()* accepts as input a *wsl_gbif()* output (one or
   several species) and filter the observations according to a specific given grid resolution (one observation
-  per pixel grid kept). This function allows the user to correspond its density of GBIF observations
-  according to a defined analysis/study's resolution.
-  - *wsl_tiles*: May be used to generate a set of n geometry arguments POLYGON() based on a given geographic
-  extent. This function is meant to help users who want to use the *rgbif* R package
-  and its parameter *geometry* that uses a POLYGON() argument.
-  - *wsl_doi*: A small wrapper of the *derived_dataset* function of *rgbif* that simplifies the obtention of
-  a general DOI for a set of several gbif species datasets.
+  per pixel grid kept). This function allows the user to refine the density of GBIF observations according to
+  a defined analysis/study's resolution.
+  - *wsl_tiles*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
+  geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
+  *geometry* that uses a POLYGON() argument.
+  - *wsl_doi*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
+  for a set of several gbif species datasets.
 
 # Examples
 
-Load the library
+Let's download worldwide the records of Panthera tigris only based on true observations:
 
 ``` r
-library(wsl.gbif)
+# Download
+wsl.pt = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
+
+# Plot species records
+library(maptools)
+data(wrld_simpl)
+plot(wrld_simpl)
+points(wsl.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 ```
 
-Let's download worldwide the observations of Panthera tigris:
+Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore *CoordinateCleaner* functions should here be considered thereafter.
+
+We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also beextracted (not used in *wsl_gbif()*):
 
 ``` r
-obs.pt = wsl_gbif("Panthera tigris")
-```
-
-Or simply get all its scientific names (accepted and synonyms) from the GBIF backbone taxonomy:
-
-``` r
-wsl_taXnames("Panthera tigris",all=FALSE)
+wsl_taxonomy("Panthera tigris",all=FALSE)
 ```
 
 Same may be done with Delphinus delphis (a species with > 100'00 observations)
 
 ``` r
-obs.dd = wsl_gbif("Delphinus delphis")
+wsl_gbif("Delphinus delphis")
 wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
-
-
-# Acknowledgements
-
-...
 
 # References
 
