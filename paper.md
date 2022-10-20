@@ -102,7 +102,7 @@ studies using GBIF observations:
   several species) and filter the observations according to a specific given grid resolution (one observation
   per pixel grid kept). This function allows the user to refine the density of GBIF observations according to
   a defined analysis/study's resolution.
-  - *wsl_tiles*: May be used to generate a set of *SpatialExtent* geometry arguments POLYGON() based on a given
+  - *wsl_tiles*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
   geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
   *geometry* that uses a POLYGON() argument.
   - *wsl_doi*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
