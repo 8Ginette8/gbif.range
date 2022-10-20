@@ -104,9 +104,9 @@
 #' 
 #' # Downloading in the Alps the observations of Cypripedium calceolus (with a 100m grain and
 #' # by adding the 'issues' column)
-#' test3 = wsl_gbif("Cypripedium calceolus", geo = shp.lonlat, grain = 100, add_infos = c("issue"))
+#' test2 = wsl_gbif("Cypripedium calceolus", geo = shp.lonlat, grain = 100, add_infos = c("issue"))
 #' plot(shp.lonlat)
-#' points(test1[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
+#' points(test2[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
 #' 
 #' # Downloading worlwide the observations of Ailuropoda melanoleuca (with a 100km grain, after 1990
 #' # and by keeping duplicates and by adding the name of the person who collected the panda records)

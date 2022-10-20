@@ -10,9 +10,11 @@
 #' per pixel grid kept). This function allows the user to refine the density of
 #' GBIF observations according to a defined analysis/study's resolution.
 #'
-#' @param wsl.gbif one wsl.gbif output including one or several species
+#' @param wsl_gbif one wsl_gbif() output including one or several species. Note
+#' that if GBIF absences are kept in the output(s), the function should be used
+#' distinctively for observations and absences.
 #' @param grid Object of class 'SpatRaster', 'RasterLayer', 'RasterBrick' or
-#' 'RasterStack' of desired resolution and extent.
+#' 'RasterStack' of desired resolution and extent (WGS84)
 #' @return a data frame with two columns named 'x' and 'y' comprising
 #' the new set of observations filtered at grid resolution.
 #' @examples
@@ -21,54 +23,53 @@
 #' data(geo_dat)
 #' data(exrst)
 #' 
-#' # Downloading in the European Alps the observations of Arctostaphylos alpinus
+#' # Downloading in the European Alps the observations of two plant species
 #' obs.arcto = wsl_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
-#' plot(shp.lonlat)
+#' obs.saxi = wsl_gbif("Saxifraga cernua",geo=shp.lonlat)
+#' plot(vect(shp.lonlat))
 #' points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
+#' points(obs.saxi[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99000d50",cex=1)
+#' 
+#' # rbind both datasets
+#' both.sp = rbind(obs.arcto,obs.saxi)
+#' 
+#' # Run function
+#' obs.filt = wsl_obs_filter(both.sp,rst)
+#' 
+#' # Check new points
+#' x11();plot(vect(shp.lonlat))
+#' points(obs.filt[obs.filt$Species%in%"Arctostaphylos alpinus",c("x","y")],pch=20,col="#238b4550",cex=1)
+#' points(obs.filt[obs.filt$Species%in%"Saxifraga cernua",c("x","y")],pch=20,col="#99000d50",cex=1)
 #' 
 #' @export
-wsl_obs_filter=function(wsl.gbif,grid)
+wsl_obs_filter=function(wsl_gbif,grid)
 {
     # Check 'ras' input
     if(!(class(grid)%in%c("SpatRaster"))) {
-      ras = rast(grid)
+      grid = rast(grid)
     }
 
-    # Check 'wsl.gbif' output
-    wsl.gbif$input.search
+    # Check number of species in 'wsl_gbif' output
+    n.sp = unique(wsl_gbif$input.search)
 
-    # Apply simple filtering
-    if (!is.null(a.xy)) {
-      
-      # Check 'a.xy' input
+    # Loop over species
+    out.sp =
+    lapply(n.sp,function(x)
+    {
+      # Extract coordinates of the species
+      coords = wsl_gbif[wsl_gbif$input.search%in%x,c("decimalLongitude","decimalLatitude")]
 
-      if(ncol(a.xy)!=2 || !all(colnames(a.xy)%in%c("x","y"))){
-        stop("Supplied points should be a data.frame/matrix with two columns named x and y!")
-      }
+      # Extract related cells
+      posP = cellFromXY(grid,as.matrix(coords))
 
-      # Position presences and absences
-      posP=cellFromXY(grid,o.xy)
-      posA=cellFromXY(grid,a.xy)
+      # Extract one observation per grid cell
+      new.oxy = data.frame(Species=x, xyFromCell(grid,unique(posP)))
 
-      # Remove absences where we find presences
-      posA=posA[!(posA %in% posP)]
+      # Return
+      return(new.oxy)
+    })
 
-      # Extract new presences/absences and regroup
-      new.pxy=coordinates(grid)[unique(posP),]
-      new.axy=coordinates(grid)[unique(posA),]
-      new.oxy=list(new.pxy,new.axy)
-      names(new.oxy)=c("Presences","Absences")
-
-    } else {
-      # Apply simple filtering
-      posCELL=cellFromXY(grid,o.xy)
-      new.oxy=coordinates(grid)[unique(posCELL),]
-    }
-
-    if (class(new.oxy)[1]%in%"numeric"){
-      new.oxy=matrix(new.oxy,ncol=2)
-      colnames(new.oxy)=c("x","y")
-    }
-
-    return(new.oxy)
+    # Compile and return
+    final.out = do.call("rbind",out.sp)
+    return(final.out)
 }

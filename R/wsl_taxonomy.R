@@ -5,7 +5,7 @@
 #'
 #' Generates, based on a given species name, a list of all its scientific names
 #' (accepted, synonyms) found in the GBIF backbone taxonomy to download the data.
-#' Children and related doubtful names not used to download the data may also be extracted.
+#' Children and related doubtful names not use to download the data may also be extracted.
 #'
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
 #' @param conf_match Numeric. From 0 to 100. Determine the confidence
@@ -15,10 +15,6 @@
 #' 
 #' @return A data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status
 #' @references 
-#' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
-#' N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
-#' European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
-#' 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735
 #' @seealso The rgbif package for additional and more general approaches on how to retrieve

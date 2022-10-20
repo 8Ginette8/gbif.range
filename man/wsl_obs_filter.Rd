@@ -4,23 +4,27 @@
 \alias{wsl_obs_filter}
 \title{Filter a set of GBIF observations according to a defined grain}
 \usage{
-wsl_obs_filter(wsl.gbif, grid)
+wsl_obs_filter(wsl_gbif, grid)
 }
 \arguments{
-\item{wsl.gbif}{one wsl.gbif output including one or several species}
+\item{wsl_gbif}{one wsl_gbif() output including one or several species. Note
+that if GBIF absences are kept in the output(s), the function should be used
+distinctively for observations and absences.}
 
 \item{grid}{Object of class 'SpatRaster', 'RasterLayer', 'RasterBrick' or
-'RasterStack' of desired resolution and extent.}
+'RasterStack' of desired resolution and extent (WGS84)}
 }
 \value{
 a data frame with two columns named 'x' and 'y' comprising
 the new set of observations filtered at grid resolution.
 }
 \description{
-Filter a set of GBIF observations through a chosen raster grid that defines
-the resolution of the spatial analysis. Depending on the desired resolution
-of the analysis, one might want to keep only one GBIF observation per grid
-cell to avoid e.g., modelling and sampling bias issues.
+Whereas the 'grain' parameter in wsl_gbif() allows GBIF observations to be
+filtered according to a certain spatial precision, wsl_obs_filter() accepts
+as input a wsl_gbif() output (one or several species) and filter the
+observations according to a specific given grid resolution (one observation
+per pixel grid kept). This function allows the user to refine the density of
+GBIF observations according to a defined analysis/study's resolution.
 }
 \examples{
 
@@ -28,9 +32,22 @@ cell to avoid e.g., modelling and sampling bias issues.
 data(geo_dat)
 data(exrst)
 
-# Downloading in the European Alps the observations of Arctostaphylos alpinus
+# Downloading in the European Alps the observations of two plant species
 obs.arcto = wsl_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
-plot(shp.lonlat)
+obs.saxi = wsl_gbif("Saxifraga cernua",geo=shp.lonlat)
+plot(vect(shp.lonlat))
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
+points(obs.saxi[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99000d50",cex=1)
+
+# rbind both datasets
+both.sp = rbind(obs.arcto,obs.saxi)
+
+# Run function
+obs.filt = wsl_obs_filter(both.sp,rst)
+
+# Check new points
+x11();plot(vect(shp.lonlat))
+points(obs.filt[obs.filt$Species\%in\%"Arctostaphylos alpinus",c("x","y")],pch=20,col="#238b4550",cex=1)
+points(obs.filt[obs.filt$Species\%in\%"Saxifraga cernua",c("x","y")],pch=20,col="#99000d50",cex=1)
 
 }

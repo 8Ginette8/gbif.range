@@ -30,8 +30,6 @@
 #' 
 #' # How to create new SpatExtent fragments
 #' lapply(mt[[2]],function(x) ext(x))
-#' 
-#' @author Yohann Chauvier
 #' @export
 #' 
 make_tiles = function(geo, Ntiles, sext = TRUE){

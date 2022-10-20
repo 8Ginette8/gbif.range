@@ -5,30 +5,29 @@
 \title{Get a custom DOI for a GBIF filtered dataset}
 \usage{
 wsl_doi(
-  wsl_gbif = list(),
+  wsl_gbif = NULL,
   title = NULL,
   description = NULL,
   source_url = "https://example.com/",
-  usr = "",
+  user = "",
   pwd = "",
   ...
 )
 }
 \arguments{
-\item{wsl_gbif}{List. List of one or several wsl_gbif outputs.}
+\item{wsl_gbif}{data.frame or list. One wsl_gbif() output or a list of several.}
 
 \item{title}{The title for your derived dataset.}
 
 \item{source_url}{A link to where the dataset is stored.}
 
+\item{user}{Your GBIF username.}
+
 \item{pwd}{Your GBIF password.}
 
-\item{...}{Additonnal parameters for derived_dataset() in rgbif.
-R package.}
+\item{...}{Additonnal parameters for derived_dataset() in rgbif.}
 
 \item{descritpion}{A description of the dataset.}
-
-\item{user}{Your GBIF username.}
 }
 \value{
 One citable DOI and its information.
@@ -43,20 +42,16 @@ see derived_dataset() function from the rgbif R package
 \examples{
 
 # Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
-test1 = wsl_gbif("Panthera tigris")
-test32 = wsl_gbif("Ailuropoda melanoleuca")
+obs.pt = wsl_gbif("Panthera tigris")
+obs.am = wsl_gbif("Ailuropoda melanoleuca")
 
-# Just an example on how to retrieve the DOI for only one dataset
+# Just an example on how to retrieve the DOI for only one wsl_gbif() output
+wsl_doi(obs.pt,title="GBIF_test1",description="A small example 1",
+    source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 
-
-# Just an example on how to retrieve the DOI for only one dataset
-
-
-d.target = table(test1$datasetKey)
-d.summary = data.frame(datasetKey = names(d.target),count = as.numeric(d.target))
-rgbif::derived_dataset(d.summary,"GBIF_test",
-    "Filetred and cleaned based on CoordinateCleaner",source_url="https://example.com/",
-    user="your_gbif_user",pwd="your_gbif_password")
+# Just an example on how to retrieve the DOI for several wsl_gbif() outputs
+wsl_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
+    source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 
 }
 \references{
