@@ -2,9 +2,9 @@
 
 The *wsl.gbif* R library aims at easing the workflow of retrieving GBIF observations at large spatial scale for all species accepted names and synonyms, and filtering them according to the specific scale of a spatial analysis.
 
-On the one hand, *wsl_gbif()* allows the whole observations of a given species name (accepted and synonym names) to be automatically retrieved, and improves the data accessibility of the *rgbif* R package (https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit of *rgbif* is a maximum of 100,000 of species observations in one go if the interactive functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with *occ_download()*, https://www.gbif.org/developer/occurrence). This impends the fast accessibility to the GBIF database when large observational datasets for many species and regions of the world are needed, specifically in scientifc fields related to macrocology, modelling or satelite imagery. *wsl_gbif()* therefore bypasses this limit by intuitively using geographic parameters from the *rgbif* *occ_data()* function and *terra* R packages and adopting a dynamic moving window process allowing the user's study area of interest to be automatically fragmented in several tiles that always include < 100,000 observations.
+On the one hand, *wsl_gbif()* allows the whole observations of a given species name (accepted and synonym names) to be automatically retrieved, and improves the data accessibility of the *rgbif* R package (https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit of *rgbif* is a maximum of 100,000 of species observations in one go if the interactive functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with *occ_download()*, https://www.gbif.org/developer/occurrence). This impends the fast accessibility to the GBIF database when large observational datasets for many species and regions of the world are needed, specifically in scientifc fields related to macrocology, modelling or satelite imagery. *wsl_gbif()* therefore bypasses this limit by intuitively using geographic parameters from the *rgbif* *occ_data()* function and the *terra* R package and adopting a dynamic moving window process allowing the user's study area of interest to be automatically fragmented in several tiles that always include < 100,000 observations.
 
-On the other hand, *wsl_gbif()* implements easy to use preliminary filtering options implemented during the download so that the user saves some post-processing time in data cleaning. The filetring otpions (n = 11) may be chosen independently, and two of them are based on the *CoordinateCleaner* R package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to note that, although a strong records filetring may be undertaken with *wsl_gbif()*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *wsl.gbif* outputs.
+On the other hand, *wsl_gbif()* implements easy to use preliminary filtering options implemented during the download so that the user saves some post-processing time in data cleaning. 13 filters are available. Two already are set by default in *wsl_gbif()* (*hasCoordinate = TRUE*, *hasGeospatialIssue=FALSE*) and 11 can be chosen independently, including two that are based on the *CoordinateCleaner* R package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to note that, although a strong records filetring may be undertaken with *wsl_gbif()*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *wsl.gbif* outputs.
 
 Finally, the *wsl.gbif* small library offers additional functions that post-process one or several *wsl_gbif()* outputs (e.g. taxonomy, doi, density filtering according to the study's resolution; see details in paper.md)
 
@@ -22,13 +22,13 @@ Let's download worldwide the records of Panthera tigris only based on true obser
 
 ``` r
 # Download
-wsl.pt = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
+obs.pt = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
 
 # Plot species records
 library(maptools)
 data(wrld_simpl)
 plot(wrld_simpl)
-points(wsl.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
+points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 ```
 
 Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore *CoordinateCleaner* functions should here be considered thereafter.
@@ -42,8 +42,8 @@ wsl_taxonomy("Panthera tigris",all=FALSE)
 Same may be done with Delphinus delphis (a species with > 100'00 observations)
 
 ``` r
-wsl_gbif("Delphinus delphis")
-wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+obs.dd = wsl_gbif("Delphinus delphis")
+wsl_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
 
