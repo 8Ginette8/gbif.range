@@ -22,13 +22,13 @@ Let's download worldwide the records of Panthera tigris only based on true obser
 
 ``` r
 # Download
-wsl.pt = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
+obs.pt = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
 
 # Plot species records
 library(maptools)
 data(wrld_simpl)
 plot(wrld_simpl)
-points(wsl.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
+points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 ```
 
 Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore *CoordinateCleaner* functions should here be considered thereafter.
@@ -42,8 +42,8 @@ wsl_taxonomy("Panthera tigris",all=FALSE)
 Same may be done with Delphinus delphis (a species with > 100'00 observations)
 
 ``` r
-wsl_gbif("Delphinus delphis")
-wsl_taXnames("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+obs.dd = wsl_gbif("Delphinus delphis")
+wsl_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
 
