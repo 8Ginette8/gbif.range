@@ -83,12 +83,13 @@ are needed, specifically in scientifc fields related to macrocology, modelling o
 the user's study area of interest to be automatically fragmented in several tiles that always
 include < 100,000 observations.
 
-On the other hand, *wsl.gbif* implements easy to use preliminary filtering options implemented during
-the download so that the user saves some post-processing time in data cleaning. The filetring
-otpions (n = 11) may be chosen independently, and two of them are based on the *CoordinateCleaner* R
-package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to
-note that, although a strong records filetring may be undertaken with wsl.gbif, *CoordinateCleaner*
-includes a larger variety of options that should be checked and applied on *wsl.gbif* outputs.
+On the other hand, *wsl_gbif()* implements easy to use preliminary filtering options implemented during
+the download so that the user saves some post-processing time in data cleaning. 13 filters are available,
+including 11 options that can be chosen independently, two already set by default in *wsl_gbif()*
+(*hasCoordinate = TRUE*; *hasGeospatialIssue=FALSE*) and two that are based on the *CoordinateCleaner* R
+package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to note
+that, although a strong records filetring may be undertaken with *wsl_gbif()*, *CoordinateCleaner*
+includes a larger variety of options that should be checked and applied on *wsl.gbif* outputs..
 
 Finally, *wsl.gbif* offers a set of additional very useful functions meant to be used for large-scale
 studies using GBIF observations:
