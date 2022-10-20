@@ -3,8 +3,9 @@
 ### ==================================================================
 #' Retrieve from GBIF all scientific names of a specific Taxa
 #'
-#' Allows to extract from the gbif backbone taxonomy all names from an input species name
-#' (accepted, synonyms, children, related...).
+#' Generates, based on a given species name, a list of all its scientific names
+#' (accepted, synonyms) found in the GBIF backbone taxonomy to download the data.
+#' Children and related doubtful names not used to download the data may also be extracted.
 #'
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
 #' @param conf_match Numeric. From 0 to 100. Determine the confidence

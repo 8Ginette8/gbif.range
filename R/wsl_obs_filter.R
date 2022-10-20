@@ -3,10 +3,12 @@
 ### =========================================================================
 #' Filter a set of GBIF observations according to a defined grain
 #'
-#' Filter a set of GBIF observations through a chosen raster grid that defines
-#' the resolution of the spatial analysis. Depending on the desired resolution
-#' of the analysis, one might want to keep only one GBIF observation per grid
-#' cell to avoid e.g., modelling and sampling bias issues.
+#' Whereas the 'grain' parameter in wsl_gbif() allows GBIF observations to be
+#' filtered according to a certain spatial precision, wsl_obs_filter() accepts
+#' as input a wsl_gbif() output (one or several species) and filter the
+#' observations according to a specific given grid resolution (one observation
+#' per pixel grid kept). This function allows the user to refine the density of
+#' GBIF observations according to a defined analysis/study's resolution.
 #'
 #' @param wsl.gbif one wsl.gbif output including one or several species
 #' @param grid Object of class 'SpatRaster', 'RasterLayer', 'RasterBrick' or
