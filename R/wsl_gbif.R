@@ -212,7 +212,7 @@ wsl_gbif = function(sp_name = NULL,
 	}
 
 	# Check number of records in 'geo' first
-	gbif.records = occ_search(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
+	gbif.records = occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
 			hasGeospatialIssue=FALSE,geometry=geo.ref)[1]$meta$count
 
 	cat(">>>>>>>> Total number of records:",gbif.records,"\n")
@@ -242,7 +242,7 @@ wsl_gbif = function(sp_name = NULL,
 		# Check number of records for each tiles
 		gbif.tiles =
 		sapply(geo.tiles, function(x) {
-			gt.out = occ_search(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
+			gt.out = occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
 				hasGeospatialIssue=FALSE,geometry=x)[1]$meta$count
 			return(gt.out)
 		})
@@ -276,7 +276,7 @@ wsl_gbif = function(sp_name = NULL,
 					# And count records again
 					gbif.micro =
 						sapply(micro.tiles, function(z) {
-							gt.out = occ_search(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
+							gt.out = occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
 							hasGeospatialIssue=FALSE,geometry=z)[1]$meta$count
 						return(gt.out)
 					})
@@ -318,8 +318,8 @@ wsl_gbif = function(sp_name = NULL,
 		## Try the download first: may be request overload problems
 		go.tile = geo.ref[x]
 		gbif.search = try(
-			occ_search(taxonKey=sp.key,limit=99000,hasCoordinate=!no_xy,
-				hasGeospatialIssue=FALSE,geometry=go.tile,fields=gbif.info),
+			occ_data(taxonKey=sp.key,limit=99000,hasCoordinate=!no_xy,
+				hasGeospatialIssue=FALSE,geometry=go.tile),
 		silent=TRUE)
 
 		# If problems, just try to rerun with while with n attempts, otherwise return NULL
@@ -335,8 +335,8 @@ wsl_gbif = function(sp_name = NULL,
 					cat("Attempt",j+1,"...","\n")
 					j=j+1
 					gbif.search = try(
-						occ_search(taxonKey=sp.key,limit=99000,hasCoordinate=!no_xy,
-						hasGeospatialIssue=FALSE,geometry=go.tile,fields=gbif.info),
+						occ_data(taxonKey=sp.key,limit=99000,hasCoordinate=!no_xy,
+						hasGeospatialIssue=FALSE,geometry=go.tile),
 					silent=TRUE)
 					Sys.sleep(2)
 				}
@@ -371,6 +371,9 @@ wsl_gbif = function(sp_name = NULL,
 
 	# Combine all results in one data.frame
 	gbif.compile = do.call("rbind",batch.search)
+
+	# Keep specific fields
+	gbif.compile = gbif.compile[,gbif.info]
 
 
 	#############################################################

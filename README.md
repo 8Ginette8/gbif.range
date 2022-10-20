@@ -36,10 +36,12 @@ plot(wrld_simpl)
 points(wsl.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 ```
 
-To simply get all the tiger scientific names (accepted and synonyms) from the GBIF backbone taxonomy:
+We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the GBIF backbone
+taxonomy to extract our observations. If all = TRUE, additonal children and related doubtful names may also be
+extracted (not used in wsl_gbif):
 
 ``` r
-wsl_taXnames("Panthera tigris",all=FALSE)
+wsl_taxonomy("Panthera tigris",all=FALSE)
 ```
 
 Same may be done with Delphinus delphis (a species with > 100'00 observations)

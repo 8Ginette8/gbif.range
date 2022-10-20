@@ -23,11 +23,11 @@
 #' @seealso The rgbif package for additional and more general approaches on how to retrieve
 #' scientific names from the GBIF backbone taxonomy.
 #' @examples
-#' wsl_taXnames("Cypripedium calceolus",all=FALSE)
-#' wsl_taXnames("Cypripedium calceolus",all=TRUE)
+#' wsl_taxonomy("Cypripedium calceolus",all=FALSE)
+#' wsl_taxonomy("Cypripedium calceolus",all=TRUE)
 #' 
 #' @export
-wsl_taXnames=function(sp_name = NULL, conf_match = 90, all = FALSE)
+wsl_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
     gbif.backbone = name_backbone(sp_name)

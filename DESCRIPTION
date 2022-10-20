@@ -14,7 +14,7 @@ Authors: Yohann Chauvier [cre,aut] (https://orcid.org/0000-0001-9399-3192)
 Collate:
     'make_tiles.R'
     'wsl_gbif.R'
-    'wsl_taXnames.R'
+    'wsl_taxonomy.R'
     'wsl_doi.R'
     'wsl_obs_filter.R'
 
