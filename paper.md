@@ -73,8 +73,8 @@ project (Chauvier & al. 2021, 2022; ...)
 On the one hand, *wsl_gbif()* allows the whole observations of a given species name (accepted and
 synonym names) to be automatically retrieved, and improves the data accessibility of the rgbif R
 package (https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit
-of *rgbif* is a maximum of 100,000 of species observations in one go if the interactive functions
-*occ_search()* and *occ_data()* are used (i.e., if no official download request is made with
+of *rgbif* is a maximum of 100,000 of species observations in one go if the easy-to-use interactive
+functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with
 *occ_download()*, https://www.gbif.org/developer/occurrence). This impends the fast accessibility
 to the GBIF database when large observational datasets for many species and regions of the world
 are needed, specifically in scientifc fields related to macrocology, modelling or satelite imagery.
