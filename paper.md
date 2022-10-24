@@ -36,25 +36,7 @@ bibliography: paper.bib
 
 # Summary
 
-The Global Biodiversity Information facility (GBIF) is a large public data repository
-inventorying georeferenced species observations from all taxonomic groups, with an
-increasing number of public, associative and private contributors that updates this
-database everyday by uploading their own datasets. The GBIF repository is freely
-accessible (https://www.gbif.org/), includes > two billions observations (data from
-2022) and is frequently used by a vast community of ecologists, modellers, researchers
-and practitioners to adress ecological, geological and environmental questions
-whose answers are becoming increasingly crucial in our current global change contetx.
-Since rencently, retrieving GBIF species information may easily be done
-via new packages and libraries, e.g. *rgbif* on R (Chamberlain & al. 2022) or
-*pygbif* on python (Blumentrath & Kudrnovsky 2016). However, the given accessibility
-of these libraries are impended by their technicalities, various functions and
-parameters, and limitations in the number of species observations a user may download
-at once when no official data request is made (< 100,000 records). Here we present
-*wsl.gbif*, a small library which simplifies the extraction and compilation of large GBIF
-datasets by providing a user-friendly main search function *wsl_gbif()* that automatically
-retrieve species records linked to several scientific names, bypasses the download hard
-limit of 100,000 observations of the *occ_data()* in *rgbif*, and filter observations
-quality via several simple parameters.
+The Global Biodiversity Information facility (GBIF) is a large public data repository inventorying georeferenced species observations from all taxonomic groups, with an increasing number of public, associative and private contributors that updates this database everyday by uploading their own datasets. The GBIF repository is freely accessible (https://www.gbif.org/), includes > two billions observations (data from 2022) and is frequently used by a vast community of ecologists, modellers, researchers and practitioners to address ecological, geological and environmental questions whose answers are becoming increasingly crucial in our current global change context. Since recently, retrieving GBIF species information may easily be done via new packages and libraries, e.g. *rgbif* on R or *pygbif* on python. However, the given accessibility of these libraries are impended by their technicalities, various functions and parameters, and limitations in the number of species observations a user may download at once when no official data request is made (< 100,000 records). Here we present *wsl.gbif*, a small library which simplifies the extraction and compilation of large GBIF datasets by providing a user-friendly main search function wsl_gbif() that automatically retrieve species records linked to several scientific names, bypasses the download hard limit of 100,000 observations of occ_data() in *rgbif*, and filter observations quality via several simple parameters. The package source and instructions may be found here: https://github.com/8Ginette8/wsl.gbif
 
 # Statement of need
 
