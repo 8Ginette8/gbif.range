@@ -4,17 +4,16 @@
 #' Create a specific number of tiles based on a raster extent
 #'
 #' Based on a specific extent, one or several tiles are generated. Tiles can be smaller
-#' numerical extents or geometry arguments POLYGON(). The original extent is therefore either
+#' raster extents or geometry arguments POLYGON(). The original extent is therefore either
 #' converted into a POLYGON() argument, or divided into Ntiles of regular fragments which are
-#' converted into POLYGON() arguments and smaller numerical extents.
+#' converted into POLYGON() arguments and smaller SpatExtent.
 #'
 #' @param geo Object of class 'Extent', 'SpatExtent', 'SpatialPolygon', 'SpatialPolygonDataframe',
 #' or 'SpaVector' (WGS84 or planar) to define the study's area extent. Default is NULL i.e. the
 #' whole globe.
 #' @param Ntiles Numeric. In how many tiles/fragments should geo be divided approximately?
-#' @param sext Logical. Should a list of numerical extents 'c(xmin,xmax,ymin,ymax)' also be returned
-#' for each generated POLYGON()?
-#' @return A list of geometry arguments POLYGON() of length Ntiles (and of numerical extents
+#' @param sext Logical. Should a list of SpatExtent also be returned for each generated POLYGON()?
+#' @return A list of geometry arguments POLYGON() of length Ntiles (and of SpatExtent
 #' if sext=TRUE)
 #' @references 
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
@@ -86,7 +85,7 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 	geo.tiles = unlist(part.tile2,recursive=FALSE)
 
 	# Unlist tile meta
-	geo.meta = unlist(lapply(all.tiles,function(x) x[[2]]),recursive=FALSE)
+	geo.meta = unlist(lapply(all.tiles,function(x) ext(x[[2]])),recursive=FALSE)
 
 	# Return
 	if (sext) {

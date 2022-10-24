@@ -237,7 +237,7 @@ wsl_gbif = function(sp_name = NULL,
 		# Start with 100 tiles
 		tile.100 = make_tiles(geo,Ntiles=100,sext=TRUE)
 		geo.tiles = tile.100[[1]]
-		geo.meta = tile.100[[2]]
+		geo.meta = lapply(tile.100[[2]],function(x) x[])
 
 		# Check number of records for each tiles
 		gbif.tiles =
@@ -271,7 +271,7 @@ wsl_gbif = function(sp_name = NULL,
 					new.ext = ext(new.geo[[y]])
 					micro.100 = make_tiles(new.ext,Ntiles=100,sext=TRUE)
 					micro.tiles = micro.100[[1]]
-					micro.meta = micro.100[[2]]
+					micro.meta = lapply(micro.100[[2]],function(x) x[])
 
 					# And count records again
 					gbif.micro =
