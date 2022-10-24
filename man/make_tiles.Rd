@@ -13,18 +13,17 @@ whole globe.}
 
 \item{Ntiles}{Numeric. In how many tiles/fragments should geo be divided approximately?}
 
-\item{sext}{Logical. Should a list of numerical extents 'c(xmin,xmax,ymin,ymax)' also be returned
-for each generated POLYGON()?}
+\item{sext}{Logical. Should a list of SpatExtent also be returned for each generated POLYGON()?}
 }
 \value{
-A list of geometry arguments POLYGON() of length Ntiles (and of numerical extents
+A list of geometry arguments POLYGON() of length Ntiles (and of SpatExtent
 if sext=TRUE)
 }
 \description{
 Based on a specific extent, one or several tiles are generated. Tiles can be smaller
-numerical extents or geometry arguments POLYGON(). The original extent is therefore either
+raster extents or geometry arguments POLYGON(). The original extent is therefore either
 converted into a POLYGON() argument, or divided into Ntiles of regular fragments which are
-converted into POLYGON() arguments and smaller numerical extents.
+converted into POLYGON() arguments and smaller SpatExtent.
 }
 \examples{
 
@@ -33,9 +32,6 @@ data(geo_dat)
 
 # Apply the function to divide the extent in ~20 fragments
 mt = make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE); mt
-
-# How to create new SpatExtent fragments
-lapply(mt[[2]],function(x) ext(x))
 }
 \references{
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,

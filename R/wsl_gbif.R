@@ -18,9 +18,6 @@
 #' basis of records selection, removal of invalid/uncertain xy coordinates (WGS84), time
 #' period selection and removal of raster centroids. By default, the argument
 #' hasGeospatialIssue in occ_search() (implemented rgbif function) is set to FALSE.
-#' To get the custom DOI of the downloaded GBIF data, the derived_dataset() function
-#' from the rgbif package must be used with the column 'datasetKey' of one or several
-#' outputs.
 #' 
 #' @param sp_name Character. Scientific name to run an online search
 #' (i.e. with GBIF-API) for species observations. Works also for genus and higher taxa
@@ -247,7 +244,7 @@ wsl_gbif = function(sp_name = NULL,
 			return(gt.out)
 		})
 
-		# We make sur that each tile will be fragmented enough
+		# We make sure that each tile will be fragmented enough
 		# (i.e., < 100'000 species records each)
 		keep.tiles =
 		lapply(1:length(gbif.tiles),function(x){

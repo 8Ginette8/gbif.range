@@ -103,9 +103,6 @@ involve several choices: study's extent, removal of duplicates, removal of absen
 basis of records selection, removal of invalid/uncertain xy coordinates (WGS84), time
 period selection and removal of raster centroids. By default, the argument
 hasGeospatialIssue in occ_search() (implemented rgbif function) is set to FALSE.
-To get the custom DOI of the downloaded GBIF data, the derived_dataset() function
-from the rgbif package must be used with the column 'datasetKey' of one or several
-outputs.
 }
 \details{
 Argument `grain` used for two distinct gbif records filtering. (1) Records filtering

@@ -26,9 +26,6 @@
 #' 
 #' # Apply the function to divide the extent in ~20 fragments
 #' mt = make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE); mt
-#' 
-#' # How to create new SpatExtent fragments
-#' lapply(mt[[2]],function(x) ext(x))
 #' @export
 #' 
 make_tiles = function(geo, Ntiles, sext = TRUE){
@@ -85,7 +82,8 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 	geo.tiles = unlist(part.tile2,recursive=FALSE)
 
 	# Unlist tile meta
-	geo.meta = unlist(lapply(all.tiles,function(x) ext(x[[2]])),recursive=FALSE)
+	geo.meta = unlist(lapply(all.tiles,function(x) x[[2]]),recursive=FALSE)
+	geo.meta = lapply(geo.meta,function(x) ext(x))
 
 	# Return
 	if (sext) {
