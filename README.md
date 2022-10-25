@@ -46,6 +46,9 @@ obs.dd = wsl_gbif("Delphinus delphis")
 wsl_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
+## Citation
+
+Yohann Chauvier; Patrice Descombes; Michael P. Nobis; Katalin Csillery (2022). wsl.gbif - A R package to extract and compile GBIF datasets for large-scale analyses.  EnviDat.  doi: 10.16904/envidat.352.
 
 ## References
 
