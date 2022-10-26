@@ -1,6 +1,19 @@
 # gbif.range
 
-The *gbif.range* R library aims at easing the workflow of retrieving GBIF observations at large spatial scale for all species accepted names and synonyms, and filtering them according to the specific scale of a spatial analysis.
+The *gbif.range* R library contains automated methods to generate species range maps from scratch using ecoregions shapefiles and an easy-to-use GBIF wrapper. This library also offers a set of additional very useful functions meant to be employed on downloaded GBIF observations.
+
+Information on species distributions is easily retrievable online and usually based on expert range maps (e.g. IUCN polygons - https://www.iucnredlist.org/resources/spatial-data-download, EUFORGEN polygons - https://www.euforgen.org/species/). However, this availability remains limited as not all species have information on their expert distribution due to their rareness and the important number of taxa existing in the world. One common remedy is to employ models to infer and predict these distributions based on spatial environmental information and georeferenced records of taxa. Although very precise, such methods are unfortunately often very technical and need advanced statistical knowledge to be applied. This package therefore means to solve this issues when simple estimates of species distribution are needed by users.
+
+This package first eases the workflow of retrieving GBIF observations at large spatial scale for all species accepted names and synonyms (*get_gbif* function). The output of the function is meant to be used in association with *get_range* and filtering them according to the specific scale of a spatial analysis.
+
+Species range maps may be constructed with the *get_range* function. It Estimates species ranges based on occurrence data (GBIF or not) and bioregions shapefile.
+#' It first deletes outliers from the observation dataset and then creates a polygon
+#' (convex hull) with a user specified buffer around all the observations of one bioregion.
+#' If there there is only one observation in a bioregion, a buffer around this point
+#' will be created. If all points in a bioregion are on a line, the function will also
+#' create a buffer around these points, however, the buffer size increases with the number
+#' of points in the line.
+
 
 On the one hand, *get_gbif()* allows the whole observations of a given species name (accepted and synonym names) to be automatically retrieved, and improves the data accessibility of the *rgbif* R package (https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit of *rgbif* is a maximum of 100,000 of species observations in one go if the easy-to-use interactive functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with *occ_download()*, https://www.gbif.org/developer/occurrence). This impends the fast accessibility to the GBIF database when large observational datasets for many species and regions of the world are needed, specifically in scientific fields related to macroecology, modelling or satellite imagery. *wsl_gbif()* therefore bypasses this limit by intuitively using geographic parameters from *occ_data() in *rgbif* function and the *terra* R package and adopting a dynamic moving window process allowing the user's study area of interest to be automatically fragmented in several tiles that always include < 100,000 observations.
 
