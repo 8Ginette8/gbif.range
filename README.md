@@ -13,7 +13,7 @@ Finally, the *gbif.range* library offers additional functions that post-process 
 You can install the development version from GitHub with:
 
 ``` r
-remotes::install_github("8Ginette8/wsl.gbif")
+remotes::install_github("8Ginette8/gbif.range")
 ```
 
 ## Example
@@ -22,7 +22,7 @@ Let's download worldwide the records of Panthera tigris only based on true obser
 
 ``` r
 # Download
-obs.pt = wsl_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
+obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
 
 # Plot species records
 library(maptools)
@@ -36,14 +36,14 @@ Note that an additional filtering needs here to be done as one observation is fo
 We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *wsl_gbif()*):
 
 ``` r
-wsl_taxonomy("Panthera tigris",all=FALSE)
+get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
 Same may be done with Delphinus delphis (a species with > 100'00 observations)
 
 ``` r
-obs.dd = wsl_gbif("Delphinus delphis")
-wsl_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+obs.dd = get_gbif("Delphinus delphis")
+get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
 ## Citation
@@ -53,6 +53,8 @@ Yohann Chauvier; Patrice Descombes; Michael P. Nobis; Katalin Csillery (2022). w
 ## References
 
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the European Alps. Ecological monographs, 91(2), e01433. doi: <a href="https://doi.org/10.1002/ecm.1433">10.1002/ecm.1433</a>
+
+Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... & Pellissier, L. (2022). An integrated high‐resolution mapping shows congruent biodiversity patterns of Fagales and Pinales. New Phytologist, 235(2), doi: <a href="https://doi.org/10.1111/nph.18158">10.1111/nph.18158</a>
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. doi: <a href="https://doi.org/10.5281/zenodo.6023735">10.5281/zenodo.6023735</a>
 
