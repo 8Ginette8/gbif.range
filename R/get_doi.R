@@ -1,13 +1,13 @@
 ### =========================================================================
-### wsl.gbif
+### get_doi
 ### =========================================================================
 #' Get a custom DOI for a GBIF filtered dataset
 #'
 #' A small user friendly wrapper of the derived_dataset() function of the
-#' rgbif R package, compatible with one or several wsl_gbif() outputs.
+#' rgbif R package, compatible with one or several get_gbif() outputs.
 #' 
 #' 
-#' @param wsl_gbif data.frame or list. One wsl_gbif() output or a list of several.
+#' @param get.gbif data.frame or list. One get_gbif() output or a list of several.
 #' @param title The title for your derived dataset.
 #' @param descritpion A description of the dataset.
 #' @param source_url  A link to where the dataset is stored.
@@ -23,19 +23,19 @@
 #' @examples
 #' 
 #' # Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
-#' obs.pt = wsl_gbif("Panthera tigris")
-#' obs.am = wsl_gbif("Ailuropoda melanoleuca")
+#' obs.pt = get_gbif("Panthera tigris")
+#' obs.am = get_gbif("Ailuropoda melanoleuca")
 #' 
-#' # Just an example on how to retrieve the DOI for only one wsl_gbif() output
-#' wsl_doi(obs.pt,title="GBIF_test1",description="A small example 1",
+#' # Just an example on how to retrieve the DOI for only one get_gbif() output
+#' get_doi(obs.pt,title="GBIF_test1",description="A small example 1",
 #'     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 #' 
-#' # Just an example on how to retrieve the DOI for several wsl_gbif() outputs
-#' wsl_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
+#' # Just an example on how to retrieve the DOI for several get_gbif() outputs
+#' get_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
 #'     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 #' 
 #' @export
-wsl_doi = function(wsl_gbif = NULL,
+get_doi = function(get.gbif = NULL,
 				   title = NULL,
 				   description = NULL,
 				   source_url = "https://example.com/", 
@@ -44,10 +44,10 @@ wsl_doi = function(wsl_gbif = NULL,
 				   ...) {
 
 	# If data.frame, transform in list for code homogenisation
-	if (class(wsl_gbif)%in%"data.frame") {wsl_gbif=list(wsl_gbif)}
+	if (class(get.gbif)%in%"data.frame") {get.gbif=list(get.gbif)}
 
 	# Combine everything
-	all.obs = do.call("rbind",wsl_gbif)
+	all.obs = do.call("rbind",get.gbif)
 
 	# Pre-compile a bit
 	d.target = table(all.obs$datasetKey)

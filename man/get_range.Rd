@@ -9,12 +9,14 @@ get_range(
   occ_coord = NULL,
   Bioreg = NULL,
   Bioreg_name = NULL,
-  degrees_outlier = 10,
-  clustered_points_outlier = 3,
-  buffer_width_point = 0.5,
+  degrees_outlier = 3,
+  clustered_points_outlier = 2,
+  buffer_width_point = 4,
   buffer_increment_point_line = 0.5,
-  buffer_width_polygon = 0.1,
-  dir_temp = paste0("temp", sample(1:99999999, 1))
+  buffer_width_polygon = 4,
+  dir_temp = paste0("temp", sample(1:99999999, 1)),
+  raster = TRUE,
+  res = 10
 )
 }
 \arguments{
@@ -43,9 +45,14 @@ than the degrees_outlier, but should still be considered as outliers.}
 
 \item{dir_temp}{where should the temporary text file for the convex hull be saved?
 (text file will be deleted again).}
+
+\item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
+
+\item{res}{Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
+e.g.,  = 0.1° if res = 10. Default is 10.}
 }
 \value{
-a shapefile.
+A shapefile or a SpatRaster
 }
 \description{
 Estimates species ranges based on occurrence data (GBIF or not) and bioregions.
@@ -59,9 +66,29 @@ of points in the line.
 \details{
 ...
 }
+\examples{
+# Load available ecoregions
+data(ecoregions)
+
+# First download the worldwide observations of Panthera tigris and convert to SpatialPoints
+obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
+sp.shp = SpatialPoints(obs.pt[c("decimalLongitude","decimalLatitude")],proj4string=crs(eco.earth))
+
+# Plot
+plot(eco.earth)
+plot(sp.shp,pch=20,col="#238b4550",cex=4,add=TRUE)
+
+# Generate the distributional range map of Panthera tigris for the finest terrestrial ecoregions
+range.tiger = get_range("Panthera tigris",sp.shp,eco.earth,"ECO_NAME")
+
+# Plotting
+plot(eco.earth)
+plot(range.tiger,col="#238b45",add=TRUE)
+
+}
 \references{
 Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... &
-Pellissier, L. (2022). An integrated high‐resolution mapping shows congruent biodiversity
+Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
 patterns of Fagales and Pinales. New Phytologist, 235(2), 759-772 10.1111/nph.18158
 
 Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN

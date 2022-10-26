@@ -1,7 +1,7 @@
-Package: wsl.gbif
+Package: gbif.range
 Type: Package
 Title: A toolbox to efficiently download and filter large GBIF observational datasets for sound spatial analyses
-Version: 0.1.0
+Version: 0.2.0
 Depends: R (>= 4.0.0), raster, terra,  rgbif, CoordinateCleaner, rgeos, mclust, ClusterR, FNN, geometry
 Description: Workflow to generate taxa range maps from scratch based on ecoregions and an user-friendly GBIF wrapper (no hard-limit of < 100,000 species observations, filetring parameters to easily flag records, access to the GBIF backbone taxonomy)
 License: GPL (>=3)
@@ -11,6 +11,15 @@ Maintainer: Yohann Chauvier <yohann.chauvier@wsl.ch>
 LazyData: true
 RoxygenNote: 7.1.2
 Authors: Yohann Chauvier [cre,aut] (https://orcid.org/0000-0001-9399-3192)
+    Patrice Descombes [aut] (https://orcid.org/0000-0002-3760-9907)
+    Oskar Hagen [aut] (https://orcid.org/0000-0002-7931-6571)
+    Camille Albouy [aut] (https://orcid.org/0000-0003-1629-2389)
+    Fabian Fopp [aut] (https://orcid.org/0000-0003-0648-8484)
+    Michael P. Nobis [aut] (https://orcid.org/0000-0003-3285-1590)
+    Philipp Brun [aut] (https://orcid.org/0000-0002-2750-9793)
+    Lisha Lyu [aut] (https://orcid.org/0000-0001-7855-8109)
+    Loïc Pellissier [aut] (https://orcid.org/0000-0002-2289-8259)
+    Katalin Csillery [aut] (https://orcid.org/0000-0003-0039-9296)
 Collate:
     'make_tiles.R'
     'get_gbif.R'

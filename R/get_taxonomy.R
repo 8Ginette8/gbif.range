@@ -1,5 +1,5 @@
 ### ==================================================================
-### wsl.taXnames
+### get_taxonomy
 ### ==================================================================
 #' Retrieve from GBIF all scientific names of a specific Taxa
 #'
@@ -20,11 +20,11 @@
 #' @seealso The rgbif package for additional and more general approaches on how to retrieve
 #' scientific names from the GBIF backbone taxonomy.
 #' @examples
-#' wsl_taxonomy("Cypripedium calceolus",all=FALSE)
-#' wsl_taxonomy("Cypripedium calceolus",all=TRUE)
+#' get_taxonomy("Cypripedium calceolus",all=FALSE)
+#' get_taxonomy("Cypripedium calceolus",all=TRUE)
 #' 
 #' @export
-wsl_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
+get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
     gbif.backbone = name_backbone(sp_name)
