@@ -4,9 +4,24 @@ The *gbif.range* R library aims at easing the workflow of retrieving GBIF observ
 
 On the one hand, *get_gbif()* allows the whole observations of a given species name (accepted and synonym names) to be automatically retrieved, and improves the data accessibility of the *rgbif* R package (https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit of *rgbif* is a maximum of 100,000 of species observations in one go if the easy-to-use interactive functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with *occ_download()*, https://www.gbif.org/developer/occurrence). This impends the fast accessibility to the GBIF database when large observational datasets for many species and regions of the world are needed, specifically in scientific fields related to macroecology, modelling or satellite imagery. *wsl_gbif()* therefore bypasses this limit by intuitively using geographic parameters from *occ_data() in *rgbif* function and the *terra* R package and adopting a dynamic moving window process allowing the user's study area of interest to be automatically fragmented in several tiles that always include < 100,000 observations.
 
-On the other hand, *wsl_gbif()* implements easy to use preliminary filtering options implemented during the download so that the user saves some post-processing time in data cleaning. 13 filters are available. Two already are set by default in *wsl_gbif()* (hasCoordinate = TRUE, hasGeospatialIssue=FALSE) and 11 can be chosen independently, including two that are based on the *CoordinateCleaner* R package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to note that, although a strong records filtering may be undertaken with *wsl_gbif()*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *wsl.gbif* outputs.
+On the other hand, *get_gbif()* implements easy to use preliminary filtering options implemented during the download so that the user saves some post-processing time in data cleaning. 13 filters are available. Two already are set by default in *get_gbif()* (hasCoordinate = TRUE, hasGeospatialIssue=FALSE) and 11 can be chosen independently, including two that are based on the *CoordinateCleaner* R package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to note that, although a strong records filtering may be undertaken with *get_gbif()*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *wsl.gbif* outputs.
 
-Finally, the *gbif.range* library offers additional functions that post-process one or several *wsl_gbif()* outputs (e.g. taxonomy, doi, density filtering according to the study's resolution; see 'paper.md' for more details)
+Finally, *gbif.range* offers a set of additional very useful functions meant to be used for large-scale studies using GBIF observations:
+  - *get_taxonomy*: Generates, based on a given species name, a list of all its scientific names
+  (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
+  doubtful names not used to download the data may also be extracted. The function allows therefore taxonomy
+  correspondency to be made between different species and sub-species to potentially merge their records,
+  but also permits efficient ways of linking external data of a species which is named differently across databases.
+  - *obs_filter*: Whereas the 'grain' parameter in *get_gbif()* allows GBIF observations to be filtered
+  according to a certain spatial precision, *obs_filter()* accepts as input a *get_gbif()* output (one or
+  several species) and filter the observations according to a specific given grid resolution (one observation
+  per pixel grid kept). This function allows the user to refine the density of GBIF observations according to
+  a defined analysis/study's resolution.
+  - *make_tiles*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
+  geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
+  *geometry* that uses a POLYGON() argument.
+  - *get_doi*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
+  for a set of several gbif species datasets.
 
 ## Installation
 
