@@ -48,7 +48,7 @@ get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'al
 
 ## Citation
 
-Yohann Chauvier; Patrice Descombes; Michael P. Nobis; Katalin Csillery (2022). wsl.gbif - A R package to extract and compile GBIF datasets for large-scale analyses.  EnviDat.  doi: <a href="https://doi.org/10.16904/envidat.352">10.16904/envidat.352</a>
+Yohann Chauvier; Patrice Descombes; Oskar Hagen; Camille Albouy; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Loïc Pellissier; Katalin Csilléry (2022). gbif.range - A R package to generate species range maps based on ecoregions and an user-friendly GBIF wrapper. EnviDat. doi: <a href="https://doi.org/10.16904/envidat.352.">10.16904/envidat.352.</a>
 
 ## References
 
