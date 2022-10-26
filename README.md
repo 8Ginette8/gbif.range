@@ -1,4 +1,4 @@
-# wsl.gbif
+# gbif.range
 
 The *wsl.gbif* R library aims at easing the workflow of retrieving GBIF observations at large spatial scale for all species accepted names and synonyms, and filtering them according to the specific scale of a spatial analysis.
 
