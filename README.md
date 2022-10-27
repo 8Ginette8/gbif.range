@@ -57,9 +57,11 @@ obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
 # Plot species records
 library(maptools)
 data(wrld_simpl)
-plot(wrld_simpl)
+plot(wrld_simpl,col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 ```
+
+![image](https://user-images.githubusercontent.com/43674773/198376404-a6059a02-f139-4c76-842c-600918900a47.png)
 
 Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore *CoordinateCleaner* functions should here be considered thereafter.
 
