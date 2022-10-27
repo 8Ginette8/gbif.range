@@ -57,11 +57,13 @@ obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
 # Plot species records
 library(maptools)
 data(wrld_simpl)
-plot(wrld_simpl)
-points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
+plot(wrld_simpl,col="#bcbddc")
+points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4570",cex=3)
 ```
 
-Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore *CoordinateCleaner* functions should here be considered thereafter.
+![image](https://user-images.githubusercontent.com/43674773/198385200-5734efad-db3a-4278-937e-b564f66d7d88.png)
+
+Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue.
 
 We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *wsl_gbif()*):
 
@@ -88,7 +90,16 @@ Which level should you pick depends on your questions and which level of the spe
 range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
 ```
 
-Note that five parameters need to be set in *get_range* and those should be explore before any definite map process...
+Let's plot the result now:
+
+``` r
+plot(wrld_simpl,col="#bcbddc")
+plot(range.tiger,col="#238b45",add=TRUE)
+```
+
+![image](https://user-images.githubusercontent.com/43674773/198384578-f2faa3f6-abee-4391-b700-74b7bef43595.png)
+
+Interestingly no tiger range was found in the US. Our default parameters allowed the US record of Panthera tigris found previously to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process...
 
 ## Citation
 Yohann Chauvier; Patrice Descombes; Oskar Hagen; Camille Albouy; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - A R package to generate species range maps based on ecoregions and an user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352.</a>
