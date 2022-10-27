@@ -13,8 +13,13 @@
 #' 
 #' @param sp_name Character of the species name. E.g. "Anemone nemorosa".
 #' @param occ_coord *get_gbif()* output or a SpatVector/SpatialPoints object.
-#' @param Bioreg shapefile containg different bioregions (convex hulls will be classified
-#' on a bioreg basis).
+#' @param Bioreg A SpatVector or SpatialPolygonsDataFrame containg different bioregions
+#' (convex hulls will be classified on a bioreg basis). Although whatever shapefile may be
+#' set as input, note that three ecoregion shapefiles are already included in the library:
+#' *eco.earh* (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
+#' *eco.marine* (for coastal and reef species; Spalding & al. 2007) and *eco.fresh*
+#' (for freshwater species; Abell & al. 2008). For deep ocean/sea species, *eco.earth* may be
+#' used, but the polygon estimates will only be geographic.
 #' @param Bioreg_name how is the slot containing the bioregion names called?
 #' @param degrees_outlier distance threshold (degrees) for outlier classification. If the
 #' nearest minimal distance to the next point is larger than this threshold, it will be
@@ -88,17 +93,29 @@ get_range <- function (sp_name = NULL,
                        clustered_points_outlier = 2,
                        buffer_width_point = 4, 
                        buffer_increment_point_line = 0.5, 
-                       buffer_width_polygon = 4, 
+                       buffer_width_polygon = 4,
                        dir_temp = paste0("temp",sample(1:99999999,1)),
                        raster = TRUE,
                        res = 10){
-  
+
+  ### =========================================================================
+  ### Convert all possible object in SpatVector
+  ### =========================================================================
+
+  if (class(occ_coord)%in%"SpatialPoints") {
+    occ_coord <- vect(occ_coord)
+  } else if (any(names(occ_coord)%in%"decimalLongitude")) {
+    occ_coord <- vect(occ_coord[,c("decimalLongitude","decimalLatitude")],
+      geom=c("decimalLongitude","decimalLatitude"),crs="+init=epsg:4326")
+  }
+
   ### =========================================================================
   ### remove duplicates
   ### =========================================================================
 
-  occ_coord@coords <- round(occ_coord@coords, 4)
-  occ_coord <- remove.duplicates(occ_coord)
+  occ_coordS <- crds(occ_coord)
+  occ_coordS <- round(occ_coordS, 4)
+  occ_coordS <- occ_coordS[!duplicated(occ_coords),]
   
   ### =========================================================================
   ### Check if sufficient data
@@ -106,7 +123,7 @@ get_range <- function (sp_name = NULL,
   
   # Check if there sufficient species & if not, make an entry in the log-file and
   # end the function
-  if (length(occ_coord)<=clustered_points_outlier+1){
+  if (nrow(occ_coordS)<=clustered_points_outlier+1){
     stop("Too few occurences!")
   } 
     
@@ -117,15 +134,15 @@ get_range <- function (sp_name = NULL,
   ### =========================================================================
   
   #create distance matrix...
-  mat_dist <- as.matrix(knn.dist(occ_coord@coords, k=clustered_points_outlier))
+  mat_dist <- as.matrix(knn.dist(occ_coordS, k=clustered_points_outlier))
   
   #mark outliers
   cond <- apply(mat_dist, 1, function(x) x[clustered_points_outlier])>degrees_outlier
   rm(mat_dist) 
   
-  cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ", round((sum(cond)/length(occ_coord))*100,0), "%\n"))
+  cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coordS), " | proportion from total points: ", round((sum(cond)/length(occ_coord))*100,0), "%\n"))
   
-  occ_coord_mod <- occ_coord[!cond,]
+  occ_coord_mod <- occ_coordS[!cond,]
 
   # Stop if too many outliers in data set
   if(length(occ_coord_mod)==0){
