@@ -1,18 +1,18 @@
 ##################################################
 ## get_range
 ##################################################
-#' Create a species range map based on a get_gbif() output
+#' Create a species range map based on a *get_gbif()* output
 #' 
 #' Estimates species ranges based on occurrence data (GBIF or not) and bioregions.
 #' It first deletes outliers from the observation dataset and then creates a polygon
 #' (convex hull) with a user specified buffer around all the observations of one bioregion.
-#' If there there is only one observation in a bioregion, a buffer around this point
+#' If there is only one observation in a bioregion, a buffer around this point
 #' will be created. If all points in a bioregion are on a line, the function will also
 #' create a buffer around these points, however, the buffer size increases with the number
 #' of points in the line.
 #' 
-#' @param species_name character string of the species name. E.g. "Anemone nemorosa".
-#' @param occ_coord a SpatialPoints object.
+#' @param sp_name Character of the species name. E.g. "Anemone nemorosa".
+#' @param occ_coord *get_gbif()* output or a SpatVector/SpatialPoints object.
 #' @param Bioreg shapefile containg different bioregions (convex hulls will be classified
 #' on a bioreg basis).
 #' @param Bioreg_name how is the slot containing the bioregion names called?
@@ -32,10 +32,31 @@
 #' e.g.,  = 0.1° if res = 10. Default is 10.
 #' @details ...
 #' @return A shapefile or a SpatRaster
-#' @references 
+#' @references
 #' Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... &
 #' Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
 #' patterns of Fagales and Pinales. New Phytologist, 235(2), 759-772 10.1111/nph.18158
+#' 
+#' Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N.,
+#' Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J.,
+#' Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem,
+#' K. R. 2001. Terrestrial ecoregions of the world: a new map of life on Earth.
+#' Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+#' 
+#' Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A. Ferdaña, Max
+#' Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana, Sara A. Lourie, Kirsten D.
+#' Martin, Edmund McManus, Jennifer Molnar, Cheri A. Recchia, James Robertson, Marine
+#' Ecoregions of the World: A Bioregionalization of Coastal and Shelf Areas, BioScience,
+#' Volume 57, Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+#' 
+#' Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice Kottelat, Nina Bogutskaya,
+#' Brian Coad, Nick Mandrak, Salvador Contreras Balderas, William Bussing, Melanie L. J. Stiassny,
+#' Paul Skelton, Gerald R. Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf,
+#' James Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric Wikramanayake,
+#' David Olson, Hugo L. López, Roberto E. Reis, John G. Lundberg, Mark H. Sabaj Pérez,
+#' Paulo Petry, Freshwater Ecoregions of the World: A New Map of Biogeographic Units for
+#' Freshwater Biodiversity Conservation, BioScience, Volume 58, Issue 5, May 2008,
+#' Pages 403–414. doi: 10.1641/B580507
 #' 
 #' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
 #' @seealso ...
@@ -59,7 +80,7 @@
 #' plot(range.tiger,col="#238b45",add=TRUE)
 #' 
 #' @export
-get_range <- function (species_name = NULL, 
+get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
                        Bioreg = NULL, 
                        Bioreg_name = NULL, 
@@ -89,7 +110,7 @@ get_range <- function (species_name = NULL,
     stop("Too few occurences!")
   } 
     
-  cat("## Start of computation for species: ",species_name," ###", "\n") 
+  cat("## Start of computation for species: ",sp_name," ###", "\n") 
   
   ### =========================================================================
   ### Identify outliers
@@ -193,7 +214,7 @@ get_range <- function (species_name = NULL,
   # shp_species=gUnaryUnion(shp_species,checkValidity = 2)
   shp_species@proj4string=occ_coord@proj4string
 
-  cat("## End of computation for species: ",species_name," ###", "\n") 
+  cat("## End of computation for species: ",sp_name," ###", "\n") 
 
   # Convert in raster files or not
   if (raster){
@@ -203,7 +224,7 @@ get_range <- function (species_name = NULL,
     shp_species <- crop(ras,ext(sp.range.u))
   }
   
-  cat("## End of computation for species: ",species_name," ###", "\n") 
+  cat("## End of computation for species: ",sp_name," ###", "\n") 
 
   return(shp_species)
 }
