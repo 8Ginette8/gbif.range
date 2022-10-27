@@ -88,7 +88,14 @@ Which level should you pick depends on your questions and which level of the spe
 range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
 ```
 
-Note that five parameters need to be set in *get_range* and those should be explore before any definite map process...
+Let's plot the result now:
+
+``` r
+plot(eco.earth)
+plot(range.tiger,col="#238b45",add=TRUE)
+```
+
+Interestingly no Tiger range was found in the US. Our default parameters allowed the US record of Panthera tigris found previously to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process...
 
 ## Citation
 Yohann Chauvier; Patrice Descombes; Oskar Hagen; Camille Albouy; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - A R package to generate species range maps based on ecoregions and an user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352.</a>
