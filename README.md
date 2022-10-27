@@ -1,6 +1,6 @@
 # gbif.range
 
-<img align="right" width="300" height="300" src="https://user-images.githubusercontent.com/43674773/198343094-822ff0f1-72de-4b0d-b293-ced27de96190.png">
+<img align="right" width="200" height="200" src="https://user-images.githubusercontent.com/43674773/198343094-822ff0f1-72de-4b0d-b293-ced27de96190.png">
 
 Although species range may be obtained using expert maps (IUCN - https://www.iucnredlist.org/resources/spatial-data-download, EUFORGEN - https://www.euforgen.org/species/) or modeling methods, expert data is often species-limited and statistical models need more technical expertise as well as many species observations. When unavailable, such information may be extracted from the Global Biodiversity Information facility (GBIF), the largest public data repository inventorying georeferenced species observations worldwide.
 
