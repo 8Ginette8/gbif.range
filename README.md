@@ -22,20 +22,20 @@ On the other hand, *get_gbif()* also implements easy-to-use preliminary filterin
 ###  Additonal functions
 
 *gbif.range* also includes a set of additional functions meant to be a nice supplement of the features and data that offer *get_gbif* and *get_range*:
-  - *get_taxonomy*: Generates, based on a given species name, a list of all its scientific names
+  - *get_taxonomy()*: Generates, based on a given species name, a list of all its scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
   doubtful names not used to download the data may also be extracted. The function allows therefore taxonomy
   correspondency to be made between different species and sub-species to potentially merge their records,
   but also permits efficient ways of linking external data of a species which is named differently across databases.
-  - *obs_filter*: Whereas the 'grain' parameter in *get_gbif()* allows GBIF observations to be filtered
+  - *obs_filter()*: Whereas the 'grain' parameter in *get_gbif()* allows GBIF observations to be filtered
   according to a certain spatial precision, *obs_filter()* accepts as input a *get_gbif()* output (one or
   several species) and filter the observations according to a specific given grid resolution (one observation
   per pixel grid kept). This function allows the user to refine the density of GBIF observations according to
   a defined analysis/study's resolution.
-  - *make_tiles*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
+  - *make_tiles()*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
   geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
   *geometry* that uses a POLYGON() argument.
-  - *get_doi*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
+  - *get_doi()*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
   for a set of several gbif species datasets.
 
 ## Installation
