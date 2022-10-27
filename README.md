@@ -71,7 +71,7 @@ We can also retrieve all the tiger scientific names (accepted and synonyms) that
 get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
-Same may be done with Delphinus delphis (a species with > 100'00 observations)
+Same may be done with Delphinus delphis (a species with > 100'000 observations)
 
 ``` r
 obs.dd = get_gbif("Delphinus delphis")
