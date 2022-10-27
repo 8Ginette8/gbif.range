@@ -13,8 +13,8 @@
 #' @param get.gbif one get_gbif() output including one or several species. Note
 #' that if GBIF absences are kept in the output(s), the function should be used
 #' distinctively for observations and absences.
-#' @param grid Object of class 'SpatRaster', 'RasterLayer', 'RasterBrick' or
-#' 'RasterStack' of desired resolution and extent (WGS84)
+#' @param grid Object of class SpatRaster, RasterLayer, RasterBrick or
+#' RasterStack of desired resolution and extent (WGS84)
 #' @return a data frame with two columns named 'x' and 'y' comprising
 #' the new set of observations filtered at grid resolution.
 #' @examples

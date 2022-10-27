@@ -1,7 +1,7 @@
 ##################################################
 ## get_range
 ##################################################
-#' Create a species range map based on a *get_gbif()* output
+#' Create a species range map based on a get_gbif() output
 #' 
 #' Estimates species ranges based on occurrence data (GBIF or not) and bioregions.
 #' It first deletes outliers from the observation dataset and then creates a polygon
@@ -11,16 +11,17 @@
 #' create a buffer around these points, however, the buffer size increases with the number
 #' of points in the line.
 #' 
-#' @param sp_name Character of the species name. E.g. "Anemone nemorosa".
-#' @param occ_coord *get_gbif()* output or a SpatVector/SpatialPoints object.
-#' @param Bioreg A SpatVector or SpatialPolygonsDataFrame containg different bioregions
-#' (convex hulls will be classified on a bioreg basis). Although whatever shapefile may be
-#' set as input, note that three ecoregion shapefiles are already included in the library:
-#' *eco.earh* (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
-#' *eco.marine* (for coastal and reef species; Spalding & al. 2007) and *eco.fresh*
-#' (for freshwater species; Abell & al. 2008). For deep ocean/sea species, *eco.earth* may be
-#' used, but the polygon estimates will only be geographic.
-#' @param Bioreg_name how is the slot containing the bioregion names called?
+#' @param sp_name Character of the species name. E.g. 'Anemone nemorosa'.
+#' @param occ_coord get_gbif() output or SpatialPoints object.
+#' @param Bioreg SpatialPolygonsDataFrame containg different bioregions (convex hulls will
+#' be classified on a bioreg basis). Although whatever shapefile may be set as input, note
+#' that three ecoregion shapefiles are already included in the library: eco.earh' (for
+#' terrestrial species; Nature conservancy version adapted from Olson & al. 2001), eco.marine'
+#' (for coastal and reef species; Spalding & al. 2007) and 'eco.fresh' (for freshwater species;
+#' Abell & al. 2008). For deep ocean/sea species, 'eco.earth' may be used, but the polygon
+#' estimates will only be geographic. Default is 'eco.earth'.
+#' @param Bioreg_name How is the slot containing the bioregion names called? Default is the
+#' very detailed level of 'eco.earth' or "ECO_NAME".
 #' @param degrees_outlier distance threshold (degrees) for outlier classification. If the
 #' nearest minimal distance to the next point is larger than this threshold, it will be
 #' considered as an outlier.
@@ -36,7 +37,7 @@
 #' @param res Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
 #' e.g.,  = 0.1° if res = 10. Default is 10.
 #' @details ...
-#' @return A shapefile or a SpatRaster
+#' @return A Shapefile or a SpatRaster
 #' @references
 #' Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... &
 #' Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
@@ -71,7 +72,6 @@
 #' 
 #' # First download the worldwide observations of Panthera tigris and convert to SpatialPoints
 #' obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
-#' sp.shp = SpatialPoints(obs.pt[c("decimalLongitude","decimalLatitude")],proj4string=crs(eco.earth))
 #' 
 #' # Plot
 #' plot(eco.earth)
@@ -87,8 +87,8 @@
 #' @export
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
-                       Bioreg = NULL, 
-                       Bioreg_name = NULL, 
+                       Bioreg = eco.earth, 
+                       Bioreg_name = "ECO_NAME", 
                        degrees_outlier = 3,
                        clustered_points_outlier = 2,
                        buffer_width_point = 4, 
@@ -99,23 +99,28 @@ get_range <- function (sp_name = NULL,
                        res = 10){
 
   ### =========================================================================
-  ### Convert all possible object in SpatVector
+  ### Object conditions
   ### =========================================================================
 
-  if (class(occ_coord)%in%"SpatialPoints") {
-    occ_coord <- vect(occ_coord)
-  } else if (any(names(occ_coord)%in%"decimalLongitude")) {
-    occ_coord <- vect(occ_coord[,c("decimalLongitude","decimalLatitude")],
-      geom=c("decimalLongitude","decimalLatitude"),crs="+init=epsg:4326")
+  # occ_coord
+  if (any(names(occ_coord)%in%"decimalLongitude")) {
+    occ_coord <- SpatialPoints(occ_coord[,c("decimalLongitude","decimalLatitude")],
+      proj4string=crs("+init=epsg:4326"))
+  } else if (!class(occ_coord)%in%"SpatialPoints") {
+    stop("Uncorrect format for 'occ_coord'...")
+  }
+
+  # Bioreg
+  if (!class(Bioreg)%in%"SpatialPolygonsDataFrame") {
+     stop("Uncorrect format for 'occ_coord'...")
   }
 
   ### =========================================================================
   ### remove duplicates
   ### =========================================================================
 
-  occ_coordS <- crds(occ_coord)
-  occ_coordS <- round(occ_coordS, 4)
-  occ_coordS <- occ_coordS[!duplicated(occ_coords),]
+  occ_coord@coords <- round(occ_coord@coords, 4)
+  occ_coord <- remove.duplicates(occ_coord)
   
   ### =========================================================================
   ### Check if sufficient data
@@ -123,7 +128,7 @@ get_range <- function (sp_name = NULL,
   
   # Check if there sufficient species & if not, make an entry in the log-file and
   # end the function
-  if (nrow(occ_coordS)<=clustered_points_outlier+1){
+  if (length(occ_coord)<=clustered_points_outlier+1){
     stop("Too few occurences!")
   } 
     
@@ -134,15 +139,15 @@ get_range <- function (sp_name = NULL,
   ### =========================================================================
   
   #create distance matrix...
-  mat_dist <- as.matrix(knn.dist(occ_coordS, k=clustered_points_outlier))
+  mat_dist <- as.matrix(knn.dist(occ_coord@coords, k=clustered_points_outlier))
   
   #mark outliers
   cond <- apply(mat_dist, 1, function(x) x[clustered_points_outlier])>degrees_outlier
   rm(mat_dist) 
   
-  cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coordS), " | proportion from total points: ", round((sum(cond)/length(occ_coord))*100,0), "%\n"))
+  cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ", round((sum(cond)/length(occ_coord))*100,0), "%\n"))
   
-  occ_coord_mod <- occ_coordS[!cond,]
+  occ_coord_mod <- occ_coord[!cond,]
 
   # Stop if too many outliers in data set
   if(length(occ_coord_mod)==0){
@@ -153,7 +158,7 @@ get_range <- function (sp_name = NULL,
   ### Define those polygons
   ### =========================================================================
   
-  ovo=over(occ_coord_mod,Bioreg)
+  ovo <- over(occ_coord_mod,Bioreg)
   uniq <- levels(factor(ovo[,Bioreg_name]))
   
   # loop over bioregions

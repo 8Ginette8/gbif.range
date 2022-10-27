@@ -8,8 +8,8 @@
 #' converted into a POLYGON() argument, or divided into Ntiles of regular fragments which are
 #' converted into POLYGON() arguments and smaller SpatExtent.
 #'
-#' @param geo Object of class 'Extent', 'SpatExtent', 'SpatialPolygon', 'SpatialPolygonDataframe',
-#' or 'SpaVector' (WGS84 or planar) to define the study's area extent. Default is NULL i.e. the
+#' @param geo Object of class Extent, SpatExtent, SpatialPolygon, SpatialPolygonDataframe,
+#' or SpaVector (WGS84 or planar) to define the study's area extent. Default is NULL i.e. the
 #' whole globe.
 #' @param Ntiles Numeric. In how many tiles/fragments should geo be divided approximately?
 #' @param sext Logical. Should a list of SpatExtent also be returned for each generated POLYGON()?

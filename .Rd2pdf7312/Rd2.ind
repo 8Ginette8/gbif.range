@@ -1,0 +1,20 @@
+\begin{theindex}
+
+  \item \texttt  {conv\_function}, \hyperpage{2}
+
+  \indexspace
+
+  \item \texttt  {get\_doi}, \hyperpage{2}
+  \item \texttt  {get\_gbif}, \hyperpage{3}
+  \item \texttt  {get\_range}, \hyperpage{6}
+  \item \texttt  {get\_taxonomy}, \hyperpage{9}
+
+  \indexspace
+
+  \item \texttt  {make\_tiles}, \hyperpage{10}
+
+  \indexspace
+
+  \item \texttt  {obs\_filter}, \hyperpage{11}
+
+\end{theindex}

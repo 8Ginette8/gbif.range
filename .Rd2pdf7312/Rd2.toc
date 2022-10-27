@@ -1,0 +1,8 @@
+\contentsline {subsection}{conv\_function}{2}{page.2}
+\contentsline {subsection}{get\_doi}{2}{page.2}
+\contentsline {subsection}{get\_gbif}{3}{page.3}
+\contentsline {subsection}{get\_range}{6}{page.6}
+\contentsline {subsection}{get\_taxonomy}{9}{page.9}
+\contentsline {subsection}{make\_tiles}{10}{page.10}
+\contentsline {subsection}{obs\_filter}{11}{page.11}
+\contentsline {chapter}{Index}{12}{page.12}

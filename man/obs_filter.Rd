@@ -11,8 +11,8 @@ obs_filter(get.gbif, grid)
 that if GBIF absences are kept in the output(s), the function should be used
 distinctively for observations and absences.}
 
-\item{grid}{Object of class 'SpatRaster', 'RasterLayer', 'RasterBrick' or
-'RasterStack' of desired resolution and extent (WGS84)}
+\item{grid}{Object of class SpatRaster, RasterLayer, RasterBrick or
+RasterStack of desired resolution and extent (WGS84)}
 }
 \value{
 a data frame with two columns named 'x' and 'y' comprising

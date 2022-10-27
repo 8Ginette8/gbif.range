@@ -7,8 +7,8 @@
 make_tiles(geo, Ntiles, sext = TRUE)
 }
 \arguments{
-\item{geo}{Object of class 'Extent', 'SpatExtent', 'SpatialPolygon', 'SpatialPolygonDataframe',
-or 'SpaVector' (WGS84 or planar) to define the study's area extent. Default is NULL i.e. the
+\item{geo}{Object of class Extent, SpatExtent, SpatialPolygon, SpatialPolygonDataframe,
+or SpaVector (WGS84 or planar) to define the study's area extent. Default is NULL i.e. the
 whole globe.}
 
 \item{Ntiles}{Numeric. In how many tiles/fragments should geo be divided approximately?}

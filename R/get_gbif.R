@@ -24,8 +24,8 @@
 #' levels.
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold of match
 #' of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
-#' @param geo Object of class 'Extent', 'SpatExtent', 'SpatialPolygon', 'SpatialPolygonDataframe',
-#' or 'SpaVector' (WGS84) to define the study's area extent. Default is NULL i.e. the whole globe.
+#' @param geo Object of class Extent, SpatExtent, SpatialPolygon, SpatialPolygonDataframe,
+#' or SpaVector (WGS84) to define the study's area extent. Default is NULL i.e. the whole globe.
 #' @param grain Numeric. Specify in meters the study resolution. Used to
 #' filter gbif records (x2) according to their uncertainties and number of coordinate
 #' decimals. Records with no information on coordinate uncertainties (column
@@ -35,9 +35,9 @@
 #' @param no_xy Logical. Default is FALSE i.e. only records with coordinates are
 #' downloaded. If TRUE, only records with no coordinates are downloaded.
 #' @param basis Character. Which basis of records should be selected?
-#' Default is all i.e. c("OBSERVATION", "HUMAN_OBSERVATION", "MACHINE_OBSERVATION",
-#' "MATERIAL_SAMPLE", "PRESERVED_SPECIMEN", "FOSSIL_SPECIMEN", "LIVING_SPECIMEN", "LITERATURE",
-#' "UNKNOWN"). Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html
+#' Default is all i.e. c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
+#' 'MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN', 'FOSSIL_SPECIMEN', 'LIVING_SPECIMEN', 'LITERATURE',
+#' 'UNKNOWN'). Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html
 #' @param add_infos Character. Infos that may be added to the default output information.
 #' List of IDs may be found at: https://www.gbif.org/developer/occurrence.
 #' Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
@@ -48,9 +48,9 @@
 #' year range. Default is c(1000,3000). Observations with year = NA are kept by default.
 #' @param identic_xy Logical. Should records with identical xy be kept?
 #' @param wConverted_xy Logical. Should incorrectly lon/lat converted xy be kept?
-#' Uses `cd_ddmm` from 'CoordinateCleaner' R package.
+#' Uses cd_ddmm() from 'CoordinateCleaner' R package.
 #' @param centroids Logical. Should species records from raster centroids be kept?
-#' Uses `cd_round` from 'CoordinateCleaner' R package.
+#' Uses cd_round() from 'CoordinateCleaner' R package.
 #' @param ntries Numeric. In case of failure from GBIF server or within the rgbif package, how many
 #' download attempts should the function request? Default is '10' with a 2 seconds interval
 #' between tries. If attempts failed, an empty data.frame is return by default.

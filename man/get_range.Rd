@@ -5,10 +5,10 @@
 \title{Create a species range map based on a get_gbif() output}
 \usage{
 get_range(
-  species_name = NULL,
+  sp_name = NULL,
   occ_coord = NULL,
-  Bioreg = NULL,
-  Bioreg_name = NULL,
+  Bioreg = eco.earth,
+  Bioreg_name = "ECO_NAME",
   degrees_outlier = 3,
   clustered_points_outlier = 2,
   buffer_width_point = 4,
@@ -20,14 +20,20 @@ get_range(
 )
 }
 \arguments{
-\item{species_name}{character string of the species name. E.g. "Anemone nemorosa".}
+\item{sp_name}{Character of the species name. E.g. 'Anemone nemorosa'.}
 
-\item{occ_coord}{a SpatialPoints object.}
+\item{occ_coord}{get_gbif() output or SpatialPoints object.}
 
-\item{Bioreg}{shapefile containg different bioregions (convex hulls will be classified
-on a bioreg basis).}
+\item{Bioreg}{SpatialPolygonsDataFrame containg different bioregions (convex hulls will
+be classified on a bioreg basis). Although whatever shapefile may be set as input, note
+that three ecoregion shapefiles are already included in the library: eco.earh' (for
+terrestrial species; Nature conservancy version adapted from Olson & al. 2001), eco.marine'
+(for coastal and reef species; Spalding & al. 2007) and 'eco.fresh' (for freshwater species;
+Abell & al. 2008). For deep ocean/sea species, 'eco.earth' may be used, but the polygon
+estimates will only be geographic. Default is 'eco.earth'.}
 
-\item{Bioreg_name}{how is the slot containing the bioregion names called?}
+\item{Bioreg_name}{How is the slot containing the bioregion names called? Default is the
+very detailed level of 'eco.earth' or "ECO_NAME".}
 
 \item{degrees_outlier}{distance threshold (degrees) for outlier classification. If the
 nearest minimal distance to the next point is larger than this threshold, it will be
@@ -52,13 +58,13 @@ than the degrees_outlier, but should still be considered as outliers.}
 e.g.,  = 0.1° if res = 10. Default is 10.}
 }
 \value{
-A shapefile or a SpatRaster
+A Shapefile or a SpatRaster
 }
 \description{
 Estimates species ranges based on occurrence data (GBIF or not) and bioregions.
 It first deletes outliers from the observation dataset and then creates a polygon
 (convex hull) with a user specified buffer around all the observations of one bioregion.
-If there there is only one observation in a bioregion, a buffer around this point
+If there is only one observation in a bioregion, a buffer around this point
 will be created. If all points in a bioregion are on a line, the function will also
 create a buffer around these points, however, the buffer size increases with the number
 of points in the line.
@@ -72,7 +78,6 @@ data(ecoregions)
 
 # First download the worldwide observations of Panthera tigris and convert to SpatialPoints
 obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
-sp.shp = SpatialPoints(obs.pt[c("decimalLongitude","decimalLatitude")],proj4string=crs(eco.earth))
 
 # Plot
 plot(eco.earth)
@@ -90,6 +95,27 @@ plot(range.tiger,col="#238b45",add=TRUE)
 Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... &
 Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
 patterns of Fagales and Pinales. New Phytologist, 235(2), 759-772 10.1111/nph.18158
+
+Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N.,
+Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J.,
+Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem,
+K. R. 2001. Terrestrial ecoregions of the world: a new map of life on Earth.
+Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+
+Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A. Ferdaña, Max
+Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana, Sara A. Lourie, Kirsten D.
+Martin, Edmund McManus, Jennifer Molnar, Cheri A. Recchia, James Robertson, Marine
+Ecoregions of the World: A Bioregionalization of Coastal and Shelf Areas, BioScience,
+Volume 57, Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+
+Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice Kottelat, Nina Bogutskaya,
+Brian Coad, Nick Mandrak, Salvador Contreras Balderas, William Bussing, Melanie L. J. Stiassny,
+Paul Skelton, Gerald R. Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf,
+James Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric Wikramanayake,
+David Olson, Hugo L. López, Roberto E. Reis, John G. Lundberg, Mark H. Sabaj Pérez,
+Paulo Petry, Freshwater Ecoregions of the World: A New Map of Biogeographic Units for
+Freshwater Biodiversity Conservation, BioScience, Volume 58, Issue 5, May 2008,
+Pages 403–414. doi: 10.1641/B580507
 
 Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
 }
