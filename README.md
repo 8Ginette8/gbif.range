@@ -61,7 +61,7 @@ plot(wrld_simpl,col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=2)
 ```
 
-![image](https://user-images.githubusercontent.com/43674773/198376404-a6059a02-f139-4c76-842c-600918900a47.png)
+![image](https://user-images.githubusercontent.com/43674773/198384876-63fdf37d-1803-419a-a8da-0bcff387954c.png)
 
 Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue.
 
