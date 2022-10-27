@@ -82,13 +82,13 @@ Let's now generate the distributional range map of Panthera tigris. Although wha
 names(eco.earth)
 ```
 
-Which level should you pick depends on your questions and which level of the species ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as ecoregion name:
+Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion because we want to obtain a more fine distribution:
 
 ``` r
 range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
 ```
 
-Other examples may be found in the R documentation *gbif.range.pdf*..
+Note that five parameters need to be set in *get_range* and those should be explore before any definite map process...
 
 ## Citation
 Yohann Chauvier; Patrice Descombes; Oskar Hagen; Camille Albouy; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - A R package to generate species range maps based on ecoregions and an user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352.</a>
