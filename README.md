@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/43674773/198342889-13305d62-6538-4c94-892a-db05a65d5768.png)
+![image](https://user-images.githubusercontent.com/43674773/198343094-822ff0f1-72de-4b0d-b293-ced27de96190.png)
 
 
 # gbif.range
