@@ -76,13 +76,13 @@ obs.dd = get_gbif("Delphinus delphis")
 get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
-Let's now generate the distributional range map of Panthera tigris. Although whatever shapefile may be set as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001), *eco.marine* (for coastal and reef species; Spalding & al. 2007) and *eco.fresh* (for freshwater species; Abell & al. 2008). For deep ocean/sea species, *eco.earth* may be used, but the polygon estimates will only be geographic. Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution. For example, *eco.earth* has three different levels: ECO_name, WWF_MHTNAM, WWF_REALM (more to less detailed). 
+Let's now generate the distributional range map of Panthera tigris. Although whatever shapefile may be set as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001), *eco.marine* (for coastal and reef species; Spalding & al. 2007) and *eco.fresh* (for freshwater species; Abell & al. 2008). For deep ocean/sea species, *eco.earth* may be used, but the polygon estimates will only be geographic. Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution. For example, *eco.earth* has three different levels: ECO_name, WWF_MHTNAM and WWF_REALM2 (from the more to the less detailed). 
 
 ``` r
 names(eco.earth)
 ```
 
-Which level should you pick depends on your questions and the species ecology you want to explore. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as ecoregion name:
+Which level should you pick depends on your questions and which level of the species ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as ecoregion name:
 
 ``` r
 range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
