@@ -58,7 +58,7 @@ obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
 library(maptools)
 data(wrld_simpl)
 plot(wrld_simpl,col="#bcbddc")
-points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
+points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=2)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/198376404-a6059a02-f139-4c76-842c-600918900a47.png)
@@ -99,7 +99,7 @@ plot(range.tiger,col="#238b45",add=TRUE)
 
 ![image](https://user-images.githubusercontent.com/43674773/198384578-f2faa3f6-abee-4391-b700-74b7bef43595.png)
 
-Interestingly no Tiger range was found in the US. Our default parameters allowed the US record of Panthera tigris found previously to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process...
+Interestingly no tiger range was found in the US. Our default parameters allowed the US record of Panthera tigris found previously to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process...
 
 ## Citation
 Yohann Chauvier; Patrice Descombes; Oskar Hagen; Camille Albouy; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - A R package to generate species range maps based on ecoregions and an user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352.</a>
