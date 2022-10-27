@@ -17,7 +17,7 @@ On the other hand, *get_gbif()* also implements easy-to-use preliminary filterin
 
 ### Range function
 
-*get_range()* estimates species ranges based on occurrence data (GBIF or not) and bioregions. It first deletes outliers from the observation dataset and then creates a polygon (convex hull) with a user specified buffer around all the observations of one bioregion. If there there is only one observation in a bioregion, a buffer around this point will be created. If all points in a bioregion are on a line, the function will also create a buffer around these points, however, the buffer size increases with the number of points in the line. More details to come...
+*get_range()* estimates species ranges based on occurrence data (GBIF or not) and bioregions. It first deletes outliers from the observation dataset and then creates a polygon (convex hull) with a user specified buffer around all the observations of one bioregion. If there is only one observation in a bioregion, a buffer around this point will be created. If all points in a bioregion are on a line, the function will also create a buffer around these points, however, the buffer size increases with the number of points in the line. More details to come...
 
 ###  Additonal functions
 
