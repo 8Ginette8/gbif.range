@@ -6,7 +6,7 @@ Although species ranges may be obtained using expert maps (IUCN - https://www.iu
 
 However, retrieving GBIF records at large scale in R may be tedious, if users are unaware of the specific set of functions and parameters that need to be employed within the *rgbif* library, and because of the library's existing limitations on the number of downloaded records (<100'000) if no data request is made. Here we present **gbif.range**, a R library that contains automated methods to generate species range maps from scratch using in-house ecoregions shapefiles and an easy-to-use GBIF download wrapper. Finally, this library also offers a set of additional very useful parameters and functions for large GBIF datasets (generate doi, extract GBIF taxonomy, records filtering...).
 
-_(source: globe image adapted from Akhil Komath from the Noun Project by LenaCassie studio)_
+_(source: globe image adapted from Akhil Komath from the Noun Project by LenaCassie-Studio)_
 
 ## Description
 ### GBIF wrapper
