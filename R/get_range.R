@@ -39,6 +39,11 @@
 #' @details ...
 #' @return A Shapefile or a SpatRaster
 #' @references
+#' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein,
+#' Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building,
+#' climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. Journal of
+#' Biogeography. doi: 10.1111/jbi.13653
+#' 
 #' Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... &
 #' Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
 #' patterns of Fagales and Pinales. New Phytologist, 235(2), 759-772 10.1111/nph.18158
@@ -65,7 +70,10 @@
 #' Pages 403–414. doi: 10.1641/B580507
 #' 
 #' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
-#' @seealso ...
+#' @seealso
+#' For more information on the original code and methods, check Hagen, Oskar et al. (2019), Data
+#' from: Mountain building, climate cooling and the richness of cold-adapted plants in the northern
+#' hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04
 #' @examples
 #' # Load available ecoregions
 #' data(ecoregions)
