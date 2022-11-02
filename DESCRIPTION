@@ -11,15 +11,15 @@ Maintainer: Yohann Chauvier <yohann.chauvier@wsl.ch>
 LazyData: true
 RoxygenNote: 7.1.2
 Authors: Yohann Chauvier [cre,aut] (https://orcid.org/0000-0001-9399-3192)
-    Patrice Descombes [aut] (https://orcid.org/0000-0002-3760-9907)
     Oskar Hagen [aut] (https://orcid.org/0000-0002-7931-6571)
     Camille Albouy [aut] (https://orcid.org/0000-0003-1629-2389)
+    Patrice Descombes [aut] (https://orcid.org/0000-0002-3760-9907)
     Fabian Fopp [aut] (https://orcid.org/0000-0003-0648-8484)
     Michael P. Nobis [aut] (https://orcid.org/0000-0003-3285-1590)
     Philipp Brun [aut] (https://orcid.org/0000-0002-2750-9793)
     Lisha Lyu [aut] (https://orcid.org/0000-0001-7855-8109)
-    Loïc Pellissier [aut] (https://orcid.org/0000-0002-2289-8259)
     Katalin Csillery [aut] (https://orcid.org/0000-0003-0039-9296)
+    Loïc Pellissier [aut] (https://orcid.org/0000-0002-2289-8259)
 Collate:
     'make_tiles.R'
     'get_gbif.R'
