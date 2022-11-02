@@ -85,6 +85,8 @@ Let's now generate the distributional range map of Panthera tigris. Although wha
 
 ``` r
 names(eco.earth)
+names(eco.fresh)
+names(eco.marine)
 ```
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
