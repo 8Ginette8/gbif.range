@@ -27,17 +27,17 @@ get_gbif(
 }
 \arguments{
 \item{sp_name}{Character. Scientific name to run an online search
-(i.e. with GBIF-API) for species observations. Works also for genus and higher taxa
+(i.e. with GBIF-API) to get occurrence records. Works also for genus and higher taxa
 levels.}
 
 \item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold of match
 of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
 
 \item{geo}{Object of class Extent, SpatExtent, SpatialPolygon, SpatialPolygonDataframe,
-or SpaVector (WGS84) to define the study's area extent. Default is NULL i.e. the whole globe.}
+or SpatVector (WGS84) to define the study's area extent. Default is NULL i.e. the whole globe.}
 
 \item{grain}{Numeric. Specify in meters the study resolution. Used to
-filter gbif records (x2) according to their uncertainties and number of coordinate
+filter gbif records according to their (1) spatial uncertainties and (2) number of coordinate
 decimals. Records with no information on coordinate uncertainties (column
 'coordinateUncertaintyInMeters') are be kept by default. See details.}
 
@@ -45,8 +45,8 @@ decimals. Records with no information on coordinate uncertainties (column
 
 \item{absences}{Logical. Should absence records be kept?}
 
-\item{no_xy}{Logical. Default is FALSE i.e. only records with coordinates are
-downloaded. If TRUE, only records with no coordinates are downloaded.}
+\item{no_xy}{Logical. Default is FALSE i.e., only records with coordinates are
+downloaded. If TRUE, records with no coordinates are also downloaded.}
 
 \item{basis}{Character. Which basis of records should be selected?
 Default is all i.e. c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
@@ -57,7 +57,7 @@ Default is all i.e. c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
 List of IDs may be found at: https://www.gbif.org/developer/occurrence.
 Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
 'acceptedScientificName', 'individualCount', 'decimalLatitude', 'decimalLongitude',
-'basisOfRecord', 'coordinateUncertaintyInMeters', 'country', 'year', 'datasetKey', 
+'basisOfRecord', 'coordinateUncertaintyInMeters', 'countryCode', 'country', 'year', 'datasetKey', 
 'institutionCode', 'publishingOrgKey', 'taxonomicStatus' and 'taxonRank'.}
 
 \item{time_period}{Numerical vector. Observations will be downloaded according to the chosen
@@ -65,7 +65,7 @@ year range. Default is c(1000,3000). Observations with year = NA are kept by def
 
 \item{identic_xy}{Logical. Should records with identical xy be kept?}
 
-\item{wConverted_xy}{Logical. Should incorrectly lon/lat converted xy be kept?
+\item{wConverted_xy}{Logical. Should incorrectly converted lon/lat be kept?
 Uses cd_ddmm() from 'CoordinateCleaner' R package.}
 
 \item{centroids}{Logical. Should species records from raster centroids be kept?
@@ -73,7 +73,7 @@ Uses cd_round() from 'CoordinateCleaner' R package.}
 
 \item{ntries}{Numeric. In case of failure from GBIF server or within the rgbif package, how many
 download attempts should the function request? Default is '10' with a 2 seconds interval
-between tries. If attempts failed, an empty data.frame is return by default.}
+between tries. If the attempts failed, an empty data.frame is return by default.}
 
 \item{error.skip}{Logical. Should the search process continues if ntries failed ?}
 
@@ -84,7 +84,7 @@ Object of class data.frame with requested GBIF information. Although the functio
 works accurately, error outputs might still occur depending on the 'sp_name' used.
 Therefore, default information detailed in 'add_infos' is stored so that sanity checks
 may still be applied afterwards. Although crucial preliminary checks of species records
-are done by the function, addtional post exploration with the CoordinateCleaner R
+are done by the function, additional post exploration with the CoordinateCleaner R
 package is still highly recommended.
 }
 \description{
@@ -92,7 +92,7 @@ Implement an user-friendly workflow to download and clean gbif taxa observations
 The function uses the rgbif R package but (1) implements the same search result 
 found if www.gbif.org is employed i.e., based on the input taxa name, all species
 records related to its accepted name and synonyms are extracted. The function
-also (2) bypasses rgbif hard limit on the number of records (100'000 max).
+also (2) bypasses the rgbif hard limit on the number of records (100'000 max).
 For this purpose, a dynamic moving window is created and used across the geographic
 extent defined by the user. This window automatically fragments the specified
 study area in succesive tiles of different sizes, until all tiles include < 100'000
@@ -102,7 +102,7 @@ employing the CoordinateCleaner R package. Filtering options may be chosen and
 involve several choices: study's extent, removal of duplicates, removal of absences,
 basis of records selection, removal of invalid/uncertain xy coordinates (WGS84), time
 period selection and removal of raster centroids. By default, the argument
-hasGeospatialIssue in occ_search() (implemented rgbif function) is set to FALSE.
+hasGeospatialIssue in occ_data() (implemented rgbif function) is set to FALSE.
 }
 \details{
 Argument `grain` used for two distinct gbif records filtering. (1) Records filtering

@@ -8,18 +8,18 @@
 #' 
 #' 
 #' @param get.gbif data.frame or list. One get_gbif() output or a list of several.
-#' @param title The title for your derived dataset.
-#' @param descritpion A description of the dataset.
-#' @param source_url  A link to where the dataset is stored.
+#' @param title Title for your derived dataset.
+#' @param descritpion Description of the dataset.
+#' @param source_url  Link to where the dataset is stored.
 #' @param user Your GBIF username.
 #' @param pwd Your GBIF password.
 #' @param ... Additonnal parameters for derived_dataset() in rgbif.
-#' @details see derived_dataset() function from the rgbif R package
+#' @details see derived_dataset() function from the rgbif R package.
 #' @return One citable DOI and its information.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735
-#' @seealso The rgbif package for additional and more general approaches to get GBIF DOI
+#' @seealso The rgbif package for additional and more general approaches to get GBIF DOI.
 #' @examples
 #' 
 #' # Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
@@ -30,7 +30,7 @@
 #' get_doi(obs.pt,title="GBIF_test1",description="A small example 1",
 #'     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 #' 
-#' # Just an example on how to retrieve the DOI for several get_gbif() outputs
+#' # Another example on how to retrieve the DOI for several get_gbif() outputs
 #' get_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
 #'     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 #' 

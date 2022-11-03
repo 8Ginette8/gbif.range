@@ -17,7 +17,7 @@ whole globe.}
 }
 \value{
 A list of geometry arguments POLYGON() of length Ntiles (and of SpatExtent
-if sext=TRUE)
+if sext=TRUE).
 }
 \description{
 Based on a specific extent, one or several tiles are generated. Tiles can be smaller

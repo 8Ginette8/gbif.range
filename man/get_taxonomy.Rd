@@ -7,7 +7,7 @@
 get_taxonomy(sp_name = NULL, conf_match = 90, all = FALSE)
 }
 \arguments{
-\item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names}
+\item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names.}
 
 \item{conf_match}{Numeric. From 0 to 100. Determine the confidence
 threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
@@ -16,12 +16,12 @@ threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
 the accepted name and its synonyms?}
 }
 \value{
-A data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status
+Data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status.
 }
 \description{
 Generates, based on a given species name, a list of all its scientific names
-(accepted, synonyms) found in the GBIF backbone taxonomy to download the data.
-Children and related doubtful names not use to download the data may also be extracted.
+(accepted, synonyms) found in the GBIF backbone taxonomy and used to download the data in
+get_gbif(). Children and related doubtful names not used to download the data may also be extracted.
 }
 \examples{
 get_taxonomy("Cypripedium calceolus",all=FALSE)

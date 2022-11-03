@@ -17,9 +17,9 @@ get_doi(
 \arguments{
 \item{get.gbif}{data.frame or list. One get_gbif() output or a list of several.}
 
-\item{title}{The title for your derived dataset.}
+\item{title}{Title for your derived dataset.}
 
-\item{source_url}{A link to where the dataset is stored.}
+\item{source_url}{Link to where the dataset is stored.}
 
 \item{user}{Your GBIF username.}
 
@@ -27,7 +27,7 @@ get_doi(
 
 \item{...}{Additonnal parameters for derived_dataset() in rgbif.}
 
-\item{descritpion}{A description of the dataset.}
+\item{descritpion}{Description of the dataset.}
 }
 \value{
 One citable DOI and its information.
@@ -37,7 +37,7 @@ A small user friendly wrapper of the derived_dataset() function of the
 rgbif R package, compatible with one or several get_gbif() outputs.
 }
 \details{
-see derived_dataset() function from the rgbif R package
+see derived_dataset() function from the rgbif R package.
 }
 \examples{
 
@@ -49,7 +49,7 @@ obs.am = get_gbif("Ailuropoda melanoleuca")
 get_doi(obs.pt,title="GBIF_test1",description="A small example 1",
     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 
-# Just an example on how to retrieve the DOI for several get_gbif() outputs
+# Another example on how to retrieve the DOI for several get_gbif() outputs
 get_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 
@@ -59,5 +59,5 @@ Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global
 information facility API. 10.5281/zenodo.6023735
 }
 \seealso{
-The rgbif package for additional and more general approaches to get GBIF DOI
+The rgbif package for additional and more general approaches to get GBIF DOI.
 }

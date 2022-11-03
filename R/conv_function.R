@@ -1,9 +1,9 @@
 ### =========================================================================
 ### Meta function: create polygon objects in different bioregions
 ### =========================================================================
-#' Create polygon objects in different bioregions
+#' Create polygon objects in different bioregions.
 #'
-#' Not to be called directly by the user
+#' Not to be called directly by the user.
 #' @export
 conv_function <- function (sp_coord,
                            bwp,

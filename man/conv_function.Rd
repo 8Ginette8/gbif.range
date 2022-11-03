@@ -2,10 +2,10 @@
 % Please edit documentation in R/conv_function.R
 \name{conv_function}
 \alias{conv_function}
-\title{Create polygon objects in different bioregions}
+\title{Create polygon objects in different bioregions.}
 \usage{
 conv_function(sp_coord, bwp, bipl, bwpo, temp_dir, g = NULL)
 }
 \description{
-Not to be called directly by the user
+Not to be called directly by the user.
 }

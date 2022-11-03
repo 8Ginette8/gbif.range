@@ -4,16 +4,16 @@
 #' Retrieve from GBIF all scientific names of a specific Taxa
 #'
 #' Generates, based on a given species name, a list of all its scientific names
-#' (accepted, synonyms) found in the GBIF backbone taxonomy to download the data.
-#' Children and related doubtful names not use to download the data may also be extracted.
+#' (accepted, synonyms) found in the GBIF backbone taxonomy and used to download the data in
+#' get_gbif(). Children and related doubtful names not used to download the data may also be extracted.
 #'
-#' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
+#' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names.
 #' @param conf_match Numeric. From 0 to 100. Determine the confidence
 #' threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
 #' @param all Logical. Default is FALSE. Should all species names be retrieved or only
 #' the accepted name and its synonyms?
 #' 
-#' @return A data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status
+#' @return Data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735

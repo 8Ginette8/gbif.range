@@ -7,22 +7,22 @@
 obs_filter(get.gbif, grid)
 }
 \arguments{
-\item{get.gbif}{one get_gbif() output including one or several species. Note
+\item{get.gbif}{One get_gbif() output including one or several species. Note
 that if GBIF absences are kept in the output(s), the function should be used
 distinctively for observations and absences.}
 
 \item{grid}{Object of class SpatRaster, RasterLayer, RasterBrick or
-RasterStack of desired resolution and extent (WGS84)}
+RasterStack of desired resolution and extent (WGS84).}
 }
 \value{
-a data frame with two columns named 'x' and 'y' comprising
+Data frame with two columns named 'x' and 'y' comprising
 the new set of observations filtered at grid resolution.
 }
 \description{
 Whereas the 'grain' parameter in get_gbif() allows GBIF observations to be
 filtered according to a certain spatial precision, obs_filter() accepts
 as input a get_gbif() output (one or several species) and filter the
-observations according to a specific given grid resolution (one observation
+observations according to a given grid resolution (one observation
 per pixel grid kept). This function allows the user to refine the density of
 GBIF observations according to a defined analysis/study's resolution.
 }

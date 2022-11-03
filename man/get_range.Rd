@@ -20,36 +20,38 @@ get_range(
 )
 }
 \arguments{
-\item{sp_name}{Character of the species name. E.g. 'Anemone nemorosa'.}
+\item{sp_name}{Character. Species name e.g., 'Anemone nemorosa'.}
 
 \item{occ_coord}{get_gbif() output or SpatialPoints object.}
 
-\item{Bioreg}{SpatialPolygonsDataFrame containg different bioregions (convex hulls will
+\item{Bioreg}{SpatialPolygonsDataFrame containg different ecoregions (convex hulls will
 be classified on a bioreg basis). Although whatever shapefile may be set as input, note
-that three ecoregion shapefiles are already included in the library: eco.earh' (for
-terrestrial species; Nature conservancy version adapted from Olson & al. 2001), eco.marine'
+that three ecoregions shapefiles are already included in the library: 'eco.earh' (for
+terrestrial species; Nature conservancy version adapted from Olson & al. 2001), 'eco.marine'
 (for coastal and reef species; Spalding & al. 2007) and 'eco.fresh' (for freshwater species;
 Abell & al. 2008). For deep ocean/sea species, 'eco.earth' may be used, but the polygon
 estimates will only be geographic. Default is 'eco.earth'.}
 
-\item{Bioreg_name}{How is the slot containing the bioregion names called? Default is the
-very detailed level of 'eco.earth' or "ECO_NAME".}
+\item{Bioreg_name}{Character. How is the slot containing the ecoregion names called?
+Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME').}
 
-\item{degrees_outlier}{distance threshold (degrees) for outlier classification. If the
-nearest minimal distance to the next point is larger than this threshold, it will be
+\item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier classification.
+If the nearest minimal distance to the next point is larger than this threshold, it will be
 considered as an outlier.}
 
-\item{clustered_points_outlier}{maximum number of points which are closer to each other
+\item{clustered_points_outlier}{Numeric. Maximum number of points which are closer to each other
 than the degrees_outlier, but should still be considered as outliers.}
 
-\item{buffer_width_point}{buffer (in degrees) which will be applied around single observations.}
+\item{buffer_width_point}{Numeric. Buffer (in degrees) which will be applied around single
+observations.}
 
-\item{buffer_increment_point_line}{how much should the buffer be increased for each point on a line.}
+\item{buffer_increment_point_line}{Numeric. How much should the buffer be increased for each point
+on a line.}
 
-\item{buffer_width_polygon}{buffer (in degrees) which will be applied around distribution polygons
-(for each bioregion).}
+\item{buffer_width_polygon}{Numeric. Buffer (in degrees) which will be applied around distribution
+polygons (for each ecoregion).}
 
-\item{dir_temp}{where should the temporary text file for the convex hull be saved?
+\item{dir_temp}{Character. Where should the temporary text file for the convex hull be saved?
 (text file will be deleted again).}
 
 \item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
@@ -58,19 +60,23 @@ than the degrees_outlier, but should still be considered as outliers.}
 e.g.,  = 0.1° if res = 10. Default is 10.}
 }
 \value{
-A Shapefile or a SpatRaster
+A Shapefile or a SpatRaster.
 }
 \description{
-Estimates species ranges based on occurrence data (GBIF or not) and bioregions.
+Estimates species ranges based on occurrence data (GBIF or not) and ecoregions.
 It first deletes outliers from the observation dataset and then creates a polygon
-(convex hull) with a user specified buffer around all the observations of one bioregion.
-If there is only one observation in a bioregion, a buffer around this point
-will be created. If all points in a bioregion are on a line, the function will also
+(convex hull) with a user specified buffer around all the observations of one ecoregion.
+If there is only one observation in an ecoregion, a buffer around this point
+will be created. If all points in an ecoregion are on a line, the function will also
 create a buffer around these points, however, the buffer size increases with the number
 of points in the line.
 }
 \details{
-...
+Ecoregions cover relatively large areas of land or water, and contain characteristic,
+geographically distinct assemblages of natural communities sharing a large majority of species,
+dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
+characterise an ecoregion tends to be distinct from that of other ecoregions
+(https://en.wikipedia.org/wiki/Ecoregion).
 }
 \examples{
 # Load available ecoregions
@@ -127,5 +133,5 @@ Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (202
 \seealso{
 For more information on the original code and methods, check Hagen, Oskar et al. (2019), Data
 from: Mountain building, climate cooling and the richness of cold-adapted plants in the northern
-hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04
+hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
 }
