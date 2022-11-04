@@ -56,7 +56,7 @@ Let's download worldwide the records of Panthera tigris only based on true obser
 
 ``` r
 # Download
-obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION"))
+obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
 library(maptools)
