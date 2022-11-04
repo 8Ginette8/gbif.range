@@ -36,8 +36,10 @@
 #' downloaded. If TRUE, records with no coordinates are also downloaded.
 #' @param basis Character. Which basis of records should be selected?
 #' Default is all i.e. c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
-#' 'MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN', 'FOSSIL_SPECIMEN', 'LIVING_SPECIMEN', 'LITERATURE',
-#' 'UNKNOWN'). Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html
+#' 'MATERIAL_CITATION', MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN', 'FOSSIL_SPECIMEN',
+#' 'LIVING_SPECIMEN', 'LITERATURE',UNKNOWN','OCCURRENCE').
+#' Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
+#' https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html
 #' @param add_infos Character. Infos that may be added to the default output information.
 #' List of IDs may be found at: https://www.gbif.org/developer/occurrence.
 #' Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
@@ -127,6 +129,7 @@ get_gbif = function(sp_name = NULL,
 					no_xy = FALSE,
 					basis = c("OBSERVATION","HUMAN_OBSERVATION",
 							"MACHINE_OBSERVATION","MATERIAL_SAMPLE",
+							"MATERIAL_CITATION","OCCURRENCE",
 							"PRESERVED_SPECIMEN","FOSSIL_SPECIMEN",
 							"LIVING_SPECIMEN","LITERATURE","UNKNOWN"),
 					add_infos = NULL,
