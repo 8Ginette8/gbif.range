@@ -1,7 +1,6 @@
 # gbif.range
 
-[<img align="right" width="250" height="290" src="https://user-images.githubusercontent.com/43674773/200117019-24193bc9-88e8-47c7-a1bd-2cea0487c3e6.png">](https://www.gbif.org)
-
+[<img align="right" width="250" height="290" src="https://user-images.githubusercontent.com/43674773/200117096-82654280-5e77-4097-936b-5efe01100422.png">](https://www.gbif.org)
 
 Although species ranges may be obtained using expert maps (IUCN - https://www.iucnredlist.org/resources/spatial-data-download, EUFORGEN - https://www.euforgen.org/species/) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise as well as many species observations.
 
