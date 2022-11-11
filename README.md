@@ -1,6 +1,6 @@
 # gbif.range
 
-[<img align="right" width="250" height="290" src="https://user-images.githubusercontent.com/43674773/198569769-454aa763-f5e0-4101-818e-d64227eea1ed.png">](https://www.gbif.org)
+[<img align="right" width="250" height="290" src="https://user-images.githubusercontent.com/43674773/200117096-82654280-5e77-4097-936b-5efe01100422.png">](https://www.gbif.org)
 
 Although species ranges may be obtained using expert maps (IUCN - https://www.iucnredlist.org/resources/spatial-data-download, EUFORGEN - https://www.euforgen.org/species/) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise as well as many species observations.
 
@@ -48,6 +48,7 @@ You can install the development version from GitHub with:
 
 ``` r
 remotes::install_github("8Ginette8/gbif.range")
+library(gbif.range)
 ```
 
 ## Example
