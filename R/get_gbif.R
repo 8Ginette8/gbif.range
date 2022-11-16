@@ -267,7 +267,12 @@ get_gbif = function(sp_name = NULL,
 
 					# Convert to extent and create 100 new micro tiles
 					new.ext = ext(new.geo[[y]])
-					micro.100 = make_tiles(new.ext,Ntiles=100,sext=TRUE)
+					micro.100 = try(make_tiles(new.ext,Ntiles=100,sext=TRUE),silent=TRUE)
+
+					# In case of "invisible" duplicated records from GBIF
+					if (class(micro.100)%in%"try-error") {return(NULL,NULL)}
+
+					# Continue
 					micro.tiles = micro.100[[1]]
 					micro.meta = lapply(micro.100[[2]],function(x) x[])
 
