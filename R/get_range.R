@@ -9,7 +9,10 @@
 #' If there is only one observation in an ecoregion, a buffer around this point
 #' will be created. If all points in an ecoregion are on a line, the function will also
 #' create a buffer around these points, however, the buffer size increases with the number
-#' of points in the line.
+#' of points in the line. Finally, also note that in case of too many records, get_range can
+#' be used with a sub-sample of species observations to ensure a faster polygon process and/or
+#' to overcome potential RAM crash of the function.
+#' 
 #' 
 #' @param sp_name Character. Species name e.g., 'Anemone nemorosa'.
 #' @param occ_coord get_gbif() output or SpatialPoints object.

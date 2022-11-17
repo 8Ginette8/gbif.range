@@ -55,6 +55,9 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 		t.ymax = allxy[x,2]
 		t.ymin = allxy[x+1,2]
 
+		# Return NULL if t.ymax = t.ymin
+		if (t.ymax == t.ymin) {return(list(NULL,NULL))}
+
 		# Generate tiles for each line (xmax -> xmin)
 		line.tile =
 		lapply(1:tile.index,function(y){
@@ -62,6 +65,9 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 			# Set target xmax and xmin
 			t.xmax = allxy[y,1]
 			t.xmin = allxy[y+1,1]
+
+			# Return NULL if t.xmax = t.xmin
+			if (t.xmax == t.xmin) {return(list(NULL,NULL))}
 
 			# Generate the tile
 			one.tile = paste0("POLYGON((",t.xmin," ",t.ymin,", ",
@@ -80,9 +86,14 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 	# Unlist tile geo
 	part.tile2 = lapply(all.tiles,function(x) x[[1]])
 	geo.tiles = unlist(part.tile2,recursive=FALSE)
+	geo.tiles[sapply(geo.tiles, is.null)] = NULL
+
+	# Return if xmin == xmax
+	if (is.null(unlist(geo.tiles))) {return(NULL)}
 
 	# Unlist tile meta
 	geo.meta = unlist(lapply(all.tiles,function(x) x[[2]]),recursive=FALSE)
+	geo.meta[sapply(geo.meta, is.null)] = NULL
 	geo.meta = lapply(geo.meta,function(x) ext(x))
 
 	# Return
@@ -92,4 +103,3 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 		return(geo.tiles)
 	}
 }
-

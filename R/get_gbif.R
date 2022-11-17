@@ -267,36 +267,48 @@ get_gbif = function(sp_name = NULL,
 
 					# Convert to extent and create 100 new micro tiles
 					new.ext = ext(new.geo[[y]])
-					micro.100 = try(make_tiles(new.ext,Ntiles=100,sext=TRUE),silent=TRUE)
+					micro.100 = make_tiles(new.ext,Ntiles=100,sext=TRUE)
 
-					# In case of "invisible" duplicated records from GBIF
-					if (class(micro.100)%in%"try-error") {return(NULL,NULL)}
+					# If micro.100 is NULL return NULL (in case of an incorrect extent)
+					if (is.null(micro.100)) {
+						return(list(NULL,NULL))
+					}
 
 					# Continue
 					micro.tiles = micro.100[[1]]
-					micro.meta = lapply(micro.100[[2]],function(x) x[])
+					micro.meta = lapply(micro.100[[2]],function(z) z[])
 
 					# And count records again
 					gbif.micro =
 						sapply(micro.tiles, function(z) {
-							gt.out = occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
-							hasGeospatialIssue=FALSE,geometry=z)[1]$meta$count
+							gt.out = try(occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
+							hasGeospatialIssue=FALSE,geometry=z)[1]$meta$count,silent=TRUE)
 						return(gt.out)
 					})
 
+					# Transform in 0 when the polygon is too small for occ_data
+					gbif.micro[sapply(gbif.micro,function(z) grepl("Error",z))]=0
+					gbif.micro=as.numeric(gbif.micro)
+
 					# Store if tiles with < 99'000 observations found
-					goody = micro.tiles[gbif.micro<99000]
-					bady = micro.meta[!gbif.micro<99000]
+					goody = micro.tiles[gbif.micro<99000 & gbif.micro!=0]
+					bady = micro.meta[!gbif.micro<99000 & gbif.micro!=0]
 					return(list(goody,bady))
 				})
 
 				# Restructure
 				all.good = lapply(m.process,function(y) y[[1]])
+				all.good[sapply(all.good, is.null)] = NULL
 				all.bad = lapply(m.process,function(y) y[[2]])
+				all.bad[sapply(all.bad, is.null)] = NULL
 
 				# Store if no blocks with > 99'000 observations found
 				pol.store = c(pol.store,unlist(all.good,recursive=FALSE))
 				new.geo = unlist(all.bad,recursive=FALSE)
+
+				# Finally remove too small windows (for "invisible" GBIF duplicated records)
+				inf.id = sapply(new.geo,function(y) y[2]-y[1]<1e-7)
+				new.geo = new.geo[!inf.id]
 			}
 			return(unlist(pol.store,recursive=FALSE))
 		})
