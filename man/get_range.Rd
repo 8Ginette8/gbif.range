@@ -69,7 +69,9 @@ It first deletes outliers from the observation dataset and then creates a polygo
 If there is only one observation in an ecoregion, a buffer around this point
 will be created. If all points in an ecoregion are on a line, the function will also
 create a buffer around these points, however, the buffer size increases with the number
-of points in the line.
+of points in the line. Finally, also note that in case of too many records, get_range can
+be used with a sub-sample of species observations to ensure a faster polygon process and/or
+to overcome potential RAM crash of the function.
 }
 \details{
 Ecoregions cover relatively large areas of land or water, and contain characteristic,

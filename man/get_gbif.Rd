@@ -165,5 +165,5 @@ Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (202
 }
 \seealso{
 The (1) rgbif and (2) CoordinateCelaner packages for additional and more general
-approaches on (1) downloading GBIF observations and (2) post-filetering those.
+approaches on (1) downloading GBIF observations and (2) post-filtering those.
 }
