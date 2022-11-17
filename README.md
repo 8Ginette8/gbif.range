@@ -111,7 +111,7 @@ plot(range.tiger,col="#238b45",add=TRUE)
 
 Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
-⚠️Finally, also note that in case of too many records, *get_range* can be used with a **sub-sample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
+⚠️Finally, also note that in case of too many records, *get_range* can be used with a **sub-sample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM-memory crash of the function**.⚠️
 
 ## Citation
 Yohann Chauvier; Oskar Hagen; Camille Albouy; Patrice Descombes; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - A R package to generate species range maps based on ecoregions and an user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352</a>
