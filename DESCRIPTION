@@ -1,6 +1,6 @@
 Package: gbif.range
 Type: Package
-Title: A toolbox to generate species range maps based on ecoregions and an user-friendly GBIF wrapper
+Title: A toolbox to generate species range maps based on ecoregions and a user-friendly GBIF wrapper
 Version: 0.2.0
 Depends: R (>= 4.0.0), raster, terra,  rgbif, CoordinateCleaner, rgeos, mclust, ClusterR, FNN, geometry
 Description: Workflow to generate taxa range maps from scratch based on ecoregions and an user-friendly GBIF wrapper (no hard-limit of < 100,000 species observations, filetring parameters to easily flag records, access to the GBIF backbone taxonomy)
