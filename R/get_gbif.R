@@ -316,7 +316,6 @@ get_gbif = function(sp_name = NULL,
 		# Final list of POLYGONS with n observations < 100'000 observations
 		geo.ref = unlist(keep.tiles)
 	}
-
 	
 	######################################################
 	#################### API Search ######################
@@ -373,21 +372,26 @@ get_gbif = function(sp_name = NULL,
 		
 		} else {
 
+			# Convert to a data.frame is needed
+			if (class(gbif.search$data)[1]!="data.frame"){
+				gbif.search=as.data.frame(gbif.search$data)
+			}
+
 			# Reordering data.frame and correcting if missing columns
-			gbif.reorder = gbif.search$data[,order(names(gbif.search$data))]
+			gbif.reorder = gbif.search[,order(names(gbif.search))]
 			missing.col = gbif.info[!(gbif.info%in%names(gbif.reorder))]
 			gbif.reorder[,missing.col] = NA
 			gbif.correct = gbif.reorder[,order(names(gbif.reorder))]
 
-			return(gbif.correct)
-
+			# Remove row we don't want
+			return(gbif.correct[,gbif.info])
 		}
 	})
 
 	# Combine all results in one data.frame
 	gbif.compile = do.call("rbind",batch.search)
 
-	# Keep specific fields
+	# Keep specific fields (just for safety)
 	gbif.compile = gbif.compile[,gbif.info]
 
 
