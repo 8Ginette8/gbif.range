@@ -76,19 +76,28 @@ We can also retrieve all the tiger scientific names (accepted and synonyms) that
 get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
-Same may be done with Delphinus delphis (a species with > 100'000 observations). Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough less precise, *occ_samp* allows to extract a subsample of *n* GBIF observations per created tiles over the study area:
+Same may be done with Delphinus delphis (a species with > 100'000 observations). ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough less precise, *occ_samp* allows to extract a subsample of *n* GBIF observations per created tiles over the study area⚠️:
 
 ``` r
 obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # here the example is a sample of 1000 observations per geographic tile
 get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
-Let's now generate the distributional range map of Panthera tigris. Although whatever shapefile may be set as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001), *eco.marine* (for coastal and reef species; Spalding & al. 2007) and *eco.fresh* (for freshwater species; Abell & al. 2008).
+Let's now generate the distributional range map of Panthera tigris. Although whatever shapefile may be set as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terreterial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terresterial ecoregions should be more representtaive of the species ecology.
 
-For marine species, *eco.earth* may also be used if the user wants to more represent the marine range along clear terresterial coasts. Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
+Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco.fresh* has only one: 'FEOW_ID'.
-- *eco.marine* has four: 'ECOREGION', 'PROVINCE', 'REALM' and 'FEOW_ID'.
+- *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels: 
+--> For PEOW (Pelagic provinces of the world): 'BIOME'.
+
+![image](https://user-images.githubusercontent.com/43674773/203574352-cd71b303-63f8-4d95-aa82-907034e683c2.png)
+© The Nature Conservancy (2012)
+
+--> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
+
+![image](https://user-images.githubusercontent.com/43674773/203573499-06131edf-b13f-408f-bfaf-ed73ce25723c.png)
+(Adapted from from Spalding & al. 2007)
 
 ``` r
 names(eco.earth)
@@ -134,6 +143,12 @@ Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (202
 
 Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map of life on Earth. Bioscience 51(11):933-938.  doi: <a href="https://doi.org/10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2">10.1641/0006-3568(2001)051</a>
 
+The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types, Biogeographical Realms and The Nature Conservancy Terrestrial Assessment Units. GIS layers developed by The Nature Conservancy with multiple partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge (UK): The Nature Conservancy. Data URL: https://geospatial.tnc.org/datasets/b1636d640ede4d6ca8f5e369f2dc368b/about
+
 Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A. Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana, Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer Molnar, Cheri A. Recchia, James Robertson, Marine Ecoregions of the World: A Bioregionalization of Coastal and Shelf Areas, BioScience, Volume 57, Issue 7, July 2007, Pages 573–583. doi: <a href="https://doi.org/10.1641/B570707">10.1641/B570707</a>
+
+Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012). Pelagic provinces of the world: a biogeographic classification of the world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30. doi: <a href="https://doi.org/10.1016/j.ocecoaman.2011.12.016">10.1016/j.ocecoaman.2011.12.016</a>
+
+The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces of the World. GIS layers developed by The Nature Conservancy with multiple partners, combined from Spalding et al. (2007) and Spalding et al. (2012). Cambridge (UK): The Nature Conservancy. Data URL: http://data.unep-wcmc.org/datasets/38
 
 Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald R. Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf, James Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G. Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of the World: A New Map of Biogeographic Units for Freshwater Biodiversity Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414. doi: <a href="https://doi.org/https://doi.org/10.1641/B580507">10.1641/B580507</a>
