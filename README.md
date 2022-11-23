@@ -119,7 +119,7 @@ eco.fresh@data
 eco.marine@data
 ```
 
-Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
+Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
 
 ### Marine species
 
