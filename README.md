@@ -87,11 +87,9 @@ Let's now generate the distributional range map of Panthera tigris. Although wha
 
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 
---> *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
-
---> *eco.fresh* has only one: 'FEOW_ID'.
-
---> *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels:
+  --> *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
+  --> *eco.fresh* has only one: 'FEOW_ID'.
+  --> *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels:
 
 - For PEOW (Pelagic provinces of the world): 'BIOME'.
 
