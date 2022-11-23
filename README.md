@@ -147,6 +147,7 @@ The three results are pretty similar because most of the observations are near t
 ``` r
 plot(wrld_simpl,col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE)
+points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#1c909970",cex=1)
 ```
 
 ⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
