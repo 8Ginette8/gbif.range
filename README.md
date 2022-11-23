@@ -98,7 +98,7 @@ Each ecoregion shapefile has one or more categories, which describe more or less
 
 ![image](https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png)
 
-To access the polygons data in R:
+To access the polygon data in R:
 ``` r
 eco.earth@data
 eco.fresh@data
