@@ -88,21 +88,21 @@ Let's now generate the distributional range map of Panthera tigris. Although wha
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco.fresh* has only one: 'FEOW_ID'.
-- *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels: 
+- *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels:
+
 --> For PEOW (Pelagic provinces of the world): 'BIOME'.
 
-![image](https://user-images.githubusercontent.com/43674773/203574352-cd71b303-63f8-4d95-aa82-907034e683c2.png)
-© The Nature Conservancy (2012)
+![image](https://user-images.githubusercontent.com/43674773/203576996-6ac50ee6-cef5-44bb-8801-ec7d57f1a085.png)
 
 --> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
-![image](https://user-images.githubusercontent.com/43674773/203573499-06131edf-b13f-408f-bfaf-ed73ce25723c.png)
-(Adapted from from Spalding & al. 2007)
+![image](https://user-images.githubusercontent.com/43674773/203575816-319f916a-79fd-43ab-8f73-941b6f8fbd96.png)
 
+To access the polygons data in R:
 ``` r
-names(eco.earth)
-names(eco.fresh)
-names(eco.marine)
+eco.earth@data
+eco.fresh@data
+eco.marine@data
 ```
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
