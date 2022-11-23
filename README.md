@@ -149,6 +149,9 @@ plot(wrld_simpl,col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE)
 points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#1c909970",cex=1)
 ```
+![image](https://user-images.githubusercontent.com/43674773/203614090-1873b2f6-64fa-4cf6-aeaf-363efe56d40b.png)
+
+Althought the map follows the sampling pattern of GBIF (https://www.gbif.org/species/8324617), we see that more GBIF information might have been needed to improve the range map of Delphinus delphis. *occ_samp* must be therefore increased or removed.
 
 ⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
 
