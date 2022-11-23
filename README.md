@@ -76,7 +76,7 @@ We can also retrieve all the tiger scientific names (accepted and synonyms) that
 get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
-Let's now generate the distributional range map of Panthera tigris using the in-houe shapefile of terresterial ecoregions ('eco.earth'):
+Let's now generate the distributional range map of Panthera tigris using the in-house shapefile of terresterial ecoregions ('eco.earth'):
 
 ``` r
 range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
