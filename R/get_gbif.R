@@ -338,7 +338,7 @@ get_gbif = function(sp_name = NULL,
 		## Try the download first: may be request overload problems
 		go.tile = geo.ref[x]
 		gbif.search = try(
-			occ_data(taxonKey=sp.key,limit=occ.samp,hasCoordinate=!no_xy,
+			occ_data(taxonKey=sp.key,limit=occ_samp,hasCoordinate=!no_xy,
 				hasGeospatialIssue=FALSE,geometry=go.tile),
 		silent=TRUE)
 
@@ -355,7 +355,7 @@ get_gbif = function(sp_name = NULL,
 					cat("Attempt",j+1,"...","\n")
 					j=j+1
 					gbif.search = try(
-						occ_data(taxonKey=sp.key,limit=occ.samp,hasCoordinate=!no_xy,
+						occ_data(taxonKey=sp.key,limit=occ_samp,hasCoordinate=!no_xy,
 						hasGeospatialIssue=FALSE,geometry=go.tile),
 					silent=TRUE)
 					Sys.sleep(2)
