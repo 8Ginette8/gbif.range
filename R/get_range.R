@@ -190,14 +190,29 @@ get_range <- function (sp_name = NULL,
   
   ovo <- over(occ_coord_mod,Bioreg)
   uniq <- levels(factor(ovo[,Bioreg_name]))
+
+  # Handling NA error
+  if (all(is.na(ovo[,Bioreg_name]))) {
+    stop("No overlap of ecoregion info, please use another 'Bioreg_name'")
+  }
+
+  # Remove partial NAs if any
+  occ_coord_mod <- occ_coord_mod[!is.na(ovo[,Bioreg_name])]
+  ovo <- ovo[!is.na(ovo[,Bioreg_name]),]
+
   
   # loop over bioregions
   SP_dist <- list()
   for(g in 1:length(uniq)) {
     
     cat('Bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
-    
-    tmp <- as(gSimplify(Bioreg[Bioreg@data[[Bioreg_name]] == uniq[g],],tol=0.001,topologyPreserve=TRUE),"SpatialPolygons")
+
+    # NAs or not
+    q1 <- Bioreg@data[[Bioreg_name]] == uniq[g]
+    q1[is.na(q1)]=FALSE
+
+    # Continue
+    tmp <- as(gSimplify(Bioreg[q1,],tol=0.001,topologyPreserve=TRUE),"SpatialPolygons")
     a=occ_coord_mod[which(ovo[,Bioreg_name]==uniq[g])]
     
     if(length(a)<3){
