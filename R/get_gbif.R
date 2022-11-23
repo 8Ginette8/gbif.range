@@ -57,6 +57,11 @@
 #' download attempts should the function request? Default is '10' with a 2 seconds interval
 #' between tries. If the attempts failed, an empty data.frame is return by default.
 #' @param error.skip Logical. Should the search process continues if ntries failed ?
+#' @param occ_samp Numeric. Determine how many GBIF occurrences will be sampled per geographic
+#' tiles of the fragmented study area. Default is the maximum number of GBIF observations found
+#' in a tile (i.e. ~100'000 records). A lower number may be set (<99'000) if the user only wants
+#' a sample of the species GBIF observations, hence increasing the download process and the
+#' generation of its range map if get_range() is employed afterwards.
 #' @param ... Additonnal parameters for the function cd_round() of CoordinateCleaner.
 #' @details Argument `grain` used for two distinct gbif records filtering. (1) Records filtering
 #' according to gbif 'coordinateUncertaintyInMeters'; every records uncertainty > grain/2
@@ -137,6 +142,7 @@ get_gbif = function(sp_name = NULL,
 					centroids = FALSE,
 					ntries=10,
 					error.skip=TRUE,
+					occ_samp=99000,
 					...) {
 
 
@@ -332,7 +338,7 @@ get_gbif = function(sp_name = NULL,
 		## Try the download first: may be request overload problems
 		go.tile = geo.ref[x]
 		gbif.search = try(
-			occ_data(taxonKey=sp.key,limit=99000,hasCoordinate=!no_xy,
+			occ_data(taxonKey=sp.key,limit=occ.samp,hasCoordinate=!no_xy,
 				hasGeospatialIssue=FALSE,geometry=go.tile),
 		silent=TRUE)
 
@@ -349,7 +355,7 @@ get_gbif = function(sp_name = NULL,
 					cat("Attempt",j+1,"...","\n")
 					j=j+1
 					gbif.search = try(
-						occ_data(taxonKey=sp.key,limit=99000,hasCoordinate=!no_xy,
+						occ_data(taxonKey=sp.key,limit=occ.samp,hasCoordinate=!no_xy,
 						hasGeospatialIssue=FALSE,geometry=go.tile),
 					silent=TRUE)
 					Sys.sleep(2)

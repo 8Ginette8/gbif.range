@@ -22,6 +22,7 @@ get_gbif(
   centroids = FALSE,
   ntries = 10,
   error.skip = TRUE,
+  occ_samp = 99000,
   ...
 )
 }
@@ -78,6 +79,12 @@ download attempts should the function request? Default is '10' with a 2 seconds 
 between tries. If the attempts failed, an empty data.frame is return by default.}
 
 \item{error.skip}{Logical. Should the search process continues if ntries failed ?}
+
+\item{occ_samp}{Numeric. Determine how many GBIF occurrences will be sampled per geographic
+tiles of the fragmented study area. Default is the maximum number of GBIF observations found
+in a tile (i.e. ~100'000 records). A lower number may be set (<99'000) if the user only wants
+a sample of the species GBIF observations, hence increasing the download process and the
+generation of its range map if get_range() is employed afterwards.}
 
 \item{...}{Additonnal parameters for the function cd_round() of CoordinateCleaner.}
 }
