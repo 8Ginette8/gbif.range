@@ -20,9 +20,11 @@
 #' be classified on a bioreg basis). Although whatever shapefile may be set as input, note
 #' that three ecoregions shapefiles are already included in the library: 'eco.earh' (for
 #' terrestrial species; Nature conservancy version adapted from Olson & al. 2001), 'eco.marine'
-#' (for coastal and reef species; Spalding & al. 2007) and 'eco.fresh' (for freshwater species;
-#' Abell & al. 2008). For deep ocean/sea species, 'eco.earth' may be used, but the polygon
-#' estimates will only be geographic. Default is 'eco.earth'.
+#' (for marine species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater species;
+#' Abell & al. 2008).For marine species, eco.earth may also be used if the user wants to
+#' represent the terrestrial range of species that also partially settle on mainland. For
+#' fresh water species, same may be done if the user considers that terrestrial ecoregions
+#' should be more representtaive of the species ecology.
 #' @param Bioreg_name Character. How is the slot containing the ecoregion names called?
 #' Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME').
 #' @param degrees_outlier Numeric. Distance threshold (degrees) for outlier classification.
