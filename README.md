@@ -76,14 +76,24 @@ We can also retrieve all the tiger scientific names (accepted and synonyms) that
 get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
-Same may be done with Delphinus delphis (a species with > 100'000 observations). ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough less precise, *occ_samp* allows to extract a subsample of *n* GBIF observations per created tiles over the study area⚠️:
+Let's now generate the distributional range map of Panthera tigris using the in-houe shapefile of terresterial ecoregions ('eco.earth'):
 
 ``` r
-obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # here the example is a sample of 1000 observations per geographic tile
-get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
 ```
 
-Let's now generate the distributional range map of Panthera tigris. Although whatever shapefile may be set as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terreterial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terresterial ecoregions should be more representtaive of the species ecology.
+Let's plot the result now:
+
+``` r
+plot(wrld_simpl,col="#bcbddc")
+plot(range.tiger,col="#238b45",add=TRUE)
+```
+
+![image](https://user-images.githubusercontent.com/43674773/198384578-f2faa3f6-abee-4391-b700-74b7bef43595.png)
+
+Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
+
+Although whatever shapefile may be set as input in get_range(), note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terreterial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terresterial ecoregions should be more representtaive of the species ecology.
 
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
@@ -107,20 +117,27 @@ eco.marine@data
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
 
+Let's repeat the process withthe marine species Delphinus delphis (> 100'000 observations). ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough less precise, *occ_samp* allows to extract a subsample of *n* GBIF observations per created tiles over the study area⚠️:
+
 ``` r
-range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
+obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # here the example is a sample of 1000 observations per geographic tile
+get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
-Let's plot the result now:
+Let's now generate the distributional range map of Panthera tigris using 'eco.marine' as ecoregion shapefile:
+
+``` r
+range.dd1 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast and deep sea
+range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast only
+range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Deep sea only
+```
+
+Let's now plot the first result:
 
 ``` r
 plot(wrld_simpl,col="#bcbddc")
-plot(range.tiger,col="#238b45",add=TRUE)
+plot(range.dd3,col="#238b45",add=TRUE)
 ```
-
-![image](https://user-images.githubusercontent.com/43674773/198384578-f2faa3f6-abee-4391-b700-74b7bef43595.png)
-
-Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
 ⚠️Finally, also note that in case of too many records, *get_range* can be used with a **sub-sample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
 
