@@ -76,7 +76,7 @@ We can also retrieve all the tiger scientific names (accepted and synonyms) that
 get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
-Let's now generate the distributional range map of Panthera tigris using the in-house shapefile of terresterial ecoregions ('eco.earth'):
+Let's now generate the distributional range map of Panthera tigris using the in-house shapefile of terresterial ecoregions (*eco.earth*):
 
 ``` r
 range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
@@ -93,7 +93,7 @@ plot(range.tiger,col="#238b45",add=TRUE)
 
 Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
-Although whatever shapefile may be set as input in get_range(), note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terreterial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terresterial ecoregions should be more representtaive of the species ecology.
+Although whatever shapefile may be set in *get_range()* as ecoregion input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terreterial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terresterial ecoregions should be more representtaive of the species ecology.
 
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
