@@ -76,10 +76,10 @@ We can also retrieve all the tiger scientific names (accepted and synonyms) that
 get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
-Same may be done with Delphinus delphis (a species with > 100'000 observations; notes that the download takes here longer):
+Same may be done with Delphinus delphis (a species with > 100'000 observations). Notes that the download takes here longer unless the parameter *occ_samp" is used. Altough less precise, tt allows to extract a subsample of *n* GBIF observations per created tiles over the study area:
 
 ``` r
-obs.dd = get_gbif("Delphinus delphis")
+obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # here the example is a sample of 1000 observations per geographic tile
 get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
