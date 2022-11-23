@@ -138,8 +138,8 @@ Let's now generate three range maps of Delphinus delphis using *eco.marine* as e
 
 ``` r
 range.dd1 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast and deep sea
-range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast only
-range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Deep sea only
+range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"ECOREGION") # Coast only
+range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"BIOME") # Deep sea only
 ```
 
 Let's now plot the first result (dolphin distribution on coasts and at sea):
