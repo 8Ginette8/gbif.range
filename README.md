@@ -89,12 +89,12 @@ Each ecoregion shapefile has one or more categories, which describe more or less
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco.fresh* has only one: 'FEOW_ID'.
 - *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels:
-
-    --> For PEOW (Pelagic provinces of the world): 'BIOME'.
+  
+  - For PEOW (Pelagic provinces of the world): 'BIOME'.
 
 ![image](https://user-images.githubusercontent.com/43674773/203577315-a313546c-7b8f-46ed-bddd-b73063279e89.png)
 
-    --> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
+  - For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
 ![image](https://user-images.githubusercontent.com/43674773/203575816-319f916a-79fd-43ab-8f73-941b6f8fbd96.png)
 
