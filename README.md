@@ -92,11 +92,11 @@ Each ecoregion shapefile has one or more categories, which describe more or less
   
   - For PEOW (Pelagic provinces of the world): 'BIOME'.
 
-![image](https://user-images.githubusercontent.com/43674773/203577315-a313546c-7b8f-46ed-bddd-b73063279e89.png)
+![image](https://user-images.githubusercontent.com/43674773/203577315-a313546c-7b8f-46ed-bddd-b73063279e89.png = 250x250)
 
   - For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
-![image](https://user-images.githubusercontent.com/43674773/203575816-319f916a-79fd-43ab-8f73-941b6f8fbd96.png)
+![image](https://user-images.githubusercontent.com/43674773/203575816-319f916a-79fd-43ab-8f73-941b6f8fbd96.png = 250x250)
 
 To access the polygons data in R:
 ``` r
