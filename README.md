@@ -53,7 +53,7 @@ library(gbif.range)
 
 ## Example
 
-# Terrestrial species
+### Terrestrial species
 
 Let's download worldwide the records of Panthera tigris only based on true observations:
 
@@ -95,7 +95,7 @@ plot(range.tiger,col="#238b45",add=TRUE)
 
 Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
-# In-house ecoregion shapefiles
+### Available ecoregions
 
 Although whatever shapefile may be set in *get_range()* as ecoregion input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terrestrial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terrestrial ecoregions should be more representtaive of the species ecology.
 
@@ -121,7 +121,7 @@ eco.marine@data
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
 
-# Marine species
+### Marine species
 
 Let's repeat the process with the marine species Delphinus delphis (> 100'000 observations).
 
