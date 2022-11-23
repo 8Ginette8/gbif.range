@@ -132,7 +132,7 @@ obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # here the example is a sam
 get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
-Let's now generate the distributional range map of Panthera tigris using *eco.marine* as ecoregion shapefile:
+Let's now generate three range maps of Delphinus delphis using *eco.marine* as ecoregion shapefile:
 
 ``` r
 range.dd1 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast and deep sea
