@@ -53,6 +53,8 @@ library(gbif.range)
 
 ## Example
 
+# Terrestrial species
+
 Let's download worldwide the records of Panthera tigris only based on true observations:
 
 ``` r
@@ -93,6 +95,8 @@ plot(range.tiger,col="#238b45",add=TRUE)
 
 Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
+# In-house ecoregion shapefiles
+
 Although whatever shapefile may be set in *get_range()* as ecoregion input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terrestrial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terrestrial ecoregions should be more representtaive of the species ecology.
 
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
@@ -117,14 +121,18 @@ eco.marine@data
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we choose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
 
-Let's repeat the process withthe marine species Delphinus delphis (> 100'000 observations). ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough less precise, *occ_samp* allows to extract a subsample of *n* GBIF observations per created tiles over the study area⚠️:
+# Marine species
+
+Let's repeat the process with the marine species Delphinus delphis (> 100'000 observations).
+
+⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area⚠️:
 
 ``` r
 obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # here the example is a sample of 1000 observations per geographic tile
 get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
-Let's now generate the distributional range map of Panthera tigris using 'eco.marine' as ecoregion shapefile:
+Let's now generate the distributional range map of Panthera tigris using *eco.marine* as ecoregion shapefile:
 
 ``` r
 range.dd1 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast and deep sea
@@ -139,7 +147,7 @@ plot(wrld_simpl,col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE)
 ```
 
-⚠️Finally, also note that in case of too many records, *get_range* can be used with a **sub-sample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
+⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
 
 ## Citation
 Yohann Chauvier; Oskar Hagen; Camille Albouy; Patrice Descombes; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - An R package to generate species range maps based on ecoregions and a user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352</a>
