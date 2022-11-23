@@ -327,7 +327,12 @@ get_gbif = function(sp_name = NULL,
 	#################### API Search ######################
 	######################################################
 
-	cat("...GBIF records of",sp_name,": download starting...","\n")
+	# Infromation messages
+	if (occ_samp!=99000) {
+		cat("...GBIF records of",sp_name,": download of sample of records starting...","\n")
+	} else {
+		cat("...GBIF records of",sp_name,": download of all records starting...","\n")
+	}
 
 	# Run the gbif search with the acceptedName per chosen tiles
 	batch.search =
