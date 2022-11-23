@@ -86,15 +86,15 @@ get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'al
 Let's now generate the distributional range map of Panthera tigris. Although whatever shapefile may be set as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terreterial range of species that also partially settle on the continent. For fresh water species, same may be done if the user considers that terresterial ecoregions should be more representtaive of the species ecology.
 
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
-- *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
-- *eco.fresh* has only one: 'FEOW_ID'.
-- *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels:
+--> *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
+--> *eco.fresh* has only one: 'FEOW_ID'.
+--> *eco.marine* contains two types of marine ecoregions with common ('PROVINC' and 'REALM') and distinct levels:
 
---> For PEOW (Pelagic provinces of the world): 'BIOME'.
+- For PEOW (Pelagic provinces of the world): 'BIOME'.
 
-![image](https://user-images.githubusercontent.com/43674773/203576996-6ac50ee6-cef5-44bb-8801-ec7d57f1a085.png)
+![image](https://user-images.githubusercontent.com/43674773/203577315-a313546c-7b8f-46ed-bddd-b73063279e89.png)
 
---> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
+- For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
 ![image](https://user-images.githubusercontent.com/43674773/203575816-319f916a-79fd-43ab-8f73-941b6f8fbd96.png)
 
