@@ -140,11 +140,11 @@ range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast o
 range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Deep sea only
 ```
 
-Let's now plot the first result:
+Let's now plot the first result (dolphin distribution on coasts and at sea):
 
 ``` r
 plot(wrld_simpl,col="#bcbddc")
-plot(range.dd3,col="#238b45",add=TRUE)
+plot(range.dd1,col="#238b45",add=TRUE)
 ```
 
 ⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
