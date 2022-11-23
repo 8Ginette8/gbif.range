@@ -142,7 +142,7 @@ range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"ECOREGION") # Coast
 range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"BIOME") # Deep sea only
 ```
 
-The three results are pretty similar beacause most of the observations are close to the coast. But let's plot the third result:
+The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
 
 ``` r
 plot(wrld_simpl,col="#bcbddc")
