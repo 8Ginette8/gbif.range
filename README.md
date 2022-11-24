@@ -41,6 +41,7 @@ The function first deletes outliers from the observation dataset and then create
   *geometry* that uses a POLYGON() argument.
   - *get_doi()*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
   for a set of several gbif species datasets.
+  - *make_ecoregion()*: A function to create custom ecoregions based on environmental layers.
 
 ## Installation
 
@@ -55,7 +56,7 @@ library(gbif.range)
 
 ### Terrestrial species
 
-Let's download worldwide the records of Panthera tigris only based on true observations:
+Let's download worldwide the records of *Panthera tigris* only based on true observations:
 
 ``` r
 # Download
@@ -76,7 +77,7 @@ Note that an additional filtering needs here to be done as one observation is fo
 get_taxonomy("Panthera tigris",all=FALSE)
 ```
 
-Let's now generate the distributional range map of Panthera tigris using the in-house shapefile of terresterial ecoregions (*eco.earth*):
+Let's now generate the distributional range map of *Panthera tigris* using the in-house shapefile of terresterial ecoregions (*eco.earth*):
 
 ``` r
 range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
@@ -91,7 +92,7 @@ plot(range.tiger,col="#238b45",add=TRUE)
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
 
-Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
+Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of *Panthera tigris* to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
 ### Available ecoregions
 
@@ -117,11 +118,31 @@ eco.fresh@data
 eco.marine@data
 ```
 
-Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we wanted to obtain a more fine distribution:
+Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since *Panthera tigris* is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we wanted to obtain a more fine distribution. Additonally, if the in-house ecoregion shapefiles are too coarse for a given geographic region (e.g., for local studies) or a shapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
+
+``` r
+# Let's download the observations of Arctostaphylos alpinus in the European Alps:
+obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
+
+# Create an ecoregion layer of 50 classes, based on 12 environmental spatial layers:
+my.eco = make_ecoregion(rst,50)
+
+# Create the range map based on our custom ecoregion
+range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
+
+# Plot
+plot(rst[[1]])
+plot(vect(shp.lonlat),add=TRUE)
+plot(range.arcto,add=TRUE,col="darkgreen")
+points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+
+![image](https://user-images.githubusercontent.com/43674773/203855955-b17b45ec-063d-4dfe-9a6b-c944422b60d7.png)
+
+```
 
 ### Marine species
 
-Let's repeat the process with the marine species Delphinus delphis (> 100'000 observations).
+Let's repeat the process with the marine species *Delphinus delphis* (> 100'000 observations).
 
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area⚠️:
 
@@ -130,7 +151,7 @@ obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # Here the example is a sam
 get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
-Let's now generate three range maps of Delphinus delphis using *eco.marine* as ecoregion shapefile:
+Let's now generate three range maps of *Delphinus delphis* using *eco.marine* as ecoregion shapefile:
 
 ``` r
 range.dd1 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast and deep sea
