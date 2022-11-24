@@ -108,7 +108,7 @@ Although whatever shapefile may be set in *get_range()* as input, note that thre
 
 <img width=80% height=80% src="https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png">
 
-Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found here <a href="https://data.unep-wcmc.org/datasets/38">here</a>.
+Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found <a href="https://data.unep-wcmc.org/datasets/38">here</a>. This version is available along the one presents in the package, and posesses more detailed ecoregion polygons along the coasts.
 
 To access the polygon data in R:
 ``` r
