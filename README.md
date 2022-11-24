@@ -151,7 +151,7 @@ points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",c
 ```
 ![image](https://user-images.githubusercontent.com/43674773/203615504-063be113-26f6-4b2f-8c28-dc32a4eab220.png)
 
-Althought the range map follows the sampling pattern of GBIF (https://www.gbif.org/species/8324617), we see that more GBIF information might have been needed to improve it. *occ_samp* must be therefore increased or removed.
+Althought the range map follows the sampling pattern of GBIF (https://www.gbif.org/species/8324617), we see that more GBIF information might have been needed to improve it. Therefore, *occ_samp* must be in this case increased or removed.
 
 ⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
 
