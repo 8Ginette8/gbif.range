@@ -112,7 +112,7 @@ Each ecoregion shapefile has one or more categories, which describe more or less
 
 ![image](https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png)
 
-Note that a more detail version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found here https://data.unep-wcmc.org/datasets/38.
+Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found here https://data.unep-wcmc.org/datasets/38.
 
 To access the polygon data in R:
 ``` r
