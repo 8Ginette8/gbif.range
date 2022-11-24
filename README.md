@@ -65,10 +65,10 @@ obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","M
 library(maptools)
 data(wrld_simpl)
 plot(wrld_simpl,col="#bcbddc")
-points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4570",cex=3)
+points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
-![image](https://user-images.githubusercontent.com/43674773/198385200-5734efad-db3a-4278-937e-b564f66d7d88.png)
+![image](https://user-images.githubusercontent.com/43674773/203769158-5a9622b3-c6b0-49bd-b721-f5761a41e7b0.png)
 
 Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue. We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
 
