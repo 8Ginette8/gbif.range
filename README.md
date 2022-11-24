@@ -70,9 +70,7 @@ points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4570",c
 
 ![image](https://user-images.githubusercontent.com/43674773/198385200-5734efad-db3a-4278-937e-b564f66d7d88.png)
 
-Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue.
-
-We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
+Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue. We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
 
 ``` r
 get_taxonomy("Panthera tigris",all=FALSE)
