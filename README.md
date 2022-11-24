@@ -107,7 +107,7 @@ Each ecoregion shapefile has one or more categories, which describe more or less
 > For PEOW (Pelagic provinces of the world): 'BIOME'.
   
 ![image](https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png)
-[width=50% height=50% src="https://user-images.githubusercontent.com/43674773/200117096-82654280-5e77-4097-936b-5efe01100422.png">]
+[<img width=50% height=50% src="https://user-images.githubusercontent.com/43674773/200117096-82654280-5e77-4097-936b-5efe01100422.png">]
  
 > For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
