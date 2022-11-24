@@ -135,10 +135,9 @@ plot(rst[[1]])
 plot(vect(shp.lonlat),add=TRUE)
 plot(range.arcto,add=TRUE,col="darkgreen")
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+```
 
 ![image](https://user-images.githubusercontent.com/43674773/203855955-b17b45ec-063d-4dfe-9a6b-c944422b60d7.png)
-
-```
 
 ### Marine species
 
