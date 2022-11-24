@@ -120,6 +120,8 @@ eco.marine@data
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since *Panthera tigris* is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we wanted to obtain a more fine distribution.
 
+### Custom ecoregions
+
 Additonally, if the in-house ecoregion shapefiles are too coarse for a given geographic region (e.g., for local studies) or a shapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
 
 ``` r
