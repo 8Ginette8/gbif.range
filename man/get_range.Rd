@@ -25,11 +25,12 @@ get_range(
 \item{occ_coord}{get_gbif() output or SpatialPoints object.}
 
 \item{Bioreg}{SpatialPolygonsDataFrame containg different ecoregions (convex hulls will
-be classified on a bioreg basis). Although whatever shapefile may be set as input, note
-that three ecoregions shapefiles are already included in the library: 'eco.earh' (for
-terrestrial species; Nature conservancy version adapted from Olson & al. 2001), 'eco.marine'
-(for marine species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater species;
-Abell & al. 2008).For marine species, eco.earth may also be used if the user wants to
+be classified on a bioreg basis). Note that this parameter may be fed with an external,
+generated (function make_ecoregion) or in-house ecoregion shapefile. Three in-house
+shapefiles are already included in the library: 'eco.earh' (for terrestrial species;
+Nature conservancy version adapted from Olson & al. 2001), 'eco.marine' (for marine
+species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater species;
+Abell & al. 2008). For marine species, eco.earth may also be used if the user wants to
 represent the terrestrial range of species that also partially settle on mainland. For
 fresh water species, same may be done if the user considers that terrestrial ecoregions
 should be more representtaive of the species ecology.}
@@ -65,15 +66,16 @@ e.g.,  = 0.1° if res = 10. Default is 10.}
 A Shapefile or a SpatRaster.
 }
 \description{
-Estimates species ranges based on occurrence data (GBIF or not) and ecoregions.
-It first deletes outliers from the observation dataset and then creates a polygon
-(convex hull) with a user specified buffer around all the observations of one ecoregion.
-If there is only one observation in an ecoregion, a buffer around this point
-will be created. If all points in an ecoregion are on a line, the function will also
-create a buffer around these points, however, the buffer size increases with the number
-of points in the line. Finally, also note that in case of too many records, get_range can
-be used with a sub-sample of species observations to ensure a faster polygon process and/or
-to overcome potential RAM crash of the function.
+Estimates species ranges based on occurrence data (GBIF or not) and ecoregions
+(may be an external, in-house or make_ecoregion() input). It first deletes outliers
+from the observation dataset and then creates a polygon (convex hull) with a user
+specified buffer around all the observations of one ecoregion. If there is only
+one observation in an ecoregion, a buffer around this point will be created. If
+all points in an ecoregion are on a line, the function will also create a buffer
+around these points, however, the buffer size increases with the number of points
+in the line. Finally, also note that in case of too many records, get_range can be
+used with a sub-sample of species observations to ensure a faster polygon process
+and/or to overcome potential RAM crash of the function.
 }
 \details{
 Ecoregions cover relatively large areas of land or water, and contain characteristic,
