@@ -238,8 +238,8 @@ get_gbif = function(sp_name = NULL,
 	{
 		cat(">>>>>>>> Too many records: Retrieving relevant geographic tiles...","\n")
 
-		# Start with 100 tiles
-		tile.100 = make_tiles(geo,Ntiles=100,sext=TRUE)
+		# Start with 200 tiles
+		tile.100 = make_tiles(geo,Ntiles=200,sext=TRUE)
 		geo.tiles = tile.100[[1]]
 		geo.meta = lapply(tile.100[[2]],function(x) x[])
 
