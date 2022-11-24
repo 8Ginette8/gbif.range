@@ -102,7 +102,7 @@ Although whatever shapefile may be set in *get_range()* as input, note that thre
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco.fresh* has only one: 'FEOW_ID'.
-- *eco.marine* contains two types of marine ecoregions with **common** (**should be used**; 'PROVINC' and 'REALM') and distinct levels:
+- *eco.marine* contains a mix of two types of marine ecoregions, with **common** (**should be used**; 'PROVINC' and 'REALM') and distinct levels:
   
 > For PEOW (Pelagic provinces of the world): 'BIOME'.
   
