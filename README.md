@@ -100,7 +100,7 @@ Although whatever shapefile may be set in *get_range()* as input, note that thre
 - *eco.fresh* has only one: 'FEOW_ID'.
 - *eco.marine* contains a mix of two types of marine ecoregions, with **common** ('PROVINC' and 'REALM') and distinct levels:
   
-> For PEOW (Pelagic provinces of the world): 'BIOME'.
+> For PPOW (Pelagic provinces of the world): 'BIOME'.
   
 <img width=80% height=80% src="https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png">
  
