@@ -89,7 +89,7 @@ plot(wrld_simpl,col="#bcbddc")
 plot(range.tiger,col="#238b45",add=TRUE)
 ```
 
-![image](https://user-images.githubusercontent.com/43674773/198384578-f2faa3f6-abee-4391-b700-74b7bef43595.png)
+![image](https://user-images.githubusercontent.com/43674773/203769355-57fc7462-695c-415f-bc34-ae35fbfb31da.png)
 
 Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
