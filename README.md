@@ -102,15 +102,15 @@ Although whatever shapefile may be set in *get_range()* as input, note that thre
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco.fresh* has only one: 'FEOW_ID'.
-- *eco.marine* contains a mix of two types of marine ecoregions, with **common** (**should be used**; 'PROVINC' and 'REALM') and distinct levels:
+- *eco.marine* contains a mix of two types of marine ecoregions, with **common** ('PROVINC' and 'REALM') and distinct levels:
   
 > For PEOW (Pelagic provinces of the world): 'BIOME'.
   
-![image](https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png)
+![image](https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png width=50% height=50%)
   
 > For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
-![image](https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png)
+![image](https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png width=50% height=50%)
 
 Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found here https://data.unep-wcmc.org/datasets/38.
 
@@ -149,7 +149,7 @@ plot(wrld_simpl,col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE)
 points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
-![image](https://user-images.githubusercontent.com/43674773/203615504-063be113-26f6-4b2f-8c28-dc32a4eab220.png width="150" height="280")
+![image](https://user-images.githubusercontent.com/43674773/203615504-063be113-26f6-4b2f-8c28-dc32a4eab220.png)
 
 Althought our result map follows the sampling pattern of GBIF (https://www.gbif.org/species/8324617), the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
 
