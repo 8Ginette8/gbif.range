@@ -65,14 +65,12 @@ obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","M
 library(maptools)
 data(wrld_simpl)
 plot(wrld_simpl,col="#bcbddc")
-points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4570",cex=3)
+points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
-![image](https://user-images.githubusercontent.com/43674773/198385200-5734efad-db3a-4278-937e-b564f66d7d88.png)
+![image](https://user-images.githubusercontent.com/43674773/203770189-59a8cf8c-b2c2-4e85-ac87-90d8fd23f8fc.png)
 
-Note that an additional filtering needs here to be done as one observation is found in the US. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue.
-
-We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
+Note that an additional filtering needs here to be done as one observation is found in the 🔷US🔷. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue. We can also retrieve all the tiger scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
 
 ``` r
 get_taxonomy("Panthera tigris",all=FALSE)
@@ -91,26 +89,26 @@ plot(wrld_simpl,col="#bcbddc")
 plot(range.tiger,col="#238b45",add=TRUE)
 ```
 
-![image](https://user-images.githubusercontent.com/43674773/198384578-f2faa3f6-abee-4391-b700-74b7bef43595.png)
+![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
 
 Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of Panthera tigris to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in *get_range()* as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be done if the user considers that terrestrial ecoregions should be more representtaive of the species ecology.
-
-Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
+Although whatever shapefile may be set in *get_range()* as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be done if the user considers that terrestrial ecoregions should be more representtaive of the species ecology. Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco.fresh* has only one: 'FEOW_ID'.
-- *eco.marine* contains two types of marine ecoregions with **common** (**should be used**; 'PROVINC' and 'REALM') and distinct levels:
+- *eco.marine* contains a mix of two types of marine ecoregions, with **common** ('PROVINC' and 'REALM') and distinct levels:
   
-> For PEOW (Pelagic provinces of the world): 'BIOME'.
+> For PPOW (Pelagic provinces of the world): 'BIOME'.
   
-![image](https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png)
-  
+<img width=80% height=80% src="https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png">
+ 
 > For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
-![image](https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png)
+<img width=80% height=80% src="https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png">
+
+Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found <a href="https://data.unep-wcmc.org/datasets/38">here</a>. This version is available along the one presents in the package, and posesses more detailed ecoregion polygons along the coasts.
 
 To access the polygon data in R:
 ``` r
@@ -119,7 +117,7 @@ eco.fresh@data
 eco.marine@data
 ```
 
-Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we want to obtain a more fine distribution:
+Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since Panthera tigris is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we wanted to obtain a more fine distribution:
 
 ### Marine species
 
@@ -128,7 +126,7 @@ Let's repeat the process with the marine species Delphinus delphis (> 100'000 ob
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area⚠️:
 
 ``` r
-obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # here the example is a sample of 1000 observations per geographic tile
+obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # Here the example is a sample of 1000 observations per geographic tile
 get_taxonomy("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
@@ -136,16 +134,20 @@ Let's now generate three range maps of Delphinus delphis using *eco.marine* as e
 
 ``` r
 range.dd1 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast and deep sea
-range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast only
-range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Deep sea only
+range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"ECOREGION") # Coast only
+range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"BIOME") # Deep sea only
 ```
 
-Let's now plot the first result (dolphin distribution on coasts and at sea):
+The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
 
 ``` r
 plot(wrld_simpl,col="#bcbddc")
-plot(range.dd1,col="#238b45",add=TRUE)
+plot(range.dd3,col="#238b45",add=TRUE)
+points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
+![image](https://user-images.githubusercontent.com/43674773/203615504-063be113-26f6-4b2f-8c28-dc32a4eab220.png)
+
+Althought our result map follows the sampling pattern of GBIF (https://www.gbif.org/species/8324617), the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
 
 ⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
 
