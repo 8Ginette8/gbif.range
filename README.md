@@ -80,7 +80,7 @@ get_taxonomy("Panthera tigris",all=FALSE)
 Let's now generate the distributional range map of *Panthera tigris* using the in-house shapefile of terresterial ecoregions (*eco.earth*):
 
 ``` r
-range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
+range.tiger = get_range(sp_name="Panthera tigris",occ_coord=obs.pt,Bioreg=eco.earth,Bioreg_name="ECO_NAME")
 ```
 
 Let's plot the result now:
@@ -132,7 +132,8 @@ obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 my.eco = make_ecoregion(rst,50)
 
 # Create the range map based on our custom ecoregion
-range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
+(always set 'EcoRegion' as a name when using a make_ecoregion() output:
+range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,Bioreg_name="EcoRegion",res=20)
 
 # Plot
 plot(rst[[1]])
