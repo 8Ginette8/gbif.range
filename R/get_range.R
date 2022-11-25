@@ -15,7 +15,7 @@
 #' and/or to overcome potential RAM crash of the function.
 #' 
 #' @param sp_name Character. Species name e.g., 'Anemone nemorosa'.
-#' @param occ_coord get_gbif() output or SpatialPoints object.
+#' @param occ_coord get_gbif() output or SpatialPoints object (WGS84/lonlat).
 #' @param Bioreg SpatialPolygonsDataFrame containg different ecoregions (convex hulls will
 #' be classified on a bioreg basis). Note that this parameter may be fed with an external,
 #' generated (function make_ecoregion) or in-house ecoregion shapefile. Three in-house
@@ -27,7 +27,8 @@
 #' fresh water species, same may be done if the user considers that terrestrial ecoregions
 #' should be more representtaive of the species ecology.
 #' @param Bioreg_name Character. How is the slot containing the ecoregion names called?
-#' Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME').
+#' Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME'). Note that 'EcoRegion'
+#' must always be used when using a make_ecoregion() output.
 #' @param degrees_outlier Numeric. Distance threshold (degrees) for outlier classification.
 #' If the nearest minimal distance to the next point is larger than this threshold, it will be
 #' considered as an outlier.

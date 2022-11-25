@@ -22,7 +22,7 @@ get_range(
 \arguments{
 \item{sp_name}{Character. Species name e.g., 'Anemone nemorosa'.}
 
-\item{occ_coord}{get_gbif() output or SpatialPoints object.}
+\item{occ_coord}{get_gbif() output or SpatialPoints object (WGS84/lonlat).}
 
 \item{Bioreg}{SpatialPolygonsDataFrame containg different ecoregions (convex hulls will
 be classified on a bioreg basis). Note that this parameter may be fed with an external,
@@ -36,7 +36,8 @@ fresh water species, same may be done if the user considers that terrestrial eco
 should be more representtaive of the species ecology.}
 
 \item{Bioreg_name}{Character. How is the slot containing the ecoregion names called?
-Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME').}
+Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME'). Note that 'EcoRegion'
+must always be used when using a make_ecoregion() output.}
 
 \item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier classification.
 If the nearest minimal distance to the next point is larger than this threshold, it will be
