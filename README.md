@@ -122,7 +122,7 @@ Which level should you pick depends on your questions and which level of the spe
 
 ### Custom ecoregions
 
-Additonally, if the in-house ecoregion shapefiles are too coarse for a given geographic region (e.g., for local studies) or a shapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
+Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or a shapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
