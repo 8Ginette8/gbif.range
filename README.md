@@ -2,7 +2,7 @@
 
 [<img align="right" width="250" height="290" src="https://user-images.githubusercontent.com/43674773/200117096-82654280-5e77-4097-936b-5efe01100422.png">](https://www.gbif.org)
 
-Although species ranges may be obtained using expert maps (IUCN - https://www.iucnredlist.org/resources/spatial-data-download, EUFORGEN - https://www.euforgen.org/species/) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise as well as many species observations.
+Although species ranges may be obtained using expert maps (e.g., <a href="https://www.iucnredlist.org/resources/spatial-data-download">IUCN</a> and <a href="https://www.euforgen.org/species/">EUFORGEN</a>) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise as well as many species observations.
 
 When unavailable, such information may be extracted from the Global Biodiversity Information facility (GBIF), the largest public data repository inventorying georeferenced species observations worldwide (https://www.gbif.org/). However, retrieving GBIF records at large scale in R may be tedious, if users are unaware of the specific set of functions and parameters that need to be employed within the *rgbif* library, and because of the library's existing limitations on the number of downloaded records (<100'000) if no data request is made.
 
@@ -13,13 +13,13 @@ _(source: globe image adapted by LenaCassie-Studio from Akhil Komath from the No
 ## Description
 ### GBIF wrapper
 
-One the one hand, *get_gbif()* is a wrapper which allows the whole observations of a given species scientific name (accepted and synonym names) to be automatically retrieved, and improves the data accessibility of the *rgbif* R package (https://cran.r-project.org/web/packages/rgbif/index.html). The user download hard limit of *rgbif* is a maximum of 100,000 of species observations in one go if the easy-to-use interactive functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with *occ_download()*, https://www.gbif.org/developer/occurrence). This impends the fast accessibility to the GBIF database when large observational datasets for many species and regions of the world are needed, specifically in scientific fields related to macroecology, modelling or satellite imagery. *get_gbif()* therefore bypasses this limit by intuitively using geographic parameters from *occ_data()* in *rgbif*, the *terra* R package and by adopting a dynamic moving window process allowing the user's study area of interest to be automatically fragmented in several tiles that always include < 100,000 observations.
+One the one hand, *get_gbif()* is a wrapper which allows the whole observations of a given species scientific name (accepted and synonym names) to be automatically retrieved, and improves the data accessibility of the *rgbif* R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>). The user download hard limit of *rgbif* is a maximum of 100,000 of species observations in one go if the easy-to-use interactive functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with *occ_download()*, <a href="https://www.gbif.org/developer/occurrence">see</a>). This impends the fast accessibility to the GBIF database when large observational datasets for many species and regions of the world are needed, specifically in scientific fields related to macroecology, modelling or satellite imagery. *get_gbif()* therefore bypasses this limit by intuitively using geographic parameters from *occ_data()* in *rgbif*, the *terra* R package and by adopting a dynamic moving window process allowing the user's study area of interest to be automatically fragmented in several tiles that always include < 100,000 observations.
 
-On the other hand, *get_gbif()* also implements easy-to-use preliminary filtering options implemented during the download so that users save post-processing time in data cleaning. 13 filters are available. One is set by default in *get_gbif()* (hasGeospatialIssue = FALSE) and 12 can be chosen independently, including two that are based on the *CoordinateCleaner* R package (https://cran.r-project.org/web/packages/CoordinateCleaner/index.html). It is important to note that, although a strong records filtering may be undertaken with *get_gbif()*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *get_gbif* outputs.
+On the other hand, *get_gbif()* also implements easy-to-use preliminary filtering options implemented during the download so that users save post-processing time in data cleaning. 13 filters are available. One is set by default in *get_gbif()* (hasGeospatialIssue = FALSE) and 12 can be chosen independently, including two that are based on the *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>). It is important to note that, although a strong records filtering may be undertaken with *get_gbif()*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *get_gbif* outputs.
 
 ### Range function
 
-*get_range()* estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and ecoregions. Ecoregions cover relatively large areas of land or water, and contain characteristic, geographically distinct assemblages of natural communities sharing a large majority of species, dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that characterise an ecoregion tends to be distinct from that of other ecoregions (https://en.wikipedia.org/wiki/Ecoregion).
+*get_range()* estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and ecoregions. <a href="https://en.wikipedia.org/wiki/Ecoregion">Ecoregions</a> cover relatively large areas of land or water, and contain characteristic, geographically distinct assemblages of natural communities sharing a large majority of species, dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that characterise an ecoregion tends to be distinct from that of other ecoregions.
 
 The function first deletes outliers from the observation dataset and then creates a polygon (convex hull) with a user specified buffer around all the observations of one ecoregion. If there is only one observation in a ecoregion, a buffer around this point will be created. If all points in a ecoregion are on a line, the function will also create a buffer around these points, however, the buffer size increases with the number of points in the line. More details to come...
 
@@ -80,7 +80,7 @@ get_taxonomy("Panthera tigris",all=FALSE)
 Let's now generate the distributional range map of *Panthera tigris* using the in-house shapefile of terresterial ecoregions (*eco.earth*):
 
 ``` r
-range.tiger = get_range("Panthera tigris",obs.pt,eco.earth,"ECO_NAME")
+range.tiger = get_range(sp_name="Panthera tigris",occ_coord=obs.pt,Bioreg=eco.earth,Bioreg_name="ECO_NAME")
 ```
 
 Let's plot the result now:
@@ -96,7 +96,7 @@ Interestingly no tiger range was found in the US. Our *get_range* default parame
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in *get_range()* as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be done if the user considers that terrestrial ecoregions should be more representtaive of the species ecology. Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
+Although whatever shapefile may be set in *get_range()* as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be done if the user considers that terrestrial ecoregions should be more representtaive of the species ecology. Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
 - *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco.fresh* has only one: 'FEOW_ID'.
 - *eco.marine* contains a mix of two types of marine ecoregions, with **common** ('PROVINC' and 'REALM') and distinct levels:
@@ -109,7 +109,7 @@ Although whatever shapefile may be set in *get_range()* as input, note that thre
 
 <img width=80% height=80% src="https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png">
 
-Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found <a href="https://data.unep-wcmc.org/datasets/38">here</a>. This version is available along the one presents in the package, and posesses more detailed ecoregion polygons along the coasts.
+Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found <a href="https://data.unep-wcmc.org/datasets/38">here</a>. This version is available along *eco.marine*, and describes more detailed ecoregions along the coasts.
 
 To access the polygon data in R:
 ``` r
@@ -120,7 +120,9 @@ eco.marine@data
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since *Panthera tigris* is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we wanted to obtain a more fine distribution.
 
-Additonally, if the in-house ecoregion shapefiles are too coarse for a given geographic region (e.g., for local studies) or a shapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
+### Custom ecoregions
+
+Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or a shapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
@@ -130,7 +132,8 @@ obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 my.eco = make_ecoregion(rst,50)
 
 # Create the range map based on our custom ecoregion
-range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
+# (always set 'EcoRegion' as a name when using a make_ecoregion() output):
+range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,Bioreg_name="EcoRegion",res=20)
 
 # Plot
 plot(rst[[1]])
@@ -169,7 +172,7 @@ points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",c
 ```
 ![image](https://user-images.githubusercontent.com/43674773/203615504-063be113-26f6-4b2f-8c28-dc32a4eab220.png)
 
-Althought our result map follows the sampling pattern of GBIF (https://www.gbif.org/species/8324617), the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
+Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
 
 ⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
 
