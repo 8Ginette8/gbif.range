@@ -146,7 +146,7 @@ points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470
 
 ### Marine species
 
-Let's repeat the process with the marine species *Delphinus delphis* (> 100'000 observations).
+Let's reapply the same process as for Panthera tigris, but with the marine species *Delphinus delphis* (> 100'000 observations).
 
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area⚠️:
 
