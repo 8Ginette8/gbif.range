@@ -57,31 +57,42 @@ get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
       syn.child = name_usage(accep.key,data="children")$data
 
       # Combine everything and search for related names (i.e. other string version)
-      all.key = suppressWarnings(c(accep.name$key,syn.syn$key,syn.child$key))
-      all.version = unlist(lapply(all.key,function(x){
-        suppressWarnings(name_usage(x,data="related")$data$scientificName)
-      }))
+      all.key = suppressWarnings(c(accep.key,syn.syn$key,syn.child$key))
+      all.version = lapply(all.key,function(x){
+        out = suppressWarnings(name_usage(x,data="related")$data$scientificName)
+        if (is.null(out)){
+          return(NULL)
+        } else {
+          return(data.frame(key=x,scientificName=out))
+        }
+      })
 
       # Extract all names
-      a.n = suppressWarnings(accep.name$scientificName)
-      s.n = suppressWarnings(syn.syn$scientificName)
-      c.n = suppressWarnings(syn.child$scientificName)
-      r.n = suppressWarnings(unique(all.version))
-      all.names = c(a.n,s.n,c.n,r.n)
+      a.n = suppressWarnings(accep.name[,c("key","scientificName")])
+      a.n$key = accep.key
+      s.n = suppressWarnings(syn.syn[,c("key","scientificName")])
+      c.n = suppressWarnings(syn.child[,c("key","scientificName")])
+      r.n = suppressWarnings(unique(do.call("rbind",all.version)))
+      all.names = rbind(a.n,s.n,c.n,r.n)
 
       # Extract all names and infos in a data.frame
-      out = data.frame(Names = all.names,
-        Status = c("ACCEPTED",
-                 rep("SYNONYM",length(s.n)),
-                 rep("CHILDREN",length(c.n)),
-                 rep("RELATED",length(r.n))))
+      out = data.frame(key=all.names$key,
+        scientificName=all.names$scientificName,
+        status=c("ACCEPTED",
+                rep("SYNONYM",nrow(s.n)),
+                rep("CHILDREN",nrow(c.n)),
+                rep("RELATED",nrow(r.n))))
+
+      return(out[!duplicated(out[,2]),])
     
     } else {
 
       # Extract accepted names and synonyms
-      out = data.frame(Names = suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName)),
-        Status = c("ACCEPTED",rep("SYNONYM",length(syn.syn$scientificName))))
+      out = data.frame(key=suppressWarnings(c(accep.key,syn.syn$key)),
+        scientificName=suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName)),
+        status=c("ACCEPTED",rep("SYNONYM",length(syn.syn$scientificName))))
     }
-    return(out)
+    
+    return(out[!duplicated(out[,2]),])
 }
 
