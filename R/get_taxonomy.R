@@ -13,7 +13,8 @@
 #' @param all Logical. Default is FALSE. Should all species names be retrieved or only
 #' the accepted name and its synonyms?
 #' 
-#' @return Data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status.
+#' @return Data.frame with three columns: (1) GBIF taxonomic key, (2) scientificName and
+#' (3) Backbone Taxonomy Status.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735

@@ -16,7 +16,8 @@ threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
 the accepted name and its synonyms?}
 }
 \value{
-Data.frame with two columns: (1) Names and (2) Backbone Taxonomy Status.
+Data.frame with three columns: (1) GBIF taxonomic key, (2) scientificName and
+(3) Backbone Taxonomy Status.
 }
 \description{
 Generates, based on a given species name, a list of all its scientific names
