@@ -114,7 +114,8 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
       cat("Generating polygons...","\n")
       topoly = as(topoly, "Spatial")
       topoly = suppressWarnings(gBuffer(topoly,byid=TRUE,width=0))
-      topoly@data=data.frame(topoly@data,EcoRegion=as.character(1:nrow(topoly@data)))
+      topoly@data = data.frame(topoly@data,EcoRegion=as.character(1:nrow(topoly@data)))
+      names(topoly)[1] = "CLARA"
 
       if (!raster&path=="") {
         return(topoly)
