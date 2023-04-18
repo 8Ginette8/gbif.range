@@ -1,4 +1,4 @@
-# gbif.range
+# gbif.range R package
 
 *gbif.range - An R package to generate species range maps based on ecoregions and a user-friendly GBIF wrapper*
 
