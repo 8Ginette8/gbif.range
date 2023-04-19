@@ -91,7 +91,7 @@ range.tiger = get_range(sp_name="Panthera tigris",
 Let's plot the result now:
 
 ``` r
-plot(wrld_simpl,col="#bcbddc")
+plot(ne_countries(type = "countries"),col="#bcbddc")
 plot(range.tiger,col="#238b45",add=TRUE)
 ```
 
