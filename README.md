@@ -62,7 +62,8 @@ Let's download worldwide the records of *Panthera tigris* only based on true obs
 
 ``` r
 # Download
-obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+obs.pt = get_gbif(sp_name="Panthera tigris",
+                  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
 library(rnaturalearth)
@@ -81,7 +82,10 @@ get_taxonomy("Panthera tigris",all=FALSE)
 Let's now generate the distributional range map of *Panthera tigris* using the in-house shapefile of terresterial ecoregions (*eco.earth*):
 
 ``` r
-range.tiger = get_range(sp_name="Panthera tigris",occ_coord=obs.pt,Bioreg=eco.earth,Bioreg_name="ECO_NAME")
+range.tiger = get_range(sp_name="Panthera tigris",
+                        occ_coord=obs.pt,
+                        Bioreg=eco.earth,
+                        Bioreg_name="ECO_NAME")
 ```
 
 Let's plot the result now:
