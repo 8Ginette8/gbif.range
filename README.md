@@ -171,7 +171,7 @@ range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"BIOME") # Deep sea 
 The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
 
 ``` r
-plot(wrld_simpl,col="#bcbddc")
+plot(ne_countries(type = "countries"),col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE)
 points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
