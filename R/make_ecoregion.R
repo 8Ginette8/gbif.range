@@ -13,8 +13,8 @@
 #' spatial data, and classify it in clusters.
 #'
 #' @param env Object of class SpatRaster, RasterBrick or RasterStack of desired
-#' resolution and extent defining the study area. Used to generate the map of
-#' clusters needed to summarize the environmental space of the study area.
+#' resolution, crs and extent defining the study area. Used to generate a map of
+#' clusters summarizing the environmental space of the study area.
 #' @param nclass Numeric, How many number of environmental classes should have
 #' the output?
 #' @param path Character. Folder path where the output should be saved. Default
@@ -112,10 +112,12 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
 
       # For now, because get_range not yet compatible with Spatvect
       cat("Generating polygons...","\n")
-      topoly = as(topoly, "Spatial")
-      topoly = suppressWarnings(gBuffer(topoly,byid=TRUE,width=0))
-      topoly@data = data.frame(topoly@data,EcoRegion=as.character(1:nrow(topoly@data)))
-      names(topoly)[1] = "CLARA"
+      names(topoly)="CLARA"
+      topoly$EcoRegion=as.character(1:nrow(data.frame(topoly)))
+
+      # Testing if polygons are valid and correct if not
+      topoly = vect(st_make_valid(sf::st_as_sf(topoly)))
+      topoly = terra::buffer(topoly,width=0) 
 
       if (!raster&path=="") {
         return(topoly)

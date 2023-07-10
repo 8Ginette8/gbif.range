@@ -15,15 +15,16 @@
 #' and/or to overcome potential RAM crash of the function.
 #' 
 #' @param sp_name Character. Species name e.g., 'Anemone nemorosa'.
-#' @param occ_coord get_gbif() output or SpatialPoints object (WGS84/lonlat).
-#' @param Bioreg SpatialPolygonsDataFrame containg different ecoregions (convex hulls will
-#' be classified on a bioreg basis). Note that this parameter may be fed with an external,
-#' generated (function make_ecoregion) or in-house ecoregion shapefile. Three in-house
-#' shapefiles are already included in the library: 'eco.earh' (for terrestrial species;
-#' Nature conservancy version adapted from Olson & al. 2001), 'eco.marine' (for marine
-#' species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater species;
-#' Abell & al. 2008). For marine species, eco.earth may also be used if the user wants to
-#' represent the terrestrial range of species that also partially settle on mainland. For
+#' @param occ_coord a get_gbif() output or a data.frame containing two columns named
+#' "decimalLongitude" and "decimalLatitude".
+#' @param Bioreg  'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
+#' ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
+#' that this parameter may be fed with an external, generated (function make_ecoregion) or
+#' in-house ecoregion shapefile. Three in-house shapefiles are already included in the library:
+#' 'eco.earh' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
+#' 'eco.marine' (for marine species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater
+#' species; Abell & al. 2008). For marine species, eco.earth may also be used if the user wants
+#' to represent the terrestrial range of species that also partially settle on mainland. For
 #' fresh water species, same may be done if the user considers that terrestrial ecoregions
 #' should be more representtaive of the species ecology.
 #' @param Bioreg_name Character. How is the slot containing the ecoregion names called?
@@ -50,7 +51,7 @@
 #' dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
 #' characterise an ecoregion tends to be distinct from that of other ecoregions
 #' (https://en.wikipedia.org/wiki/Ecoregion).
-#' @return A Shapefile or a SpatRaster.
+#' @return A 'SpatVector' or 'SpatRaster'.
 #' @references
 #' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein,
 #' Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building,
@@ -133,36 +134,37 @@ get_range <- function (sp_name = NULL,
                        res = 10){
 
   ### =========================================================================
-  ### Object conditions
+  ### Object conditions + remove duplicates
   ### =========================================================================
 
   # occ_coord
-  if (any(names(occ_coord)%in%"decimalLongitude")) {
-    occ_coord <- SpatialPoints(occ_coord[,c("decimalLongitude","decimalLatitude")],
-      proj4string=crs("+init=epsg:4326"))
-  } else if (!class(occ_coord)%in%"SpatialPoints") {
-    stop("Uncorrect format for 'occ_coord'...")
+  if (!class(occ_coord) == "data.frame") {
+    stop("'occ_coord' is not a data.frame...")
+  } 
+  if (!any(names(occ_coord)%in%"decimalLongitude")) {
+    stop("Longitute/Latitude columns wrongly defined...")
   }
 
-  # Bioreg
-  if (!class(Bioreg)%in%"SpatialPolygonsDataFrame") {
-     stop("Uncorrect format for 'occ_coord'...")
-  }
-
-  ### =========================================================================
-  ### remove duplicates
-  ### =========================================================================
-
-  occ_coord@coords <- round(occ_coord@coords, 4)
-  occ_coord <- remove.duplicates(occ_coord)
+  # Remove duplicates
+  w.col = c("decimalLongitude","decimalLatitude")
+  occ_coord[,w.col] = round(occ_coord[,w.col],4)
+  occ_coord = occ_coord[!duplicated(occ_coord[,w.col]),]
+  occ_coord = vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="+init=epsg:4326")
   
+  # Bioreg and convert to sf
+  if (!class(Bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
+     stop("Wrong 'Bioreg' class (not a spatial object)...")
+  }
+  if (class(Bioreg)[1]%in%c("SpatialPolygonsDataFrame","sf")) {
+    Bioreg = vect(Bioreg)
+  }
+
   ### =========================================================================
   ### Check if sufficient data
   ### =========================================================================
   
-  # Check if there sufficient species & if not, make an entry in the log-file and
-  # end the function
-  if (length(occ_coord)<=clustered_points_outlier+1){
+  # Check if there sufficient species & if not, make an entry in the log-file and end the function
+  if (nrow(occ_coord) <= clustered_points_outlier+1){
     stop("Too few occurences!")
   } 
     
@@ -172,19 +174,21 @@ get_range <- function (sp_name = NULL,
   ### Identify outliers
   ### =========================================================================
   
-  #create distance matrix...
-  mat_dist <- as.matrix(knn.dist(occ_coord@coords, k=clustered_points_outlier))
+  # Create distance matrix...
+  mat_dist = as.matrix(knn.dist(crds(occ_coord), k=clustered_points_outlier))
   
-  #mark outliers
-  cond <- apply(mat_dist, 1, function(x) x[clustered_points_outlier])>degrees_outlier
-  rm(mat_dist) 
+  # Mark outliers
+  cond = apply(mat_dist, 1, function(x) x[clustered_points_outlier])>degrees_outlier
   
-  cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ", round((sum(cond)/length(occ_coord))*100,0), "%\n"))
+  # Print info
+  cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ",
+    round((sum(cond)/nrow(occ_coord))*100,0), "%\n"))
   
-  occ_coord_mod <- occ_coord[!cond,]
+  # Remove outliers
+  occ_coord_mod = occ_coord[!cond,]
 
   # Stop if too many outliers in data set
-  if(length(occ_coord_mod)==0){
+  if(nrow(occ_coord_mod) == 0){
     stop('Too few occurrences within outlier threshold!')
   } 
 
@@ -192,8 +196,9 @@ get_range <- function (sp_name = NULL,
   ### Define those polygons
   ### =========================================================================
   
-  ovo <- over(occ_coord_mod,Bioreg)
-  uniq <- levels(factor(ovo[,Bioreg_name]))
+  # Set number of ecoregions
+  ovo = terra::extract(Bioreg,occ_coord_mod)
+  uniq = levels(factor(ovo[,Bioreg_name]))
 
   # Handling NA error
   if (all(is.na(ovo[,Bioreg_name]))) {
@@ -201,100 +206,103 @@ get_range <- function (sp_name = NULL,
   }
 
   # Remove partial NAs if any
-  occ_coord_mod <- occ_coord_mod[!is.na(ovo[,Bioreg_name])]
-  ovo <- ovo[!is.na(ovo[,Bioreg_name]),,drop=FALSE]
+  occ_coord_mod = occ_coord_mod[!is.na(ovo[,Bioreg_name])]
+  ovo = ovo[!is.na(ovo[,Bioreg_name]),-1,drop=FALSE]
   
-  # loop over bioregions
-  SP_dist <- list()
+  # Loop over bioregions
+  SP_dist = list()
   for(g in 1:length(uniq)) {
     
+    # Print
     cat('Bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
 
     # NAs or not
-    q1 <- Bioreg@data[[Bioreg_name]] == uniq[g]
-    q1[is.na(q1)]=FALSE
+    q1 = as.data.frame(Bioreg)[,Bioreg_name] == uniq[g]
+    q1[is.na(q1)] = FALSE
 
     # Continue
-    tmp <- as(gSimplify(Bioreg[q1,],tol=0.001,topologyPreserve=TRUE),"SpatialPolygons")
-    a=occ_coord_mod[which(ovo[,Bioreg_name]==uniq[g])]
+    tmp = terra::simplifyGeom(Bioreg[q1,],tolerance=0.001,preserveTopology=TRUE)
+    a = occ_coord_mod[which(ovo[,Bioreg_name] == uniq[g])]
     
-    if(length(a)<3){
-      k <- 1
-      cluster_k <- kmeans(a@coords,k)
-      cluster_k$clusters <- cluster_k$cluster 
+    if (length(a) < 3) {
+      k = 1
+      cluster_k = kmeans(crds(a),k)
+      cluster_k$clusters = cluster_k$cluster 
+
     } else {
-      if(all(a@coords[,1]==a@coords[,2])){
-        a@coords[,2] <- a@coords[,2]+0.00001
+
+      if (all(crds(a)[,1] == crds(a)[,2])) {
+        crds(a)[,2] = crds(a)[,2]+0.00001
       }
       
-      m_clust <- Mclust(a@coords+1000, verbose=F) #to determine number of clusters
-      k <- m_clust$G #k=number of clusters
+      # Determine number of clusters
+      m_clust = Mclust(crds(a)+1000, verbose=FALSE)
       
-      while(k>length(a)-2){k <- k-1} #reduce k if necessary so that KMeans_rcpp() will run
-      if(k==0){k <- 1}
+      # k = number of clusters
+      k = m_clust$G 
       
-      cluster_k <- KMeans_rcpp(a@coords, k, num_init = 20, initializer = 'random')
+      # Reduce k if necessary so that KMeans_rcpp() will run
+      while (k > length(a)-2) {k = k-1} 
+      if (k==0) {k <- 1}
       
-      while(length(unique(cluster_k$clusters))<k){
-        k <- k-1
-        cluster_k <- KMeans_rcpp(a@coords, k, num_init = 20, initializer = 'random')
+      cluster_k = KMeans_rcpp(crds(a), k, num_init = 20, initializer = 'random')
+      
+      while (length(unique(cluster_k$clusters)) < k) {
+        k = k-1
+        cluster_k = KMeans_rcpp(crds(a), k, num_init = 20, initializer = 'random')
       }
       
     }
    
     polygons_list <- list() 
-    for(i in 1:k){
-      a_temp <- a[cluster_k$clusters==i] #kmeans (with number of clusters from mcluster)
+    for (i in 1:k)
+    {
+      # kmeans (with number of clusters from mcluster)
+      a_temp = a[cluster_k$clusters==i]
+
+      # Generate polygon
+      my_shpe = conv_function(sp_coord = a_temp,
+                            bwp = buffer_width_point,
+                            bipl = buffer_increment_point_line,
+                            bwpo = buffer_width_polygon,
+                            temp_dir = dir_temp,
+                            g = g)
       
-      
-      my_shpe=conv_function(a_temp,
-                            bwp=buffer_width_point,
-                            bipl=buffer_increment_point_line,
-                            bwpo=buffer_width_polygon,
-                            temp_dir=dir_temp,
-                            g=g)
-      
-      polygons_list[[i]] <- suppressWarnings(gIntersection(gBuffer(SpatialPolygons(Srl=list(my_shpe)), width=0),gBuffer(tmp, byid = T, width = 0))) #zero buffer to avoid error
-      polygons_list[[i]]$ID <- i
+      # Intersect polygon with ecoregion (zero buffer to avoid error)
+      b1 = terra::buffer(my_shpe,width=0)
+      b2 = terra::buffer(tmp,width=0)
+      polygons_list[[i]] = intersect(b1,b2)
     }  
     
-    SP_dist[[g]] <- Reduce(rbind, polygons_list)
-
-    if(class(SP_dist[[g]])=='SpatialCollections'){
-      SP_dist[[g]] <- SP_dist[[g]]@polyobj #only keep SpatialPolygon
-    }
-    
+    SP_dist[[g]] = Reduce(rbind, polygons_list)
   } 
   
-  L <- SP_dist[!is.na(SP_dist)]
+  L = SP_dist[!is.na(SP_dist)]
   
   ### =========================================================================
   ### Check and return output
   ### =========================================================================
   
-  if(!dir.exists(dir_temp)){
-    unlink(dir_temp, recursive=T)
+  if (!dir.exists(dir_temp)) {
+    unlink(dir_temp, recursive=TRUE)
   }
   
-  if(length(L)==0){
-    stop('No occurrences within Bioregions. Empty raster produced.')
-  } 
-    
-  shp_species <- Reduce(rbind, L)
-  # shp_species=gUnaryUnion(shp_species,checkValidity = 2)
-  shp_species@proj4string=occ_coord@proj4string
-
-  cat("## End of computation for species: ",sp_name," ###", "\n") 
+  if (length(L) == 0) {
+    stop('No occurrences within Bioregions. Empty raster produced...')
+  }
+  shp_species = Reduce(rbind, L)
 
   # Convert in raster files or not
-  if (raster){
-    ras.res <- rast(disaggregate(raster(),res))
-    sp.range.u <- gUnaryUnion(shp_species)
-    ras <- rasterize(vect(sp.range.u),ras.res)
-    shp_species <- crop(ras,ext(sp.range.u))
+  if (raster) {
+    ras.res = rast(disaggregate(raster(),res))
+    sp.range.u = vect(st_union(st_as_sf(shp_species)))
+    ras = rasterize(sp.range.u,ras.res)
+    shp_species = crop(ras,ext(sp.range.u))
   }
   
-  cat("## End of computation for species: ",sp_name," ###", "\n") 
+  # Final print
+  cat("## End of computation for species: ",sp_name," ###", "\n")
 
+  # Out
   return(shp_species)
 }
