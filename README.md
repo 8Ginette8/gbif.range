@@ -138,7 +138,11 @@ my.eco = make_ecoregion(rst,50)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
-range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,Bioreg_name="EcoRegion",res=20)
+range.arcto = get_range(sp_name="Arctostaphylos alpinus",
+                        occ_coord=obs.arcto,
+                        Bioreg=my.eco,
+                        Bioreg_name="EcoRegion",
+                        res=20)
 
 # Plot
 plot(rst[[1]])
