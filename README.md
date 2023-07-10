@@ -62,12 +62,12 @@ Let's download worldwide the records of *Panthera tigris* only based on true obs
 
 ``` r
 # Download
-obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+obs.pt = get_gbif(sp_name="Panthera tigris",
+                  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
-library(maptools)
-data(wrld_simpl)
-plot(wrld_simpl,col="#bcbddc")
+library(rnaturalearth)
+plot(ne_countries(type = "countries"),col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
@@ -82,14 +82,17 @@ get_taxonomy("Panthera tigris",all=FALSE)
 Let's now generate the distributional range map of *Panthera tigris* using the in-house shapefile of terresterial ecoregions (*eco.earth*):
 
 ``` r
-range.tiger = get_range(sp_name="Panthera tigris",occ_coord=obs.pt,Bioreg=eco.earth,Bioreg_name="ECO_NAME")
+range.tiger = get_range(sp_name="Panthera tigris",
+                        occ_coord=obs.pt,
+                        Bioreg=eco.earth,
+                        Bioreg_name="ECO_NAME")
 ```
 
 Let's plot the result now:
 
 ``` r
-plot(wrld_simpl,col="#bcbddc")
-plot(range.tiger,col="#238b45",add=TRUE)
+plot(ne_countries(type = "countries"),col="#bcbddc")
+plot(range.tiger,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
@@ -135,7 +138,11 @@ my.eco = make_ecoregion(rst,50)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
-range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,Bioreg_name="EcoRegion",res=20)
+range.arcto = get_range(sp_name="Arctostaphylos alpinus",
+                        occ_coord=obs.arcto,
+                        Bioreg=my.eco,
+                        Bioreg_name="EcoRegion",
+                        res=20)
 
 # Plot
 plot(rst[[1]])
@@ -168,7 +175,7 @@ range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"BIOME") # Deep sea 
 The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
 
 ``` r
-plot(wrld_simpl,col="#bcbddc")
+plot(ne_countries(type = "countries"),col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE)
 points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
