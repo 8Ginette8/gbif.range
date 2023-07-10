@@ -274,7 +274,7 @@ get_range <- function (sp_name = NULL,
       polygons_list[[i]] = intersect(b1,b2)
     }  
     
-    SP_dist[[g]] = Reduce(rbind, polygons_list)
+    SP_dist[[g]] =  vect(terra::svc(polygons_list))
   } 
   
   L = SP_dist[!is.na(SP_dist)]
