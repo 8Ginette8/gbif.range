@@ -274,10 +274,10 @@ get_range <- function (sp_name = NULL,
       polygons_list[[i]] = intersect(b1,b2)
     }  
     
-    SP_dist[[g]] =  vect(terra::svc(polygons_list))
+    SP_dist[[g]] = do.call("rbind",polygons_list)
   } 
   
-  L = SP_dist[!is.na(SP_dist)]
+  lala = SP_dist[!is.na(SP_dist)]
   
   ### =========================================================================
   ### Check and return output
@@ -290,7 +290,7 @@ get_range <- function (sp_name = NULL,
   if (length(L) == 0) {
     stop('No occurrences within Bioregions. Empty raster produced...')
   }
-  shp_species = vect(terra::svc(L))
+  shp_species = do.call("rbind",lala)
 
   # Convert in raster files or not
   if (raster) {
