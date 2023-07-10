@@ -290,7 +290,7 @@ get_range <- function (sp_name = NULL,
   if (length(L) == 0) {
     stop('No occurrences within Bioregions. Empty raster produced...')
   }
-  shp_species = L[[1]]
+  shp_species = vect(terra::svc(L))
 
   # Convert in raster files or not
   if (raster) {
