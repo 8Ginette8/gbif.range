@@ -287,7 +287,7 @@ get_range <- function (sp_name = NULL,
     unlink(dir_temp, recursive=TRUE)
   }
   
-  if (length(L) == 0) {
+  if (length(lala) == 0) {
     stop('No occurrences within Bioregions. Empty raster produced...')
   }
   shp_species = do.call("rbind",lala)
