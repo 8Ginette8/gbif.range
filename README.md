@@ -92,7 +92,7 @@ Let's plot the result now:
 
 ``` r
 plot(ne_countries(type = "countries"),col="#bcbddc")
-plot(range.tiger,col="#238b45",add=TRUE)
+plot(range.tiger,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
