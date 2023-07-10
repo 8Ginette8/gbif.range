@@ -297,7 +297,9 @@ get_range <- function (sp_name = NULL,
     ras.res = rast(disaggregate(raster(),res))
     sp.range.u = terra::aggregate(shp_species)
     ras = terra::rasterize(sp.range.u,ras.res)
+    cat("crop")
     shp_species = terra::crop(ras,sp.range.u)
+    cat("success")  
   }
   
   # Final print
