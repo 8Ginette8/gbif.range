@@ -22,16 +22,17 @@ get_range(
 \arguments{
 \item{sp_name}{Character. Species name e.g., 'Anemone nemorosa'.}
 
-\item{occ_coord}{get_gbif() output or SpatialPoints object (WGS84/lonlat).}
+\item{occ_coord}{a get_gbif() output or a data.frame containing two columns named
+"decimalLongitude" and "decimalLatitude".}
 
-\item{Bioreg}{SpatialPolygonsDataFrame containg different ecoregions (convex hulls will
-be classified on a bioreg basis). Note that this parameter may be fed with an external,
-generated (function make_ecoregion) or in-house ecoregion shapefile. Three in-house
-shapefiles are already included in the library: 'eco.earh' (for terrestrial species;
-Nature conservancy version adapted from Olson & al. 2001), 'eco.marine' (for marine
-species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater species;
-Abell & al. 2008). For marine species, eco.earth may also be used if the user wants to
-represent the terrestrial range of species that also partially settle on mainland. For
+\item{Bioreg}{'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
+ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
+that this parameter may be fed with an external, generated (function make_ecoregion) or
+in-house ecoregion shapefile. Three in-house shapefiles are already included in the library:
+'eco.earh' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
+'eco.marine' (for marine species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater
+species; Abell & al. 2008). For marine species, eco.earth may also be used if the user wants
+to represent the terrestrial range of species that also partially settle on mainland. For
 fresh water species, same may be done if the user considers that terrestrial ecoregions
 should be more representtaive of the species ecology.}
 
@@ -64,7 +65,7 @@ polygons (for each ecoregion).}
 e.g.,  = 0.1° if res = 10. Default is 10.}
 }
 \value{
-A Shapefile or a SpatRaster.
+A 'SpatVector' or 'SpatRaster'.
 }
 \description{
 Estimates species ranges based on occurrence data (GBIF or not) and ecoregions

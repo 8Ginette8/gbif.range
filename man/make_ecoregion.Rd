@@ -15,8 +15,8 @@ make_ecoregion(
 }
 \arguments{
 \item{env}{Object of class SpatRaster, RasterBrick or RasterStack of desired
-resolution and extent defining the study area. Used to generate the map of
-clusters needed to summarize the environmental space of the study area.}
+resolution, crs and extent defining the study area. Used to generate a map of
+clusters summarizing the environmental space of the study area.}
 
 \item{nclass}{Numeric, How many number of environmental classes should have
 the output?}
