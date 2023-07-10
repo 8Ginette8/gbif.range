@@ -295,7 +295,7 @@ get_range <- function (sp_name = NULL,
   # Convert in raster files or not
   if (raster) {
     ras.res = rast(disaggregate(raster(),res))
-    sp.range.u = vect(st_union(st_as_sf(shp_species)))
+    sp.range.u = aggregate(shp_species)
     ras = rasterize(sp.range.u,ras.res)
     shp_species = crop(ras,ext(sp.range.u))
   }

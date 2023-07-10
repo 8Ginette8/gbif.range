@@ -1,9 +1,9 @@
 {
-    "path" : "C:/Users/Public/Documents/SwitchDrive/gitlab",
-    "sortOrder" : [
+    "path": "C:/Users/Public/Documents/SwitchDrive/gitlab",
+    "sortOrder": [
         {
-            "ascending" : true,
-            "columnIndex" : 2
+            "ascending": true,
+            "columnIndex": 2
         }
     ]
 }
