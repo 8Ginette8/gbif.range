@@ -290,13 +290,12 @@ get_range <- function (sp_name = NULL,
   if (length(L) == 0) {
     stop('No occurrences within Bioregions. Empty raster produced...')
   }
-  shp_species = Reduce(rbind, L)
+  shp_species = vect(terra::svc(L))
 
   # Convert in raster files or not
   if (raster) {
     ras.res = rast(disaggregate(raster(),res))
-    sp.range.u = aggregate(shp_species)
-    cat("aaaaaaa")
+    sp.range.u = terra::aggregate(shp_species)
     ras = rasterize(sp.range.u,ras.res)
     shp_species = crop(ras,ext(sp.range.u))
   }
