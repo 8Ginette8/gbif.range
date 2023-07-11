@@ -193,7 +193,8 @@ plot(ne_countries(type = "countries"),col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
-![image](https://user-images.githubusercontent.com/43674773/203615504-063be113-26f6-4b2f-8c28-dc32a4eab220.png)
+
+![image](https://github.com/8Ginette8/gbif.range/assets/43674773/a57c4a61-b0ca-4acc-8d09-209627709e04)
 
 Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
 
