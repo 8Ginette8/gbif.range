@@ -150,7 +150,7 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
                         buffer_width_polygon = 0.1)
 ```
 
-Here we want to adapt the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points, (ii) do not draw any buffer around single observations, and (iii) apply a buffer of ~10km around the drawn polygons. It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be.
+Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points, (ii) do not draw any buffer around single observations, and (iii) apply a buffer of ~10km around the drawn polygons. It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be.
 
 ``` r
 # Plot
