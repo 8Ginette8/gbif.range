@@ -147,7 +147,7 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
 # Plot
 plot(rst[[1]])
 plot(vect(shp.lonlat),add=TRUE)
-plot(range.arcto,add=TRUE,col="darkgreen")
+plot(range.arcto,add=TRUE,col="darkgreen",axes=FALSE,legend=FALSE)
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
 
@@ -176,7 +176,7 @@ The three results are pretty similar because most of the observations are near t
 
 ``` r
 plot(ne_countries(type = "countries"),col="#bcbddc")
-plot(range.dd3,col="#238b45",add=TRUE)
+plot(range.dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
 ![image](https://user-images.githubusercontent.com/43674773/203615504-063be113-26f6-4b2f-8c28-dc32a4eab220.png)
