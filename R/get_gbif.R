@@ -35,9 +35,10 @@
 #' @param no_xy Logical. Default is FALSE i.e., only records with coordinates are
 #' downloaded. If TRUE, records with no coordinates are also downloaded.
 #' @param basis Character. Which basis of records should be selected?
-#' Default is all i.e. c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
+#' Available (old and new) are 'OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
 #' 'MATERIAL_CITATION', MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN', 'FOSSIL_SPECIMEN',
-#' 'LIVING_SPECIMEN', 'LITERATURE',UNKNOWN','OCCURRENCE').
+#' 'LIVING_SPECIMEN', 'LITERATURE', UNKNOWN' and 'OCCURRENCE'. Default setting removes
+#' specimens and unknown observations.
 #' Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
 #' https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html
 #' @param add_infos Character. Infos that may be added to the default output information.
@@ -132,9 +133,8 @@ get_gbif = function(sp_name = NULL,
 					duplicates = FALSE,
 					absences = FALSE,
 					no_xy = FALSE,
-					basis =  c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
-						'MATERIAL_CITATION', 'MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN',
-						'FOSSIL_SPECIMEN','LIVING_SPECIMEN', 'LITERATURE','UNKNOWN','OCCURRENCE'),
+					basis =  c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION','OCCURRENCE',
+						'MATERIAL_CITATION', 'MATERIAL_SAMPLE','LITERATURE'),
 					add_infos = NULL,
 					time_period = c(1000,3000),
 					identic_xy = FALSE,
