@@ -16,7 +16,7 @@ get_range(
   buffer_width_polygon = 4,
   dir_temp = paste0("temp", sample(1:99999999, 1)),
   raster = TRUE,
-  res = 10
+  res = 100
 )
 }
 \arguments{
@@ -62,7 +62,7 @@ polygons (for each ecoregion).}
 \item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
 
 \item{res}{Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
-e.g.,  = 0.1° if res = 10. Default is 10.}
+e.g.,  = 0.1° (i.e. ~11km) res = 100. Default is 100.}
 }
 \value{
 A 'SpatVector' or 'SpatRaster'.

@@ -45,7 +45,7 @@
 #' (text file will be deleted again).
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
 #' @param res Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
-#' e.g.,  = 0.1° if res = 10. Default is 10.
+#' e.g.,  = 0.1° (i.e. ~11km) res = 100. Default is 100.
 #' @details Ecoregions cover relatively large areas of land or water, and contain characteristic,
 #' geographically distinct assemblages of natural communities sharing a large majority of species,
 #' dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
@@ -131,7 +131,7 @@ get_range <- function (sp_name = NULL,
                        buffer_width_polygon = 4,
                        dir_temp = paste0("temp",sample(1:99999999,1)),
                        raster = TRUE,
-                       res = 10){
+                       res = 100){
 
   ### =========================================================================
   ### Object conditions + remove duplicates
