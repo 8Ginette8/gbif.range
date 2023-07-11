@@ -63,8 +63,8 @@ polygons (for each ecoregion).}
 
 \item{res}{Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
 e.g.,  = 0.1° (i.e. ~11km) if res = 10. Default is 100. It is important to note that the highest
-achievable resolution will depend on the 'Bioreg' precision, e.g., employing a 'make_region' object
-based on high resolution rasters will ensure the possbility of range outputs of similar resolution.}
+achievable resolution of the output will depend on its 'Bioreg' precision, e.g., a species range
+output can reach the same resolution of the rasters used to create a *make_ecoregion* object.}
 }
 \value{
 A 'SpatVector' or 'SpatRaster'.

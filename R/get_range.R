@@ -46,8 +46,8 @@
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
 #' @param res Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
 #' e.g.,  = 0.1° (i.e. ~11km) if res = 10. Default is 100. It is important to note that the highest
-#' achievable resolution will depend on the 'Bioreg' precision, e.g., employing a 'make_region' object
-#' based on high resolution rasters will ensure the possbility of range outputs of similar resolution.
+#' achievable resolution of the output will depend on its 'Bioreg' precision, e.g., a species range
+#' output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.
 #' @details Ecoregions cover relatively large areas of land or water, and contain characteristic,
 #' geographically distinct assemblages of natural communities sharing a large majority of species,
 #' dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
