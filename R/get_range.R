@@ -149,7 +149,7 @@ get_range <- function (sp_name = NULL,
   w.col = c("decimalLongitude","decimalLatitude")
   occ_coord[,w.col] = round(occ_coord[,w.col],4)
   occ_coord = occ_coord[!duplicated(occ_coord[,w.col]),]
-  occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="+init=epsg:4326")
+  occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="epsg:4326")
   
   # Bioreg and convert to sf
   if (!class(Bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
@@ -197,17 +197,13 @@ get_range <- function (sp_name = NULL,
   ### =========================================================================
   
   # Set number of ecoregions
-  ovo = terra::extract(Bioreg,occ_coord_mod)
-  uniq = levels(factor(ovo[,Bioreg_name]))
+  ovo_coord_mod = terra::intersect(Bioreg,occ_coord_mod)
+  uniq = levels(factor(ovo_coord_mod[[Bioreg_name]][[1]]))
 
   # Handling NA error
-  if (all(is.na(ovo[,Bioreg_name]))) {
+  if (length(ovo_coord_mod)==0) {
     stop("No overlap of ecoregion info, please use another 'Bioreg_name'")
   }
-
-  # Remove partial NAs if any
-  occ_coord_mod = occ_coord_mod[!is.na(ovo[,Bioreg_name])]
-  ovo = ovo[!is.na(ovo[,Bioreg_name]),-1,drop=FALSE]
   
   # Loop over bioregions
   SP_dist = list()
@@ -222,7 +218,7 @@ get_range <- function (sp_name = NULL,
 
     # Continue
     tmp = terra::simplifyGeom(Bioreg[q1,],tolerance=0.001,preserveTopology=TRUE)
-    a = occ_coord_mod[which(ovo[,Bioreg_name] == uniq[g])]
+    a = ovo_coord_mod[ovo_coord_mod[[Bioreg_name]][[1]] == uniq[g]]
     
     if (length(a) < 3) {
       k = 1
