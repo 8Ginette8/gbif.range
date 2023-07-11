@@ -28,7 +28,7 @@
 get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
-    gbif.backbone = name_backbone(sp_name)
+    gbif.backbone = rgbif::name_backbone(sp_name)
 
     if (gbif.backbone$matchType%in%"NONE") {
       cat("No species name found...","\n")
@@ -48,19 +48,19 @@ get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
     }
 
     # Extract accepted name and save it with its key in the prepared output
-    accep.name = name_usage(accep.key,data="name")$data
-    syn.syn = name_usage(accep.key,data="synonyms")$data
+    accep.name = rgbif::name_usage(accep.key,data="name")$data
+    syn.syn = rgbif::name_usage(accep.key,data="synonyms")$data
 
     # If missing codes, then we continue the search to find possible name correspondancy
     if (all) {
 
       # Extract children names
-      syn.child = name_usage(accep.key,data="children")$data
+      syn.child =  rgbif::name_usage(accep.key,data="children")$data
 
       # Combine everything and search for related names (i.e. other string version)
       all.key = suppressWarnings(c(accep.key,syn.syn$key,syn.child$key))
       all.version = lapply(all.key,function(x){
-        out = suppressWarnings(name_usage(x,data="related")$data$scientificName)
+        out = suppressWarnings(rgbif::name_usage(x,data="related")$data$scientificName)
         if (is.null(out)){
           return(NULL)
         } else {

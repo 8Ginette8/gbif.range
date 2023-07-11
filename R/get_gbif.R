@@ -246,7 +246,7 @@ get_gbif = function(sp_name = NULL,
 		# Check number of records for each tiles
 		gbif.tiles =
 		sapply(geo.tiles, function(x) {
-			gt.out = occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
+			gt.out = rgbif::occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
 				hasGeospatialIssue=FALSE,geometry=x)[1]$meta$count
 			return(gt.out)
 		})
@@ -272,7 +272,7 @@ get_gbif = function(sp_name = NULL,
 				lapply(1:length(new.geo),function(y){
 
 					# Convert to extent and create 100 new micro tiles
-					new.ext = ext(new.geo[[y]])
+					new.ext = terra::ext(new.geo[[y]])
 					micro.100 = make_tiles(new.ext,Ntiles=100,sext=TRUE)
 
 					# If micro.100 is NULL return NULL (in case of an incorrect extent)
@@ -287,7 +287,7 @@ get_gbif = function(sp_name = NULL,
 					# And count records again
 					gbif.micro =
 						sapply(micro.tiles, function(z) {
-							gt.out = try(occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
+							gt.out = try(rgbif::occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
 							hasGeospatialIssue=FALSE,geometry=z)[1]$meta$count,silent=TRUE)
 						return(gt.out)
 					})
@@ -343,7 +343,7 @@ get_gbif = function(sp_name = NULL,
 		## Try the download first: may be request overload problems
 		go.tile = geo.ref[x]
 		gbif.search = try(
-			occ_data(taxonKey=sp.key,limit=occ_samp,hasCoordinate=!no_xy,
+			rgbif::occ_data(taxonKey=sp.key,limit=occ_samp,hasCoordinate=!no_xy,
 				hasGeospatialIssue=FALSE,geometry=go.tile),
 		silent=TRUE)
 
@@ -360,8 +360,8 @@ get_gbif = function(sp_name = NULL,
 					cat("Attempt",j+1,"...","\n")
 					j=j+1
 					gbif.search = try(
-						occ_data(taxonKey=sp.key,limit=occ_samp,hasCoordinate=!no_xy,
-						hasGeospatialIssue=FALSE,geometry=go.tile),
+						rgbif::occ_data(taxonKey=sp.key,limit=occ_samp,hasCoordinate=!no_xy,
+							hasGeospatialIssue=FALSE,geometry=go.tile),
 					silent=TRUE)
 					Sys.sleep(2)
 				}
@@ -559,8 +559,8 @@ get_gbif = function(sp_name = NULL,
 				gbif.dataset = gbif.correct[gbif.correct$datasetKey%in%gbif.datasets[x],]
 				if (nrow(gbif.dataset) > 50){
 					diff.chosen = diff.records[[2]][which(nrow(gbif.dataset)<diff.records[[1]])[1]]
-					gbif.dataset = test=cd_ddmm(gbif.dataset,lon="decimalLongitude",lat="decimalLatitude",
-						ds="datasetKey",mat_size=mat_size,diff=diff.chosen,min_span=xy.span)
+					gbif.dataset = CoordinateCleaner::cd_ddmm(gbif.dataset,lon="decimalLongitude",
+						lat="decimalLatitude",ds="datasetKey",mat_size=mat_size,diff=diff.chosen,min_span=xy.span)
 				}
 				return(gbif.dataset)
 			})
@@ -593,7 +593,7 @@ get_gbif = function(sp_name = NULL,
 
 				gbif.dataset = gbif.correct[gbif.correct$datasetKey%in%gbif.datasets[x],]
 				if (nrow(gbif.dataset) > 100){
-					gbif.temp = try(cd_round(gbif.dataset,lon="decimalLongitude",
+					gbif.temp = try(CoordinateCleaner::cd_round(gbif.dataset,lon="decimalLongitude",
 						lat="decimalLatitude",ds="datasetKey",graphs=FALSE,...),silent=TRUE)
 					if (class(gbif.temp)%in%"try-error") {
 						return(gbif.dataset)

@@ -69,7 +69,7 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
 {
     # Check ras input
     if(!(class(env)%in%c("SpatRaster"))) {
-      env = rast(env)
+      env = terra::rast(env)
     }
 
     # 'nclass' must be at least equal to '2'
@@ -80,7 +80,7 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
     # env must be of a specific class
     if (!(class(env)%in%c("SpatRaster","RasterBrick","RasterStack"))){
       stop("'env' must be an object of class 'SpatRaster','RasterBrick' or 'RasterStack'...!")
-    } else if (is.null(env) || nlyr(env)%in%1){
+    } else if (is.null(env) || terra::nlyr(env)%in%1){
       stop("'ras' must include more than one raster layer...!")
     }
 
@@ -92,7 +92,7 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
     toClara = env[][id.toReplace,]
 
     # Run CLARA and assign results to right pixels
-    blocks = clara(toClara,nclass,...)
+    blocks = cluster::clara(toClara,nclass,...)
     toNew.ras = env[[1]]
     toNew.ras[][id.toReplace] = blocks$clustering
     toNew.ras[][!id.toReplace] = NA
@@ -102,13 +102,13 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
       return(toNew.ras)
 
     } else if (raster&path!="") {
-      writeRaster(toNew.ras,paste0(path,"/",name,".tif"),overwrite=TRUE,
+      terra::writeRaster(toNew.ras,paste0(path,"/",name,".tif"),overwrite=TRUE,
         datatype="INT4S",gdal=c("COMPRESS=DEFLATE","PREDICTOR=2"))
     
     } else {
 
       # Change raster into a shapefile
-      topoly = as.polygons(toNew.ras,dissolve=TRUE)
+      topoly = terra::as.polygons(toNew.ras,dissolve=TRUE)
 
       # For now, because get_range not yet compatible with Spatvect
       cat("Generating polygons...","\n")
@@ -116,14 +116,14 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
       topoly$EcoRegion=as.character(1:nrow(data.frame(topoly)))
 
       # Testing if polygons are valid and correct if not
-      topoly = vect(st_make_valid(sf::st_as_sf(topoly)))
+      topoly = terra::vect(sf::st_make_valid(sf::st_as_sf(topoly)))
       topoly = terra::buffer(topoly,width=0) 
 
       if (!raster&path=="") {
         return(topoly)
       
       } else {
-        writeVector(topoly,paste0(path,"/",name,".shp"),overwrite=TRUE,
+        terra::writeVector(topoly,paste0(path,"/",name,".shp"),overwrite=TRUE,
           filetype="ESRI Shapefile",layer=name)
       }
     }
