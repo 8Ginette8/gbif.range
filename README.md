@@ -134,8 +134,8 @@ Additonally, if the in-house ecoregions are too coarse for a given geographic re
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
 obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 
-# Create an ecoregion layer of 150 classes, based on 12 environmental spatial layers:
-my.eco = make_ecoregion(rst,150)
+# Create an ecoregion layer of 200 classes, based on 12 environmental spatial layers:
+my.eco = make_ecoregion(rst,200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
@@ -146,12 +146,12 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
                         res=20,
                         degrees_outlier = 5,
                         clustered_points_outlier = 2,
-                        buffer_width_point = 0, 
-                        buffer_increment_point_line = 0, 
+                        buffer_width_point = 4, 
+                        buffer_increment_point_line = 0.5, 
                         buffer_width_polygon = 0.1)
 ```
 
-Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points, (ii) do not draw any buffer around single observations, and (iii) apply a buffer of ~10km around the drawn polygons. It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be.
+Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be.
 
 ``` r
 # Plot
@@ -161,9 +161,11 @@ plot(range.arcto,add=TRUE,col="darkgreen",axes=FALSE,legend=FALSE)
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
 
-<img width=60% height=60% src="https://user-images.githubusercontent.com/43674773/203855955-b17b45ec-063d-4dfe-9a6b-c944422b60d7.png">
+![image](https://github.com/8Ginette8/gbif.range/assets/43674773/f2043983-0b1f-48aa-83bb-b36fcf3f6432)
 
-⚠️Finally, the number of generated ecoregions will highly determine how precise the distribution of the species should be⚠️, e.g., here **150 ecoregions** defines a strict species ecological niche (high environmental filtering), whereas **50 ecoregions** does it less and generate a more general distributional pattern:
+⚠️Finally, the number of generated ecoregions will highly determine how precise the distribution of the species should be⚠️, e.g., here **200 ecoregions** defines a strict species ecological niche (high environmental filtering), whereas **50 ecoregions** does it less and generate a more general distributional pattern:
+
+![image](https://github.com/8Ginette8/gbif.range/assets/43674773/8d69fe93-d61e-453a-96d1-f990ea576019)
 
 ### Marine species
 
