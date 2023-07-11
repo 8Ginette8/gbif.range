@@ -149,14 +149,14 @@ get_range <- function (sp_name = NULL,
   w.col = c("decimalLongitude","decimalLatitude")
   occ_coord[,w.col] = round(occ_coord[,w.col],4)
   occ_coord = occ_coord[!duplicated(occ_coord[,w.col]),]
-  occ_coord = vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="+init=epsg:4326")
+  occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="+init=epsg:4326")
   
   # Bioreg and convert to sf
   if (!class(Bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
      stop("Wrong 'Bioreg' class (not a spatial object)...")
   }
   if (class(Bioreg)[1]%in%c("SpatialPolygonsDataFrame","sf")) {
-    Bioreg = vect(Bioreg)
+    Bioreg = terra::vect(Bioreg)
   }
 
   ### =========================================================================
@@ -175,7 +175,7 @@ get_range <- function (sp_name = NULL,
   ### =========================================================================
   
   # Create distance matrix...
-  mat_dist = as.matrix(knn.dist(crds(occ_coord), k=clustered_points_outlier))
+  mat_dist = as.matrix(FNN::knn.dist(terra::crds(occ_coord), k=clustered_points_outlier))
   
   # Mark outliers
   cond = apply(mat_dist, 1, function(x) x[clustered_points_outlier])>degrees_outlier
@@ -226,17 +226,17 @@ get_range <- function (sp_name = NULL,
     
     if (length(a) < 3) {
       k = 1
-      cluster_k = kmeans(crds(a),k)
+      cluster_k = kmeans(terra::crds(a),k)
       cluster_k$clusters = cluster_k$cluster 
 
     } else {
 
-      if (all(crds(a)[,1] == crds(a)[,2])) {
-        crds(a)[,2] = crds(a)[,2]+0.00001
+      if (all(terra::crds(a)[,1] == terra::crds(a)[,2])) {
+        terra::crds(a)[,2] = terra::crds(a)[,2]+0.00001
       }
       
       # Determine number of clusters
-      m_clust = Mclust(crds(a)+1000, verbose=FALSE)
+      m_clust = mclust::Mclust(crds(a)+1000, verbose=FALSE)
       
       # k = number of clusters
       k = m_clust$G 
@@ -245,11 +245,11 @@ get_range <- function (sp_name = NULL,
       while (k > length(a)-2) {k = k-1} 
       if (k==0) {k <- 1}
       
-      cluster_k = KMeans_rcpp(crds(a), k, num_init = 20, initializer = 'random')
+      cluster_k = ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
       
       while (length(unique(cluster_k$clusters)) < k) {
         k = k-1
-        cluster_k = KMeans_rcpp(crds(a), k, num_init = 20, initializer = 'random')
+        cluster_k = ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
       }
       
     }
@@ -271,7 +271,7 @@ get_range <- function (sp_name = NULL,
       # Intersect polygon with ecoregion (zero buffer to avoid error)
       b1 = terra::buffer(my_shpe,width=0)
       b2 = terra::buffer(tmp,width=0)
-      polygons_list[[i]] = intersect(b1,b2)
+      polygons_list[[i]] = terra::intersect(b1,b2)
     }  
     
     SP_dist[[g]] = do.call("rbind",polygons_list)
@@ -294,7 +294,7 @@ get_range <- function (sp_name = NULL,
 
   # Convert in raster files or not
   if (raster) {
-    ras.res = rast(disaggregate(raster(),res))
+    ras.res = terra::rast(terra::disaggregate(raster::raster(),res))
     sp.range.u = terra::aggregate(shp_species)
     ras = terra::rasterize(sp.range.u,ras.res)
     shp_species = terra::crop(ras,sp.range.u)

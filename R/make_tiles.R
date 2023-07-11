@@ -32,9 +32,9 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 
 	# For study area
 	if (!is.null(geo)) {
-		if (!(class(geo)%in%"SpatExtent")) {geo = ext(geo)}
+		if (!(class(geo)%in%"SpatExtent")) {geo = terra::ext(geo)}
 	} else {
-		geo = ext(-180,180,-90,90)
+		geo = terra::ext(-180,180,-90,90)
 	}
 
 	# Divide original extent into smaller ones otherwise
@@ -85,16 +85,16 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 
 	# Unlist tile geo
 	part.tile2 = lapply(all.tiles,function(x) x[[1]])
-	geo.tiles = unlist(part.tile2,recursive=FALSE)
+	geo.tiles = unlist(part.tile2,recursive = FALSE)
 	geo.tiles[sapply(geo.tiles, is.null)] = NULL
 
 	# Return if xmin == xmax
 	if (is.null(unlist(geo.tiles))) {return(NULL)}
 
 	# Unlist tile meta
-	geo.meta = unlist(lapply(all.tiles,function(x) x[[2]]),recursive=FALSE)
+	geo.meta = unlist(lapply(all.tiles,function(x) x[[2]]),recursive = FALSE)
 	geo.meta[sapply(geo.meta, is.null)] = NULL
-	geo.meta = lapply(geo.meta,function(x) ext(x))
+	geo.meta = lapply(geo.meta,function(x) terra::ext(x))
 
 	# Return
 	if (sext) {

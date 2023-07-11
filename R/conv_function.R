@@ -13,14 +13,14 @@ conv_function <- function (sp_coord,
                            g=NULL){
   
   # Preps and convert degrees to meters
-  x = crds(sp_coord)
+  x = terra::crds(sp_coord)
   row.names(x) = 1:nrow(x)
   bwp.bipl.m = (bwp+(nrow(x)-1)*bipl)*111111
   bwpo.m = bwpo*111111
 
   # Check number of observations points in each bioregion, if <3 create point buffer
   if (nrow(data.frame(x))<3) { 
-    rtn = terra::buffer(aggregate(sp_coord),width=bwp.bipl.m)
+    rtn = terra::buffer(terra::aggregate(sp_coord),width=bwp.bipl.m)
     return(rtn) 
     
   } else {
@@ -42,7 +42,7 @@ conv_function <- function (sp_coord,
       cat('Bioreg=',g,nrow(x),'points laying on one line. Using buffer width of ',bwp.bipl.m/1000,'km','\n')
 
       # Buffer
-      rtn = terra::buffer(aggregate(sp_coord),width=bwp.bipl.m)
+      rtn = terra::buffer(terra::aggregate(sp_coord),width=bwp.bipl.m)
       
       # Out
       return(rtn)
@@ -55,7 +55,7 @@ conv_function <- function (sp_coord,
 
       # If they are not on a line, create a convex hull      
       arg_file = paste0('QJ Fx TO ', file.path(temp_dir, 'vert.txt'))
-      vert0 = convhulln(x, arg_file)
+      vert0 = geometry::convhulln(x, arg_file)
       vert1 = scan(file.path(temp_dir,'vert.txt'),quiet=T)
       file.remove(file.path(temp_dir,'vert.txt'))
       vert2 = (vert1+1)[-1]
@@ -64,11 +64,11 @@ conv_function <- function (sp_coord,
 
       # Polygonizing
       coord_conv = rbind(coord_conv,coord_conv[1,])
-      P1 = st_polygon(list(coord_conv))
-      P1 = vect(P1)
-      crs(P1) = crs(sp_coord)
+      P1 = sf::st_polygon(list(coord_conv))
+      P1 = terra::vect(P1)
+      terra::crs(P1) = terra::crs(sp_coord)
       rtn = terra::buffer(P1,width=bwpo.m)
-      crs(rtn) = crs(sp_coord) # Safety measure...
+      terra::crs(rtn) = terra::crs(sp_coord) # Safety measure...
 
       # Out
       return(rtn)

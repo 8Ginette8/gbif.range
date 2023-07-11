@@ -46,7 +46,7 @@ obs_filter=function(get.gbif,grid)
 {
     # Check 'ras' input
     if(!(class(grid)%in%c("SpatRaster"))) {
-      grid = rast(grid)
+      grid = terra::rast(grid)
     }
 
     # Check number of species in 'get_gbif' output
@@ -60,10 +60,10 @@ obs_filter=function(get.gbif,grid)
       coords = get.gbif[get.gbif$input.search%in%x,c("decimalLongitude","decimalLatitude")]
 
       # Extract related cells
-      posP = cellFromXY(grid,as.matrix(coords))
+      posP = terra::cellFromXY(grid,as.matrix(coords))
 
       # Extract one observation per grid cell
-      new.oxy = data.frame(Species=x, xyFromCell(grid,unique(posP)))
+      new.oxy = data.frame(Species=x, terra::xyFromCell(grid,unique(posP)))
 
       # Return
       return(new.oxy)
