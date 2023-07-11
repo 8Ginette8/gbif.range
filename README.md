@@ -146,7 +146,7 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
 
 # Plot
 plot(rst[[1]])
-plot(vect(shp.lonlat),add=TRUE)
+plot(terra::vect(shp.lonlat),add=TRUE)
 plot(range.arcto,add=TRUE,col="darkgreen",axes=FALSE,legend=FALSE)
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
