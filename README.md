@@ -118,9 +118,9 @@ Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic
 
 To access the polygon data in R:
 ``` r
-eco.earth@data
-eco.fresh@data
-eco.marine@data
+data.frame(eco.earth)
+data.frame(eco.fresh)
+data.frame(eco.marine)
 ```
 
 Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since *Panthera tigris* is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we wanted to obtain a more fine distribution.
