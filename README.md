@@ -66,6 +66,7 @@ obs.pt = get_gbif(sp_name="Panthera tigris",
                   basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
+library(sp)
 library(rnaturalearth)
 plot(ne_countries(type = "countries"),col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
