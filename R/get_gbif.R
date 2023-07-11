@@ -167,9 +167,9 @@ get_gbif = function(sp_name = NULL,
 
 	# For study area
 	if (!is.null(geo)) {
-		if (!(class(geo)%in%"SpatExtent")) {geo = ext(geo)}
+		if (!(class(geo)%in%"SpatExtent")) {geo = terra::ext(geo)}
 	} else {
-		geo = ext(-180,180,-90,90)
+		geo = terra::ext(-180,180,-90,90)
 	}
 
 	# For fields
@@ -202,7 +202,7 @@ get_gbif = function(sp_name = NULL,
 
 
 	# Search through the GBIF backbone taxonomy
-	bone.search = name_backbone(sp_name, strict=TRUE)
+	bone.search = rgbif::name_backbone(sp_name, strict=TRUE)
 	if (bone.search$confidence < conf_match || bone.search$matchType%in%"NONE"){
 		cat("No species records found...","\n")
 		return(e.output)
@@ -216,7 +216,7 @@ get_gbif = function(sp_name = NULL,
 	}
 
 	# Check number of records in 'geo' first
-	gbif.records = occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
+	gbif.records = rgbif::occ_data(taxonKey=sp.key,limit=1,hasCoordinate=!no_xy,
 			hasGeospatialIssue=FALSE,geometry=geo.ref)[1]$meta$count
 
 	cat(">>>>>>>> Total number of records:",gbif.records,"\n")
