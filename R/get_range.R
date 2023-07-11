@@ -236,7 +236,7 @@ get_range <- function (sp_name = NULL,
       }
       
       # Determine number of clusters
-      m_clust = mclust::Mclust(crds(a)+1000, verbose=FALSE)
+      m_clust = mclust::Mclust(terra::crds(a)+1000, verbose=FALSE)
       
       # k = number of clusters
       k = m_clust$G 
