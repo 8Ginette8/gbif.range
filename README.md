@@ -162,7 +162,7 @@ points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470
 
 <img width=60% height=60% src="https://user-images.githubusercontent.com/43674773/203855955-b17b45ec-063d-4dfe-9a6b-c944422b60d7.png">
 
-⚠️Also, the number of generated ecoregions will highly determine how precise the distribution of the species would be⚠️, e.g., here **150 ecoregions** highly filter the ecology of the species, whereas **50 ecoregions** does it less and defines more of a very general patterns:
+⚠️Finally, the number of generated ecoregions will highly determine how precise the distribution of the species would be⚠️, e.g., here **150 ecoregions** highly filter the ecology of the species, whereas **50 ecoregions** does it less and defines more of a very general patterns:
 
 ### Marine species
 
