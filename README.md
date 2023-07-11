@@ -127,14 +127,14 @@ Which level should you pick depends on your questions and which level of the spe
 
 ### Custom ecoregions
 
-Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or a shapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
+Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
 obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 
-# Create an ecoregion layer of 50 classes, based on 12 environmental spatial layers:
-my.eco = make_ecoregion(rst,50)
+# Create an ecoregion layer of 150 classes, based on 12 environmental spatial layers:
+my.eco = make_ecoregion(rst,150)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
@@ -142,8 +142,17 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
                         occ_coord=obs.arcto,
                         Bioreg=my.eco,
                         Bioreg_name="EcoRegion",
-                        res=20)
+                        res=20,
+                        degrees_outlier = 5,
+                        clustered_points_outlier = 2,
+                        buffer_width_point = 0, 
+                        buffer_increment_point_line = 0, 
+                        buffer_width_polygon = 0.1)
+```
 
+Here we want to adapt the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points, (ii) do not draw any buffer around single observations, and (iii) apply a buffer of ~10km around the drawn polygons. It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be.
+
+``` r
 # Plot
 plot(rst[[1]])
 plot(terra::vect(shp.lonlat),add=TRUE)
@@ -152,6 +161,8 @@ points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470
 ```
 
 <img width=60% height=60% src="https://user-images.githubusercontent.com/43674773/203855955-b17b45ec-063d-4dfe-9a6b-c944422b60d7.png">
+
+⚠️Also, the number of generated ecoregions will highly determine how precise the distribution of the species would be⚠️, e.g., here **150 ecoregions** highly filter the ecology of the species, whereas **50 ecoregions** does it less and defines more of a very general patterns:
 
 ### Marine species
 
