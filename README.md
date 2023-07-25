@@ -151,7 +151,7 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
                         buffer_width_polygon = 0.1)
 ```
 
-Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be.
+Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. ⚠️It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *Bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
 ``` r
 # Plot
@@ -163,7 +163,7 @@ points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470
 
 ![image](https://github.com/8Ginette8/gbif.range/assets/43674773/f2043983-0b1f-48aa-83bb-b36fcf3f6432)
 
-⚠️Finally, the number of generated ecoregions will highly determine how precise the distribution of the species should be⚠️, e.g., here **200 ecoregions** defines a strict species ecological niche (high environmental filtering), whereas **50 ecoregions** does it less and generate a more general distributional pattern:
+⚠️Finally, the number of generated ecoregions will highly determine how precise the distribution of the species should be, e.g., here **200 ecoregions** defines a strict species ecological niche (high environmental filtering), whereas **50 ecoregions** does it less and generate a more general distributional pattern:
 
 ![image](https://github.com/8Ginette8/gbif.range/assets/43674773/8d69fe93-d61e-453a-96d1-f990ea576019)
 
@@ -171,7 +171,7 @@ points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470
 
 Let's reapply the same process as for Panthera tigris, but with the marine species *Delphinus delphis* (> 100'000 observations).
 
-⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area⚠️:
+⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
 
 ``` r
 obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # Here the example is a sample of 1000 observations per geographic tile
@@ -198,7 +198,7 @@ points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",c
 
 Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
 
-⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.⚠️
+⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.
 
 ## Citation
 Yohann Chauvier; Oskar Hagen; Camille Albouy; Patrice Descombes; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - An R package to generate species range maps based on ecoregions and a user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352</a>
