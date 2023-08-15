@@ -95,16 +95,15 @@
 #' approaches on (1) downloading GBIF observations and (2) post-filtering those.
 #' @examples
 #' 
-#' # Load maptools for the map world
-#' library(maptools)
-#' data(wrld_simpl)
+#' # Load map world
+#' library(rnaturalearth)
 #' 
 #' # Load the Alps Extend
 #' data(geo_dat)
 #' 
 #' # Downloading worldwide the observations of Panthera tigris
 #' obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
-#' plot(wrld_simpl)
+#' plot(ne_countries(type = "countries"),col="#bcbddc")
 #' points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 #' 
 #' # Downloading in the Alps the observations of Cypripedium calceolus (with a 100m grain and
@@ -117,7 +116,7 @@
 #' # and by keeping duplicates and by adding the name of the person who collected the panda records)
 #' obs.am = get_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
 #'     time_period = c(1990,3000), add_infos = c("recordedBy","issue"))
-#' plot(wrld_simpl)
+#' plot(ne_countries(type = "countries"),col="#bcbddc")
 #' points(obs.am[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 #' 
 #' # Downloading worlwide the observations of Phascolarctos cinereus (with a 1km grain, after 1980,
