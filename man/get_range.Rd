@@ -36,9 +36,9 @@ to represent the terrestrial range of species that also partially settle on main
 fresh water species, same may be done if the user considers that terrestrial ecoregions
 should be more representtaive of the species ecology.}
 
-\item{Bioreg_name}{Character. How is the slot containing the ecoregion names called?
+\item{Bioreg_name}{Character. How is the shapefile attribute containing the ecoregion names called?
 Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME'). Note that 'EcoRegion'
-must always be used when using a make_ecoregion() output.}
+must always be used when using a make_ecoregion() output. See details.}
 
 \item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier classification.
 If the nearest minimal distance to the next point is larger than this threshold, it will be
@@ -87,6 +87,20 @@ geographically distinct assemblages of natural communities sharing a large major
 dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
 characterise an ecoregion tends to be distinct from that of other ecoregions
 (https://en.wikipedia.org/wiki/Ecoregion).
+
+Each ecoregion shapefile has one or more categories, which describe more or less precisely the
+ecoregion world distribution (from the more to the less detailed):
+
+- 'eco.earth' has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
+
+- 'eco.fresh' has only one: 'FEOW_ID'.
+
+- 'eco.marine' contains a mix of two types of marine ecoregions. Either common ('PROVINC' and 'REALM')
+or distinct levels:
+
+---> For PPOW (Pelagic provinces of the world): 'BIOME'.
+
+---> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 }
 \examples{
 # Load available ecoregions
