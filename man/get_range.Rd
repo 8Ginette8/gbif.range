@@ -62,7 +62,7 @@ polygons (for each ecoregion).}
 \item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
 
 \item{res}{Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
-e.g.,  = 0.1° (i.e. ~11km) if res = 10. Default is 100. It is important to note that the highest
+e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
 achievable resolution of the output will depend on its 'Bioreg' precision, e.g., a species range
 output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.}
 }
