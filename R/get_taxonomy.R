@@ -40,8 +40,8 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
     
     } else if (!gbif.backbone$rank%in%c("SPECIES","SUBSPECIES","VARIETY")) {
       gbif.backbone = rgbif::name_backbone(sp_name,verbose=TRUE)[2,]
-      if (gbif.backbone$confidence < conf_match) {
-        cat("Confidence match not high enough...","\n")
+      if (gbif.backbone$confidence < conf_match | is.na(gbif.backbone$status)) {
+        cat("Not match found...","\n")
         return(NULL)
       }
     }
