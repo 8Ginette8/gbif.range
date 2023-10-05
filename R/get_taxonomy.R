@@ -25,7 +25,7 @@
 #' get_taxonomy("Cypripedium calceolus",all=TRUE)
 #' 
 #' @export
-get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
+get_taxonomy=function(sp_name = NULL, conf_match = 95, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
     gbif.backbone = rgbif::name_backbone(sp_name)
@@ -39,9 +39,8 @@ get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
       return(NULL)
     
     } else if (gbif.backbone$matchType=="HIGHERRANK") {
-      # Retry by adding the classic "L."
-      gbif.backbone = rgbif::name_backbone(paste(sp_name,"L."))
-      if (gbif.backbone$confidence!=100) {
+      gbif.backbone = rgbif::name_backbone(sp_name,verbose=TRUE)[2,]
+      if (gbif.backbone$confidence < conf_match) {
         cat("Confidence match not high enough...","\n")
         return(NULL)
       }
