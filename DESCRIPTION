@@ -9,10 +9,11 @@ License: GPL (>=3)
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 Maintainer: Yohann Chauvier <yohann.chauvier@wsl.ch>
+    Oskar Hagen <oskar.hagen@idiv.de>
 LazyData: true
 RoxygenNote: 7.1.2
 Authors: Yohann Chauvier [cre,aut] (https://orcid.org/0000-0001-9399-3192)
-    Oskar Hagen [aut] (https://orcid.org/0000-0002-7931-6571)
+    Oskar Hagen [cre,aut] (https://orcid.org/0000-0002-7931-6571)
     Camille Albouy [aut] (https://orcid.org/0000-0003-1629-2389)
     Patrice Descombes [aut] (https://orcid.org/0000-0002-3760-9907)
     Fabian Fopp [aut] (https://orcid.org/0000-0003-0648-8484)

@@ -37,6 +37,14 @@ get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
     } else if (gbif.backbone$confidence<conf_match) {
       cat("Confidence match not high enough...","\n")
       return(NULL)
+    
+    } else if (gbif.backbone$matchType=="HIGHERRANK") {
+      # Retry by adding the classic "L."
+      gbif.backbone = rgbif::name_backbone(paste(sp_name,"L."))
+      if (gbif.backbone$confidence!=100) {
+        cat("Confidence match not high enough...","\n")
+        return(NULL)
+      }
     }
 
     # Extract key of accepted name
