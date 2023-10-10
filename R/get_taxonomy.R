@@ -85,7 +85,7 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
 
       # Extract all names and infos in a data.frame
       out = data.frame(key=all.names$key,
-        scientificName=all.names$scientificName,
+        scientificName=suppressWarnings(all.names$scientificName),
         status=c("ACCEPTED",
                 rep("SYNONYM",nrow(s.n)),
                 rep("CHILDREN",nrow(c.n)),
@@ -98,7 +98,7 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
       # Extract accepted names and synonyms
       out = data.frame(key=suppressWarnings(c(accep.key,syn.syn$key)),
         scientificName=suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName)),
-        status=c("ACCEPTED",rep("SYNONYM",length(syn.syn$scientificName))))
+        status=c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName)))))
     }
     
     return(out[!duplicated(out[,2]),])
