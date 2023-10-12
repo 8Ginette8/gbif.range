@@ -25,7 +25,7 @@
 #' get_taxonomy("Cypripedium calceolus",all=TRUE)
 #' 
 #' @export
-get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
+get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
     gbif.backbone = rgbif::name_backbone(sp_name)
@@ -37,6 +37,13 @@ get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
     } else if (gbif.backbone$confidence<conf_match) {
       cat("Confidence match not high enough...","\n")
       return(NULL)
+    
+    } else if (!gbif.backbone$rank%in%c("SPECIES","SUBSPECIES","VARIETY")) {
+      gbif.backbone = rgbif::name_backbone(sp_name,verbose=TRUE)[2,]
+      if (gbif.backbone$confidence < conf_match | is.na(gbif.backbone$status)) {
+        cat("Not match found...","\n")
+        return(NULL)
+      }
     }
 
     # Extract key of accepted name
@@ -78,7 +85,7 @@ get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
 
       # Extract all names and infos in a data.frame
       out = data.frame(key=all.names$key,
-        scientificName=all.names$scientificName,
+        scientificName=suppressWarnings(all.names$scientificName),
         status=c("ACCEPTED",
                 rep("SYNONYM",nrow(s.n)),
                 rep("CHILDREN",nrow(c.n)),
@@ -91,7 +98,7 @@ get_taxonomy=function(sp_name = NULL, conf_match = 90, all = FALSE)
       # Extract accepted names and synonyms
       out = data.frame(key=suppressWarnings(c(accep.key,syn.syn$key)),
         scientificName=suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName)),
-        status=c("ACCEPTED",rep("SYNONYM",length(syn.syn$scientificName))))
+        status=c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName)))))
     }
     
     return(out[!duplicated(out[,2]),])

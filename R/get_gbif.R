@@ -126,7 +126,7 @@
 #' 
 #' @export
 get_gbif = function(sp_name = NULL,
-					conf_match = 90,
+					conf_match = 80,
 					geo = NULL,
 					grain = 1000,
 					duplicates = FALSE,
@@ -205,7 +205,15 @@ get_gbif = function(sp_name = NULL,
 	if (bone.search$confidence < conf_match || bone.search$matchType%in%"NONE"){
 		cat("No species records found...","\n")
 		return(e.output)
-	}
+
+	# In case we have several matching names --> we go for the 1st sc name (most common)
+	} else if (!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY")) {
+      bone.search = rgbif::name_backbone(sp_name, strict=TRUE, verbose=TRUE)[2,]
+      if (bone$confidence < conf_match | is.na(bone.search$status)) {
+        cat("Confidence match not high enough...","\n")
+        return(NULL)
+      }
+    }
 
 	# Get the accepetedKey
 	if (bone.search$status %in% "SYNONYM"){
