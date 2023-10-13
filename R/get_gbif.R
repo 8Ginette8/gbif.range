@@ -94,7 +94,6 @@
 #' @seealso The (1) rgbif and (2) CoordinateCelaner packages for additional and more general
 #' approaches on (1) downloading GBIF observations and (2) post-filtering those.
 #' @example inst/examples/get_gbif_help.R
-#' 
 #' @export
 get_gbif = function(sp_name = NULL,
 					conf_match = 80,

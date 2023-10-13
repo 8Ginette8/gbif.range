@@ -5,7 +5,7 @@ Version: 1.0
 Depends: R (>= 4.0.0)
 Imports: raster, terra, rgbif, CoordinateCleaner, mclust, sf, ClusterR, FNN, geometry, cluster, rnaturalearth
 Description: Workflow to generate taxa range maps from scratch based on ecoregions and an user-friendly GBIF wrapper (no hard-limit of < 100,000 species observations, filetring parameters to easily flag records, access to the GBIF backbone taxonomy)
-License: GPL (>=3)
+License: GPL-3 + LICENCE
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 LazyData: true
