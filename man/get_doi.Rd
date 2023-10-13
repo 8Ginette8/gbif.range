@@ -40,7 +40,7 @@ rgbif R package, compatible with one or several get_gbif() outputs.
 see derived_dataset() function from the rgbif R package.
 }
 \examples{
-# Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
+# Download worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
 obs.pt = get_gbif("Panthera tigris")
 obs.am = get_gbif("Ailuropoda melanoleuca")
 \dontrun{
@@ -48,7 +48,7 @@ obs.am = get_gbif("Ailuropoda melanoleuca")
 get_doi(obs.pt,title="GBIF_test1",description="A small example 1",
    source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 
-# Another example on how to retrieve the DOI for several get_gbif() outputs
+# Retrieve DOIs for several get_gbif() outputs
 get_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
    source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 }

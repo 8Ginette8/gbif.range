@@ -124,7 +124,6 @@ are kept; if 110m < grain <= 11m, lon/lat with >= 4 decimals are kept;
 if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
 }
 \examples{
-
 # Load map world
 library(rnaturalearth)
 
@@ -146,15 +145,14 @@ points(obs.cc[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",c
 # Downloading worlwide the observations of Ailuropoda melanoleuca (with a 100km grain, after 1990
 # and by keeping duplicates and by adding the name of the person who collected the panda records)
 obs.am = get_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
-    time_period = c(1990,3000), add_infos = c("recordedBy","issue"))
+   time_period = c(1990,3000), add_infos = c("recordedBy","issue"))
 plot(ne_countries(type = "countries"),col="#bcbddc")
 points(obs.am[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 
 # Downloading worlwide the observations of Phascolarctos cinereus (with a 1km grain, after 1980,
 # and keeping raster centroids)
 obs.pc = get_gbif("Phascolarctos cinereus", grain = 1000,
-    time_period = c(1990,3000), centroids = TRUE)
-
+   time_period = c(1990,3000), centroids = TRUE)
 }
 \references{
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
