@@ -10,7 +10,7 @@
 #' per pixel grid kept). This function allows the user to refine the density of
 #' GBIF observations according to a defined analysis/study's resolution.
 #'
-#' @param get.gbif One get_gbif() output including one or several species. Note
+#' @param gbifs One get_gbif() output including one or several species. Note
 #' that if GBIF absences are kept in the output(s), the function should be used
 #' distinctively for observations and absences.
 #' @param grid Object of class SpatRaster, RasterLayer, RasterBrick or
@@ -42,7 +42,7 @@
 #' points(obs.filt[obs.filt$Species%in%"Saxifraga cernua",c("x","y")],pch=20,col="#99000d50",cex=1)
 #' 
 #' @export
-obs_filter=function(get.gbif,grid)
+obs_filter=function(gbifs,grid)
 {
     # Check 'ras' input
     if(!(class(grid)%in%c("SpatRaster"))) {
@@ -50,14 +50,14 @@ obs_filter=function(get.gbif,grid)
     }
 
     # Check number of species in 'get_gbif' output
-    n.sp = unique(get.gbif$input.search)
+    n.sp = unique(gbifs$input.search)
 
     # Loop over species
     out.sp =
     lapply(n.sp,function(x)
     {
       # Extract coordinates of the species
-      coords = get.gbif[get.gbif$input.search%in%x,c("decimalLongitude","decimalLatitude")]
+      coords = gbifs[gbifs$input.search%in%x,c("decimalLongitude","decimalLatitude")]
 
       # Extract related cells
       posP = terra::cellFromXY(grid,as.matrix(coords))

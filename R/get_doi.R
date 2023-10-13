@@ -7,7 +7,7 @@
 #' rgbif R package, compatible with one or several get_gbif() outputs.
 #' 
 #' 
-#' @param get.gbif data.frame or list. One get_gbif() output or a list of several.
+#' @param gbifs data.frame or list. One get_gbif() output or a list of several.
 #' @param title Title for your derived dataset.
 #' @param descritpion Description of the dataset.
 #' @param source_url  Link to where the dataset is stored.
@@ -35,7 +35,7 @@
 #'     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 #' 
 #' @export
-get_doi = function(get.gbif = NULL,
+get_doi = function(gbifs = NULL,
 				   title = NULL,
 				   description = NULL,
 				   source_url = "https://example.com/", 
@@ -44,10 +44,10 @@ get_doi = function(get.gbif = NULL,
 				   ...) {
 
 	# If data.frame, transform in list for code homogenisation
-	if (class(get.gbif)%in%"data.frame") {get.gbif=list(get.gbif)}
+	if (class(gbifs)%in%"data.frame") {gbifs=list(gbifs)}
 
 	# Combine everything
-	all.obs = do.call("rbind",get.gbif)
+	all.obs = do.call("rbind",gbifs)
 
 	# Pre-compile a bit
 	d.target = table(all.obs$datasetKey)
