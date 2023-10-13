@@ -132,7 +132,8 @@ library(rnaturalearth)
 data(geo_dat)
 
 # Downloading worldwide the observations of Panthera tigris
-obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+obs.pt = get_gbif("Panthera tigris",
+basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 plot(ne_countries(type = "countries"),col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 
