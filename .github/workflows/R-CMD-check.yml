@@ -20,6 +20,9 @@ permissions:
 jobs:
   build:
     runs-on: macOS-latest
+    strategy:
+    matrix:
+      r-version: ['3.6.3', '4.1.1']
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
