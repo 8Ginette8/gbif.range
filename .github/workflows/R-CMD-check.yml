@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macos-latest
     strategy:
     matrix:
       r-version: ['3.6.3', '4.1.1']
