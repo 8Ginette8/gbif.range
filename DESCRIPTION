@@ -11,16 +11,16 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
 Authors@R: c(
-    person("Yohann", "Chauvier", role = c("cre","aut"), email = "yohann.chauvier@wsl.ch", orcid = "0000-0001-9399-3192"),
-    person("Oskar", "Hagen", role = c("cre","aut"), email = "oskar@hagen.bio", orcid = "0000-0002-7931-6571"),
-    person("Camille", "Albouy", role = "aut", orcid = "0000-0003-1629-2389"),
-    person("Patrice", "Descombes", role = "aut", orcid = "0000-0002-3760-9907"),
-    person("Fabian", "Fopp", role = "aut", orcid = "0000-0003-0648-8484"),
-    person("Michael P.", "Nobis", role = "aut", orcid = "0000-0003-3285-1590"),
-    person("Philipp", "Brun", role = "aut", orcid = "0000-0002-2750-9793"),
-    person("Lisha", "Lyu", role = "aut", orcid = "0000-0001-7855-8109"),
-    person("Katalin", "Csillery", role = "aut", orcid = "0000-0003-0039-9296"),
-    person("Loïc", "Pellissier", role = "aut", orcid = "0000-0002-2289-8259"))
+    person("Yohann", "Chauvier", role = c("cre","aut"), email = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
+    person("Oskar", "Hagen", role = c("cre","aut"), email = "oskar@hagen.bio", comment = "0000-0002-7931-6571"),
+    person("Camille", "Albouy", role = "aut", comment = "0000-0003-1629-2389"),
+    person("Patrice", "Descombes", role = "aut", comment = "0000-0002-3760-9907"),
+    person("Fabian", "Fopp", role = "aut", comment = "0000-0003-0648-8484"),
+    person("Michael P.", "Nobis", role = "aut", comment = "0000-0003-3285-1590"),
+    person("Philipp", "Brun", role = "aut", comment = "0000-0002-2750-9793"),
+    person("Lisha", "Lyu", role = "aut", comment = "0000-0001-7855-8109"),
+    person("Katalin", "Csillery", role = "aut", comment = "0000-0003-0039-9296"),
+    person("Loïc", "Pellissier", role = "aut", comment = "0000-0002-2289-8259"))
 Collate:
     'make_tiles.R'
     'get_gbif.R'
