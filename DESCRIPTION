@@ -16,7 +16,7 @@ person("Oskar", "Hagen", role=c("cre","aut"), email="oskar@hagen.bio", orcid="00
 person("Camille", "Albouy", role="aut", orcid="0000-0003-1629-2389"),
 person("Patrice", "Descombes", role="aut", orcid="0000-0002-3760-9907"),
 person("Fabian", "Fopp", role="aut", orcid="0000-0003-0648-8484"),
-person("Michael", "P. Nobis", role="aut", orcid="0000-0003-3285-1590"),
+person("Michael P.", "Nobis", role="aut", orcid="0000-0003-3285-1590"),
 person("Philipp", "Brun", role="aut", orcid="0000-0002-2750-9793"),
 person("Lisha", "Lyu", role="aut", orcid="0000-0001-7855-8109"),
 person("Katalin", "Csillery", role="aut", orcid="0000-0003-0039-9296"),
