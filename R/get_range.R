@@ -124,7 +124,8 @@
 #' data(ecoregions)
 #' 
 #' # First download the worldwide observations of Panthera tigris and convert to SpatialPoints
-#' obs.pt = get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+#' obs.pt = get_gbif("Panthera tigris",
+#' basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 #' 
 #' # Plot
 #' plot(eco.earth)
