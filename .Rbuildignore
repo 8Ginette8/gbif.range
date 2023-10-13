@@ -2,3 +2,7 @@
 ^\.Rproj\.user$
 .travis.yml
 R-CMD-check.yml
+desktop.ini
+gbif.range.pdf
+logo.JPG
+memo_pdf.txt
