@@ -1,7 +1,7 @@
 # Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
 obs.pt = get_gbif("Panthera tigris")
 obs.am = get_gbif("Ailuropoda melanoleuca")
-\donttest{
+\dontrun{
 # Retrieve DOI for only one get_gbif() output
 get_doi(obs.pt,title="GBIF_test1",description="A small example 1",
    source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
