@@ -4,10 +4,10 @@
 \alias{obs_filter}
 \title{Filter a set of GBIF observations according to a defined grain}
 \usage{
-obs_filter(get.gbif, grid)
+obs_filter(gbifs, grid)
 }
 \arguments{
-\item{get.gbif}{One get_gbif() output including one or several species. Note
+\item{gbifs}{One get_gbif() output including one or several species. Note
 that if GBIF absences are kept in the output(s), the function should be used
 distinctively for observations and absences.}
 

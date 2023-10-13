@@ -4,7 +4,7 @@
 \alias{get_taxonomy}
 \title{Retrieve from GBIF all scientific names of a specific Taxa}
 \usage{
-get_taxonomy(sp_name = NULL, conf_match = 90, all = FALSE)
+get_taxonomy(sp_name = NULL, conf_match = 80, all = FALSE)
 }
 \arguments{
 \item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names.}

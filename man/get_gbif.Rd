@@ -6,7 +6,7 @@
 \usage{
 get_gbif(
   sp_name = NULL,
-  conf_match = 90,
+  conf_match = 80,
   geo = NULL,
   grain = 1000,
   duplicates = FALSE,

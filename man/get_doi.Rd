@@ -5,7 +5,7 @@
 \title{Get a custom DOI for a GBIF filtered dataset}
 \usage{
 get_doi(
-  get.gbif = NULL,
+  gbifs = NULL,
   title = NULL,
   description = NULL,
   source_url = "https://example.com/",
@@ -15,7 +15,7 @@ get_doi(
 )
 }
 \arguments{
-\item{get.gbif}{data.frame or list. One get_gbif() output or a list of several.}
+\item{gbifs}{data.frame or list. One get_gbif() output or a list of several.}
 
 \item{title}{Title for your derived dataset.}
 
@@ -40,19 +40,18 @@ rgbif R package, compatible with one or several get_gbif() outputs.
 see derived_dataset() function from the rgbif R package.
 }
 \examples{
-
 # Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
 obs.pt = get_gbif("Panthera tigris")
 obs.am = get_gbif("Ailuropoda melanoleuca")
-
-# Just an example on how to retrieve the DOI for only one get_gbif() output
+\dontrun{
+# Retrieve DOI for only one get_gbif() output
 get_doi(obs.pt,title="GBIF_test1",description="A small example 1",
-    source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
+   source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
 
 # Another example on how to retrieve the DOI for several get_gbif() outputs
 get_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
-    source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
-
+   source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
+}
 }
 \references{
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
