@@ -8,20 +8,19 @@ Description: Workflow to generate taxa range maps from scratch based on ecoregio
 License: GPL (>=3)
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
-Maintainer: Yohann Chauvier <yohann.chauvier@wsl.ch>
-    Oskar Hagen <oskar.hagen@idiv.de>
 LazyData: true
 RoxygenNote: 7.1.2
-Authors: Yohann Chauvier [cre,aut] (https://orcid.org/0000-0001-9399-3192)
-    Oskar Hagen [cre,aut] (https://orcid.org/0000-0002-7931-6571)
-    Camille Albouy [aut] (https://orcid.org/0000-0003-1629-2389)
-    Patrice Descombes [aut] (https://orcid.org/0000-0002-3760-9907)
-    Fabian Fopp [aut] (https://orcid.org/0000-0003-0648-8484)
-    Michael P. Nobis [aut] (https://orcid.org/0000-0003-3285-1590)
-    Philipp Brun [aut] (https://orcid.org/0000-0002-2750-9793)
-    Lisha Lyu [aut] (https://orcid.org/0000-0001-7855-8109)
-    Katalin Csillery [aut] (https://orcid.org/0000-0003-0039-9296)
-    Loïc Pellissier [aut] (https://orcid.org/0000-0002-2289-8259)
+Authors@R: c(
+person("Yohann", "Chauvier", role=c("cre","aut"), email="yohann.chauvier@wsl.ch", orcid="0000-0001-9399-3192"),
+person("Oskar", "Hagen", role=c("cre","aut"), email="oskar@hagen.bio", orcid="0000-0002-7931-6571"),
+person("Camille", "Albouy", role="aut", orcid="0000-0003-1629-2389"),
+person("Patrice", "Descombes", role="aut", orcid="0000-0002-3760-9907"),
+person("Fabian", "Fopp", role="aut", orcid="0000-0003-0648-8484"),
+person("Michael", "P. Nobis", role="aut", orcid="0000-0003-3285-1590"),
+person("Philipp", "Brun", role="aut", orcid="0000-0002-2750-9793"),
+person("Lisha", "Lyu", role="aut", orcid="0000-0001-7855-8109"),
+person("Katalin", "Csillery", role="aut", orcid="0000-0003-0039-9296"),
+person("Loïc", "Pellissier", role="aut", orcid="0000-0002-2289-8259"))
 Collate:
     'make_tiles.R'
     'get_gbif.R'
