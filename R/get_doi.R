@@ -20,20 +20,7 @@
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735
 #' @seealso The rgbif package for additional and more general approaches to get GBIF DOI.
-#' @examples
-#' 
-#' # Downloading worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
-#' obs.pt = get_gbif("Panthera tigris")
-#' obs.am = get_gbif("Ailuropoda melanoleuca")
-#' 
-#' # Just an example on how to retrieve the DOI for only one get_gbif() output
-#' get_doi(obs.pt,title="GBIF_test1",description="A small example 1",
-#'     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
-#' 
-#' # Another example on how to retrieve the DOI for several get_gbif() outputs
-#' get_doi(list(obs.pt,obs.am),title="GBIF_test2",description="A small example 2",
-#'     source_url="https://example.com/",user="",pwd="") # Use your own GBIF credentials here
-#' 
+#' @example inst/examples/get_doi_help.R
 #' @export
 get_doi = function(gbifs = NULL,
 				   title = NULL,
