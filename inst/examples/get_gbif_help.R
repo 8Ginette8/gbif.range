@@ -10,6 +10,7 @@ basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 plot(ne_countries(type = "countries"),col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 
+\dontrun{
 # Downloading in the Alps the observations of Cypripedium calceolus (with a 100m grain and
 # by adding the 'issues' column)
 obs.cc = get_gbif("Cypripedium calceolus", geo = shp.lonlat, grain = 100, add_infos = c("issue"))
@@ -27,3 +28,4 @@ points(obs.am[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",c
 # and keeping raster centroids)
 obs.pc = get_gbif("Phascolarctos cinereus", grain = 1000,
    time_period = c(1990,3000), centroids = TRUE)
+}
