@@ -7,7 +7,8 @@ data(geo_dat)
 # Downloading worldwide the observations of Panthera tigris
 obs.pt = get_gbif("Panthera tigris",
 basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
-plot(ne_countries(type = "countries"),col="#bcbddc")
+countries = vect(ne_countries(type = "countries",returnclass = "sf"))
+plot(countries,col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 
 \dontrun{
@@ -21,7 +22,7 @@ points(obs.cc[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",c
 # and by keeping duplicates and by adding the name of the person who collected the panda records)
 obs.am = get_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
    time_period = c(1990,3000), add_infos = c("recordedBy","issue"))
-plot(ne_countries(type = "countries"),col="#bcbddc")
+plot(countries,col="#bcbddc")
 points(obs.am[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 
 # Downloading worlwide the observations of Phascolarctos cinereus (with a 1km grain, after 1980,
