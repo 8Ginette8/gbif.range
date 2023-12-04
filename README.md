@@ -54,6 +54,8 @@ You can install the development version from GitHub with:
 ``` r
 remotes::install_github("8Ginette8/gbif.range")
 library(gbif.range)
+library(terra)
+library(rnaturalearth)
 ```
 
 ## Example
@@ -68,8 +70,8 @@ obs.pt = get_gbif(sp_name="Panthera tigris",
                   basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
-library(rnaturalearth)
-plot(ne_countries(type = "countries"),col="#bcbddc")
+countries = vect(ne_countries(type = "countries",returnclass = "sf"))
+plot(countries,col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
@@ -93,7 +95,7 @@ range.tiger = get_range(sp_name="Panthera tigris",
 Let's plot the result now:
 
 ``` r
-plot(ne_countries(type = "countries"),col="#bcbddc")
+plot(countries,col="#bcbddc")
 plot(range.tiger,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 ```
 
@@ -190,7 +192,7 @@ range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"BIOME") # Deep sea 
 The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
 
 ``` r
-plot(ne_countries(type = "countries"),col="#bcbddc")
+plot(countries,col="#bcbddc")
 plot(range.dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
