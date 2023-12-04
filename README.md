@@ -54,6 +54,7 @@ You can install the development version from GitHub with:
 ``` r
 remotes::install_github("8Ginette8/gbif.range")
 library(gbif.range)
+library(terra)
 ```
 
 ## Example
