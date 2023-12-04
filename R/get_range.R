@@ -119,25 +119,8 @@
 #' For more information on the original code and methods, check Hagen, Oskar et al. (2019), Data
 #' from: Mountain building, climate cooling and the richness of cold-adapted plants in the northern
 #' hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
-#' @examples
-#' # Load available ecoregions
-#' data(ecoregions)
-#' 
-#' # First download the worldwide observations of Panthera tigris and convert to SpatialPoints
-#' obs.pt = get_gbif("Panthera tigris",
-#' basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
-#' 
-#' # Plot
-#' plot(eco.earth)
-#' plot(sp.shp,pch=20,col="#238b4550",cex=4,add=TRUE)
-#' 
-#' # Generate the distributional range map of Panthera tigris for the finest terrestrial ecoregions
-#' range.tiger = get_range("Panthera tigris",sp.shp,eco.earth,"ECO_NAME")
-#' 
-#' # Plotting
-#' plot(eco.earth)
-#' plot(range.tiger,col="#238b45",add=TRUE)
-#' 
+#' @example inst/examples/get_range_help.R
+
 #' @export
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
