@@ -103,24 +103,25 @@ or distinct levels:
 ---> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 }
 \examples{
+\dontrun{
 # Load available ecoregions
 data(ecoregions)
 
 # First download the worldwide observations of Panthera tigris and convert to SpatialPoints
-obs.pt = get_gbif("Panthera tigris",
-basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
-
+# get occurance points from GBIF
+occ  <- get_gbif("Panthera tigris", basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+# make range from occurance points
+range <- get_range("Panthera tigris", occ ,eco.earth ,"ECO_NAME")
 # Plot
-plot(eco.earth)
-plot(sp.shp,pch=20,col="#238b4550",cex=4,add=TRUE)
+plot(range, axes = FALSE, box = FALSE, legend=FALSE, col="chartreuse4")
+# plot political world boundaries
+plot(ne_countries(returnclass = "sf")[1], add=T, col=NA)
 
-# Generate the distributional range map of Panthera tigris for the finest terrestrial ecoregions
-range.tiger = get_range("Panthera tigris",sp.shp,eco.earth,"ECO_NAME")
-
-# Plotting
-plot(eco.earth)
-plot(range.tiger,col="#238b45",add=TRUE)
-
+# plot(countries,col="#bcbddc")
+# plot(ne_countries(returnclass = "sf")[4] , col="antiquewhite")
+# TODO FIX THIS
+# points(occ[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
+}
 }
 \references{
 Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein,
