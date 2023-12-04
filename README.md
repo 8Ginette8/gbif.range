@@ -201,7 +201,7 @@ points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",c
 
 Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
 
-⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crash of the function**.
+⚠️Finally, also note that in case of too many records, *get_range* can be used with a **subsample of species observations** to ensure a **faster polygon process and/or to overcome potential RAM crashes**.
 
 ## Citation
 Yohann Chauvier; Oskar Hagen; Camille Albouy; Patrice Descombes; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Katalin Csilléry; Loïc Pellissier (2022). gbif.range - An R package to generate species range maps based on ecoregions and a user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352</a>
