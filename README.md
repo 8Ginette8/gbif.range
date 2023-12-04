@@ -55,6 +55,7 @@ You can install the development version from GitHub with:
 remotes::install_github("8Ginette8/gbif.range")
 library(gbif.range)
 library(terra)
+library(rnaturalearth)
 ```
 
 ## Example
@@ -69,7 +70,6 @@ obs.pt = get_gbif(sp_name="Panthera tigris",
                   basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
-library(rnaturalearth)
 countries = vect(ne_countries(type = "countries",returnclass = "sf"))
 plot(countries,col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
