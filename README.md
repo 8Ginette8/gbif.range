@@ -12,7 +12,7 @@ When unavailable, such information may be extracted from the Global Biodiversity
 
 Here we present **gbif.range**, a R library that contains automated methods to generate species range maps from scratch using in-house ecoregions shapefiles and an easy-to-use GBIF download wrapper. Finally, this library also offers a set of additional very useful parameters and functions for large GBIF datasets (generate doi, extract GBIF taxonomy, records filtering...).
 
-_(source: globe image adapted by LenaCassie-Studio from Akhil Komath from the Noun Project)_
+_(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
 ## Description
 ### GBIF wrapper
