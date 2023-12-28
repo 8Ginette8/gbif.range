@@ -2,10 +2,26 @@
 % Please edit documentation in R/conv_function.R
 \name{conv_function}
 \alias{conv_function}
-\title{Create polygon objects in different bioregions.}
+\title{Create polygon objects in different bioregions.
+Not to be called directly by the user.}
 \usage{
 conv_function(sp_coord, bwp, bipl, bwpo, temp_dir, g = NULL)
 }
+\arguments{
+\item{sp_coord}{spatial coordinates (type "matrix" or "data.frame)}
+
+\item{bwp}{buffer width parameter (type numeric)}
+
+\item{bipl}{number of observation points (type numeric)}
+
+\item{bwpo}{buffer width parameter for the convex hull (type numeric)}
+
+\item{temp_dir}{temporary directory name (type character)}
+
+\item{g}{optional parameter}
+}
 \description{
+Create polygon objects in different bioregions.
 Not to be called directly by the user.
 }
+\keyword{internal}

@@ -9,7 +9,7 @@
 #' 
 #' @param gbifs data.frame or list. One get_gbif() output or a list of several.
 #' @param title Title for your derived dataset.
-#' @param descritpion Description of the dataset.
+#' @param description Description of the dataset.
 #' @param source_url  Link to where the dataset is stored.
 #' @param user Your GBIF username.
 #' @param pwd Your GBIF password.

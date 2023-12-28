@@ -120,7 +120,6 @@
 #' from: Mountain building, climate cooling and the richness of cold-adapted plants in the northern
 #' hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
 #' @example inst/examples/get_range_help.R
-
 #' @export
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
