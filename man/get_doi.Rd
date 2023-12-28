@@ -19,6 +19,8 @@ get_doi(
 
 \item{title}{Title for your derived dataset.}
 
+\item{description}{Description of the dataset.}
+
 \item{source_url}{Link to where the dataset is stored.}
 
 \item{user}{Your GBIF username.}
@@ -26,8 +28,6 @@ get_doi(
 \item{pwd}{Your GBIF password.}
 
 \item{...}{Additonnal parameters for derived_dataset() in rgbif.}
-
-\item{descritpion}{Description of the dataset.}
 }
 \value{
 One citable DOI and its information.
