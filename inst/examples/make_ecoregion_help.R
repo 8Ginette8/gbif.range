@@ -15,4 +15,4 @@ range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",re
 # Plot
 plot(terra::vect(shp.lonlat))
 plot(range.arcto,add=TRUE,col="darkgreen")
-points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
+points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)

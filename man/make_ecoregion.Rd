@@ -52,7 +52,7 @@ data(exrst)
 
 # Apply the function by infering 50 classes of environments
 my.eco = make_ecoregion(rst,50)
-plot(my.eco)
+terra::plot(my.eco)
 
 # Downloading in the European Alps the observations of one plant species
 obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
@@ -61,10 +61,9 @@ obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
 
 # Plot
-plot(vect(shp.lonlat))
+plot(terra::vect(shp.lonlat))
 plot(range.arcto,add=TRUE,col="darkgreen")
-points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
-
+points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)
 }
 \references{
 Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
