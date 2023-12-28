@@ -58,11 +58,11 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
     accep.name = rgbif::name_usage(accep.key,data="name")$data
     syn.syn = rgbif::name_usage(accep.key,data="synonyms")$data
 
-    # If missing codes, then we continue the search to find possible name correspondancy
+    # If missing codes, then we continue the search to find possible name correspondence
     if (all) {
 
       # Extract children names
-      syn.child =  rgbif::name_usage(accep.key,data="children")$data
+      syn.child =  rgbif::name_usage(accep.key,data="all")$data
 
       # Combine everything and search for related names (i.e. other string version)
       all.key = suppressWarnings(c(accep.key,syn.syn$key,syn.child$key))
