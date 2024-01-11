@@ -2,6 +2,12 @@
 data(geo_dat)
 data(exrst)
 
+#TODO transfer to data()
+rst <- rast("./data/rst_enl.tif")
+shp.lonlat <- vect("./data/shp_lonlat.shp")
+rst <- crop(rst, shp.lonlat)
+#plot(crp)
+
 # Apply the function by infering 50 classes of environments
 my.eco = make_ecoregion(rst,50)
 terra::plot(my.eco)

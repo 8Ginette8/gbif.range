@@ -50,6 +50,12 @@ spatial data, and classify it in clusters.
 data(geo_dat)
 data(exrst)
 
+#TODO transfer to data()
+rst <- rast("./data/rst_enl.tif")
+shp.lonlat <- vect("./data/shp_lonlat.shp")
+rst <- crop(rst, shp.lonlat)
+#plot(crp)
+
 # Apply the function by infering 50 classes of environments
 my.eco = make_ecoregion(rst,50)
 terra::plot(my.eco)
@@ -61,8 +67,8 @@ obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
 
 # Plot
-plot(terra::vect(shp.lonlat))
-plot(range.arcto,add=TRUE,col="darkgreen")
+plot(terra::vect(shp.lonlat), col="grey")
+plot(range.arcto,add=TRUE,col=rgb(0.2,1,0.2,0.5,1))
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)
 }
 \references{
