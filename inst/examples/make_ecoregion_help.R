@@ -1,7 +1,3 @@
-# Load the European Alps extent and a raster of a random resolution
-data(geo_dat)
-data(exrst)
-
 #TODO transfer to data()
 rst <- terra::rast("./data/rst_enl.tif")
 shp.lonlat <- terra::vect("./data/shp_lonlat.shp")
@@ -19,6 +15,6 @@ obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
 
 # Plot
-plot(terra::vect(shp.lonlat), col="grey")
+plot(shp.lonlat, col="grey")
 plot(range.arcto,add=TRUE,col=rgb(0.2,1,0.2,0.5,1))
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)
