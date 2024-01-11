@@ -33,7 +33,7 @@ data(geo_dat)
 data(exrst)
 
 #read example shapefile
-shp.lonlat <- vect("./data/shp_lonlat.shp")
+shp.lonlat <- terra::vect("./data/shp_lonlat.shp")
 
 # Downloading in the European Alps the observations of two plant species
 obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
