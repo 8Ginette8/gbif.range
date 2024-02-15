@@ -143,8 +143,8 @@ get_gbif = function(sp_name = NULL,
 
 	# For fields
 	gbif.info = c('taxonKey','scientificName','acceptedTaxonKey','acceptedScientificName',
-		'individualCount','decimalLatitude','decimalLongitude','basisOfRecord',
-		'coordinateUncertaintyInMeters','countryCode','country', 'year','datasetKey',
+		'individualCount','occurrenceStatus','establishmentMeans','decimalLatitude','decimalLongitude',
+		'basisOfRecord','coordinateUncertaintyInMeters','countryCode','country', 'year','datasetKey',
 		'institutionCode','publishingOrgKey','taxonomicStatus','taxonRank',add_infos)
 	gbif.info = gbif.info[order(gbif.info)]
 
@@ -448,7 +448,7 @@ get_gbif = function(sp_name = NULL,
 
 		cat("---> Removal of absence records...","\n")
 		
-		id.abs = !(gbif.correct$individualCount %in% 0)
+		id.abs = !(gbif.correct$individualCount %in% 0 | gbif.correct$individualCount != "PRESENT")
 		gbif.correct = gbif.correct[id.abs,]
 
 		# Removal summary
