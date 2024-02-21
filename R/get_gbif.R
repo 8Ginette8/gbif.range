@@ -448,7 +448,7 @@ get_gbif = function(sp_name = NULL,
 
 		cat("---> Removal of absence records...","\n")
 		
-		id.abs = !(gbif.correct$individualCount %in% 0 | gbif.correct$individualCount != "PRESENT")
+		id.abs = !(gbif.correct$individualCount %in% 0 | gbif.correct$occurrenceStatus %in% "ABSENT")
 		gbif.correct = gbif.correct[id.abs,]
 
 		# Removal summary
