@@ -168,10 +168,6 @@ points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470
 
 ![image](https://github.com/8Ginette8/gbif.range/assets/43674773/f2043983-0b1f-48aa-83bb-b36fcf3f6432)
 
-⚠️Finally, the number of generated ecoregions will highly determine how precise the distribution of the species should be, e.g., here **200 ecoregions** defines a strict species ecological niche (high environmental filtering), whereas **50 ecoregions** does it less and generate a more general distributional pattern:
-
-![image](https://github.com/8Ginette8/gbif.range/assets/43674773/8d69fe93-d61e-453a-96d1-f990ea576019)
-
 ### Marine species
 
 Let's reapply the same process as for Panthera tigris, but with the marine species *Delphinus delphis* (> 100'000 observations).
