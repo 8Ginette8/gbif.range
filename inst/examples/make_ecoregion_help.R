@@ -1,6 +1,6 @@
 #TODO transfer to data()
-rst <- terra::rast("./data/rst_enl.tif")
-shp.lonlat <- terra::vect("./data/shp_lonlat.shp")
+rst <- terra::rast(paste0(system.file(package = "gbif.range"),"/data/rst_enl.tif"))
+shp.lonlat <- terra::vect(paste0(system.file(package = "gbif.range"),"/data/shp_lonlat.shp"))
 rst <- terra::crop(rst, shp.lonlat)
 #plot(crp)
 
