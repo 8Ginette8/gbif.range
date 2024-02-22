@@ -5,6 +5,7 @@
 [!logo][<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/blob/main/logo_gbif.range.png">](https://www.gbif.org)
 
 [!logo](<img src="https://github.com/8Ginette8/gbif.range/blob/main/logo_gbif.range.png">)
+![logo_gbif range](https://github.com/8Ginette8/gbif.range/assets/43674773/20c84cf2-5ec7-4d58-b1d9-4e878b4f4e3c)
 
 Status of the automatic CI R-CMD-check test [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check.yml/badge.svg?branch=master)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check.yml)
 
