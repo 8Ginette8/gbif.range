@@ -127,7 +127,6 @@ if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
 # Load map world
 library(rnaturalearth)
 
-
 # Downloading worldwide the observations of Panthera tigris
 obs.pt = get_gbif("Panthera tigris",
 basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
