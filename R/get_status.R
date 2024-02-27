@@ -1,11 +1,12 @@
 ### ==================================================================
-### get_taxonomy
+### get_status
 ### ==================================================================
-#' Retrieve from GBIF all scientific names of a specific Taxa
+#' Retrieve from GBIF the IUCN and taxonomy status of a specific Taxa
 #'
-#' Generates, based on a given species name, a list of all its scientific names
-#' (accepted, synonyms) found in the GBIF backbone taxonomy and used to download the data in
-#' get_gbif(). Children and related doubtful names not used to download the data may also be extracted.
+#' Generates, based on a given species name, its IUCN red list status and a list of
+#' all scientific names (accepted, synonyms) found in the GBIF backbone taxonomy and used to
+#' download the data in get_gbif(). Children and related doubtful names not used to download
+#' the data may also be extracted.
 #'
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names.
 #' @param conf_match Numeric. From 0 to 100. Determine the confidence
@@ -21,11 +22,11 @@
 #' @seealso The rgbif package for additional and more general approaches on how to retrieve
 #' scientific names from the GBIF backbone taxonomy.
 #' @examples
-#' get_taxonomy("Cypripedium calceolus",all=FALSE)
-#' get_taxonomy("Cypripedium calceolus",all=TRUE)
+#' get_status("Cypripedium calceolus",all=FALSE)
+#' get_status("Cypripedium calceolus",all=TRUE)
 #' 
 #' @export
-get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
+get_status=function(sp_name = NULL, conf_match = 80, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
     gbif.backbone = rgbif::name_backbone(sp_name)
@@ -58,15 +59,18 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
     accep.name = rgbif::name_usage(accep.key,data="name")$data
     syn.syn = rgbif::name_usage(accep.key,data="synonyms")$data
     main.dat =  rgbif::name_usage(accep.key,data="all")$data
+    iucn = rgbif::name_usage(accep.key,data="iucnRedListCategor")$data
+
+     # Specific columns
+    c.key = suppressWarnings(c(accep.key,syn.syn$key))
+    c.sc = suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName))
+    c.status = c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName))))
 
     # If missing codes, then we continue the search to find possible name correspondence
     if (all) {
 
-       # Extract children names
-      syn.child =  main.dat$data
-
       # Combine everything and search for related names (i.e. other string version)
-      all.key = suppressWarnings(c(accep.key,syn.syn$key,syn.child$key))
+      all.key = suppressWarnings(c(accep.key,syn.syn$key,main.dat$key))
       all.version = lapply(all.key,function(x){
         out = suppressWarnings(rgbif::name_usage(x,data="related")$data$scientificName)
         if (is.null(out)){
@@ -79,37 +83,39 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
       # Extract all names
       a.n = suppressWarnings(accep.name[,c("key","scientificName")])
       a.n$key = accep.key
-      s.n = suppressWarnings(syn.syn[,c("key","scientificName")])
-      c.n = suppressWarnings(syn.child[,c("key","scientificName")])
+      c.n = suppressWarnings(main.dat[,c("key","scientificName")])
       r.n = suppressWarnings(unique(do.call("rbind",all.version)))
+
+      # Conditions for synonymy
+      s.n = try(suppressWarnings(syn.syn[,c("key","scientificName")]),silent=TRUE)
+      if (class(s.n)[1]%in%"try-error") {s.n = data.frame(key=NULL,scientificName=NULL)}
       all.names = rbind(a.n,s.n,c.n,r.n)
 
-      # Extract all names and infos in a data.frame
-      out = data.frame(key=all.names$key,
-        scientificName=suppressWarnings(all.names$scientificName),
-        status=c("ACCEPTED",
+      # Specific columns
+      c.key = all.names$key
+      c.sc = suppressWarnings(all.names$scientificName)
+      c.status = c("ACCEPTED",
                 rep("SYNONYM",nrow(s.n)),
                 rep("CHILDREN",nrow(c.n)),
-                rep("RELATED",nrow(r.n))))
-
-      return(out[!duplicated(out[,2]),])
-    
-    } else {
-
-      # Give class if order is not available
-      o.cond = suppressWarnings(is.null(main.dat$order))
-      if (o.cond) {in_order = main.dat$class} else {in_order = main.dat$order}
-
-      # Extract accepted names and synonyms
-      out = data.frame(key=suppressWarnings(c(accep.key,syn.syn$key)),
-        scientificName=suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName)),
-        status=c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName)))),
-        genus=main.dat$genus,
-        family=main.dat$family,
-        order=in_order,
-        phylum=main.dat$phylum)
+                rep("RELATED",nrow(r.n)))
     }
-    
+
+    # Give class if order is not available
+    o.cond = suppressWarnings(is.null(main.dat$order))
+    c.cond = suppressWarnings(is.null(main.dat$class))
+    if (o.cond) {in_order = suppressWarnings(main.dat$class)} else {in_order = main.dat$order}
+    if (c.cond) {in_order = "Unknown"}
+
+    # Extract accepted names and synonyms
+    out = data.frame(gbif_key = c.key,
+      scientificName = c.sc,
+      gbif_status = c.status,
+      Genus = main.dat$genus,
+      Family = main.dat$family,
+      Order = in_order,
+      Phylum = main.dat$phylum,
+      IUCN_status = iucn$category)
+
     return(out[!duplicated(out[,2]),])
 }
 
