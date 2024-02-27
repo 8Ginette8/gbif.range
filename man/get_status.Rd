@@ -17,7 +17,7 @@ the accepted name and its synonyms?}
 }
 \value{
 Data.frame with three columns: (1) GBIF taxonomic key, (2) scientificName and
-(3) Backbone Taxonomy Status.
+(3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum and (8) IUCN status
 }
 \description{
 Generates, based on a given species name, its IUCN red list status and a list of
