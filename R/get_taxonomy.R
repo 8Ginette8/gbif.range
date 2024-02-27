@@ -57,12 +57,13 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
     # Extract accepted name and save it with its key in the prepared output
     accep.name = rgbif::name_usage(accep.key,data="name")$data
     syn.syn = rgbif::name_usage(accep.key,data="synonyms")$data
+    main.dat =  rgbif::name_usage(accep.key,data="all")$data
 
     # If missing codes, then we continue the search to find possible name correspondence
     if (all) {
 
-      # Extract children names
-      syn.child =  rgbif::name_usage(accep.key,data="all")$data
+       # Extract children names
+      syn.child =  main.dat$data
 
       # Combine everything and search for related names (i.e. other string version)
       all.key = suppressWarnings(c(accep.key,syn.syn$key,syn.child$key))
@@ -98,7 +99,11 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
       # Extract accepted names and synonyms
       out = data.frame(key=suppressWarnings(c(accep.key,syn.syn$key)),
         scientificName=suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName)),
-        status=c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName)))))
+        status=c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName)))),
+        genus=main.dat$genus,
+        family=main.dat$family,
+        order=main.dat$order,
+        phylum=main.dat$phylum)
     }
     
     return(out[!duplicated(out[,2]),])
