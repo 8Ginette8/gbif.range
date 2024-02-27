@@ -96,13 +96,17 @@ get_taxonomy=function(sp_name = NULL, conf_match = 80, all = FALSE)
     
     } else {
 
+      # Give class if order is not available
+      o.cond = suppressWarnings(is.null(main.dat$order))
+      if (o.cond) {in_order = main.dat$class} else {in_order = main.dat$order}
+
       # Extract accepted names and synonyms
       out = data.frame(key=suppressWarnings(c(accep.key,syn.syn$key)),
         scientificName=suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName)),
         status=c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName)))),
         genus=main.dat$genus,
         family=main.dat$family,
-        order=main.dat$order,
+        order=in_order,
         phylum=main.dat$phylum)
     }
     
