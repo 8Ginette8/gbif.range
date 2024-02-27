@@ -15,7 +15,7 @@
 #' the accepted name and its synonyms?
 #' 
 #' @return Data.frame with three columns: (1) GBIF taxonomic key, (2) scientificName and
-#' (3) Backbone Taxonomy Status.
+#' (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum and (8) IUCN status
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735
