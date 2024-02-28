@@ -1,5 +1,5 @@
 #read example shapefile
-path = paste0(system.file(package = "gbif.range"),"/inst/extdata/shp_lonlat.shp")
+path = paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
 shp.lonlat = terra::vect(path)
 
 # Downloading in the European Alps the observations of two plant species

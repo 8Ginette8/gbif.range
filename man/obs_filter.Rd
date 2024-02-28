@@ -28,7 +28,8 @@ GBIF observations according to a defined analysis/study's resolution.
 }
 \examples{
 #read example shapefile
-shp.lonlat <- terra::vect(paste0(system.file(package = "gbif.range"),"/inst/extdata/shp_lonlat.shp"))
+path = paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
+shp.lonlat = terra::vect(path)
 
 # Downloading in the European Alps the observations of two plant species
 obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)

@@ -47,9 +47,10 @@ spatial data, and classify it in clusters.
 }
 \examples{
 #TODO transfer to data()
-rst <- terra::rast(paste0(system.file(package = "gbif.range"),"/inst/extdata/rst_enl.tif"))
-shp.lonlat <- terra::vect(paste0(system.file(package = "gbif.range"),"/inst/extdata/shp_lonlat.shp"))
-rst <- terra::crop(rst, shp.lonlat)
+rst = terra::rast(paste0(system.file(package = "gbif.range"),"/extdata/rst_enl.tif"))
+path = paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
+shp.lonlat = terra::vect(path)
+rst = terra::crop(rst, shp.lonlat)
 #plot(crp)
 
 # Apply the function by infering 50 classes of environments
@@ -66,6 +67,9 @@ range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",re
 terra::plot(shp.lonlat, col="grey")
 terra::plot(range.arcto,add=TRUE,col=rgb(0.2,1,0.2,0.5,1))
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)
+
+
+C:\Program Files\R\R-4.3.2\library\gbif.range\extdata
 }
 \references{
 Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
