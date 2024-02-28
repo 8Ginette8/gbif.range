@@ -2,7 +2,7 @@
 
 *gbif.range - An R package to generate species range maps based on ecoregions and a user-friendly GBIF wrapper*
 
-[<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/tree/main/inst/logo/logo_gbif.range.png">](https://www.gbif.org)
+[<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/blob/main/inst/logo/logo_gbif.range.png">](https://www.gbif.org)
 
 Status of the automatic CI R-CMD-check test [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check.yml/badge.svg?branch=master)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check.yml)
 
