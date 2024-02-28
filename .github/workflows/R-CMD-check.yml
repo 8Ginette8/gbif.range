@@ -22,7 +22,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        r-version: ['4.1.2']
+        r-version: ['4.3.1']
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
