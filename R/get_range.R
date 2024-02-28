@@ -121,6 +121,7 @@
 #' hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
 #' @example inst/examples/get_range_help.R
 #' @export
+#' @importFrom mclust mclustBIC
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
                        Bioreg = eco.earth, 
@@ -139,7 +140,7 @@ get_range <- function (sp_name = NULL,
   ### =========================================================================
 
   # occ_coord
-  if (!class(occ_coord) == "data.frame") {
+  if (methods::is(occ_coord,"data.frame")) {
     stop("'occ_coord' is not a data.frame...")
   } 
   if (!any(names(occ_coord)%in%"decimalLongitude")) {
@@ -223,7 +224,7 @@ get_range <- function (sp_name = NULL,
     
     if (length(a) < 3) {
       k = 1
-      cluster_k = kmeans(terra::crds(a),k)
+      cluster_k = stats::kmeans(terra::crds(a),k)
       cluster_k$clusters = cluster_k$cluster 
 
     } else {

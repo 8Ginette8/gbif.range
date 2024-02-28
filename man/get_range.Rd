@@ -109,7 +109,8 @@ data(ecoregions)
 
 # First download the worldwide observations of Panthera tigris and convert to SpatialPoints
 # get occurance points from GBIF
-occ  <- get_gbif("Panthera tigris", basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+occ  <- get_gbif("Panthera tigris",
+				  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 # make range from occurance points
 range <- get_range("Panthera tigris", occ ,eco.earth ,"ECO_NAME") #TODO change eco.earth to eco.land
 ## TODO download=TRUE by default, check presence of file.

@@ -8,3 +8,4 @@ logo.JPG
 memo_pdf.txt
 gbif.range/.github/workflows
 gbif.range/.github
+^LICENSE\.md$

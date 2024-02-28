@@ -1,7 +1,8 @@
 #TODO transfer to data()
-rst <- terra::rast(paste0(system.file(package = "gbif.range"),"/data/rst_enl.tif"))
-shp.lonlat <- terra::vect(paste0(system.file(package = "gbif.range"),"/data/shp_lonlat.shp"))
-rst <- terra::crop(rst, shp.lonlat)
+rst = terra::rast(paste0(system.file(package = "gbif.range"),"/inst/extdata/rst_enl.tif"))
+path = paste0(system.file(package = "gbif.range"),"/inst/extdata/shp_lonlat.shp")
+shp.lonlat = terra::vect(path)
+rst = terra::crop(rst, shp.lonlat)
 #plot(crp)
 
 # Apply the function by infering 50 classes of environments
@@ -15,6 +16,6 @@ obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 range.arcto = get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
 
 # Plot
-plot(shp.lonlat, col="grey")
-plot(range.arcto,add=TRUE,col=rgb(0.2,1,0.2,0.5,1))
+terra::plot(shp.lonlat, col="grey")
+terra::plot(range.arcto,add=TRUE,col=rgb(0.2,1,0.2,0.5,1))
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)

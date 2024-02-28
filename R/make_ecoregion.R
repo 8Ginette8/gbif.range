@@ -68,7 +68,7 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
     cat("CLARA algorithm processing...","\n")
   
     # Convert raster in the right CLARA format
-    id.toReplace = complete.cases(env[])
+    id.toReplace = stats::complete.cases(env[])
     toClara = env[][id.toReplace,]
 
     # Run CLARA and assign results to right pixels

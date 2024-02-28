@@ -1,10 +1,7 @@
-# Load map world
-library(rnaturalearth)
-
 # Downloading worldwide the observations of Panthera tigris
 obs.pt = get_gbif("Panthera tigris",
 basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
-countries = terra::vect(ne_countries(type = "countries",returnclass = "sf"))
+countries = terra::vect(rnaturalearth::ne_countries(type = "countries",returnclass = "sf"))
 terra::plot(countries,col="#bcbddc")
 points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
 
