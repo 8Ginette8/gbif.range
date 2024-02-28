@@ -47,7 +47,7 @@ both.sp <- rbind(obs.arcto,obs.saxi)
 obs.filt <- obs_filter(both.sp,rst)
 
 # Check new points
-x11();terra::plot(shp.lonlat)
+terra::plot(shp.lonlat)
 
 graphics::points(obs.filt[obs.filt$Species\%in\%"Arctostaphylos alpinus",c("x","y")],
 pch=20,col="#238b4550",cex=1)
