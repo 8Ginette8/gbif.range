@@ -67,7 +67,7 @@ range.arcto <- get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",r
 # Plot
 terra::plot(shp.lonlat, col="grey")
 terra::plot(range.arcto,add=TRUE,col=rgb(0.2,1,0.2,0.5,1))
-points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)
+graphics::points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="orange1",cex=1)
 }
 \references{
 Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &

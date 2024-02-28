@@ -118,7 +118,7 @@ range <- get_range("Panthera tigris", occ ,eco.earth ,"ECO_NAME") #TODO change e
 terra::plot(range, axes = FALSE, box = FALSE, legend=FALSE, col="chartreuse4")
 # plot political world boundaries
 terra::plot(rnaturalearth::ne_countries(returnclass = "sf")[1], add=T, col=NA)
-points(occ[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
+graphics::points(occ[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 
 # plot(countries,col="#bcbddc")
 # plot(ne_countries(returnclass = "sf")[4] , col="antiquewhite")

@@ -331,11 +331,11 @@ get_gbif = function(sp_name = NULL,
 
 			# While
 			if (class(gbif.search) %in% "try-error") {
-				j=0
+				j = 0
 				while (class(gbif.search) %in% "try-error" & j<ntries)
 				{
 					cat("Attempt",j+1,"...","\n")
-					j=j+1
+					j = j+1
 					gbif.search = try(
 						rgbif::occ_data(taxonKey=sp.key,limit=occ_samp,hasCoordinate=!no_xy,
 							hasGeospatialIssue=FALSE,geometry=go.tile),
@@ -362,7 +362,7 @@ get_gbif = function(sp_name = NULL,
 
 			# Convert to a data.frame is needed
 			if (class(gbif.search$data)[1]!="data.frame"){
-				gbif.search=as.data.frame(gbif.search$data)
+				gbif.search = as.data.frame(gbif.search$data)
 			}
 
 			# Reordering data.frame and correcting if missing columns

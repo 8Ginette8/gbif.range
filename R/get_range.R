@@ -123,6 +123,7 @@
 #' @export
 #' @importFrom mclust mclustBIC
 #' @importFrom rnaturalearth ne_countries
+#' @importFrom methods is
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
                        Bioreg = eco.earth, 
@@ -291,9 +292,9 @@ get_range <- function (sp_name = NULL,
   }
   shp_species = do.call("rbind",lala)
 
-  # Convert in raster files or not
+  # Convert to raster or not
   if (raster) {
-    ras.res = terra::rast(raster::disaggregate(raster::raster(),res))
+    ras.res = terra::rast(terra::disagg(terra::rast(),res))
     sp.range.u = terra::aggregate(shp_species)
     ras = terra::rasterize(sp.range.u,ras.res)
     shp_species = terra::crop(ras,sp.range.u)
