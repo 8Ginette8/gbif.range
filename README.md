@@ -135,11 +135,11 @@ Additonally, if the in-house ecoregions are too coarse for a given geographic re
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
-shp.lonlat = vect(paste0(system.file(package = "gbif.range"),"/data/shp_lonlat.shp"))
+shp.lonlat = vect(paste0(system.file(package = "gbif.range"),"/inst/extdata/shp_lonlat.shp"))
 obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 
 # Create an ecoregion layer of 200 classes, based on 12 environmental spatial layers:
-rst = rast(paste0(system.file(package = "gbif.range"),"/data/rst.tif"))
+rst = rast(paste0(system.file(package = "gbif.range"),"/inst/extdata/rst.tif"))
 my.eco = make_ecoregion(rst,200)
 
 # Create the range map based on our custom ecoregion
