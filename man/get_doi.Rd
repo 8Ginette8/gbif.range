@@ -41,8 +41,8 @@ see derived_dataset() function from the rgbif R package.
 }
 \examples{
 # Download worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
-obs.pt = get_gbif("Panthera tigris")
-obs.am = get_gbif("Ailuropoda melanoleuca")
+obs.pt <- get_gbif("Panthera tigris")
+obs.am <- get_gbif("Ailuropoda melanoleuca")
 \dontrun{
 # Retrieve DOI for only one get_gbif() output
 get_doi(obs.pt,title="GBIF_test1",description="A small example 1",

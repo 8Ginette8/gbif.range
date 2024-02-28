@@ -122,6 +122,7 @@
 #' @example inst/examples/get_range_help.R
 #' @export
 #' @importFrom mclust mclustBIC
+#' @importFrom rnaturalearth ne_countries
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
                        Bioreg = eco.earth, 
@@ -140,7 +141,7 @@ get_range <- function (sp_name = NULL,
   ### =========================================================================
 
   # occ_coord
-  if (methods::is(occ_coord,"data.frame")) {
+  if (!methods::is(occ_coord,"data.frame")) {
     stop("'occ_coord' is not a data.frame...")
   } 
   if (!any(names(occ_coord)%in%"decimalLongitude")) {

@@ -1,19 +1,19 @@
 #read example shapefile
-path = paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
-shp.lonlat = terra::vect(path)
+shp.path <- paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
+shp.lonlat <- terra::vect(shp.path)
 
 # Downloading in the European Alps the observations of two plant species
-obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
-obs.saxi = get_gbif("Saxifraga cernua",geo=shp.lonlat)
+obs.arcto <- get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
+obs.saxi <- get_gbif("Saxifraga cernua",geo=shp.lonlat)
 terra::plot(shp.lonlat)
 points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=1)
 points(obs.saxi[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99000d50",cex=1)
 
 # rbind both datasets
-both.sp = rbind(obs.arcto,obs.saxi)
+both.sp <- rbind(obs.arcto,obs.saxi)
 
 # Run function
-obs.filt = obs_filter(both.sp,rst)
+obs.filt <- obs_filter(both.sp,rst)
 
 # Check new points
 x11();plot(shp.lonlat)
