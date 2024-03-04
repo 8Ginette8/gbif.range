@@ -22,6 +22,7 @@
 #' @seealso The rgbif package for additional and more general approaches to get GBIF DOI.
 #' @example inst/examples/get_doi_help.R
 #' @export
+#' @importFrom rgbif derived_dataset
 get_doi = function(gbifs = NULL,
 				   title = NULL,
 				   description = NULL,

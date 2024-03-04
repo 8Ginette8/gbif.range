@@ -26,6 +26,8 @@
 #' get_status("Cypripedium calceolus",all=TRUE)
 #' 
 #' @export
+#' @importFrom rgbif name_backbone name_usage
+#' @importFrom methods is
 get_status=function(sp_name = NULL, conf_match = 80, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
@@ -59,7 +61,8 @@ get_status=function(sp_name = NULL, conf_match = 80, all = FALSE)
     accep.name = rgbif::name_usage(accep.key,data="name")$data
     syn.syn = rgbif::name_usage(accep.key,data="synonyms")$data
     main.dat =  rgbif::name_usage(accep.key,data="all")$data
-    iucn = rgbif::name_usage(accep.key,data="iucnRedListCategor")$data
+    iucn = try(rgbif::name_usage(accep.key,data="iucnRedListCategory")$data,silent=TRUE)
+    if (methods::is(iucn,"try-error")) {iucn = "INTERNAL_GBIF_ERROR"} else {iucn = iucn$category}
 
      # Specific columns
     c.key = suppressWarnings(c(accep.key,syn.syn$key))
@@ -114,7 +117,7 @@ get_status=function(sp_name = NULL, conf_match = 80, all = FALSE)
       Family = main.dat$family,
       Order = in_order,
       Phylum = main.dat$phylum,
-      IUCN_status = iucn$category)
+      IUCN_status = iucn)
 
     return(out[!duplicated(out[,2]),])
 }

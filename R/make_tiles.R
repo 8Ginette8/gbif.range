@@ -27,6 +27,7 @@
 #' 
 #' # Apply the function to divide the extent in ~20 fragments
 #' mt = make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE); mt
+#' @importFrom terra ext
 #' @export
 #' 
 make_tiles = function(geo, Ntiles, sext = TRUE){
