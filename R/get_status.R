@@ -103,20 +103,16 @@ get_status=function(sp_name = NULL, conf_match = 80, all = FALSE)
                 rep("RELATED",nrow(r.n)))
     }
 
-    # Give class if order is not available
-    o.cond = suppressWarnings(is.null(main.dat$order))
-    c.cond = suppressWarnings(is.null(main.dat$class))
-    if (o.cond) {in_order = suppressWarnings(main.dat$class)} else {in_order = main.dat$order}
-    if (c.cond) {in_order = "Unknown"}
+    # Which is null in main.dat for Genus, Family, Order, Phyllum?
+    exist.not = c("genus","order","family","phylum")%in%names(main.dat)
+    main.out = data.frame(Genus="Unknown",Family="Unknown",Order="Unknown",Phylum="Unknown")
+    main.out[exist.not] = main.dat[,c("genus","order","family","phylum")[exist.not]]
 
     # Extract accepted names and synonyms
     out = data.frame(gbif_key = c.key,
       scientificName = c.sc,
       gbif_status = c.status,
-      Genus = main.dat$genus,
-      Family = main.dat$family,
-      Order = in_order,
-      Phylum = main.dat$phylum,
+      main.out,
       IUCN_status = iucn)
 
     return(out[!duplicated(out[,2]),])
