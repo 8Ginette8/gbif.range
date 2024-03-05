@@ -19,6 +19,7 @@
 #' the new set of observations filtered at grid resolution.
 #' @example inst/examples/obs_filter_help.R
 #' @export
+#' @importFrom terra rast cellFromXY xyFromCell
 obs_filter=function(gbifs,grid)
 {
     # Check 'ras' input

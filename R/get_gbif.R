@@ -95,6 +95,9 @@
 #' approaches on (1) downloading GBIF observations and (2) post-filtering those.
 #' @example inst/examples/get_gbif_help.R
 #' @export
+#' @importFrom terra ext
+#' @importFrom rgbif name_backbone occ_data
+#' @importFrom CoordinateCleaner cd_ddmm cd_round
 get_gbif = function(sp_name = NULL,
 					conf_match = 80,
 					geo = NULL,

@@ -121,9 +121,13 @@
 #' hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
 #' @example inst/examples/get_range_help.R
 #' @export
-#' @importFrom mclust mclustBIC
 #' @importFrom rnaturalearth ne_countries
 #' @importFrom methods is
+#' @importFrom terra vect crds intersect simplifyGeom buffer rast disagg aggregate rasterize crop
+#' @importFrom FNN knn.dist
+#' @importFrom stats kmeans
+#' @importFrom mclust Mclust mclustBIC
+#' @importFrom ClusterR KMeans_rcpp
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
                        Bioreg = eco.earth, 

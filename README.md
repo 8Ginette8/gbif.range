@@ -30,7 +30,7 @@ The function first deletes outliers from the observation dataset and then create
 ###  Additonal functions
 
 *gbif.range* also includes a set of additional functions meant to be a nice supplement of the features and data that offer *get_gbif* and *get_range*:
-  - *get_status()*: Generates, based on a given species name, its IUCN status and a list of all scientific names
+  - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
   doubtful names not used to download the data may also be extracted. The function allows therefore taxonomy
   correspondency to be made between different species and sub-species to potentially merge their records,
@@ -77,7 +77,7 @@ points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",c
 
 ![image](https://user-images.githubusercontent.com/43674773/203770189-59a8cf8c-b2c2-4e85-ac87-90d8fd23f8fc.png)
 
-Note that an additional filtering needs here to be done as one observation is found in the 🔷US🔷. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue. We can also retrieve the tiger IUCN status, and its scientific names (accepted and synonyms) that were used in the download with the GBIF backbone taxonomy. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
+Note that an additional filtering needs here to be done as one observation is found in the 🔷US🔷. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
 
 ``` r
 get_status("Panthera tigris",all=FALSE)
