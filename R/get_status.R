@@ -62,7 +62,7 @@ get_status=function(sp_name = NULL, conf_match = 80, all = FALSE)
     syn.syn = rgbif::name_usage(accep.key,data="synonyms")$data
     main.dat =  rgbif::name_usage(accep.key,data="all")$data
     iucn = try(rgbif::name_usage(accep.key,data="iucnRedListCategory")$data,silent=TRUE)
-    if (methods::is(iucn,"try-error")) {iucn = "Not_FOUND"} else {iucn = iucn$category}
+    if (methods::is(iucn,"try-error")) {iucn = "NOT_FOUND"} else {iucn = iucn$category}
 
      # Specific columns
     c.key = suppressWarnings(c(accep.key,syn.syn$key))
