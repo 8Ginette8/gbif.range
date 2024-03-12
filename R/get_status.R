@@ -63,9 +63,9 @@ get_status=function(sp_name = NULL, phylum = NULL, class = NULL, order = NULL, c
           
           } else {
             s.keep3 = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-            if (length(unique(s.keep$acceptedUsageKey))==1){
+            if (length(unique(s.keep3$acceptedUsageKey))==1){
               bone.search = s.keep3[1,]
-              
+
             } else {
               cat("No synonyms distinction could be made. Consider using 'phylum', 'order' or 'class'...","\n")
               return(NULL)

@@ -208,7 +208,7 @@ get_gbif = function(sp_name = NULL,
         
         } else {
           s.keep3 = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-          if (length(unique(s.keep$acceptedUsageKey))==1){
+          if (length(unique(s.keep3$acceptedUsageKey))==1){
           	bone.search = s.keep3[1,]
             
           } else {
