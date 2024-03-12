@@ -190,20 +190,35 @@ get_gbif = function(sp_name = NULL,
 																		 class = class,
 																		 verbose = TRUE,
 																		 strict = TRUE)
+ 	if (nrow(bone.search)>1){
+ 		if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
+      cat("Not match found...","\n")
+      return(NULL)
 
-	if (nrow(bone.search)>1){
-		if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
-			cat("Not match found...","\n")
-			return(NULL)
+    } else {
+      s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY")&bone.search$matchType%in%"EXACT",]
+      if (nrow(s.keep)==0){
+        cat("Not match found...","\n")
+        return(NULL)
 
-		} else {
-			s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
-			if (nrow(s.keep)>1){
-				cat("No synonyms distinction could be made. Consider using 'phylum', 'order' or 'class'...","\n")
-				return(NULL)
+      } else if (nrow(s.keep)>1){
+        s.keep2 = s.keep[s.keep$status%in%"ACCEPTED",]
+        if (nrow(s.keep2)==1){
+          bone.search = s.keep2
+        
+        } else {
+          s.keep3 = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
+          if (length(unique(s.keep$acceptedUsageKey))==1){
+          	bone.search = s.keep3[1,]
+            
+          } else {
+            cat("No synonyms distinction could be made. Consider using 'phylum', 'order' or 'class'...","\n")
+            return(NULL)
+          } 
+        }
 
-			} else {
-				bone.search = s.keep
+      } else {
+        bone.search = s.keep
       }
     }
   }
