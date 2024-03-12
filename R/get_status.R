@@ -9,6 +9,13 @@
 #' the data may also be extracted.
 #'
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names.
+#' @param phylum Character. Optional. What the species' Phylum? Adds a criteria to deal with alternative
+#' name matches and select the right synonym. Available options are the GBIF Phylums
+#' (listed per Kingdom --> https://www.gbif.org/species/1).
+#' @param class Character. Optional. What the species' Class? Same as above but at the finer class level.
+#' Available options are the GBIF Classes (same url).
+#' @param order Character. Optional. What the species' Order? Same as above but at the finer order level.
+#' Available options are the GBIF Orders (same url).
 #' @param conf_match Numeric. From 0 to 100. Determine the confidence
 #' threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
 #' @param all Logical. Default is FALSE. Should all species names be retrieved or only
@@ -28,33 +35,48 @@
 #' @export
 #' @importFrom rgbif name_backbone name_usage
 #' @importFrom methods is
-get_status=function(sp_name = NULL, conf_match = 80, all = FALSE)
+get_status=function(sp_name = NULL, phylum = NULL, class = NULL, order = NULL, conf_match = 80, all = FALSE)
 {
     # Search input name via GBIF backbone & error handling
-    gbif.backbone = rgbif::name_backbone(sp_name)
+    bone.search = rgbif::name_backbone(sp_name,
+                                       phylum = phylum,
+                                       class = class,
+                                       order = order,
+                                       verbose = TRUE,
+                                       strict = TRUE)
 
-    if (gbif.backbone$matchType%in%"NONE") {
-      cat("No species name found...","\n")
-      return(NULL)
-
-    } else if (gbif.backbone$confidence<conf_match) {
-      cat("Confidence match not high enough...","\n")
-      return(NULL)
-    
-    } else if (!gbif.backbone$rank%in%c("SPECIES","SUBSPECIES","VARIETY")) {
-      gbif.backbone = rgbif::name_backbone(sp_name,verbose=TRUE)[2,]
-      if (gbif.backbone$confidence < conf_match | is.na(gbif.backbone$status)) {
+    if (nrow(bone.search)>1){
+      if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
         cat("Not match found...","\n")
         return(NULL)
+
+      } else {
+        s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
+        if (nrow(s.keep)>1){
+          cat("No synonyms distinction could be made. Consider using 'phylum', 'order' or 'class'...","\n")
+          return(NULL)
+
+        } else {
+          bone.search = s.keep
+        }
       }
     }
 
-    # Extract key of accepted name
-    if (gbif.backbone$status%in%"SYNONYM") {
-     accep.key = gbif.backbone$acceptedUsageKey
+    if (bone.search$matchType%in%"NONE") {
+      cat("No species name found...","\n")
+      return(NULL)
+    }
 
+    if (bone.search$confidence[1]<conf_match) {
+      cat("Confidence match not high enough...","\n")
+      return(NULL)
+    }  
+
+    # Extract key of accepted name
+    if (bone.search$status%in%"SYNONYM") {
+      accep.key = bone.search$acceptedUsageKey
     } else {
-      accep.key = gbif.backbone$usageKey
+      accep.key = bone.search$usageKey
     }
 
     # Extract accepted name and save it with its key in the prepared output

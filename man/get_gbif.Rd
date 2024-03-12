@@ -6,6 +6,9 @@
 \usage{
 get_gbif(
   sp_name = NULL,
+  phylum = NULL,
+  class = NULL,
+  order = NULL,
   conf_match = 80,
   geo = NULL,
   grain = 1000,
@@ -29,6 +32,16 @@ get_gbif(
 \item{sp_name}{Character. Scientific name to run an online search
 (i.e. with GBIF-API) to get occurrence records. Works also for genus and higher taxa
 levels.}
+
+\item{phylum}{Character. Optional. What the species' Phylum? Adds a criteria to deal with alternative
+name matches and select the right synonym. Available options are the GBIF Phylums
+(listed per Kingdom --> https://www.gbif.org/species/1).}
+
+\item{class}{Character. Optional. What the species' Class? Same as above but at the finer class level.
+Available options are the GBIF Classes (same url).}
+
+\item{order}{Character. Optional. What the species' Order? Same as above but at the finer order level.
+Available options are the GBIF Orders (same url).}
 
 \item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold of match
 of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}

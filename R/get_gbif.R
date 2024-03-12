@@ -22,6 +22,13 @@
 #' @param sp_name Character. Scientific name to run an online search
 #' (i.e. with GBIF-API) to get occurrence records. Works also for genus and higher taxa
 #' levels.
+#' @param phylum Character. Optional. What the species' Phylum? Adds a criteria to deal with alternative
+#' name matches and select the right synonym. Available options are the GBIF Phylums
+#' (listed per Kingdom --> https://www.gbif.org/species/1).
+#' @param class Character. Optional. What the species' Class? Same as above but at the finer class level.
+#' Available options are the GBIF Classes (same url).
+#' @param order Character. Optional. What the species' Order? Same as above but at the finer order level.
+#' Available options are the GBIF Orders (same url).
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold of match
 #' of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
 #' @param geo Object of class Extent, SpatExtent, SpatialPolygon, SpatialPolygonDataframe,
@@ -99,6 +106,9 @@
 #' @importFrom rgbif name_backbone occ_data
 #' @importFrom CoordinateCleaner cd_ddmm cd_round
 get_gbif = function(sp_name = NULL,
+					phylum = NULL,
+					class = NULL,
+					order = NULL,
 					conf_match = 80,
 					geo = NULL,
 					grain = 1000,
@@ -112,9 +122,9 @@ get_gbif = function(sp_name = NULL,
 					identic_xy = FALSE,
 					wConverted_xy = FALSE,
 					centroids = FALSE,
-					ntries=10,
-					error.skip=TRUE,
-					occ_samp=99000,
+					ntries = 10,
+					error.skip = TRUE,
+					occ_samp = 99000,
 					...) {
 
 
@@ -163,9 +173,9 @@ get_gbif = function(sp_name = NULL,
 	# Set geo.ref
 	geo.ref = paste0("POLYGON((",geo$xmin," ",geo$ymin,", ",
 							 	geo$xmax," ",geo$ymin,", ",
-							  	geo$xmax," ",geo$ymax,", ",
-							  	geo$xmin," ",geo$ymax,", ",
-							  	geo$xmin," ",geo$ymin,"))")
+							  geo$xmax," ",geo$ymax,", ",
+							  geo$xmin," ",geo$ymax,", ",
+							  geo$xmin," ",geo$ymin,"))")
 
 
 	######################################################
@@ -174,19 +184,39 @@ get_gbif = function(sp_name = NULL,
 
 
 	# Search through the GBIF backbone taxonomy
-	bone.search = rgbif::name_backbone(sp_name, strict=TRUE)
-	if (bone.search$confidence < conf_match || bone.search$matchType%in%"NONE"){
-		cat("No species records found...","\n")
-		return(e.output)
+	bone.search = rgbif::name_backbone(sp_name,
+																		 phylum = phylum,
+																		 order = order,
+																		 class = class,
+																		 verbose = TRUE,
+																		 strict = TRUE)
 
-	# In case we have several matching names --> we go for the 1st sc name (most common)
-	} else if (!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY")) {
-      bone.search = rgbif::name_backbone(sp_name, strict=TRUE, verbose=TRUE)[2,]
-      if (bone.search$confidence < conf_match | is.na(bone.search$status)) {
-        cat("Confidence match not high enough...","\n")
-        return(NULL)
+	if (nrow(bone.search)>1){
+		if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
+			cat("Not match found...","\n")
+			return(NULL)
+
+		} else {
+			s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
+			if (nrow(s.keep)>1){
+				cat("No synonyms distinction could be made. Consider using 'phylum', 'order' or 'class'...","\n")
+				return(NULL)
+
+			} else {
+				bone.search = s.keep
       }
     }
+  }
+
+  if (bone.search$matchType%in%"NONE") {
+  	cat("No species name found...","\n")
+   	return(NULL)
+  }
+
+  if (bone.search$confidence[1]<conf_match) {
+    cat("Confidence match not high enough...","\n")
+    return(NULL)
+  } 
 
 	# Get the accepetedKey
 	if (bone.search$status %in% "SYNONYM"){

@@ -4,10 +4,27 @@
 \alias{get_status}
 \title{Retrieve from GBIF the IUCN and taxonomy status of a specific Taxa}
 \usage{
-get_status(sp_name = NULL, conf_match = 80, all = FALSE)
+get_status(
+  sp_name = NULL,
+  phylum = NULL,
+  class = NULL,
+  order = NULL,
+  conf_match = 80,
+  all = FALSE
+)
 }
 \arguments{
 \item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names.}
+
+\item{phylum}{Character. Optional. What the species' Phylum? Adds a criteria to deal with alternative
+name matches and select the right synonym. Available options are the GBIF Phylums
+(listed per Kingdom --> https://www.gbif.org/species/1).}
+
+\item{class}{Character. Optional. What the species' Class? Same as above but at the finer class level.
+Available options are the GBIF Classes (same url).}
+
+\item{order}{Character. Optional. What the species' Order? Same as above but at the finer order level.
+Available options are the GBIF Orders (same url).}
 
 \item{conf_match}{Numeric. From 0 to 100. Determine the confidence
 threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
