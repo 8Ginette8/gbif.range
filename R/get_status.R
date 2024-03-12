@@ -58,12 +58,14 @@ get_status=function(sp_name = NULL, phylum = NULL, class = NULL, order = NULL, c
 
         } else if (nrow(s.keep)>1){
           s.keep2 = s.keep[s.keep$status%in%"ACCEPTED",]
-          if (nrow(s.keep2)==1){
+          cond2 = length(unique(s.keep$family))==1
+          
+          if (nrow(s.keep2)==1 & cond2){
             bone.search = s.keep2
           
           } else {
             s.keep3 = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-            if (length(unique(s.keep3$acceptedUsageKey))==1){
+            if (suppressWarnings(length(unique(s.keep3$acceptedUsageKey))==1)){
               bone.search = s.keep3[1,]
 
             } else {
