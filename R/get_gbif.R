@@ -19,15 +19,17 @@
 #' period selection and removal of raster centroids. By default, the argument
 #' hasGeospatialIssue in occ_data() (implemented rgbif function) is set to FALSE.
 #' 
-#' @param sp_name Character. Scientific name to run an online search
-#' (i.e. with GBIF-API) to get occurrence records. Works also for genus and higher taxa
-#' levels.
-#' @param phylum Character. Optional. What the species' Phylum? Adds a criteria to deal with alternative
+#' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names.
+#' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
+#' is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.
+#' @param phylum Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
 #' name matches and select the right synonym. Available options are the GBIF Phylums
 #' (listed per Kingdom --> https://www.gbif.org/species/1).
-#' @param class Character. Optional. What the species' Class? Same as above but at the finer class level.
+#' @param class Character. Optional. What is the species' Class? Same as above but at the finer class level.
 #' Available options are the GBIF Classes (same url).
-#' @param order Character. Optional. What the species' Order? Same as above but at the finer order level.
+#' @param order Character. Optional. What is the species' Order? Same as above but at the finer order level.
+#' Available options are the GBIF Orders (same url).
+#' @param family Character. Optional. What is the species' Family? Same as above but at the finer order level.
 #' Available options are the GBIF Orders (same url).
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold of match
 #' of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
@@ -106,9 +108,11 @@
 #' @importFrom rgbif name_backbone occ_data
 #' @importFrom CoordinateCleaner cd_ddmm cd_round
 get_gbif = function(sp_name = NULL,
+					rank = NULL,
 					phylum = NULL,
 					class = NULL,
 					order = NULL,
+					family = NULL,
 					conf_match = 80,
 					geo = NULL,
 					grain = 1000,
@@ -166,7 +170,7 @@ get_gbif = function(sp_name = NULL,
 	xy.span = 10*10^(-(deci.chosen-1))
 
 		# Create an empty ouptut
-	e.output=data.frame(matrix(ncol=length(gbif.info),nrow=0,
+	e.output = data.frame(matrix(ncol=length(gbif.info),nrow=0,
 		dimnames=list(NULL,gbif.info)))
 
 
@@ -185,42 +189,65 @@ get_gbif = function(sp_name = NULL,
 
 	# Search through the GBIF backbone taxonomy
 	bone.search = rgbif::name_backbone(sp_name,
+																		 rank = rank,
 																		 phylum = phylum,
-																		 order = order,
 																		 class = class,
+																		 order = order,
+																		 family = family,
 																		 verbose = TRUE,
 																		 strict = TRUE)
- 	if (nrow(bone.search)>1){
- 		if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
-      cat("Not match found...","\n")
-      return(NULL)
-
-    } else {
-      s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY")&bone.search$matchType%in%"EXACT",]
-      if (nrow(s.keep)==0){
+	
+ 	if (!is.null(c(rank,phylum,class,order,family))){
+ 		bone.search = bone.search[1,]
+    
+  } else {
+    if (nrow(bone.search)>1){
+      if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
         cat("Not match found...","\n")
         return(NULL)
 
-      } else if (nrow(s.keep)>1){
-        s.keep2 = s.keep[s.keep$status%in%"ACCEPTED",]
-        cond2 = length(unique(s.keep$family))==1
-          
-        if (nrow(s.keep2)==1 & cond2){
-          bone.search = s.keep2
-                
-        } else {
-          s.keep3 = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-          if (suppressWarnings(length(unique(s.keep3$acceptedUsageKey))==1)){
-          	bone.search = s.keep3[1,]
-            
-          } else {
-            cat("No synonyms distinction could be made. Consider using 'phylum', 'order' or 'class'...","\n")
-            return(NULL)
-          } 
-        }
-
       } else {
-        bone.search = s.keep
+        s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
+        s.keep = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
+        s.keep = s.keep[s.keep$matchType%in%"EXACT",]
+        if (nrow(s.keep)==0){
+          cat("Not match found...","\n")
+          return(NULL)
+
+        } else if (nrow(s.keep)>1){
+
+          # If we only find subpsecies and variety, we need to (default) prioritize
+          if (all(s.keep$rank%in%c("VARIETY","SUBSPECIES"))){
+            if ("var."%in%strsplit(sp_name," ")[[1]]){
+              bone.search = s.keep[s.keep$rank%in%"VARIETY",]
+              if (nrow(bone.search)==0){
+                bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
+              }
+
+            } else {
+              bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
+            }
+
+          } else {
+            bone.search = s.keep[s.keep$rank%in%"SPECIES",]
+          }
+
+          if (any(bone.search$status%in%"ACCEPTED") & length(unique(bone.search$family))==1){
+            bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
+          }
+
+        } else {
+          bone.search = s.keep
+        }
+        # If not the same species overall return NULL
+        s.usp = length(unique(bone.search$species))==1
+        if (!s.usp){
+          cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
+          return(NULL)
+
+        } else {
+          bone.search = bone.search[1,]
+        } 
       }
     }
   }
