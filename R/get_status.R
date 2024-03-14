@@ -58,58 +58,65 @@ get_status=function(sp_name = NULL,
                                        verbose = TRUE,
                                        strict = TRUE)
 
-    if (!is.null(c(rank,phylum,class,order,family))){
-      bone.search = bone.search[1,]
-    
-    } else {
-      if (nrow(bone.search)>1){
-        if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
+    q.crit = !sapply(list(rank,phylum,class,order,family),is.null)
+
+    # Filter by given criterias
+    if (any(q.crit)){
+      id.crit = c("rank","phylum","class","order","family")[q.crit]
+      p.crit = unlist(list(rank,phylum,class,order,family)[q.crit])
+      for (i in 1:length(id.crit)){
+        bone.search = bone.search[c(bone.search[,id.crit[i]])[[1]]%in%p.crit[i],]
+      }
+    }
+
+    # Normal procedure with or without criterias
+    if (nrow(bone.search)>1){
+      if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
+        cat("Not match found...","\n")
+        return(NULL)
+
+      } else {
+        s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
+        s.keep = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
+        s.keep = s.keep[s.keep$matchType%in%"EXACT",]
+        if (nrow(s.keep)==0){
           cat("Not match found...","\n")
           return(NULL)
 
-        } else {
-          s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
-          s.keep = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-          s.keep = s.keep[s.keep$matchType%in%"EXACT",]
-          if (nrow(s.keep)==0){
-            cat("Not match found...","\n")
-            return(NULL)
+        } else if (nrow(s.keep)>1){
 
-          } else if (nrow(s.keep)>1){
-
-            # If we only find subpsecies and variety, we need to (default) prioritize
-            if (all(s.keep$rank%in%c("VARIETY","SUBSPECIES"))){
-              if ("var."%in%strsplit(sp_name," ")[[1]]){
-                bone.search = s.keep[s.keep$rank%in%"VARIETY",]
-                if (nrow(bone.search)==0){
-                  bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
-                }
-
-              } else {
+          # If we only find subpsecies and variety, we need to (default) prioritize
+          if (all(s.keep$rank%in%c("VARIETY","SUBSPECIES"))){
+            if ("var."%in%strsplit(sp_name," ")[[1]]){
+              bone.search = s.keep[s.keep$rank%in%"VARIETY",]
+              if (nrow(bone.search)==0){
                 bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
               }
 
             } else {
-              bone.search = s.keep[s.keep$rank%in%"SPECIES",]
-            }
-
-            if (any(bone.search$status%in%"ACCEPTED") & length(unique(bone.search$family))==1){
-              bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
+              bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
             }
 
           } else {
-            bone.search = s.keep
+            bone.search = s.keep[s.keep$rank%in%"SPECIES",]
           }
-          # If not the same species overall return NULL
-          s.usp = length(unique(bone.search$species))==1
-          if (!s.usp){
-            cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
-            return(NULL)
 
-          } else {
-            bone.search = bone.search[1,]
-          } 
+          if (any(bone.search$status%in%"ACCEPTED") & length(unique(bone.search$familyKey))==1){
+            bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
+          }
+
+        } else {
+          bone.search = s.keep
         }
+        # If not the same species overall return NULL
+        s.usp = length(unique(bone.search$speciesKey))==1
+        if (!s.usp){
+          cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
+          return(NULL)
+
+        } else {
+          bone.search = bone.search[1,]
+        } 
       }
     }
 
