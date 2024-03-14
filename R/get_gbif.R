@@ -29,7 +29,7 @@
 #' Available options are the GBIF Classes (same url).
 #' @param order Character. Optional. What is the species' Order? Same as above but at the finer order level.
 #' Available options are the GBIF Orders (same url).
-#' @param family Character. Optional. What is the species' Family? Same as above but at the finer order level.
+#' @param family Character. Optional. What is the species' Family? Same as above but at the finer family level.
 #' Available options are the GBIF Orders (same url).
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold of match
 #' of 'sp_name' with the GBIF backbone taxonomy. Default is 90.

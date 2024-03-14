@@ -18,14 +18,14 @@
 #' Available options are the GBIF Classes (same url).
 #' @param order Character. Optional. What is the species' Order? Same as above but at the finer order level.
 #' Available options are the GBIF Orders (same url).
-#' @param family Character. Optional. What is the species' Family? Same as above but at the finer order level.
+#' @param family Character. Optional. What is the species' Family? Same as above but at the finer family level.
 #' Available options are the GBIF Orders (same url).
 #' @param conf_match Numeric. From 0 to 100. Determine the confidence
 #' threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
 #' @param all Logical. Default is FALSE. Should all species names be retrieved or only
 #' the accepted name and its synonyms?
 #' 
-#' @return Data.frame with three columns: (1) GBIF taxonomic key, (2) scientificName and
+#' @return Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
 #' (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum and (8) IUCN status
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity

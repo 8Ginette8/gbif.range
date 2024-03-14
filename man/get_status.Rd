@@ -6,9 +6,11 @@
 \usage{
 get_status(
   sp_name = NULL,
+  rank = NULL,
   phylum = NULL,
   class = NULL,
   order = NULL,
+  family = NULL,
   conf_match = 80,
   all = FALSE
 )
@@ -16,14 +18,20 @@ get_status(
 \arguments{
 \item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names.}
 
-\item{phylum}{Character. Optional. What the species' Phylum? Adds a criteria to deal with alternative
+\item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
+is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.}
+
+\item{phylum}{Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
 name matches and select the right synonym. Available options are the GBIF Phylums
 (listed per Kingdom --> https://www.gbif.org/species/1).}
 
-\item{class}{Character. Optional. What the species' Class? Same as above but at the finer class level.
+\item{class}{Character. Optional. What is the species' Class? Same as above but at the finer class level.
 Available options are the GBIF Classes (same url).}
 
-\item{order}{Character. Optional. What the species' Order? Same as above but at the finer order level.
+\item{order}{Character. Optional. What is the species' Order? Same as above but at the finer order level.
+Available options are the GBIF Orders (same url).}
+
+\item{family}{Character. Optional. What is the species' Family? Same as above but at the finer family level.
 Available options are the GBIF Orders (same url).}
 
 \item{conf_match}{Numeric. From 0 to 100. Determine the confidence
@@ -33,7 +41,7 @@ threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
 the accepted name and its synonyms?}
 }
 \value{
-Data.frame with three columns: (1) GBIF taxonomic key, (2) scientificName and
+Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
 (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum and (8) IUCN status
 }
 \description{
