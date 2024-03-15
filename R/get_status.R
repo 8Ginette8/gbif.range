@@ -8,18 +8,28 @@
 #' download the data in get_gbif(). Children and related doubtful names not used to download
 #' the data may also be extracted.
 #'
-#' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names.
+#' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
+#' with associated taxonomy and IUCN status
+#' @param search Logical. If TRUE, the function will strictly look for the most relevant result, based
+#' on a list of names given by rgbif, and give an error if name matching was impeded by synonym duplicates.
+#' If FALSE, the function will simply pick the first most relevant name from the list. Also, unlike
+#' search=TRUE, fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class',
+#' order' and 'family' parameters are optionally used only if no convincing name match is found.
 #' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
 #' is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.
 #' @param phylum Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
 #' name matches and select the right synonym. Available options are the GBIF Phylums
-#' (listed per Kingdom --> https://www.gbif.org/species/1).
+#' (listed per Kingdom --> https://www.gbif.org/species/1). If search = FALSE, used only if no direct match
+#' is found.
 #' @param class Character. Optional. What is the species' Class? Same as above but at the finer class level.
-#' Available options are the GBIF Classes (same url).
+#' Available options are the GBIF Classes (same url). If search = FALSE, used only if no direct match
+#' is found.
 #' @param order Character. Optional. What is the species' Order? Same as above but at the finer order level.
-#' Available options are the GBIF Orders (same url).
+#' Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
+#' is found.
 #' @param family Character. Optional. What is the species' Family? Same as above but at the finer family level.
-#' Available options are the GBIF Orders (same url).
+#' Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
+#' is found.
 #' @param conf_match Numeric. From 0 to 100. Determine the confidence
 #' threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
 #' @param all Logical. Default is FALSE. Should all species names be retrieved or only
@@ -40,6 +50,7 @@
 #' @importFrom rgbif name_backbone name_usage
 #' @importFrom methods is
 get_status=function(sp_name = NULL,
+                    search = TRUE,
                     rank = NULL,
                     phylum = NULL,
                     class = NULL,
@@ -48,75 +59,82 @@ get_status=function(sp_name = NULL,
                     conf_match = 80,
                     all = FALSE)
 {
-    # Search input name via GBIF backbone & error handling
-    bone.search = rgbif::name_backbone(sp_name,
+    if (!search){
+      # Search input name via fuzzy match and direct search
+      bone.search = rgbif::name_backbone(sp_name,
                                        rank = rank,
                                        phylum = phylum,
                                        class = class,
                                        order = order,
                                        family = family,
-                                       verbose = TRUE,
-                                       strict = TRUE)
+                                       verbose = FALSE,
+                                       strict = FALSE)
+    } else {
+      # Search input name via strict match and refined search
+      bone.search = rgbif::name_backbone(sp_name,
+                                         verbose = TRUE,
+                                         strict = TRUE)
 
-    q.crit = !sapply(list(rank,phylum,class,order,family),is.null)
+      q.crit = !sapply(list(rank,phylum,class,order,family),is.null)
 
-    # Filter by given criterias
-    if (any(q.crit)){
-      id.crit = c("rank","phylum","class","order","family")[q.crit]
-      p.crit = unlist(list(rank,phylum,class,order,family)[q.crit])
-      for (i in 1:length(id.crit)){
-        bone.search = bone.search[c(bone.search[,id.crit[i]])[[1]]%in%p.crit[i],]
+      # Filter by given criterias
+      if (any(q.crit)){
+        id.crit = c("rank","phylum","class","order","family")[q.crit]
+        p.crit = unlist(list(rank,phylum,class,order,family)[q.crit])
+        for (i in 1:length(id.crit)){
+          bone.search = bone.search[c(bone.search[,id.crit[i]])[[1]]%in%p.crit[i],]
+        }
       }
-    }
 
-    # Normal procedure with or without criterias
-    if (nrow(bone.search)>1){
-      if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
-        cat("Not match found...","\n")
-        return(NULL)
-
-      } else {
-        s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
-        s.keep = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-        s.keep = s.keep[s.keep$matchType%in%"EXACT",]
-        if (nrow(s.keep)==0){
+      # Normal procedure with or without criterias
+      if (nrow(bone.search)>1){
+        if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
           cat("Not match found...","\n")
           return(NULL)
 
-        } else if (nrow(s.keep)>1){
+        } else {
+          s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
+          s.keep = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
+          s.keep = s.keep[s.keep$matchType%in%"EXACT",]
+          if (nrow(s.keep)==0){
+            cat("Not match found...","\n")
+            return(NULL)
 
-          # If we only find subpsecies and variety, we need to (default) prioritize
-          if (all(s.keep$rank%in%c("VARIETY","SUBSPECIES"))){
-            if ("var."%in%strsplit(sp_name," ")[[1]]){
-              bone.search = s.keep[s.keep$rank%in%"VARIETY",]
-              if (nrow(bone.search)==0){
+          } else if (nrow(s.keep)>1){
+
+            # If we only find subpsecies and variety, we need to (default) prioritize
+            if (all(s.keep$rank%in%c("VARIETY","SUBSPECIES"))){
+              if ("var."%in%strsplit(sp_name," ")[[1]]){
+                bone.search = s.keep[s.keep$rank%in%"VARIETY",]
+                if (nrow(bone.search)==0){
+                  bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
+                }
+
+              } else {
                 bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
               }
 
             } else {
-              bone.search = s.keep[s.keep$rank%in%"SUBSPECIES",]
+              bone.search = s.keep[s.keep$rank%in%"SPECIES",]
+            }
+
+            if (any(bone.search$status%in%"ACCEPTED") & length(unique(bone.search$familyKey))==1){
+              bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
             }
 
           } else {
-            bone.search = s.keep[s.keep$rank%in%"SPECIES",]
+            bone.search = s.keep
           }
+          # If not the same species overall return NULL
+          s.usp = length(unique(bone.search$speciesKey))==1
+          if (!s.usp){
+            cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
+            return(NULL)
 
-          if (any(bone.search$status%in%"ACCEPTED") & length(unique(bone.search$familyKey))==1){
-            bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
-          }
-
-        } else {
-          bone.search = s.keep
+          } else {
+            bone.search = bone.search[1,]
+          } 
         }
-        # If not the same species overall return NULL
-        s.usp = length(unique(bone.search$speciesKey))==1
-        if (!s.usp){
-          cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
-          return(NULL)
-
-        } else {
-          bone.search = bone.search[1,]
-        } 
       }
     }
 

@@ -6,6 +6,7 @@
 \usage{
 get_status(
   sp_name = NULL,
+  search = TRUE,
   rank = NULL,
   phylum = NULL,
   class = NULL,
@@ -16,23 +17,34 @@ get_status(
 )
 }
 \arguments{
-\item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names.}
+\item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names
+with associated taxonomy and IUCN status}
+
+\item{search}{Logical. If TRUE, the function will strictly look for the most relevant result, based
+on a list of names given by rgbif, and give an error if name matching was impeded by synonym duplicates.
+If FALSE, the function will simply pick the first most relevant name from the list. Also, unlike
+search=TRUE, fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class',
+order' and 'family' parameters are optionally used only if no convincing name match is found.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
 is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.}
 
 \item{phylum}{Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
 name matches and select the right synonym. Available options are the GBIF Phylums
-(listed per Kingdom --> https://www.gbif.org/species/1).}
+(listed per Kingdom --> https://www.gbif.org/species/1). If search = FALSE, used only if no direct match
+is found.}
 
 \item{class}{Character. Optional. What is the species' Class? Same as above but at the finer class level.
-Available options are the GBIF Classes (same url).}
+Available options are the GBIF Classes (same url). If search = FALSE, used only if no direct match
+is found.}
 
 \item{order}{Character. Optional. What is the species' Order? Same as above but at the finer order level.
-Available options are the GBIF Orders (same url).}
+Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
+is found.}
 
 \item{family}{Character. Optional. What is the species' Family? Same as above but at the finer family level.
-Available options are the GBIF Orders (same url).}
+Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
+is found.}
 
 \item{conf_match}{Numeric. From 0 to 100. Determine the confidence
 threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
