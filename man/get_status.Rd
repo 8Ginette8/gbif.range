@@ -21,10 +21,11 @@ get_status(
 with associated taxonomy and IUCN status}
 
 \item{search}{Logical. If TRUE, the function will strictly look for the most relevant result, based
-on a list of names given by rgbif, and give an error if name matching was impeded by synonym duplicates.
-If FALSE, the function will simply pick the first most relevant name from the list. Also, unlike
-search=TRUE, fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class',
-order' and 'family' parameters are optionally used only if no convincing name match is found.}
+on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
+if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
+relevant name from the list (higher taxa level than species allowed here). Also, unlike search=TRUE,
+fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class', order'
+and 'family' parameters are optionally used only if no convincing name match is found.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
 is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.}
