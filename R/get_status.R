@@ -76,20 +76,24 @@ get_status=function(sp_name = NULL,
                                          verbose = TRUE,
                                          strict = TRUE)
 
-      # Normal procedure with or without criterias
-      if (nrow(bone.search)>1){
+      q.crit = !sapply(list(rank,phylum,class,order,family),is.null) 
 
-        q.crit = !sapply(list(rank,phylum,class,order,family),is.null)
-
-        # Filter by given criterias
+      # Filter by given criterias if results
+      if (!bone.search$matchType%in%"NONE"){ 
         if (any(q.crit)){
           id.crit = c("rank","phylum","class","order","family")[q.crit]
           p.crit = unlist(list(rank,phylum,class,order,family)[q.crit])
           for (i in 1:length(id.crit)){
             bone.search = bone.search[c(bone.search[,id.crit[i]])[[1]]%in%p.crit[i],]
+            if (nrow(bone.search)==0){
+             bone.search = data.frame(matchType="NONE")
+            }
           }
         }
-
+      }
+      
+      # Normal procedure with or without criterias
+      if (nrow(bone.search)>1){
         if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
           cat("Not match found...","\n")
           return(NULL)

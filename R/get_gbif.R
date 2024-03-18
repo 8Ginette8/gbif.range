@@ -22,10 +22,11 @@
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
 #' with associated taxonomy and IUCN status
 #' @param search Logical. If TRUE, the function will strictly look for the most relevant result, based
-#' on a list of names given by rgbif, and give an error if name matching was impeded by synonym duplicates.
-#' If FALSE, the function will simply pick the first most relevant name from the list. Also, unlike
-#' search=TRUE, fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class',
-#' order' and 'family' parameters are optionally used only if no convincing name match is found.
+#' on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
+#' if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
+#' relevant name from the list (higher taxa level than species allowed here). Also, unlike search=TRUE,
+#' fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class', order'
+#' and 'family' parameters are optionally used only if no convincing name match is found.
 #' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
 #' is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.
 #' @param phylum Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
@@ -199,35 +200,39 @@ get_gbif = function(sp_name = NULL,
 
 
 	if (!search){
-		# Search input name via fuzzy match and direct search
+    # Search input name via fuzzy match and direct search
     bone.search = rgbif::name_backbone(sp_name,
-                                       rank = rank,
-                                       phylum = phylum,
-                                       class = class,
-                                       order = order,
-                                       family = family,
-                                       verbose = FALSE,
-                                       strict = FALSE)
+                                     rank = rank,
+                                     phylum = phylum,
+                                     class = class,
+                                     order = order,
+                                     family = family,
+                                     verbose = FALSE,
+                                     strict = FALSE)
   } else {
     # Search input name via strict match and refined search
     bone.search = rgbif::name_backbone(sp_name,
                                        verbose = TRUE,
                                        strict = TRUE)
 
+    q.crit = !sapply(list(rank,phylum,class,order,family),is.null) 
+
+    # Filter by given criterias if results
+    if (!bone.search$matchType%in%"NONE"){ 
+      if (any(q.crit)){
+        id.crit = c("rank","phylum","class","order","family")[q.crit]
+        p.crit = unlist(list(rank,phylum,class,order,family)[q.crit])
+        for (i in 1:length(id.crit)){
+          bone.search = bone.search[c(bone.search[,id.crit[i]])[[1]]%in%p.crit[i],]
+          if (nrow(bone.search)==0){
+           bone.search = data.frame(matchType="NONE")
+          }
+        }
+      }
+    }
+    
     # Normal procedure with or without criterias
     if (nrow(bone.search)>1){
-
-    	q.crit = !sapply(list(rank,phylum,class,order,family),is.null)
-
-    	# Filter by given criterias
-    	if (any(q.crit)){
-    		id.crit = c("rank","phylum","class","order","family")[q.crit]
-      	p.crit = unlist(list(rank,phylum,class,order,family)[q.crit])
-      	for (i in 1:length(id.crit)){
-        	bone.search = bone.search[c(bone.search[,id.crit[i]])[[1]]%in%p.crit[i],]
-      	}
-    	}
-
       if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
         cat("Not match found...","\n")
         return(NULL)
@@ -279,14 +284,14 @@ get_gbif = function(sp_name = NULL,
   }
 
   if (bone.search$matchType%in%"NONE") {
-  	cat("No species name found...","\n")
-   	return(NULL)
+    cat("No species name found...","\n")
+    return(NULL)
   }
 
   if (bone.search$confidence[1]<conf_match) {
     cat("Confidence match not high enough...","\n")
     return(NULL)
-  } 
+  }  
 
 	# Get the accepetedKey
 	if (bone.search$status %in% "SYNONYM"){
