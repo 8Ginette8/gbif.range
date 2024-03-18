@@ -218,15 +218,26 @@ get_gbif = function(sp_name = NULL,
     q.crit = !sapply(list(rank,phylum,class,order,family),is.null) 
 
     # Filter by given criterias if results
-    if (!bone.search$matchType%in%"NONE"){ 
+    if (!bone.search$matchType[1]%in%"NONE"){ 
       if (any(q.crit)){
         id.crit = c("rank","phylum","class","order","family")[q.crit]
         p.crit = unlist(list(rank,phylum,class,order,family)[q.crit])
-        for (i in 1:length(id.crit)){
-          bone.search = bone.search[c(bone.search[,id.crit[i]])[[1]]%in%p.crit[i],]
-          if (nrow(bone.search)==0){
-           bone.search = data.frame(matchType="NONE")
+        n.test = id.crit%in%names(bone.search)
+        if (any(n.test)){
+          # selecting which
+          id.crit2 = id.crit[n.test]
+          p.crit2 = p.crit[n.test]
+          # Apply the rigth criterias
+          for (i in 1:length(id.crit2)){
+            bone.search = bone.search[c(bone.search[,id.crit2[i]])[[1]]%in%p.crit2[i],]
+            if (nrow(bone.search)==0){
+              bone.search = data.frame(matchType="NONE")
+            }
           }
+        }
+        if (!all(n.test)){
+          pp = paste(id.crit[!n.test],collapse=", ")
+          warning(paste0("'",pp,"' level(s) not available for this taxa in GBIF, could not be employed..."))
         }
       }
     }
