@@ -231,6 +231,7 @@ get_status=function(sp_name = NULL,
 
     # Extract accepted names and synonyms
     out = data.frame(canonicalName = c.can,
+      rank = bone.search$rank,
       gbif_key = c.key,
       scientificName = c.sc,
       gbif_status = c.status,
