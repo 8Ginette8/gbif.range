@@ -149,8 +149,8 @@ get_gbif = function(sp_name = NULL,
 	######################################################
 
 
-	if (is.null(sp_name)) {
-		stop("'sp_name' must be provided to search for species records...")
+	if (is.null(sp_name)|is.na(sp_name)) {
+		stop("Given 'sp_name' is NA or NULL, a string must be provided...")
 	}
 
 
