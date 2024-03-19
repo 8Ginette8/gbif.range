@@ -207,25 +207,29 @@ get_status=function(sp_name = NULL,
   c.can = suppressWarnings(c(accep.name$canonicalName,syn.syn$canonicalName))
   c.status = c("ACCEPTED",rep("SYNONYM",length(suppressWarnings(syn.syn$scientificName))))
 
-  # If missing codes, then we continue the search to find possible name correspondence
+  # If all=TRUE, then we continue the search to find possible name correspondence
   if (all) {
 
     # Combine everything and search for related names (i.e. other string version)
     all.key = suppressWarnings(c(accep.key,syn.syn$key,main.dat$key))
     all.version = lapply(all.key,function(x){
       out = suppressWarnings(rgbif::name_usage(x,data="related")$data)
-      if (is.null(out)){
+      if (is.null(out)|nrow(out)==0){
         return(NULL)
       } else {
+        n.ref = c("canonicalName","scientificName")
+        r.col = n.ref[n.ref%in%names(out)]
+        r.out = data.frame(canonicalName=rep(NA,nrow(out)),scientificName=rep(NA,nrow(out)))
+        r.out[,r.col] = out[,r.col]
         return(data.frame(key = x,
-                          canonicalName = out$canonicalName,
-                          scientificName = out$scientificName))
+                          canonicalName = r.out$canonicalName,
+                          scientificName = r.out$scientificName))
       }
     })
 
     # Extract all names
     accep.n = suppressWarnings(accep.name[,c("canonicalName","key","scientificName")])
-    a.n$key = accep.key
+    accep.n$key = accep.key
     c.n = suppressWarnings(main.dat[,c("canonicalName","key","scientificName")])
     r.n = suppressWarnings(unique(do.call("rbind",all.version)))
 
