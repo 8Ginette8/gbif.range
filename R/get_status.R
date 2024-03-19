@@ -66,6 +66,18 @@ get_status=function(sp_name = NULL,
     stop("Given 'sp_name' is NA or NULL, a string must be provided...")
   }
 
+  # Empty output
+  e.output = data.frame(canonicalName = NA,
+                       rank = NA,
+                       gbif_key = NA,
+                       scientificName = NA,
+                       gbif_status = NA,
+                       Genus = NA,
+                       Family = NA,
+                       Order = NA,
+                       Phylum = NA,
+                       IUCN_status = NA)
+
   # Search
   if (!search){
     # Search input name via fuzzy match and direct search
@@ -114,7 +126,7 @@ get_status=function(sp_name = NULL,
     if (nrow(bone.search)>1){
       if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
         cat("Not match found...","\n")
-        return(data.frame(NULL))
+        return(e.output)
 
       } else {
         s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
@@ -122,7 +134,7 @@ get_status=function(sp_name = NULL,
         s.keep = s.keep[s.keep$matchType%in%"EXACT",]
         if (nrow(s.keep)==0){
           cat("Not match found...","\n")
-          return(data.frame(NULL))
+          return(e.output)
 
         } else if (nrow(s.keep)>1){
 
@@ -156,7 +168,7 @@ get_status=function(sp_name = NULL,
         s.usp = length(unique(bone.search$speciesKey))==1
         if (!s.usp){
           cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
-          return(data.frame(NULL))
+          return(e.output)
 
         } else {
           bone.search = bone.search[1,]
@@ -167,12 +179,12 @@ get_status=function(sp_name = NULL,
 
   if (bone.search$matchType%in%"NONE") {
     cat("No species name found...","\n")
-    return(data.frame(NULL))
+    return(e.output)
   }
 
   if (bone.search$confidence[1]<conf_match) {
     cat("Confidence match not high enough...","\n")
-    return(data.frame(NULL))
+    return(e.output)
   }  
 
   # Extract key of accepted name
@@ -189,7 +201,7 @@ get_status=function(sp_name = NULL,
   iucn = try(rgbif::name_usage(accep.key,data="iucnRedListCategory")$data,silent=TRUE)
   if (methods::is(iucn,"try-error")) {iucn = "NOT_FOUND"} else {iucn = iucn$category}
 
-   # Specific columns
+  # Specific columns
   c.key = suppressWarnings(c(accep.key,syn.syn$key))
   c.sc = suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName))
   c.can = suppressWarnings(c(accep.name$canonicalName,syn.syn$canonicalName))
@@ -201,31 +213,33 @@ get_status=function(sp_name = NULL,
     # Combine everything and search for related names (i.e. other string version)
     all.key = suppressWarnings(c(accep.key,syn.syn$key,main.dat$key))
     all.version = lapply(all.key,function(x){
-      out = suppressWarnings(rgbif::name_usage(x,data="related")$data$scientificName)
+      out = suppressWarnings(rgbif::name_usage(x,data="related")$data)
       if (is.null(out)){
         return(NULL)
       } else {
-        return(data.frame(key=x,scientificName=out))
+        return(data.frame(key = x,
+                          canonicalName = out$canonicalName,
+                          scientificName = out$scientificName))
       }
     })
 
     # Extract all names
-    a.n = suppressWarnings(accep.name[,c("key","scientificName")])
+    accep.n = suppressWarnings(accep.name[,c("canonicalName","key","scientificName")])
     a.n$key = accep.key
-    c.n = suppressWarnings(main.dat[,c("key","scientificName")])
+    c.n = suppressWarnings(main.dat[,c("canonicalName","key","scientificName")])
     r.n = suppressWarnings(unique(do.call("rbind",all.version)))
 
     # Conditions for synonymy
-    s.n = try(suppressWarnings(syn.syn[,c("key","scientificName")]),silent=TRUE)
-    if (class(s.n)[1]%in%"try-error") {s.n = data.frame(key=NULL,scientificName=NULL)}
-    all.names = rbind(a.n,s.n,c.n,r.n)
+    syn.n = try(suppressWarnings(syn.syn[,c("canonicalName","key","scientificName")]),silent=TRUE)
+    if (class(syn.n)[1]%in%"try-error") {syn.n = data.frame(key=NULL,scientificName=NULL)}
+    all.names = rbind(accep.n,syn.n,c.n,r.n)
 
     # Specific columns
     c.key = all.names$key
     c.sc = suppressWarnings(all.names$scientificName)
     c.can = suppressWarnings(all.names$canonicalName)
     c.status = c("ACCEPTED",
-              rep("SYNONYM",nrow(s.n)),
+              rep("SYNONYM",nrow(syn.n)),
               rep("CHILDREN",nrow(c.n)),
               rep("RELATED",nrow(r.n)))
   }
@@ -236,14 +250,13 @@ get_status=function(sp_name = NULL,
   main.out[exist.not] = main.dat[,c("genus","order","family","phylum")[exist.not]]
 
   # Extract accepted names and synonyms
-  out = data.frame(canonicalName = c.can,
-    rank = bone.search$rank,
-    gbif_key = c.key,
-    scientificName = c.sc,
-    gbif_status = c.status,
-    main.out,
-    IUCN_status = iucn)
+  e.output = data.frame(canonicalName = c.can,
+                        rank = bone.search$rank,
+                        gbif_key = c.key,
+                        scientificName = c.sc,
+                        gbif_status = c.status,
+                        main.out,
+                        IUCN_status = iucn)
 
-  return(out[!duplicated(out[,2]),])
+  return(e.output[!duplicated(e.output[,3]),])
 }
-
