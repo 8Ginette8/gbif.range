@@ -231,7 +231,7 @@ get_status=function(sp_name = NULL,
 
     # Conditions for synonymy
     syn.n = try(suppressWarnings(syn.syn[,c("canonicalName","key","scientificName")]),silent=TRUE)
-    if (class(syn.n)[1]%in%"try-error") {syn.n = data.frame(key=NULL,scientificName=NULL)}
+    if (class(syn.n)[1]%in%"try-error") {syn.n = data.frame(canonicalName=NULL,key=NULL,scientificName=NULL)}
     all.names = rbind(accep.n,syn.n,c.n,r.n)
 
     # Specific columns
