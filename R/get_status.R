@@ -136,7 +136,10 @@ get_status=function(sp_name = NULL,
               bone.search = s.keep[s.keep$rank%in%"SPECIES",]
             }
 
-            if (any(bone.search$status%in%"ACCEPTED") & length(unique(bone.search$familyKey))==1){
+            coltax = c("familyKey","orderKey","classKey","phylumKey")%in%colnames(bone.search)
+            key.test = bone.search[,c("familyKey","orderKey","classKey","phylumKey")[coltax]]
+
+            if (any(bone.search$status%in%"ACCEPTED") & length(unique(key.test[,1]))==1){
               bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
             }
 
