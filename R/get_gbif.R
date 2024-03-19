@@ -246,7 +246,7 @@ get_gbif = function(sp_name = NULL,
     if (nrow(bone.search)>1){
       if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
         cat("Not match found...","\n")
-        return(NULL)
+        return(e.output)
 
       } else {
         s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
@@ -254,7 +254,7 @@ get_gbif = function(sp_name = NULL,
         s.keep = s.keep[s.keep$matchType%in%"EXACT",]
         if (nrow(s.keep)==0){
           cat("Not match found...","\n")
-          return(NULL)
+          return(e.output)
 
         } else if (nrow(s.keep)>1){
 
@@ -274,18 +274,21 @@ get_gbif = function(sp_name = NULL,
             bone.search = s.keep[s.keep$rank%in%"SPECIES",]
           }
 
-          if (any(bone.search$status%in%"ACCEPTED") & length(unique(bone.search$familyKey))==1){
+          coltax = c("familyKey","orderKey","classKey","phylumKey")%in%colnames(bone.search)
+          key.test = bone.search[,c("familyKey","orderKey","classKey","phylumKey")[coltax]]
+
+          if (any(bone.search$status%in%"ACCEPTED") & length(unique(key.test[,1]))==1){
             bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
           }
 
         } else {
           bone.search = s.keep
         }
-        # If not the same species overall return NULL
+        # If not the same species overall return empty
         s.usp = length(unique(bone.search$speciesKey))==1
         if (!s.usp){
           cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
-          return(NULL)
+          return(e.output)
 
         } else {
           bone.search = bone.search[1,]
@@ -296,12 +299,12 @@ get_gbif = function(sp_name = NULL,
 
   if (bone.search$matchType%in%"NONE") {
     cat("No species name found...","\n")
-    return(NULL)
+    return(e.output)
   }
 
   if (bone.search$confidence[1]<conf_match) {
     cat("Confidence match not high enough...","\n")
-    return(NULL)
+    return(e.output)
   }  
 
 	# Get the accepetedKey
@@ -463,7 +466,7 @@ get_gbif = function(sp_name = NULL,
 				}
 				if (class(gbif.search) %in% "try-error") {
 					if (error.skip){
-						cat("Attempts to download failed...Returning NULL")
+						cat("Attempts to download failed...Returning no results")
 						return(e.output)
 					} else {
 						stop("ERROR (not skipped) for [taxonKey=",sp.key,"]...","\n",sep="")

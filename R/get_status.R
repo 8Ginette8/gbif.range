@@ -108,7 +108,7 @@ get_status=function(sp_name = NULL,
       if (nrow(bone.search)>1){
         if (all(!bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
           cat("Not match found...","\n")
-          return(NULL)
+          return(NA)
 
         } else {
           s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
@@ -116,7 +116,7 @@ get_status=function(sp_name = NULL,
           s.keep = s.keep[s.keep$matchType%in%"EXACT",]
           if (nrow(s.keep)==0){
             cat("Not match found...","\n")
-            return(NULL)
+            return(NA)
 
           } else if (nrow(s.keep)>1){
 
@@ -150,7 +150,7 @@ get_status=function(sp_name = NULL,
           s.usp = length(unique(bone.search$speciesKey))==1
           if (!s.usp){
             cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
-            return(NULL)
+            return(NA)
 
           } else {
             bone.search = bone.search[1,]
@@ -161,12 +161,12 @@ get_status=function(sp_name = NULL,
 
     if (bone.search$matchType%in%"NONE") {
       cat("No species name found...","\n")
-      return(NULL)
+      return(NA)
     }
 
     if (bone.search$confidence[1]<conf_match) {
       cat("Confidence match not high enough...","\n")
-      return(NULL)
+      return(NA)
     }  
 
     # Extract key of accepted name
@@ -197,7 +197,7 @@ get_status=function(sp_name = NULL,
       all.version = lapply(all.key,function(x){
         out = suppressWarnings(rgbif::name_usage(x,data="related")$data$scientificName)
         if (is.null(out)){
-          return(NULL)
+          return(NA)
         } else {
           return(data.frame(key=x,scientificName=out))
         }
@@ -211,7 +211,7 @@ get_status=function(sp_name = NULL,
 
       # Conditions for synonymy
       s.n = try(suppressWarnings(syn.syn[,c("key","scientificName")]),silent=TRUE)
-      if (class(s.n)[1]%in%"try-error") {s.n = data.frame(key=NULL,scientificName=NULL)}
+      if (class(s.n)[1]%in%"try-error") {s.n = data.frame(key=NA,scientificName=NA)}
       all.names = rbind(a.n,s.n,c.n,r.n)
 
       # Specific columns
