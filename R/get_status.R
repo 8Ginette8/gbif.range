@@ -201,6 +201,13 @@ get_status=function(sp_name = NULL,
   iucn = try(rgbif::name_usage(accep.key,data="iucnRedListCategory")$data,silent=TRUE)
   if (methods::is(iucn,"try-error")) {iucn = "NOT_FOUND"} else {iucn = iucn$category}
 
+  # Avoid the canonicalName error (sometimes the column is absent wtf...)
+  if (!"canonicalName"%in%colnames(main.dat)){
+    accep.name$canonicalName = NA
+    syn.syn$canonicalName = NA
+    main.dat$canonicalName = NA
+  }
+
   # Specific columns
   c.key = suppressWarnings(c(accep.key,syn.syn$key))
   c.sc = suppressWarnings(c(accep.name$scientificName,syn.syn$scientificName))
