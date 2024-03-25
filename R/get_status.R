@@ -256,9 +256,9 @@ get_status=function(sp_name = NULL,
   }
 
   # Which is null in main.dat for Genus, Family, Order, Phyllum?
-  exist.not = c("genus","order","family","phylum")%in%names(main.dat)
+  exist.not = c("genus","family","order","phylum")%in%names(main.dat)
   main.out = data.frame(Genus=NA,Family=NA,Order=NA,Phylum=NA)
-  main.out[exist.not] = main.dat[,c("genus","order","family","phylum")[exist.not]]
+  main.out[exist.not] = main.dat[,c("genus","family","order","phylum")[exist.not]]
 
   # Extract accepted names and synonyms
   e.output = data.frame(canonicalName = c.can,
