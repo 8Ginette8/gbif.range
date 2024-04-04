@@ -251,7 +251,6 @@ get_gbif = function(sp_name = NULL,
       } else {
         s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
         s.keep = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-        s.keep = s.keep[s.keep$matchType%in%"EXACT",]
         if (nrow(s.keep)==0){
           cat("Not match found...","\n")
           return(e.output)
