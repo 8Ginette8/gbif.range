@@ -76,7 +76,8 @@ get_status=function(sp_name = NULL,
                        Family = NA,
                        Order = NA,
                        Phylum = NA,
-                       IUCN_status = NA)
+                       IUCN_status = NA,
+                       sp_nameMatch = NA)
 
   # Search
   if (!search){
@@ -131,7 +132,6 @@ get_status=function(sp_name = NULL,
       } else {
         s.keep = bone.search[bone.search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
         s.keep = s.keep[s.keep$status%in%c("ACCEPTED","SYNONYM"),]
-        s.keep = s.keep[s.keep$matchType%in%"EXACT",]
         if (nrow(s.keep)==0){
           cat("Not match found...","\n")
           return(e.output)
@@ -267,7 +267,8 @@ get_status=function(sp_name = NULL,
                         scientificName = c.sc,
                         gbif_status = c.status,
                         main.out,
-                        IUCN_status = iucn)
+                        IUCN_status = iucn,
+                        sp_nameMatch = bone.search$matchType)
 
   return(e.output[!duplicated(e.output[,3]),])
 }
