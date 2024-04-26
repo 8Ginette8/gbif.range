@@ -278,5 +278,5 @@ get_status=function(sp_name = NULL,
   e.output = e.output[!duplicated(e.output$scientificName),]
   e.output[e.output$scientificName%in%sc.name,"sp_nameMatch"][1] = "INPUT"
 
-  return(e.output[!duplicated(e.output[,3]),])
+  return(e.output)
 }
