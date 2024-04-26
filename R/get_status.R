@@ -38,7 +38,8 @@
 #' the accepted name and its synonyms?
 #' 
 #' @return Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
-#' (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum and (8) IUCN status
+#' (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
+#' sp_nameMatch informing how well the input sp_name has matched with the found synonyms
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735
@@ -157,7 +158,7 @@ get_status=function(sp_name = NULL,
           coltax = c("familyKey","orderKey","classKey","phylumKey")%in%colnames(bone.search)
           key.test = bone.search[,c("familyKey","orderKey","classKey","phylumKey")[coltax]]
 
-          if (any(bone.search$status%in%"ACCEPTED") & length(unique(key.test[,1]))==1){
+          if (any(bone.search$status%in%"ACCEPTED") & length(unique(key.test[,1][[1]]))==1){
             bone.search = bone.search[bone.search$status%in%"ACCEPTED",]
           }
 
@@ -186,6 +187,9 @@ get_status=function(sp_name = NULL,
     cat("Confidence match not high enough...","\n")
     return(e.output)
   }  
+
+   # Keep original scientific name
+  sc.name = suppressWarnings(bone.search$scientificName)
 
   # Extract key of accepted name
   if (bone.search$status%in%"SYNONYM") {
@@ -269,6 +273,10 @@ get_status=function(sp_name = NULL,
                         main.out,
                         IUCN_status = iucn,
                         sp_nameMatch = bone.search$matchType)
+
+  # Remove duplicated and change sp_nameMatch to know which row related to the sp_name input
+  e.output = e.output[!duplicated(e.output$scientificName),]
+  e.output[e.output$scientificName%in%sc.name,"sp_nameMatch"][1] = "INPUT"
 
   return(e.output[!duplicated(e.output[,3]),])
 }
