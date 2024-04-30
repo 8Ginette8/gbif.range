@@ -35,13 +35,13 @@ get_doi = function(gbifs = NULL,
 	if (class(gbifs)%in%"data.frame") {gbifs=list(gbifs)}
 
 	# Combine everything
-	all.obs = do.call("rbind",gbifs)
+	all_obs = do.call("rbind",gbifs)
 
 	# Pre-compile a bit
-	d.target = table(all.obs$datasetKey)
-	d.summary = data.frame(datasetKey=names(d.target),count=as.numeric(d.target))
+	d_target = table(all_obs$datasetKey)
+	d_summary = data.frame(datasetKey=names(d_target),count=as.numeric(d_target))
 
 	# Run the doi function from rgbif
-	rgbif::derived_dataset(citation_data=d.summary,title=title,
+	rgbif::derived_dataset(citation_data=d_summary,title=title,
 		description=description,source_url=source_url,user=user,pwd=pwd,...)
 }

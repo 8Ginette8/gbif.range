@@ -28,26 +28,26 @@ obs_filter=function(gbifs,grid)
     }
 
     # Check number of species in 'get_gbif' output
-    n.sp = unique(gbifs$input.search)
+    n_sp = unique(gbifs$input.search)
 
     # Loop over species
-    out.sp =
-    lapply(n.sp,function(x)
+    out_sp =
+    lapply(n_sp,function(x)
     {
       # Extract coordinates of the species
-      coords = gbifs[gbifs$input.search%in%x,c("decimalLongitude","decimalLatitude")]
+      coords = gbifs[gbifs$input_search%in%x,c("decimalLongitude","decimalLatitude")]
 
       # Extract related cells
       posP = terra::cellFromXY(grid,as.matrix(coords))
 
       # Extract one observation per grid cell
-      new.oxy = data.frame(Species=x, terra::xyFromCell(grid,unique(posP)))
+      new_oxy = data.frame(Species=x,terra::xyFromCell(grid,unique(posP)))
 
       # Return
-      return(new.oxy)
+      return(new_oxy)
     })
 
     # Compile and return
-    final.out = do.call("rbind",out.sp)
-    return(final.out)
+    final_out = do.call("rbind",out_sp)
+    return(final_out)
 }

@@ -154,9 +154,9 @@ get_range <- function (sp_name = NULL,
   }
 
   # Remove duplicates
-  w.col = c("decimalLongitude","decimalLatitude")
-  occ_coord[,w.col] = round(occ_coord[,w.col],4)
-  occ_coord = occ_coord[!duplicated(occ_coord[,w.col]),]
+  w_col = c("decimalLongitude","decimalLatitude")
+  occ_coord[,w_col] = round(occ_coord[,w_col],4)
+  occ_coord = occ_coord[!duplicated(occ_coord[,w_col]),]
   occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="epsg:4326")
   
   # Bioreg and convert to sf
@@ -298,10 +298,10 @@ get_range <- function (sp_name = NULL,
 
   # Convert to raster or not
   if (raster) {
-    ras.res = terra::rast(terra::disagg(terra::rast(),res))
-    sp.range.u = terra::aggregate(shp_species)
-    ras = terra::rasterize(sp.range.u,ras.res)
-    shp_species = terra::crop(ras,sp.range.u)
+    ras_res = terra::rast(terra::disagg(terra::rast(),res))
+    sp_range_u = terra::aggregate(shp_species)
+    ras = terra::rasterize(sp_range_u,ras_res)
+    shp_species = terra::crop(ras,sp_range_u)
   }
   
   # Final print

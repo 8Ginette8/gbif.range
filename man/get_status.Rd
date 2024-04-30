@@ -25,7 +25,8 @@ on a list of names given by rgbif (only species, subspecies and variety allowed 
 if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
 relevant name from the list (higher taxa level than species allowed here). Also, unlike search=TRUE,
 fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class', order'
-and 'family' parameters are optionally used only if no convincing name match is found.}
+and 'family' parameters are optionally used only if no convincing name match is found. FALSE is
+particularly useful if the given species name already incluede the author.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
 is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.}
@@ -55,7 +56,8 @@ the accepted name and its synonyms?}
 }
 \value{
 Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
-(3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum and (8) IUCN status
+(3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
+sp_nameMatch informing how well the input sp_name has matched with the found synonyms
 }
 \description{
 Generates, based on a given species name, its IUCN red list status and a list of

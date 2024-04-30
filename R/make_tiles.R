@@ -47,61 +47,61 @@ make_tiles = function(geo, Ntiles, sext = TRUE){
 	dtiles$xCH = -dtiles$ntiles*xFactor + geo$xmax
 	dtiles$yCH = -dtiles$ntiles*yFactor + geo$ymax
 	allxy = rbind(c(geo$xmax,geo$ymax),dtiles[,-1])
-	tile.index = nrow(allxy)-1
+	tile_index = nrow(allxy)-1
 
 	# Create all smaller extents
-	all.tiles =
-	lapply(1:tile.index, function(x){
+	all_tiles =
+	lapply(1:tile_index, function(x){
 
 		# Set target ymax and ymin
-		t.ymax = allxy[x,2]
-		t.ymin = allxy[x+1,2]
+		t_ymax = allxy[x,2]
+		t_ymin = allxy[x+1,2]
 
-		# Return NULL if t.ymax = t.ymin
-		if (t.ymax == t.ymin) {return(list(NULL,NULL))}
+		# Return NULL if t_ymax = t.ymin
+		if (t_ymax == t_ymin) {return(list(NULL,NULL))}
 
 		# Generate tiles for each line (xmax -> xmin)
-		line.tile =
-		lapply(1:tile.index,function(y){
+		line_tile =
+		lapply(1:tile_index,function(y){
 
 			# Set target xmax and xmin
-			t.xmax = allxy[y,1]
-			t.xmin = allxy[y+1,1]
+			t_xmax = allxy[y,1]
+			t_xmin = allxy[y+1,1]
 
 			# Return NULL if t.xmax = t.xmin
-			if (t.xmax == t.xmin) {return(list(NULL,NULL))}
+			if (t_xmax == t_xmin) {return(list(NULL,NULL))}
 
 			# Generate the tile
-			one.tile = paste0("POLYGON((",t.xmin," ",t.ymin,", ",
-				 						t.xmax," ",t.ymin,", ",
-				 						t.xmax," ",t.ymax,", ",
-			 							t.xmin," ",t.ymax,", ",
-			 							t.xmin," ",t.ymin,"))")
-			meta.tile = c(t.xmin,t.xmax,t.ymin,t.ymax)
-			return(list(one.tile,meta.tile))
+			one_tile = paste0("POLYGON((",t_xmin," ",t_ymin,", ",
+				 						t_xmax," ",t_ymin,", ",
+				 						t_xmax," ",t_ymax,", ",
+			 							t_xmin," ",t_ymax,", ",
+			 							t_xmin," ",t_ymin,"))")
+			meta_tile = c(t_xmin,t_xmax,t_ymin,t_ymax)
+			return(list(one_tile,meta_tile))
 		})
-		part.tile = lapply(line.tile,function(y) y[[1]])
-		part.meta = lapply(line.tile,function(y) y[[2]])
-		return(list(part.tile,part.meta))
+		part_tile = lapply(line_tile,function(y) y[[1]])
+		part_meta = lapply(line_tile,function(y) y[[2]])
+		return(list(part_tile,part_meta))
 	})
 
 	# Unlist tile geo
-	part.tile2 = lapply(all.tiles,function(x) x[[1]])
-	geo.tiles = unlist(part.tile2,recursive = FALSE)
-	geo.tiles[sapply(geo.tiles, is.null)] = NULL
+	part_tile2 = lapply(all_tiles,function(x) x[[1]])
+	geo_tiles = unlist(part_tile2,recursive = FALSE)
+	geo_tiles[sapply(geo_tiles, is.null)] = NULL
 
 	# Return if xmin == xmax
-	if (is.null(unlist(geo.tiles))) {return(NULL)}
+	if (is.null(unlist(geo_tiles))) {return(NULL)}
 
 	# Unlist tile meta
-	geo.meta = unlist(lapply(all.tiles,function(x) x[[2]]),recursive = FALSE)
-	geo.meta[sapply(geo.meta, is.null)] = NULL
-	geo.meta = lapply(geo.meta,function(x) terra::ext(x))
+	geo_meta = unlist(lapply(all_tiles,function(x) x[[2]]),recursive = FALSE)
+	geo_meta[sapply(geo_meta, is.null)] = NULL
+	geo_meta = lapply(geo_meta,function(x) terra::ext(x))
 
 	# Return
 	if (sext) {
-		return(list(geo.tiles,geo.meta))
+		return(list(geo_tiles,geo_meta))
 	} else {
-		return(geo.tiles)
+		return(geo_tiles)
 	}
 }

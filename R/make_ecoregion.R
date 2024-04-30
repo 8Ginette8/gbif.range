@@ -72,27 +72,27 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
     cat("CLARA algorithm processing...","\n")
   
     # Convert raster in the right CLARA format
-    id.toReplace = stats::complete.cases(env[])
-    toClara = env[][id.toReplace,]
+    id_toReplace = stats::complete.cases(env[])
+    toClara = env[][id_toReplace,]
 
     # Run CLARA and assign results to right pixels
     blocks = cluster::clara(toClara,nclass,...)
-    toNew.ras = env[[1]]
-    toNew.ras[][id.toReplace] = blocks$clustering
-    toNew.ras[][!id.toReplace] = NA
+    toNew_ras = env[[1]]
+    toNew_ras[][id_toReplace] = blocks$clustering
+    toNew_ras[][!id_toReplace] = NA
 
     # Save in raster or shapefile
     if (raster&path=="") {
-      return(toNew.ras)
+      return(toNew_ras)
 
     } else if (raster&path!="") {
-      terra::writeRaster(toNew.ras,paste0(path,"/",name,".tif"),overwrite=TRUE,
+      terra::writeRaster(toNew_ras,paste0(path,"/",name,".tif"),overwrite=TRUE,
         datatype="INT4S",gdal=c("COMPRESS=DEFLATE","PREDICTOR=2"))
     
     } else {
 
       # Change raster into a shapefile
-      topoly = terra::as.polygons(toNew.ras,dissolve=TRUE)
+      topoly = terra::as.polygons(toNew_ras,dissolve=TRUE)
 
       # For now, because get_range not yet compatible with Spatvect
       cat("Generating polygons...","\n")
