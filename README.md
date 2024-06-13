@@ -4,8 +4,8 @@
 
 [<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/blob/main/inst/logo/logo_gbif.range.png">](https://www.gbif.org)
 
-Status of the automatic CI R-CMD-check test [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml/badge.svg?branch=master)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml)
-
+Status of the automatic CI R-CMD-check test [![R-CMD-check-ubuntu](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml/badge.svg?branch=master)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml)
+[![R-CMD-check-macos](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml/badge.svg?branch=master)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml)
 
 
 Although species ranges may be obtained using expert maps (e.g., <a href="https://www.iucnredlist.org/resources/spatial-data-download">IUCN</a> and <a href="https://www.euforgen.org/species/">EUFORGEN</a>) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise, as well as many species observations.
