@@ -77,7 +77,7 @@
 #' @param ntries Numeric. In case of failure from GBIF server or within the rgbif package, how many
 #' download attempts should the function request? Default is '10' with a 2 seconds interval
 #' between tries. If the attempts failed, an empty data.frame is return by default.
-#' @param error.skip Logical. Should the search process continues if ntries failed ?
+#' @param error_skip Logical. Should the search process continues if ntries failed ?
 #' @param occ_samp Numeric. Determine how many GBIF occurrences will be sampled per geographic
 #' tiles of the fragmented study area. Default is the maximum number of GBIF observations found
 #' in a tile (i.e. ~100'000 records). A lower number may be set (<99'000) if the user only wants

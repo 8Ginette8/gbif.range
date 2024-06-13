@@ -35,7 +35,7 @@ obs_filter=function(gbifs,grid)
     lapply(n_sp,function(x)
     {
       # Extract coordinates of the species
-      coords = gbifs[gbifs$input_search%in%x,c("decimalLongitude","decimalLatitude")]
+      coords = gbifs[gbifs$input.search%in%x,c("decimalLongitude","decimalLatitude")]
 
       # Extract related cells
       posP = terra::cellFromXY(grid,as.matrix(coords))
