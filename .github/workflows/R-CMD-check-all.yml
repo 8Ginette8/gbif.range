@@ -62,7 +62,13 @@ jobs:
     - name: Install system dependencies
       run: |
         brew install udunits gdal geos proj
-        brew install mactex-no-gui
+        brew install --cask mactex-no-gui
+        sudo tlmgr update --self
+        sudo tlmgr install inconsolata helvetic times courier
+
+    - name: Add LaTeX to PATH
+      run: |
+        echo "/Library/TeX/texbin" >> $GITHUB_PATH
 
     - name: Cache R packages
       uses: actions/cache@v2
