@@ -21,6 +21,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+        sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texinfo ghostscript
 
     - name: Cache R packages
       uses: actions/cache@v2
@@ -61,6 +62,7 @@ jobs:
     - name: Install system dependencies
       run: |
         brew install udunits gdal geos proj
+        brew install mactex-no-gui
 
     - name: Cache R packages
       uses: actions/cache@v2
