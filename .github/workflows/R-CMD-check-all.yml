@@ -63,8 +63,8 @@ jobs:
       run: |
         brew install udunits gdal geos proj
         brew install --cask mactex-no-gui
-        sudo tlmgr update --self
-        sudo tlmgr install inconsolata helvetic times courier
+        tlmgr update --self
+        tlmgr install inconsolata helvetic times courier
 
     - name: Add LaTeX to PATH
       run: |
