@@ -32,9 +32,9 @@ jobs:
 
     - name: Install R packages
       run: |
-        install.packages('devtools')
-        install.packages('remotes')
-        remotes::install_cran(c('terra', 'sf', 'rgbif', 'CoordinateCleaner', 'ClusterR', 'FNN', 'geometry', 'cluster', 'rnaturalearth', 'mclust', 'methods'))
+        R -e 'install.packages("devtools")'
+        R -e 'install.packages("remotes")'
+        R -e 'remotes::install_cran(c("terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods"))'
 
     - name: Check package
       run: |
@@ -60,7 +60,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        brew install gdal geos proj
+        brew install udunits gdal geos proj
 
     - name: Cache R packages
       uses: actions/cache@v2
@@ -72,9 +72,9 @@ jobs:
 
     - name: Install R packages
       run: |
-        install.packages('devtools')
-        install.packages('remotes')
-        remotes::install_cran(c('terra', 'sf', 'rgbif', 'CoordinateCleaner', 'ClusterR', 'FNN', 'geometry', 'cluster', 'rnaturalearth', 'mclust', 'methods'))
+        R -e 'install.packages("devtools")'
+        R -e 'install.packages("remotes")'
+        R -e 'remotes::install_cran(c("terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods"))'
 
     - name: Check package
       run: |
