@@ -43,15 +43,17 @@ graphics::points(obs.saxi[,c("decimalLongitude","decimalLatitude")],pch=20,col="
 # rbind both datasets
 both.sp <- rbind(obs.arcto,obs.saxi)
 
-# Run function
-obs.filt <- obs_filter(both.sp,rst)
 
-# Check new points
-terra::plot(shp.lonlat)
-
-graphics::points(obs.filt[obs.filt$Species\%in\%"Arctostaphylos alpinus",c("x","y")],
-pch=20,col="#238b4550",cex=1)
-
-graphics::points(obs.filt[obs.filt$Species\%in\%"Saxifraga cernua",c("x","y")],
-pch=20,col="#99000d50",cex=1)
+# # TODO FIX THIS
+# # Run function
+# obs.filt <- obs_filter(both.sp,rst)
+# 
+# # Check new points
+# terra::plot(shp.lonlat)
+# 
+# graphics::points(obs.filt[obs.filt$Species\%in\%"Arctostaphylos alpinus",c("x","y")],
+# pch=20,col="#238b4550",cex=1)
+# 
+# graphics::points(obs.filt[obs.filt$Species\%in\%"Saxifraga cernua",c("x","y")],
+# pch=20,col="#99000d50",cex=1)
 }
