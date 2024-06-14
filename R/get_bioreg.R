@@ -41,12 +41,12 @@ bioreg_list <- list(
 #'
 #' Determines the save directory within the package structure.
 #'
-#' @param save_dir Optional. The directory to save the downloaded files. Defaults to "inst/extdata" within the package structure.
+#' @param save_dir Optional. The directory to save the downloaded files. Defaults to "inst/extdata/downloads" within the package structure.
 #' @return A string representing the save directory.
 #' @noRd
 get_save_dir <- function(save_dir = NULL) {
   if (is.null(save_dir)) {
-    save_dir <- system.file("extdata", package = "gbif.range")
+    save_dir <- system.file("extdata/downloads", package = "gbif.range")
     if (save_dir == "") {
       save_dir <- file.path(getwd(), "inst", "extdata", "downloads")
     }
@@ -62,7 +62,7 @@ get_save_dir <- function(save_dir = NULL) {
 #'
 #' @param bioreg_name "all" or the filename of the desired bioregion to be downloaded. 
 #' See `bioreg_list` for available options. This contains a list of data file information with elements containing `link`, `filename`, and `description`.
-#' @param save_dir The directory to save the downloaded files. Defaults to "inst/extdata" within the package structure.
+#' @param save_dir The directory to save the downloaded files. Defaults to "inst/extdata/downloads" within the package structure.
 #' @return NULL. Downloads the files to the specified directory.
 #' @examples
 #' \dontrun{
@@ -110,6 +110,10 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
     
     # Unzip to folder named after filename
     unzip(destfile, exdir = file.path(save_dir, data$filename))
+    # Remove the zip file
+    file.remove(destfile)
+    message(paste("Unzipped:", data$filename, "\n saved to:", file.path(save_dir, data$filename), 
+                  "\n removed: ", paste0(data$filename, ".zip")))
   }
 }
 
@@ -118,7 +122,7 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
 #' Checks if a directory exists and contains at least one .shp file. If not, calls get_bioreg to download the data.
 #'
 #' @param bioreg_name filename of the desired bioregion to be checked and downloaded if necessary. See `bioreg_list` for available options.
-#' @param save_dir The directory to save the downloaded files. Defaults to "inst/extdata" within the package structure.
+#' @param save_dir The directory to save the downloaded files. Defaults to "inst/extdata/downloads" within the package structure.
 #' @return NULL. Checks and downloads the files to the specified directory if necessary.
 #' @examples
 #' \dontrun{
