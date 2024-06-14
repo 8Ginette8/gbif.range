@@ -10,3 +10,4 @@ gbif.range/.github/workflows
 gbif.range/.github
 ^LICENSE\.md$
 ^\.github$
+^inst/extdata/downloads$
