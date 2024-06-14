@@ -92,8 +92,8 @@ Let's now generate the distributional range map of *Panthera tigris* using the i
 ``` r
 range.tiger = get_range(sp_name="Panthera tigris",
                         occ_coord=obs.pt,
-                        Bioreg=eco.earth,
-                        Bioreg_name="ECO_NAME")
+                        bioreg=eco.earth,
+                        bioreg_name="ECO_NAME")
 ```
 
 Let's plot the result now:
@@ -150,8 +150,8 @@ my.eco = make_ecoregion(rst,200)
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
 range.arcto = get_range(sp_name="Arctostaphylos alpinus",
                         occ_coord=obs.arcto,
-                        Bioreg=my.eco,
-                        Bioreg_name="EcoRegion",
+                        bioreg=my.eco,
+                        bioreg_name="EcoRegion",
                         res=20,
                         degrees_outlier = 5,
                         clustered_points_outlier = 2,
@@ -160,7 +160,7 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
                         buffer_width_polygon = 0.1)
 ```
 
-Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. ⚠️It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *Bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
+Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. ⚠️It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
 ``` r
 # Plot

@@ -17,7 +17,7 @@
 #' @param sp_name Character. Species name e.g., 'Anemone nemorosa'.
 #' @param occ_coord a get_gbif() output or a data.frame containing two columns named
 #' "decimalLongitude" and "decimalLatitude".
-#' @param Bioreg  'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
+#' @param bioreg  'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
 #' ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
 #' that this parameter may be fed with an external, generated (function make_ecoregion) or
 #' in-house ecoregion shapefile. Three in-house shapefiles are already included in the library:
@@ -27,7 +27,7 @@
 #' to represent the terrestrial range of species that also partially settle on mainland. For
 #' fresh water species, same may be done if the user considers that terrestrial ecoregions
 #' should be more representtaive of the species ecology.
-#' @param Bioreg_name Character. How is the shapefile attribute containing the ecoregion names called?
+#' @param bioreg_name Character. How is the shapefile attribute containing the ecoregion names called?
 #' Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME'). Note that 'EcoRegion'
 #' must always be used when using a make_ecoregion() output. See details.
 #' @param degrees_outlier Numeric. Distance threshold (degrees) for outlier classification.
@@ -46,7 +46,7 @@
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
 #' @param res Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
 #' e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
-#' achievable resolution of the output will depend on its 'Bioreg' precision, e.g., a species range
+#' achievable resolution of the output will depend on its 'bioreg' precision, e.g., a species range
 #' output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.
 #' @details Ecoregions cover relatively large areas of land or water, and contain characteristic,
 #' geographically distinct assemblages of natural communities sharing a large majority of species,
@@ -130,8 +130,8 @@
 #' @importFrom ClusterR KMeans_rcpp
 get_range <- function (sp_name = NULL, 
                        occ_coord = NULL, 
-                       Bioreg = eco.earth, 
-                       Bioreg_name = "ECO_NAME", 
+                       bioreg = eco.earth, 
+                       bioreg_name = "ECO_NAME", 
                        degrees_outlier = 3,
                        clustered_points_outlier = 2,
                        buffer_width_point = 4, 
@@ -160,11 +160,11 @@ get_range <- function (sp_name = NULL,
   occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="epsg:4326")
   
   # Bioreg and convert to sf
-  if (!class(Bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
-     stop("Wrong 'Bioreg' class (not a spatial object)...")
+  if (!class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
+     stop("Wrong 'bioreg' class (not a spatial object)...")
   }
-  if (class(Bioreg)[1]%in%c("SpatialPolygonsDataFrame","sf")) {
-    Bioreg = terra::vect(Bioreg)
+  if (class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","sf")) {
+    bioreg = terra::vect(bioreg)
   }
 
   ### =========================================================================
@@ -205,12 +205,12 @@ get_range <- function (sp_name = NULL,
   ### =========================================================================
   
   # Set number of ecoregions
-  ovo_coord_mod = terra::intersect(Bioreg,occ_coord_mod)
-  uniq = levels(factor(ovo_coord_mod[[Bioreg_name]][[1]]))
+  ovo_coord_mod = terra::intersect(bioreg,occ_coord_mod)
+  uniq = levels(factor(ovo_coord_mod[[bioreg_name]][[1]]))
 
   # Handling NA error
   if (length(ovo_coord_mod)==0) {
-    stop("No overlap of ecoregion info, please use another 'Bioreg_name'")
+    stop("No overlap of ecoregion info, please use another 'bioreg_name'")
   }
   
   # Loop over bioregions
@@ -218,15 +218,15 @@ get_range <- function (sp_name = NULL,
   for(g in 1:length(uniq)) {
     
     # Print
-    cat('Bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
+    cat('bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
 
     # NAs or not
-    q1 = as.data.frame(Bioreg)[,Bioreg_name] == uniq[g]
+    q1 = as.data.frame(bioreg)[,bioreg_name] == uniq[g]
     q1[is.na(q1)] = FALSE
 
     # Continue
-    tmp = terra::simplifyGeom(Bioreg[q1,],tolerance=0.001,preserveTopology=TRUE)
-    a = ovo_coord_mod[ovo_coord_mod[[Bioreg_name]][[1]] == uniq[g]]
+    tmp = terra::simplifyGeom(bioreg[q1,],tolerance=0.001,preserveTopology=TRUE)
+    a = ovo_coord_mod[ovo_coord_mod[[bioreg_name]][[1]] == uniq[g]]
     
     if (length(a) < 3) {
       k = 1

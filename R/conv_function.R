@@ -47,7 +47,7 @@ conv_function <- function (sp_coord,
     if (all(abs(is_line) == 0)) { 
       
       # Print
-      cat('Bioreg=',g,nrow(x),'points laying on one line. Using buffer width of ',bwp_bipl_m/1000,'km','\n')
+      cat('bioreg=',g,nrow(x),'points laying on one line. Using buffer width of ',bwp_bipl_m/1000,'km','\n')
 
       # Buffer
       rtn = terra::buffer(terra::aggregate(sp_coord),width=bwp_bipl_m)

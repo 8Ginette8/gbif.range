@@ -7,8 +7,8 @@
 get_range(
   sp_name = NULL,
   occ_coord = NULL,
-  Bioreg = eco.earth,
-  Bioreg_name = "ECO_NAME",
+  bioreg = eco.earth,
+  bioreg_name = "ECO_NAME",
   degrees_outlier = 3,
   clustered_points_outlier = 2,
   buffer_width_point = 4,
@@ -25,7 +25,7 @@ get_range(
 \item{occ_coord}{a get_gbif() output or a data.frame containing two columns named
 "decimalLongitude" and "decimalLatitude".}
 
-\item{Bioreg}{'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
+\item{bioreg}{'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
 ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
 that this parameter may be fed with an external, generated (function make_ecoregion) or
 in-house ecoregion shapefile. Three in-house shapefiles are already included in the library:
@@ -36,7 +36,7 @@ to represent the terrestrial range of species that also partially settle on main
 fresh water species, same may be done if the user considers that terrestrial ecoregions
 should be more representtaive of the species ecology.}
 
-\item{Bioreg_name}{Character. How is the shapefile attribute containing the ecoregion names called?
+\item{bioreg_name}{Character. How is the shapefile attribute containing the ecoregion names called?
 Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME'). Note that 'EcoRegion'
 must always be used when using a make_ecoregion() output. See details.}
 
@@ -63,7 +63,7 @@ polygons (for each ecoregion).}
 
 \item{res}{Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
 e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
-achievable resolution of the output will depend on its 'Bioreg' precision, e.g., a species range
+achievable resolution of the output will depend on its 'bioreg' precision, e.g., a species range
 output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.}
 }
 \value{
