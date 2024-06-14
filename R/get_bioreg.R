@@ -143,3 +143,22 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
     get_bioreg(bioreg_name, save_dir)
   }
 }
+
+
+#' Load Bioreg Data Files
+#' 
+#' Loads a shapefile based on the provided bioregion name and the bioreg_list.
+#' @param bioreg_name filename of the desired bioregion to be loaded. See `bioreg_list` for available options.
+#' @param save_dir The directory to save the downloaded files. Defaults to "inst/extdata/downloads" within the package structure.
+#' @return A terra::vect object representing the shapefile.
+#' @export
+#' 
+read_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
+  # check and if non existing get bioreg
+  check_and_get_bioreg(bioreg_name, save_dir)
+  # Load the shapefile
+  shp_path <- list.files(file.path(save_dir, bioreg_name), pattern = "\\.shp$", full.names = TRUE)
+  shp <- terra::vect(shp_path)
+  
+  return(shp)
+}
