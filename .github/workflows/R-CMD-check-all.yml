@@ -1,4 +1,4 @@
-name: R-CMD-check
+name: R-CMD-check-all
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     branches: [main]
 
 jobs:
+  # Job for Ubuntu
   R-CMD-check-ubuntu:
     runs-on: ubuntu-latest
 
@@ -26,8 +27,8 @@ jobs:
     - name: Cache R packages
       uses: actions/cache@v2
       with:
-        path: ~/.R/renv
-        key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+        path: ~/.R/library
+        key: ${{ runner.os }}-renv-${{ hashFiles('**/DESCRIPTION') }}
         restore-keys: |
           ${{ runner.os }}-renv-
 
@@ -49,17 +50,7 @@ jobs:
         name: R-CMD-check-results
         path: check/*.Rcheck
 
-
-
-
-
-
-
-
-
-
-
-
+  # Job for macOS
   R-CMD-check-macos:
     runs-on: macos-latest
 
@@ -74,13 +65,13 @@ jobs:
       run: |
         brew install udunits gdal geos proj
         brew install --cask mactex-no-gui
-        tlmgr update --self
-        tlmgr install inconsolata helvetic times courier
 
     - name: Add LaTeX to PATH
       run: |
         echo "/Library/TeX/texbin" >> $GITHUB_PATH
-    
+        echo 'eval "$(/usr/libexec/path_helper)"' >> $GITHUB_ENV
+        eval "$(/usr/libexec/path_helper)"
+
     - name: Update tlmgr and install LaTeX packages
       run: |
         tlmgr update --self
@@ -89,8 +80,8 @@ jobs:
     - name: Cache R packages
       uses: actions/cache@v2
       with:
-        path: ~/.R/renv
-        key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+        path: ~/.R/library
+        key: ${{ runner.os }}-renv-${{ hashFiles('**/DESCRIPTION') }}
         restore-keys: |
           ${{ runner.os }}-renv-
 
