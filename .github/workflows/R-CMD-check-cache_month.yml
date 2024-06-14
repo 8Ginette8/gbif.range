@@ -7,7 +7,6 @@ on:
     branches: [main]
 
 jobs:
-  
   # Job for Ubuntu
   R-CMD-check-ubuntu:
     runs-on: ubuntu-latest
@@ -19,11 +18,27 @@ jobs:
     - name: Set up R
       uses: r-lib/actions/setup-r@v2
 
+    - name: Cache system dependencies
+      uses: actions/cache@v3
+      with:
+        path: /usr/local
+        key: ${{ runner.os }}-sysdeps-${{ hashFiles('**/DESCRIPTION') }}-${{ hashFiles('**/renv.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-sysdeps-
+
     - name: Install system dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
-        sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texinfo ghostscript
+        sudo apt-get update && sudo apt-get install -y \
+        libudunits2-dev \
+        libgdal-dev \
+        libgeos-dev \
+        libproj-dev \
+        texlive \
+        texlive-latex-extra \
+        texlive-fonts-recommended \
+        texlive-fonts-extra \
+        texinfo \
+        ghostscript
 
     - name: Determine Cache Key
       id: cache-key
@@ -34,7 +49,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.R/library
-        key: ${{ runner.os }}-${{ env.CACHE_KEY }}-${{ hashFiles('**/DESCRIPTION') }}
+        key: ${{ runner.os }}-renv-${{ hashFiles('**/DESCRIPTION') }}-${{ env.CACHE_KEY }}
         restore-keys: |
           ${{ runner.os }}-renv-
 
@@ -49,65 +64,17 @@ jobs:
         R CMD build .
         R CMD check *tar.gz
 
+    - name: Display installation log on failure
+      if: failure()
+      run: cat gbif.range.Rcheck/00install.out
+
+    - name: Display check log on failure
+      if: failure()
+      run: cat gbif.range.Rcheck/00check.log
+
     - name: Upload check results
       if: always()
       uses: actions/upload-artifact@v2
       with:
         name: R-CMD-check-results
         path: check/*.Rcheck
-  # 
-  # # Job for macOS
-  # R-CMD-check-macos:
-  #   runs-on: macos-latest
-  # 
-  #   steps:
-  #   - name: Checkout repository
-  #     uses: actions/checkout@v2
-  # 
-  #   - name: Set up R
-  #     uses: r-lib/actions/setup-r@v2
-  # 
-  #   - name: Install system dependencies
-  #     run: |
-  #       brew install udunits gdal geos proj
-  #       brew install --cask mactex-no-gui
-  # 
-  #   - name: Add LaTeX to PATH
-  #     run: |
-  #       echo "/Library/TeX/texbin" >> $GITHUB_PATH
-  # 
-  #   - name: Update tlmgr and install LaTeX packages
-  #     run: |
-  #       tlmgr update --self
-  #       tlmgr install inconsolata helvetic times courier
-  # 
-  #   - name: Determine Cache Key
-  #     id: cache-key
-  #     run: |
-  #       echo "CACHE_KEY=renv-$(date +%Y-%m)" >> $GITHUB_ENV
-  # 
-  #   - name: Cache R packages
-  #     uses: actions/cache@v2
-  #     with:
-  #       path: ~/.R/library
-  #       key: ${{ runner.os }}-${{ env.CACHE_KEY }}-${{ hashFiles('**/DESCRIPTION') }}
-  #       restore-keys: |
-  #         ${{ runner.os }}-renv-
-  # 
-  #   - name: Install R packages
-  #     run: |
-  #       R -e 'install.packages("devtools")'
-  #       R -e 'install.packages("remotes")'
-  #       R -e 'remotes::install_cran(c("terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods"))'
-  # 
-  #   - name: Check package
-  #     run: |
-  #       R CMD build .
-  #       R CMD check *tar.gz
-  # 
-  #   - name: Upload check results
-  #     if: always()
-  #     uses: actions/upload-artifact@v2
-  #     with:
-  #       name: R-CMD-check-results
-  #       path: check/*.Rcheck
