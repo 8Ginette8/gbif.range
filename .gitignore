@@ -8,3 +8,7 @@
 *.Rproj
 .Rproj.user/shared/notebooks/paths
 **/.Rproj.user/shared/notebooks/paths
+# Ignore all files inside inst/extdata/downloads
+inst/extdata/downloads/*
+# But keep the downloads directory
+!inst/extdata/downloads/
