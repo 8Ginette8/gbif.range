@@ -82,7 +82,7 @@ jobs:
         echo "/Library/TeX/texbin" >> $GITHUB_PATH
     
     - name: Update tlmgr and install LaTeX packages
-       run: |
+      run: |
         tlmgr update --self
         tlmgr install inconsolata helvetic times courier
 
