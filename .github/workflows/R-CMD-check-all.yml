@@ -49,6 +49,17 @@ jobs:
         name: R-CMD-check-results
         path: check/*.Rcheck
 
+
+
+
+
+
+
+
+
+
+
+
   R-CMD-check-macos:
     runs-on: macos-latest
 
@@ -69,6 +80,11 @@ jobs:
     - name: Add LaTeX to PATH
       run: |
         echo "/Library/TeX/texbin" >> $GITHUB_PATH
+    
+    - name: Update tlmgr and install LaTeX packages
+       run: |
+        tlmgr update --self
+        tlmgr install inconsolata helvetic times courier
 
     - name: Cache R packages
       uses: actions/cache@v2
