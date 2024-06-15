@@ -1,4 +1,4 @@
-name: R-CMD-check-month
+name: R-CMD-check-all
 
 on:
   push:
