@@ -29,6 +29,10 @@ jobs:
       run: |
         echo "CACHE_KEY=renv-$(date +%Y-%m)" >> $GITHUB_ENV
 
+    - name: Print Cache Key
+      run: |
+        echo "Cache key is: ${{ env.CACHE_KEY }}"
+
     - name: Cache R packages
       uses: actions/cache@v4
       with:
@@ -46,7 +50,7 @@ jobs:
           if (length(missing) > 0) {
             install.packages(missing, repos = "https://cloud.r-project.org")
           }
-          '
+        '
 
     - name: Check package
       run: |
