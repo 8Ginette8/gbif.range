@@ -39,8 +39,14 @@ jobs:
 
     - name: Install R packages
       run: |
-        R -e 'install.packages(c("devtools", "remotes"))'
-        R -e 'remotes::install_cran(c("terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods"))'
+        Rscript -e '
+          packages <- c("devtools", "remotes", "terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods")
+          installed <- rownames(installed.packages())
+          missing <- setdiff(packages, installed)
+          if (length(missing) > 0) {
+            install.packages(missing, repos = "https://cloud.r-project.org")
+          }
+          '
 
     - name: Check package
       run: |
