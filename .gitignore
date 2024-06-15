@@ -12,3 +12,5 @@
 inst/extdata/downloads/*
 # But keep the downloads directory
 !inst/extdata/downloads/
+.Rproj.user/shared/notebooks/paths
+/.Rproj.user

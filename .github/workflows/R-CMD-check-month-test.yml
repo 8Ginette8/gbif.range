@@ -1,0 +1,50 @@
+name: R-CMD-check-test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  
+  R-CMD-check-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up R
+      uses: r-lib/actions/setup-r@v3
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+        sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texinfo ghostscript
+
+    - name: Cache R packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.R/library
+        key: ${{ runner.os }}-renv-${{ hashFiles('**/DESCRIPTION') }}
+        restore-keys: |
+          ${{ runner.os }}-renv-
+
+    - name: Install R packages
+      run: |
+        R -e 'install.packages(c("devtools", "remotes"))'
+        R -e 'remotes::install_cran(c("terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods"))'
+
+    - name: Check package
+      run: |
+        R CMD build .
+        R CMD check *.tar.gz
+
+    - name: Upload check results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: R-CMD-check-results
+        path: check/*.Rcheck
