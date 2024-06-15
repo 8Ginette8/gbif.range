@@ -43,7 +43,7 @@
 #' @param buffer_width_polygon Numeric. Buffer (in degrees) which will be applied around distribution
 #' polygons (for each ecoregion).
 #' @param dir_temp Character. Where should the temporary text file for the convex hull be saved?
-#' (text file will be deleted again).
+#' (text file will be deleted again). Default value is \code{tempdir()}.
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
 #' @param res Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
 #' e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
