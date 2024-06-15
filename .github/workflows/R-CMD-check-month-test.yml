@@ -36,7 +36,7 @@ jobs:
     - name: Cache R packages
       uses: actions/cache@v4
       with:
-        path: ~/.R/library
+        path: ${{ runner.tool_cache }}/R
         key: ${{ runner.os }}-${{ env.CACHE_KEY }}-${{ hashFiles('**/DESCRIPTION') }}
         restore-keys: |
           ${{ runner.os }}-renv-
@@ -62,4 +62,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: R-CMD-check-results
-        path: check/*.Rcheck
+        path: gbif.range.Rcheck
