@@ -29,3 +29,4 @@ Collate:
     'get_range.R'
     'conv_function.R'
     'make_ecoregion.R'
+    'get_bioreg.R'

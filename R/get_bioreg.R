@@ -66,7 +66,8 @@ get_save_dir <- function(save_dir = NULL) {
 #' @return NULL. Downloads the files to the specified directory.
 #' @examples
 #' \dontrun{
-#' get_bioreg(bioreg_list)
+#' # download all bioregions available in bioreg_list
+#' get_bioreg()
 #' }
 #' @export
 get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
@@ -152,7 +153,11 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' @param save_dir The directory to save the downloaded files. Defaults to "inst/extdata/downloads" within the package structure.
 #' @return A terra::vect object representing the shapefile.
 #' @export
-#' 
+#' @examples
+#' \dontrun{
+#' shp_eco_terra <- read_bioreg("eco_terra")
+#' plot(shp_eco_terra)
+#' }
 read_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
   # check and if non existing get bioreg
   check_and_get_bioreg(bioreg_name, save_dir)
