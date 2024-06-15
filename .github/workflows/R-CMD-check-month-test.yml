@@ -24,11 +24,16 @@ jobs:
         sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
         sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texinfo ghostscript
 
+    - name: Determine Cache Key
+      id: cache-key
+      run: |
+        echo "CACHE_KEY=renv-$(date +%Y-%m)" >> $GITHUB_ENV
+
     - name: Cache R packages
       uses: actions/cache@v3
       with:
         path: ~/.R/library
-        key: ${{ runner.os }}-renv-${{ hashFiles('**/DESCRIPTION') }}
+        key: ${{ runner.os }}-${{ env.CACHE_KEY }}-${{ hashFiles('**/DESCRIPTION') }}
         restore-keys: |
           ${{ runner.os }}-renv-
 
