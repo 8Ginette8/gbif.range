@@ -159,6 +159,8 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' plot(shp_eco_terra)
 #' }
 read_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
+  save_dir <- get_save_dir(save_dir)
+  
   # check and if non existing get bioreg
   check_and_get_bioreg(bioreg_name, save_dir)
   # Load the shapefile

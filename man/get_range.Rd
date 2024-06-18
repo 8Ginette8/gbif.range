@@ -14,7 +14,7 @@ get_range(
   buffer_width_point = 4,
   buffer_increment_point_line = 0.5,
   buffer_width_polygon = 4,
-  dir_temp = paste0("temp", sample(1:99999999, 1)),
+  dir_temp = tempdir(),
   raster = TRUE,
   res = 100
 )
@@ -57,7 +57,7 @@ on a line.}
 polygons (for each ecoregion).}
 
 \item{dir_temp}{Character. Where should the temporary text file for the convex hull be saved?
-(text file will be deleted again).}
+(text file will be deleted again). Default value is \code{tempdir()}.}
 
 \item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
 
@@ -71,8 +71,9 @@ A 'SpatVector' or 'SpatRaster'.
 }
 \description{
 Estimates species ranges based on occurrence data (GBIF or not) and ecoregions
-(may be an external, in-house or make_ecoregion() input). It first deletes outliers
-from the observation dataset and then creates a polygon (convex hull) with a user
+(external, but we provide some ecoregions, see function 'make_ecoregion'). 
+It first deletes outliers from the observation dataset and then creates a polygon 
+(convex hull) with a user
 specified buffer around all the observations of one ecoregion. If there is only
 one observation in an ecoregion, a buffer around this point will be created. If
 all points in an ecoregion are on a line, the function will also create a buffer
