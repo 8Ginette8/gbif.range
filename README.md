@@ -1,7 +1,5 @@
 # gbif.range R package
 
-*gbif.range - An R package to generate species range maps based on ecoregions and a user-friendly GBIF wrapper*
-
 [<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/blob/main/inst/logo/logo_gbif.range.png">](https://www.gbif.org)
 
 Status of the automatic CI R-CMD-check test
@@ -11,28 +9,20 @@ Status of the automatic CI R-CMD-check test
 
 Although species ranges may be obtained using expert maps (e.g., <a href="https://www.iucnredlist.org/resources/spatial-data-download">IUCN</a> and <a href="https://www.euforgen.org/species/">EUFORGEN</a>) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise, as well as many species observations.
 
-When unavailable, such information may be extracted from the Global Biodiversity Information facility (GBIF), the largest public data repository inventorying georeferenced species observations worldwide (https://www.gbif.org/). However, retrieving GBIF records at large scale in R may be tedious, if users are unaware of the specific set of functions and parameters that need to be employed within the *rgbif* library, and because of the library's existing limitations on the number of downloaded records (<100'000) if no data request is made.
+When unavailable, such information may be extracted from the Global Biodiversity Information facility (GBIF), the largest public data repository inventorying georeferenced species observations worldwide (https://www.gbif.org/). However, retrieving GBIF records at large scale in R may be tedious, if users are unaware of the limitations of *rgbif* library.
 
-Here we present **gbif.range**, a R library that contains automated methods to generate species range maps from scratch using in-house ecoregions shapefiles and an easy-to-use GBIF download wrapper. Finally, this library also offers a set of additional very useful parameters and functions for large GBIF datasets (generate doi, extract GBIF taxonomy, records filtering...).
+Here we present **gbif.range**, a R library that contains automated methods to generate species range maps from scratch using in-house ecoregions shapefiles and an easy-to-use GBIF download wrapper. Finally, this library also offers a set of additional very useful tools for large GBIF datasets (generate doi, extract GBIF taxonomy, records filtering...).
 
 _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
-## Description
-### GBIF wrapper
+## Functions (not exhaustive)
 
-One the one hand, *get_gbif()* is a wrapper which allows the whole observations of a given species scientific name (accepted and synonym names) to be automatically retrieved, and improves the data accessibility of the *rgbif* R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>). The user download hard limit of *rgbif* is a maximum of 100,000 of species observations in one go if the easy-to-use interactive functions *occ_search()* and *occ_data()* are used (i.e., if no official download request is made with *occ_download()*, <a href="https://www.gbif.org/developer/occurrence">see</a>). This impends the fast accessibility to the GBIF database when large observational datasets for many species and regions of the world are needed, specifically in scientific fields related to macroecology, modelling or satellite imagery. *get_gbif()* therefore bypasses this limit by intuitively using geographic parameters from *occ_data()* in *rgbif*, the *terra* R package and by adopting a dynamic moving window process allowing the user's study area of interest to be automatically fragmented in several tiles that always include < 100,000 observations.
-
-On the other hand, *get_gbif()* also implements easy-to-use preliminary filtering options implemented during the download so that users save post-processing time in data cleaning. 13 filters are available. One is set by default in *get_gbif()* (hasGeospatialIssue = FALSE) whereas the others can be chosen independently, including two that are based on the *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>). It is important to note that, although a strong records filtering may be undertaken with *get_gbif()*, *CoordinateCleaner* includes a larger variety of options that should be checked and applied on *get_gbif* outputs.
-
-### Range function
-
-*get_range()* estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and ecoregions. <a href="https://en.wikipedia.org/wiki/Ecoregion">Ecoregions</a> cover relatively large areas of land or water, and contain characteristic, geographically distinct assemblages of natural communities sharing a large majority of species, dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that characterise an ecoregion tends to be distinct from that of other ecoregions.
-
-The function first deletes outliers from the observation dataset and then creates a polygon (convex hull) with a user specified buffer around all the observations of one ecoregion. If there is only one observation in a ecoregion, a buffer around this point will be created. If all points in a ecoregion are on a line, the function will also create a buffer around these points, however, the buffer size increases with the number of points in the line. More details to come...
-
-###  Additonal functions
-
-*gbif.range* also includes a set of additional functions meant to be a nice supplement of the features and data that offer *get_gbif* and *get_range*:
+  - *get_gbif()*: improves the accessibility of the *rgbif* R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>) in
+  retrieving GBIF observations of a given species (accepted and synonym names). It uses a dynamic moving   windows if the given geographic extent
+  contains > 100,000 observations and implements 13 post-processing options to flag and clean erroneous records based on custom functions and the
+  *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>).
+  - *get_range()*: estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and
+  <a href="https://en.wikipedia.org/wiki/Ecoregion">ecoregion</a> polygons.
   - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
   doubtful names not used to download the data may also be extracted. The function allows therefore taxonomy
