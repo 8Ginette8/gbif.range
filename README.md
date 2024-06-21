@@ -25,7 +25,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   - *get_range()*: estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and
   <a href="https://en.wikipedia.org/wiki/Ecoregion">ecoregion</a> polygons.
 
-  - *get_bioreg()*: download ecoregion files from different available URL sources. See also associated functions *bioreg_list()*, *read_bioreg()* and *check_and_get_bioreg()*.
+  - *get_bioreg()*: download ecoregion files from different available URL sources. See also associated functions *bioreg_list*, *read_bioreg()* and *check_and_get_bioreg()*.
     
   - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
@@ -124,7 +124,7 @@ Although whatever shapefile may be set in *get_range()* as input, note that ecor
 Available ecoregion files that can be downloaded with the package:
 ``` r
 # List
-bioreg_list()
+bioreg_list
 ```
 
 ### Custom ecoregions
