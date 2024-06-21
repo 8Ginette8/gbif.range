@@ -15,29 +15,33 @@ Here we present **gbif.range**, a R library that contains automated methods to g
 
 _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
-## Functions (not exhaustive)
+## Main functions
 
   - *get_gbif()*: improves the accessibility of the *rgbif* R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>) in
   retrieving GBIF observations of a given species (accepted and synonym names). It uses a dynamic moving   windows if the given geographic extent
   contains > 100,000 observations and implements 13 post-processing options to flag and clean erroneous records based on custom functions and the
   *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>).
+
   - *get_range()*: estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and
   <a href="https://en.wikipedia.org/wiki/Ecoregion">ecoregion</a> polygons.
+
+  - *get_bioreg()*: download ecoregion files from different available URL sources. See also associated functions *bioreg_list()*, *read_bioreg()* and *check_and_get_bioreg()*.
+    
   - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
-  doubtful names not used to download the data may also be extracted. The function allows therefore taxonomy
-  correspondency to be made between different species and sub-species to potentially merge their records,
-  but also permits efficient ways of linking external data of a species which is named differently across databases.
-  - *obs_filter()*: Whereas the 'grain' parameter in *get_gbif()* allows GBIF observations to be filtered
-  according to a certain spatial precision, *obs_filter()* accepts as input a *get_gbif()* output (one or
-  several species) and filter the observations according to a specific given grid resolution (one observation
-  per pixel grid kept). This function allows the user to refine the density of GBIF observations according to
-  a defined analysis/study's resolution.
+  doubtful names not used to download the data may also be extracted.
+
+  - *obs_filter()*: *obs_filter()* accepts as input a *get_gbif()* output (one or several species) and filter the observations according
+  to a specific given grid resolution (one observation per pixel grid kept). This function allows the user to refine the density of GBIF
+  observations according to a defined analysis/study's resolution.
+
   - *make_tiles()*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
   geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
   *geometry* that uses a POLYGON() argument.
+
   - *get_doi()*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
   for a set of several gbif species datasets.
+
   - *make_ecoregion()*: A function to create custom ecoregions based on environmental layers.
 
 ## Installation
@@ -59,13 +63,13 @@ Let's download worldwide the records of *Panthera tigris* only based on true obs
 
 ``` r
 # Download
-obs.pt = get_gbif(sp_name="Panthera tigris",
+obs_pt = get_gbif(sp_name="Panthera tigris",
                   basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
 countries = vect(ne_countries(type = "countries",returnclass = "sf"))
 plot(countries,col="#bcbddc")
-points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
+points(obs_pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/203770189-59a8cf8c-b2c2-4e85-ac87-90d8fd23f8fc.png)
@@ -76,12 +80,17 @@ Note that an additional filtering needs here to be done as one observation is fo
 get_status("Panthera tigris",all=FALSE)
 ```
 
-Let's now generate the distributional range map of *Panthera tigris* using the in-house shapefile of terresterial ecoregions (*eco.earth*):
+Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) and generate the distributional range map of *Panthera tigris* :
 
 ``` r
-range.tiger = get_range(sp_name="Panthera tigris",
-                        occ_coord=obs.pt,
-                        bioreg=eco.earth,
+# Download ecoregion and read
+get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+
+# Range
+range_tiger = get_range(sp_name="Panthera tigris",
+                        occ_coord=obs_pt,
+                        bioreg=eco_terra,
                         bioreg_name="ECO_NAME")
 ```
 
@@ -89,7 +98,7 @@ Let's plot the result now:
 
 ``` r
 plot(countries,col="#bcbddc")
-plot(range.tiger,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
+plot(range_tiger,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
@@ -98,10 +107,11 @@ Interestingly no tiger range was found in the US. Our *get_range* default parame
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in *get_range()* as input, note that three ecoregion shapefiles are already included in the library: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). For marine species, *eco.earth* may also be used if the user wants to represent the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be done if the user considers that terrestrial ecoregions should be more representtaive of the species ecology. Each ecoregion shapefile has one or more categories, which describe more or less precisely the ecoregion world distribution (from the more to the less detailed):
-- *eco.earth* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
-- *eco.fresh* has only one: 'FEOW_ID'.
-- *eco.marine* contains a mix of two types of marine ecoregions, with **common** ('PROVINC' and 'REALM') and distinct levels:
+Although whatever shapefile may be set in *get_range()* as input, note that ecoregion shapefiles may be dowload using the package: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
+- *eco_terra* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
+- *eco_fresh* has only one: 'FEOW_ID'.
+- *eco_marine* contains a mix of two types of marine ecoregions, with **common** ('PROVINC' and 'REALM') and distinct levels.
+- *eco_hd_marine* is the high-resolution coastal version.
   
 > For PPOW (Pelagic provinces of the world): 'BIOME'.
   
@@ -111,16 +121,11 @@ Although whatever shapefile may be set in *get_range()* as input, note that thre
 
 <img width=80% height=80% src="https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png">
 
-Note that a more detailed version of *eco.marine* (Marine Ecoregions and Pelagic Provinces of the World) may be found <a href="https://data.unep-wcmc.org/datasets/38">here</a>. This version is available along *eco.marine*, and describes more detailed ecoregions along the coasts.
-
-To access the polygon data in R:
+Available ecoregion files that can be downloaded with the package:
 ``` r
-data.frame(eco.earth)
-data.frame(eco.fresh)
-data.frame(eco.marine)
+# List
+bioreg_list()
 ```
-
-Which level should you pick depends on your questions and which level of the species' ecology you want to represent. Here, we chose *eco.earth* since *Panthera tigris* is of course a terrestrial species, and the very detailed 'ECO_NAME' as an ecoregion level because we wanted to obtain a more fine distribution.
 
 ### Custom ecoregions
 
@@ -149,7 +154,7 @@ range.arcto = get_range(sp_name="Arctostaphylos alpinus",
                         buffer_width_polygon = 0.1)
 ```
 
-Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. ⚠️It also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
+Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of two points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. ⚠️It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
 ``` r
 # Plot
