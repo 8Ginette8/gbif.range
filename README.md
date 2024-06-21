@@ -133,18 +133,18 @@ Additonally, if the in-house ecoregions are too coarse for a given geographic re
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
-shp.lonlat = vect(paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp"))
-obs.arcto = get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
+shp_lonlat = vect(paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp"))
+obs_arcto = get_gbif("Arctostaphylos alpinus",geo=shp_lonlat)
 
 # Create an ecoregion layer of 200 classes, based on 12 environmental spatial layers:
 rst = rast(paste0(system.file(package = "gbif.range"),"/extdata/rst.tif"))
-my.eco = make_ecoregion(rst,200)
+my_eco = make_ecoregion(rst,200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
-range.arcto = get_range(sp_name="Arctostaphylos alpinus",
-                        occ_coord=obs.arcto,
-                        bioreg=my.eco,
+range_arcto = get_range(sp_name="Arctostaphylos alpinus",
+                        occ_coord=obs_arcto,
+                        bioreg=my_eco,
                         bioreg_name="EcoRegion",
                         res=20,
                         degrees_outlier = 5,
@@ -159,9 +159,9 @@ Here we adapted the extra-parameters to the extent of the study area, e.g., (i) 
 ``` r
 # Plot
 plot(rst[[1]])
-plot(shp.lonlat,add=TRUE)
-plot(range.arcto,add=TRUE,col="darkgreen",axes=FALSE,legend=FALSE)
-points(obs.arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+plot(shp_lonlat,add=TRUE)
+plot(range_arcto,add=TRUE,col="darkgreen",axes=FALSE,legend=FALSE)
+points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
 
 ![image](https://github.com/8Ginette8/gbif.range/assets/43674773/f2043983-0b1f-48aa-83bb-b36fcf3f6432)
@@ -173,24 +173,29 @@ Let's reapply the same process as for Panthera tigris, but with the marine speci
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
 
 ``` r
-obs.dd = get_gbif("Delphinus delphis",occ_samp=1000) # Here the example is a sample of 1000 observations per geographic tile
+obs_dd = get_gbif("Delphinus delphis",occ_samp=1000) # Here the example is a sample of 1000 observations per geographic tile
 get_status("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
-Let's now generate three range maps of *Delphinus delphis* using *eco.marine* as ecoregion shapefile:
+Let's now generate three range maps of *Delphinus delphis* using the *eco.marine* as ecoregion shapefile:
 
 ``` r
-range.dd1 = get_range("Delphinus delphis",obs.dd,eco.marine,"PROVINC") # Coast and deep sea
-range.dd2 = get_range("Delphinus delphis",obs.dd,eco.marine,"ECOREGION") # Coast only
-range.dd3 = get_range("Delphinus delphis",obs.dd,eco.marine,"BIOME") # Deep sea only
+# Download ecoregion and read
+get_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
+eco_marine = read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
+
+# Range
+range_dd1 = get_range("Delphinus delphis",obs_dd,eco_marine,"PROVINC") # Coast and deep sea
+range_dd2 = get_range("Delphinus delphis",obs_dd,eco_marine,"ECOREGION") # Coast only
+range_dd3 = get_range("Delphinus delphis",obs_dd,eco_marine,"BIOME") # Deep sea only
 ```
 
 The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
 
 ``` r
 plot(countries,col="#bcbddc")
-plot(range.dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
-points(obs.dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+plot(range_dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
+points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
 
 ![image](https://github.com/8Ginette8/gbif.range/assets/43674773/a57c4a61-b0ca-4acc-8d09-209627709e04)
