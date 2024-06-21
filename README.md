@@ -115,11 +115,11 @@ Although whatever shapefile may be set in *get_range()* as input, note that ecor
   
 > For PPOW (Pelagic provinces of the world): 'BIOME'.
   
-<img width=60% height=60% src="https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png">
+<img width=50% height=50% src="https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png">
  
 > For MEOW (Marine ecoregions of the world): 'ECOREGION'.
 
-<img width=60% height=60% src="https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png">
+<img width=50% height=50% src="https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png">
 
 Available ecoregion files that can be downloaded with the package:
 ``` r
