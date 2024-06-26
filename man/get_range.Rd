@@ -7,8 +7,8 @@
 get_range(
   sp_name = NULL,
   occ_coord = NULL,
-  bioreg = eco.earth,
-  bioreg_name = "ECO_NAME",
+  bioreg = NULL,
+  bioreg_name = "EcoRegion",
   degrees_outlier = 3,
   clustered_points_outlier = 2,
   buffer_width_point = 4,
@@ -28,17 +28,16 @@ get_range(
 \item{bioreg}{'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
 ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
 that this parameter may be fed with an external, generated (function make_ecoregion) or
-in-house ecoregion shapefile. Three in-house shapefiles are already included in the library:
-'eco.earh' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
-'eco.marine' (for marine species; Spalding & al. 2007, 2012) and 'eco.fresh' (for freshwater
-species; Abell & al. 2008). For marine species, eco.earth may also be used if the user wants
-to represent the terrestrial range of species that also partially settle on mainland. For
-fresh water species, same may be done if the user considers that terrestrial ecoregions
-should be more representtaive of the species ecology.}
+in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (function get_bioreg
+and others): eco_terra' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
+'eco_marine' and 'eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and 'eco_fresh' (for freshwater
+species; Abell & al. 2008). For marine species, 'eco_terra' may also be used if the user wants to represent
+the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be
+done if the user considers that terrestrial ecoregions should be more representative of the species ecology.}
 
 \item{bioreg_name}{Character. How is the shapefile attribute containing the ecoregion names called?
-Default is the very detailed level of 'eco.earth' (aka 'ECO_NAME'). Note that 'EcoRegion'
-must always be used when using a make_ecoregion() output. See details.}
+E.g., very detailed level of 'eco_terra' is 'ECO_NAME'. Note that 'EcoRegion' (default) must always be supplied when
+using a make_ecoregion() output. See details.}
 
 \item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier classification.
 If the nearest minimal distance to the next point is larger than this threshold, it will be
@@ -71,11 +70,10 @@ A 'SpatVector' or 'SpatRaster'.
 }
 \description{
 Estimates species ranges based on occurrence data (GBIF or not) and ecoregions
-(external, but we provide some ecoregions, see function 'make_ecoregion'). 
+(related functions 'make_ecoregion'). 
 It first deletes outliers from the observation dataset and then creates a polygon 
-(convex hull) with a user
-specified buffer around all the observations of one ecoregion. If there is only
-one observation in an ecoregion, a buffer around this point will be created. If
+(convex hull) with a user specified buffer around all the observations of one ecoregion.
+If there is only one observation in an ecoregion, a buffer around this point will be created. If
 all points in an ecoregion are on a line, the function will also create a buffer
 around these points, however, the buffer size increases with the number of points
 in the line. Finally, also note that in case of too many records, get_range can be
@@ -92,39 +90,31 @@ characterise an ecoregion tends to be distinct from that of other ecoregions
 Each ecoregion shapefile has one or more categories, which describe more or less precisely the
 ecoregion world distribution (from the more to the less detailed):
 
-- 'eco.earth' has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
-
-- 'eco.fresh' has only one: 'FEOW_ID'.
-
-- 'eco.marine' contains a mix of two types of marine ecoregions. Either common ('PROVINC' and 'REALM')
-or distinct levels:
-
----> For PPOW (Pelagic provinces of the world): 'BIOME'.
-
----> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
+- eco_terra has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
+- eco_fresh has only one: 'ECOREGION'.
+- eco_marine and eco_hd_marine (very coastal-precise version) contains three distinct levels:
+'ECOREGION', 'PROVINCE' and 'REALM'.
 }
 \examples{
 \dontrun{
 # Load available ecoregions
-data(ecoregions)
+check_and_get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
-# First download the worldwide observations of Panthera tigris and convert to SpatialPoints
-# get occurance points from GBIF
+# First download the worldwide observations of Panthera tigris from GBIF
 occ <- get_gbif("Panthera tigris",
 				  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
-# make range from occurance points
-range <- get_range("Panthera tigris", occ ,eco.earth ,"ECO_NAME") #TODO change eco.earth to eco.land
-## TODO download=TRUE by default, check presence of file.
+
+# Make range from occurance points
+range <- get_range("Panthera tigris", occ ,eco_terra ,"ECO_NAME") #TODO change eco.earth to eco.land
+
 # Plot
 terra::plot(range, axes = FALSE, box = FALSE, legend=FALSE, col="chartreuse4")
-# plot political world boundaries
+
+# Plot political world boundaries
 terra::plot(rnaturalearth::ne_countries(returnclass = "sf")[1], add=T, col=NA)
 graphics::points(occ[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 
-# plot(countries,col="#bcbddc")
-# plot(ne_countries(returnclass = "sf")[4] , col="antiquewhite")
-# TODO FIX THIS
-# points(occ[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 }
 }
 \references{

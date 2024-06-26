@@ -14,8 +14,6 @@ graphics::points(obs.saxi[,c("decimalLongitude","decimalLatitude")],pch=20,col="
 # rbind both datasets
 both.sp <- rbind(obs.arcto,obs.saxi)
 
-
-# # TODO FIX THIS
 # Run function
 obs.filt <- obs_filter(both.sp,rst)
 
