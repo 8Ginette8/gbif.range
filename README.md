@@ -185,7 +185,7 @@ The three results are pretty similar because most of the observations are near t
 
 ``` r
 plot(countries,col="#bcbddc")
-plot(range_dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
+plot(range_dd1,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
 
