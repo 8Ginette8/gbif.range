@@ -175,7 +175,7 @@ Let's now generate three range maps of *Delphinus delphis* using the *eco.marine
 check_and_get_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 eco_marine = read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 
-# Range
+# Range from different levels
 range_dd1 = get_range("Delphinus delphis",obs_dd,eco_marine,"ECOREGION")
 range_dd2 = get_range("Delphinus delphis",obs_dd,eco_marine,"PROVINCE")
 range_dd3 = get_range("Delphinus delphis",obs_dd,eco_marine,"REALM")
@@ -185,7 +185,7 @@ The three results are pretty similar because most of the observations are near t
 
 ``` r
 plot(countries,col="#bcbddc")
-plot(range_dd1,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
+plot(range_dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
 points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
 ```
 
