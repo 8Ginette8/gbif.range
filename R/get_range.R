@@ -137,8 +137,16 @@ get_range <- function (sp_name = NULL,
   ### Object conditions + remove duplicates
   ### =========================================================================
 
-  # bioreg
-   if (names(bioreg)[1]%in%"CLARA") {
+  # Bioreg and convert to sf
+  if (!class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
+     stop("Wrong 'bioreg' class (not a spatial object)...")
+  }
+  if (class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","sf")) {
+    bioreg = terra::vect(bioreg)
+  }
+
+  # Bioreg name
+  if (names(bioreg)[1]%in%"CLARA") {
     bioreg_name = "EcoRegion"
   } 
   if (methods::is(bioreg_name,"NULL")) {
@@ -158,14 +166,6 @@ get_range <- function (sp_name = NULL,
   occ_coord[,w_col] = round(occ_coord[,w_col],4)
   occ_coord = occ_coord[!duplicated(occ_coord[,w_col]),]
   occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="epsg:4326")
-  
-  # Bioreg and convert to sf
-  if (!class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
-     stop("Wrong 'bioreg' class (not a spatial object)...")
-  }
-  if (class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","sf")) {
-    bioreg = terra::vect(bioreg)
-  }
 
   ### =========================================================================
   ### Check if sufficient data
