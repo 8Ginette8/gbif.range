@@ -106,7 +106,7 @@ occ <- get_gbif("Panthera tigris",
 				  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Make range from occurance points
-range <- get_range("Panthera tigris", occ ,eco_terra ,"ECO_NAME") #TODO change eco.earth to eco.land
+range <- get_range("Panthera tigris", occ ,eco_terra ,"ECO_NAME")
 
 # Plot
 terra::plot(range, axes = FALSE, box = FALSE, legend=FALSE, col="chartreuse4")
