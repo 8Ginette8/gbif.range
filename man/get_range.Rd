@@ -8,7 +8,7 @@ get_range(
   sp_name = NULL,
   occ_coord = NULL,
   bioreg = NULL,
-  bioreg_name = "EcoRegion",
+  bioreg_name = NULL,
   degrees_outlier = 3,
   clustered_points_outlier = 2,
   buffer_width_point = 4,
@@ -28,16 +28,16 @@ get_range(
 \item{bioreg}{'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
 ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
 that this parameter may be fed with an external, generated (function make_ecoregion) or
-in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (function get_bioreg
+in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (see functions get_bioreg
 and others): eco_terra' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
 'eco_marine' and 'eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and 'eco_fresh' (for freshwater
 species; Abell & al. 2008). For marine species, 'eco_terra' may also be used if the user wants to represent
 the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be
 done if the user considers that terrestrial ecoregions should be more representative of the species ecology.}
 
-\item{bioreg_name}{Character. How is the shapefile attribute containing the ecoregion names called?
-E.g., very detailed level of 'eco_terra' is 'ECO_NAME'. Note that 'EcoRegion' (default) must always be supplied when
-using a make_ecoregion() output. See details.}
+\item{bioreg_name}{Character. One ecoregion level/category name from the 'bioreg' polygon must be supplied.
+E.g., very detailed level of 'eco_terra' is 'ECO_NAME'. Note that default applies if a make_ecoregion()
+polygon is provided as 'bioreg'.}
 
 \item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier classification.
 If the nearest minimal distance to the next point is larger than this threshold, it will be
