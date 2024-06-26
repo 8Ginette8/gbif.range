@@ -109,17 +109,8 @@ Interestingly no tiger range was found in the US. Our *get_range* default parame
 
 Although whatever shapefile may be set in *get_range()* as input, note that ecoregion shapefiles may be dowload using the package: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
 - *eco_terra* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
-- *eco_fresh* has only one: 'FEOW_ID'.
-- *eco_marine* contains a mix of two types of marine ecoregions, with **common** ('PROVINC' and 'REALM') and distinct levels.
-- *eco_hd_marine* is the high-resolution coastal version.
-  
-> For PPOW (Pelagic provinces of the world): 'BIOME'.
-  
-<img width=60% height=60% src="https://user-images.githubusercontent.com/43674773/203579950-a3a5537b-6815-46a7-873c-c347b48f14f8.png">
- 
-> For MEOW (Marine ecoregions of the world): 'ECOREGION'.
-
-<img width=60% height=60% src="https://user-images.githubusercontent.com/43674773/203580332-1d644e07-6cbc-49dc-8add-15514ea1ad92.png">
+- *eco_fresh* has only one: 'ECOREGION'.
+- *eco_marine* and *eco_hd_marine* (very coastal-precise version) contains three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
 
 Available ecoregion files that can be downloaded with the package:
 ``` r
@@ -181,13 +172,13 @@ Let's now generate three range maps of *Delphinus delphis* using the *eco.marine
 
 ``` r
 # Download ecoregion and read
-get_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
+check_and_get_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 eco_marine = read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 
 # Range
-range_dd1 = get_range("Delphinus delphis",obs_dd,eco_marine,"PROVINC") # Coast and deep sea
-range_dd2 = get_range("Delphinus delphis",obs_dd,eco_marine,"ECOREGION") # Coast only
-range_dd3 = get_range("Delphinus delphis",obs_dd,eco_marine,"BIOME") # Deep sea only
+range_dd1 = get_range("Delphinus delphis",obs_dd,eco_marine,"ECOREGION")
+range_dd2 = get_range("Delphinus delphis",obs_dd,eco_marine,"PROVINCE")
+range_dd3 = get_range("Delphinus delphis",obs_dd,eco_marine,"REALM")
 ```
 
 The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
