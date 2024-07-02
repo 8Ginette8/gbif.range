@@ -76,6 +76,7 @@ get_status=function(sp_name = NULL,
                        Genus = NA,
                        Family = NA,
                        Order = NA,
+                       Class = NA,
                        Phylum = NA,
                        IUCN_status = NA,
                        sp_nameMatch = NA)
@@ -260,9 +261,9 @@ get_status=function(sp_name = NULL,
   }
 
   # Which is null in main.dat for Genus, Family, Order, Phyllum?
-  exist_not = c("genus","family","order","phylum")%in%names(main_dat)
-  main_out = data.frame(Genus=NA,Family=NA,Order=NA,Phylum=NA)
-  main_out[exist_not] = main_dat[,c("genus","family","order","phylum")[exist_not]]
+  exist_not = c("genus","family","order","class","phylum")%in%names(main_dat)
+  main_out = data.frame(Genus=NA,Family=NA,Order=NA,Class=NA,Phylum=NA)
+  main_out[exist_not] = main_dat[,c("genus","family","order","class","phylum")[exist_not]]
 
   # Extract accepted names and synonyms
   e_output = data.frame(canonicalName = c_can,
