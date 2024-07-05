@@ -157,10 +157,13 @@ if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
 }
 \examples{
 # Downloading worldwide the observations of Panthera tigris
-obs.pt <- get_gbif("Panthera tigris",basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
-countries <- terra::vect(rnaturalearth::ne_countries(type = "countries",returnclass = "sf"))
+obs.pt <- get_gbif("Panthera tigris",
+                   basis=c("OBSERVATION",
+                           "HUMAN_OBSERVATION",
+                           "MACHINE_OBSERVATION"))
+countries <- terra::vect(rnaturalearth::ne_countries(type="countries", returnclass = "sf"))
 terra::plot(countries,col="#bcbddc")
-points(obs.pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#238b4550",cex=4)
+points(obs.pt[,c("decimalLongitude","decimalLatitude")], pch=20, col="#238b4550", cex=4)
 
 \dontrun{
 # Downloading worldwide the observations of Ailuropoda melanoleuca (with a 100km grain, after 1990

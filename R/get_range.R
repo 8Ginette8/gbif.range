@@ -14,7 +14,6 @@
 #' used with a sub-sample of species observations to ensure a faster polygon process
 #' and/or to overcome potential RAM crash of the function.
 #' 
-#' @param sp_name Character. Species name e.g., 'Anemone nemorosa'.
 #' @param occ_coord a get_gbif() output or a data.frame containing two columns named
 #' "decimalLongitude" and "decimalLatitude".
 #' @param bioreg  'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
@@ -120,8 +119,7 @@
 #' @importFrom stats kmeans
 #' @importFrom mclust Mclust mclustBIC
 #' @importFrom ClusterR KMeans_rcpp
-get_range <- function (sp_name = NULL, 
-                       occ_coord = NULL, 
+get_range <- function (occ_coord = NULL, 
                        bioreg = NULL, 
                        bioreg_name = NULL, 
                        degrees_outlier = 3,
@@ -159,6 +157,14 @@ get_range <- function (sp_name = NULL,
   } 
   if (!any(names(occ_coord)%in%"decimalLongitude")) {
     stop("Longitute/Latitude columns wrongly defined...")
+  }
+  
+  # get sp_name, and stop if not unique
+  sp_name <- unique(occ_coord$input.search)
+  if (length(sp_name) > 1) {
+    stop("More than one species in the input data.frame... \n
+         gbifRange is meant to be used for one species at a time. \n
+         Only consider multiple species if they are closely related and share the same ecological niche.")
   }
 
   # Remove duplicates

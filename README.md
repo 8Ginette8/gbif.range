@@ -88,8 +88,7 @@ get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # Range
-range_tiger = get_range(sp_name="Panthera tigris",
-                        occ_coord=obs_pt,
+range_tiger = get_range(occ_coord=obs_pt,
                         bioreg=eco_terra,
                         bioreg_name="ECO_NAME")
 ```
@@ -133,8 +132,7 @@ my_eco = make_ecoregion(rst,200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
-range_arcto = get_range(sp_name="Arctostaphylos alpinus",
-                        occ_coord=obs_arcto,
+range_arcto = get_range(occ_coord=obs_arcto,
                         bioreg=my_eco,
                         bioreg_name="EcoRegion",
                         res=20,
@@ -176,9 +174,9 @@ check_and_get_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 eco_marine = read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 
 # Range from different levels
-range_dd1 = get_range("Delphinus delphis",obs_dd,eco_marine,"ECOREGION")
-range_dd2 = get_range("Delphinus delphis",obs_dd,eco_marine,"PROVINCE")
-range_dd3 = get_range("Delphinus delphis",obs_dd,eco_marine,"REALM")
+range_dd1 = get_range(obs_dd,eco_marine,"ECOREGION")
+range_dd2 = get_range(obs_dd,eco_marine,"PROVINCE")
+range_dd3 = get_range(obs_dd,eco_marine,"REALM")
 ```
 
 The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:

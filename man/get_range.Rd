@@ -5,7 +5,6 @@
 \title{Create a species range map based on a get_gbif() output}
 \usage{
 get_range(
-  sp_name = NULL,
   occ_coord = NULL,
   bioreg = NULL,
   bioreg_name = NULL,
@@ -20,8 +19,6 @@ get_range(
 )
 }
 \arguments{
-\item{sp_name}{Character. Species name e.g., 'Anemone nemorosa'.}
-
 \item{occ_coord}{a get_gbif() output or a data.frame containing two columns named
 "decimalLongitude" and "decimalLatitude".}
 
@@ -98,21 +95,25 @@ ecoregion world distribution (from the more to the less detailed):
 \examples{
 \dontrun{
 # Load available ecoregions
-check_and_get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # First download the worldwide observations of Panthera tigris from GBIF
 occ <- get_gbif("Panthera tigris",
-				  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+				  basis=c("OBSERVATION", 
+				          "HUMAN_OBSERVATION", 
+				          "MACHINE_OBSERVATION"))
+
+#TODO Check why the above under default crashes
 
 # Make range from occurance points
-range <- get_range("Panthera tigris", occ ,eco_terra ,"ECO_NAME")
+range <- get_range(occ, eco_terra,"ECO_NAME")
 
 # Plot
 terra::plot(range, axes = FALSE, box = FALSE, legend=FALSE, col="chartreuse4")
 
 # Plot political world boundaries
 terra::plot(rnaturalearth::ne_countries(returnclass = "sf")[1], add=T, col=NA)
+# Plot the occurance points
 graphics::points(occ[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 
 }

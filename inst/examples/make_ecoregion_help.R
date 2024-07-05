@@ -14,7 +14,7 @@ terra::plot(my.eco)
 obs.arcto <- get_gbif("Arctostaphylos alpinus",geo=shp.lonlat)
 
 # Create the range map based on our custom ecoregion
-range.arcto <- get_range("Arctostaphylos alpinus",obs.arcto,my.eco,"EcoRegion",res=20)
+range.arcto <- get_range(obs.arcto, my.eco, "EcoRegion", res=20)
 
 # Plot
 terra::plot(shp.lonlat, col="grey")
