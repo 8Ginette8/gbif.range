@@ -25,7 +25,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   - *get_range()*: estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and
   <a href="https://en.wikipedia.org/wiki/Ecoregion">ecoregion</a> polygons.
 
-  - *get_bioreg()*: download ecoregion files from different available URL sources. See also associated functions *bioreg_list*, *read_bioreg()* and *check_and_get_bioreg()*.
+  - *read_bioreg()*: download and read available ecoregion files from different available URL sources. See also associated calls *bioreg_list*, *get_bioreg()* and *check_and_get_bioreg()*.
     
   - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
@@ -84,7 +84,6 @@ Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) a
 
 ``` r
 # Download ecoregion and read
-get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # Range
@@ -170,7 +169,6 @@ Let's now generate three range maps of *Delphinus delphis* using the *eco.marine
 
 ``` r
 # Download ecoregion and read
-check_and_get_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 eco_marine = read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 
 # Range from different levels
