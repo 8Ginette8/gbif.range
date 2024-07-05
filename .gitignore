@@ -14,3 +14,4 @@ inst/extdata/downloads/*
 !inst/extdata/downloads/
 .Rproj.user/shared/notebooks/paths
 /.Rproj.user
+/.Rproj.user

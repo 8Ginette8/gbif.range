@@ -1,6 +1,5 @@
 \dontrun{
 # Load available ecoregions
-check_and_get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # First download the worldwide observations of Panthera tigris from GBIF
