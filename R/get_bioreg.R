@@ -100,7 +100,7 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
     
     # Download the file
     tryCatch({
-      download.file(url, destfile, mode = "wb")
+      utils::download.file(url, destfile, mode = "wb")
       message(paste("Downloaded:", data$filename))
       if (!is.null(data$description)) {
         message(paste("Description:", data$description))
@@ -110,7 +110,7 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
     })
     
     # Unzip to folder named after filename
-    unzip(destfile, exdir = file.path(save_dir, data$filename))
+    zip::unzip(destfile, exdir = file.path(save_dir, data$filename))
     # Remove the zip file
     file.remove(destfile)
     message(paste("Unzipped:", data$filename, "\n saved to:", file.path(save_dir, data$filename), 
