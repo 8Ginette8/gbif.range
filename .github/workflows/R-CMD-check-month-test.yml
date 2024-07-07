@@ -36,15 +36,15 @@ jobs:
     - name: Cache R packages
       uses: actions/cache@v4
       with:
-        path: ~/.R/library
-        key: ${{ runner.os }}-${{ env.CACHE_KEY }}-${{ hashFiles('**/DESCRIPTION') }}
+        path: ~/.cache/R
+        key: ${{ env.CACHE_KEY }}
         restore-keys: |
           ${{ runner.os }}-renv-
 
     - name: Install R packages
       run: |
         Rscript -e '
-          packages <- c("devtools", "remotes", "terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods")
+          packages <- c("devtools", "remotes", "terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods", "download.file", "unzip")
           installed <- rownames(installed.packages())
           missing <- setdiff(packages, installed)
           if (length(missing) > 0) {
