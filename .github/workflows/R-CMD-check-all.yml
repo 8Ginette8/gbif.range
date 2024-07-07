@@ -42,7 +42,7 @@ jobs:
       run: |
         R -e 'install.packages("devtools")'
         R -e 'install.packages("remotes")'
-        R -e 'remotes::install_cran(c("terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods"))'
+        R -e 'remotes::install_cran(c("terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods", download.file', 'unzip'))'
 
     - name: Check package
       run: |
