@@ -4,7 +4,7 @@
 
 Status of the automatic CI R-CMD-check test
 
-[![R-CMD-check-all-ubuntu](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml/badge.svg?branch=main&event=push)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-all.yml)
+[![R-CMD-check-test](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml/badge.svg?branch=main&event=push)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml)
 
 
 Although species ranges may be obtained using expert maps (e.g., <a href="https://www.iucnredlist.org/resources/spatial-data-download">IUCN</a> and <a href="https://www.euforgen.org/species/">EUFORGEN</a>) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise, as well as many species observations.
