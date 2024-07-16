@@ -8,7 +8,7 @@
 #'   \item{link}{The URL to download the file.}
 #'   \item{description}{A short description of the file.}
 #' }
-#' @example
+#' @examples
 #' \dontrun{
 #' bioreg_list
 #' }

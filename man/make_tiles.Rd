@@ -26,7 +26,12 @@ converted into a POLYGON() argument, or divided into Ntiles of regular fragments
 converted into POLYGON() arguments and smaller SpatExtent.
 }
 \examples{
-inst/examples/make_tiles_help.R
+# Load the European Alps Extent
+shp.path <- paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
+shp.lonlat <- terra::vect(shp.path)
+ 
+# Apply the function to divide the extent in ~20 fragments
+mt = make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE)
 }
 \references{
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
