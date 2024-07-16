@@ -45,8 +45,7 @@
 #' information facility API. 10.5281/zenodo.6023735
 #' @seealso The rgbif package for additional and more general approaches on how to retrieve
 #' scientific names from the GBIF backbone taxonomy.
-#' @examples inst/examples/get_status_help.R
-#' 
+#' @example inst/examples/get_status_help.R
 #' @export
 #' @importFrom rgbif name_backbone name_usage
 #' @importFrom methods is
