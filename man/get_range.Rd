@@ -25,8 +25,8 @@ get_range(
 \item{bioreg}{'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
 ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
 that this parameter may be fed with an external, generated (function make_ecoregion) or
-in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (see functions get_bioreg
-and others): eco_terra' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
+in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (see functions read_bioreg()
+and others): 'eco_terra' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
 'eco_marine' and 'eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and 'eco_fresh' (for freshwater
 species; Abell & al. 2008). For marine species, 'eco_terra' may also be used if the user wants to represent
 the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be

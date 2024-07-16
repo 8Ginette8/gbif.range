@@ -66,8 +66,7 @@ download the data in get_gbif(). Children and related doubtful names not used to
 the data may also be extracted.
 }
 \examples{
-get_status("Cypripedium calceolus",all=FALSE)
-get_status("Cypripedium calceolus",all=TRUE)
+inst/examples/get_status_help.R
 
 }
 \references{

@@ -45,9 +45,7 @@
 #' information facility API. 10.5281/zenodo.6023735
 #' @seealso The rgbif package for additional and more general approaches on how to retrieve
 #' scientific names from the GBIF backbone taxonomy.
-#' @examples
-#' get_status("Cypripedium calceolus",all=FALSE)
-#' get_status("Cypripedium calceolus",all=TRUE)
+#' @examples inst/examples/get_status_help.R
 #' 
 #' @export
 #' @importFrom rgbif name_backbone name_usage

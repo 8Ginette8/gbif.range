@@ -19,14 +19,7 @@
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
 #' N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
 #' European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
-#' @examples
-#' 
-#' # Load the European Alps Extent
-#' shp.path <- paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
-#' shp.lonlat <- terra::vect(shp.path)
-#' 
-#' # Apply the function to divide the extent in ~20 fragments
-#' mt = make_tiles(geo=shp.lonlat,Ntiles=20,sext=TRUE); mt
+#' @examples inst/examples/make_tiles_help.R
 #' @importFrom terra ext
 #' @export
 #' 
