@@ -2,22 +2,25 @@
 ### Function: evaluate the sensitivity & precision of range maps
 ### =========================================================================
 #' Evaluates the sensitivity & precision of range maps based on validation
-#' data, such as predictions of species distributions(SDMs) or IUCN expert
+#' data, such as predictions of species distributions (SDMs) or IUCN expert
 #' range maps.
-#' @param root.dir root directory to files (type character)
-#' @param valData.dir buffer width parameter (type numeric)
-#' @param ecoRM.dir  number of observation points (type numeric)
-#' @param valData.type type of valData - either "SHP" or "TIFF" (type character)
-#' @param verbose optional - report details while running (type logical)
-#' @param print.map optional - if verbose=TRUE should a overlap map be printed (type logical)
-#' @param res.fact optional - factor for coarsening the original resolution (type integer)
+#' @param root.dir Character. Root directory to files
+#' @param valData.dir Numeric. Buffer width parameter
+#' @param ecoRM.dir  Numeric. Number of observation points
+#' @param valData.type Character. Type of valData - either "SHP" or "TIFF"
+#' @param verbose Logical. Optional - report details while running
+#' @param print.map Logical. Optional - if verbose=TRUE should a overlap map be printed
+#' @param mask ?
+#' @param res.fact Integer. Factor for coarsening the original resolution
 #' @references
 #' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
 #' ecoregional range maps for boosting taxonomic coverage in ecology and 
 #' conservation. Ecography, 12, e06794.
+#' @export
 #' @importFrom terra rast ext crs project aggregate rasterize crop extend resample values classify ncol nrow plot
 #' @importFrom sf st_read st_as_sf st_union st_drop_geometry st_transform
-
+#' @importFrom grDevices dev.off pdf
+#' @importFrom graphics legend par
 evaluateRM <- function(root.dir = NULL,
                        valData.dir = NULL,
                        ecoRM.dir = NULL,

@@ -12,6 +12,7 @@ RoxygenNote: 7.3.1
 Authors@R: c(
     person("Yohann", "Chauvier", role = c("cre","aut"), email = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
     person("Oskar", "Hagen", role = c("aut"), email = "oskar@hagen.bio", comment = "0000-0002-7931-6571"),
+    person("Stefan", "Pinkert", role = c("aut"), comment = "0000-0002-8348-2337"),
     person("Camille", "Albouy", role = "aut", comment = "0000-0003-1629-2389"),
     person("Patrice", "Descombes", role = "aut", comment = "0000-0002-3760-9907"),
     person("Fabian", "Fopp", role = "aut", comment = "0000-0003-0648-8484"),
@@ -30,3 +31,4 @@ Collate:
     'conv_function.R'
     'make_ecoregion.R'
     'get_bioreg.R'
+    'evaluateRM.R'
