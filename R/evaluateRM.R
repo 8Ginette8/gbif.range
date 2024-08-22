@@ -15,6 +15,8 @@
 #' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
 #' ecoregional range maps for boosting taxonomic coverage in ecology and 
 #' conservation. Ecography, 12, e06794.
+#' @importFrom terra rast ext crs project aggregate rasterize crop extend resample values classify ncol nrow plot
+#' @importFrom sf st_read st_as_sf st_union st_drop_geometry st_transform
 
 evaluateRM <- function(root.dir = NULL,
                        valData.dir = NULL,
@@ -44,7 +46,6 @@ evaluateRM <- function(root.dir = NULL,
   if (length(shp_names) != 0) {
     shp_files <- do.call(rbind, lapply(shp_names, sf::st_read))
     if (any(duplicated(shp_files$sci_name))) {
-      # Replace the dplyr grouping and summarization with base R
       unique_sci_names <- unique(shp_files$sci_name)
       grouped_geometries <- lapply(unique_sci_names, function(name) {
         geoms <- shp_files[sf::st_drop_geometry(shp_files)$sci_name == name, ]
