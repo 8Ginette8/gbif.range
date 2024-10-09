@@ -44,6 +44,8 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
   - *make_ecoregion()*: A function to create custom ecoregions based on environmental layers.
 
+  - *evaluateRM()*: polygon evaluation pipeline, currently under development.
+
 ## Installation
 
 You can install the development version from GitHub with:
