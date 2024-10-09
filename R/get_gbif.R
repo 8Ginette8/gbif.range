@@ -436,7 +436,7 @@ get_gbif = function(sp_name = NULL,
 	batch_search =
 	lapply(1:length(geo_ref),function(x) {
 
-		cat(round(x*100/length(geo_ref),2),"%...")
+		cat("\r",round(x*100/length(geo_ref),2),"%...")
 
 		## Try the download first: may be request overload problems
 		go_tile = geo_ref[x]
