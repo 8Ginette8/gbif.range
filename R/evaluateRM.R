@@ -3,7 +3,11 @@
 ### =========================================================================
 #' Evaluates the sensitivity & precision of range maps based on validation
 #' data, such as predictions of species distributions (SDMs) or IUCN expert
-#' range maps.
+#' range maps. See Pinkert et al. (2023) for metrics and comparisions of 
+#' various types of range data, including expert range maps, SDMs and ecoregional
+#' range maps. Optional functionalities include the masking of the focal study 
+#' region (see 'mask') and aggregations of the input maps to different resolutions,
+#' given the importance of these factors for specific applications (Pinkert et al., 2023).
 #' @param root.dir Character. Root directory to files
 #' @param valData.dir Numeric. Buffer width parameter
 #' @param ecoRM.dir  Numeric. Number of observation points
@@ -21,6 +25,8 @@
 #' @importFrom sf st_read st_as_sf st_union st_drop_geometry st_transform
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics legend par
+#' @example inst/examples/evaluateRM_help.R
+
 evaluateRM <- function(root.dir = NULL,
                        valData.dir = NULL,
                        ecoRM.dir = NULL,
