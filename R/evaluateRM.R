@@ -66,6 +66,7 @@ evaluateRM <- function(root.dir = NULL,
       recursive = TRUE
     )
     f.list_valRM <- sub("\\.tif$", "", basename(f.list_valRM_full))
+    valData.type = "TIFF"
   }
   
   # Check and report match of file names
@@ -124,7 +125,7 @@ evaluateRM <- function(root.dir = NULL,
     ecoRM <- terra::rast(f_list_eco_full[grep(f.list_matches[i], f_list_eco_full)])
     
     # Load validation data
-    if (valData.type == "TIF") {
+    if (valData.type == "TIFF") {
       valRM <- terra::rast(f.list_valRM_full[grep(f.list_matches[i], f.list_valRM_full)])
       suppressWarnings({
         if (is.na(any(all.equal(terra::crs(ecoRM), terra::crs(valRM))))) {valRM <- terra::project(valRM, ecoRM)}
