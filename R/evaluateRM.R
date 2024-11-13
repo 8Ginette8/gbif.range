@@ -181,7 +181,7 @@ evaluateRM <- function(root.dir = NULL,
     
     # Reclassify validation raster
     if (all(range(terra::values(valRM), na.rm = TRUE) == c(0, 1))) {
-      valRM_pres <- terra::classify(valRM, cbind(c(0, 0.5, 0.5, 1), c(0, 0, 1, 1)))
+      valRM_pres <- terra::classify(valRM, rbind(c(0, 0.5, 0), c(0.5, 1, 1)), include.lowest = TRUE)
     } else {
       valRM_pres <- valRM
       valRM_pres[!is.na(domain_raster[])] <- 0
