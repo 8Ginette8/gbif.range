@@ -44,7 +44,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
   - *make_ecoregion()*: A function to create custom ecoregions based on environmental layers.
 
-  - *evaluateRM()*: evaluation function to validate the species ranges with data provided by the users. Cross-validation process under development.
+  - *evaluateRM()*: evaluation function to validate the species ranges with distribution information provided by the user. Cross-validation process under development.
 
 ## Installation
 
