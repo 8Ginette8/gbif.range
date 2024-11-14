@@ -28,8 +28,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   - *read_bioreg()*: download and read available ecoregion files from different available URL sources. See also associated calls *bioreg_list*, *get_bioreg()* and *check_and_get_bioreg()*.
     
   - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
-  (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
-  doubtful names not used to download the data may also be extracted.
+  (accepted, synonyms) found in the GBIF backbone taxonomy. Children and related doubtful names not used to download the data may also be extracted.
 
   - *obs_filter()*: *obs_filter()* accepts as input a *get_gbif()* output (one or several species) and filter the observations according
   to a specific given grid resolution (one observation per pixel grid kept). This function allows the user to refine the density of GBIF
