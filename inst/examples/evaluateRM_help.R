@@ -47,27 +47,30 @@ legend("bottomright",
 
 ## Compare sensitivity and precision outputs ##
 # Calculate overall performance (e.g. mean sensitivity & precision)
-res1km$df_eval$Mean_SenPrec <- (res1km$df_eval$Sen_ecoRM+res1km$df_eval$Prec_ecoRM)/2 
-res10km$df_eval$Mean_SenPrec <- (res10km$df_eval$Sen_ecoRM+res10km$df_eval$Prec_ecoRM)/2 
+res1km$df_eval$Mean_SenPrec <- (res1km$df_eval$Sen_ecoRM + res1km$df_eval$Prec_ecoRM) / 2
+res10km$df_eval$Mean_SenPrec <- (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Prec_ecoRM) / 2
 
-# Combine the data frames and add a resolution column
-combined_df <- bind_rows(
-  res1km$df_eval %>% mutate(Resolution = "1km"),
-  res10km$df_eval %>% mutate(Resolution = "10km")
-
+# Combine the data frames and add a Resolution column
+combined_df <- rbind(
+  cbind(res1km$df_eval, Resolution = "1km"),
+  cbind(res10km$df_eval, Resolution = "10km")
 )
 
-# Gather data into long format
-long_df <- combined_df %>%
-  select(Sen_ecoRM, Prec_ecoRM, Mean_SenPrec, Resolution) %>%
-  pivot_longer(cols = c(Sen_ecoRM, Prec_ecoRM, Mean_SenPrec), 
-               names_to = "Variable", values_to = "Value")
+# Convert to long format
+variables <- c("Sen_ecoRM", "Prec_ecoRM", "Mean_SenPrec")
+long_df <- data.frame(
+  Variable = rep(variables, each = nrow(combined_df)),
+  Value = unlist(combined_df[variables]),
+  Resolution = rep(combined_df$Resolution, times = length(variables))
+)
 
-## Plot results for different range data resolutions ##
-# Sensitivity increases and precision decreases with increasing resolution
-# Overall performance is slightly higher at more coarse grain
-ggplot(long_df, aes(x = Variable, y = Value, fill = Resolution)) +
-  geom_boxplot() +
-  labs(x = "Variable", y = "Value", title = "Boxplot of Sen_ecoRM and Prec_ecoRM") +
-  scale_fill_manual(values = c("10km" = "#619CFF", "1km" = "#FFC300")) +
-  theme_minimal()
+# Plot boxplots using base R
+boxplot(Value ~ Variable + Resolution, data = long_df, 
+        col = c("#FFC300", "#619CFF"), 
+        names = rep(variables, 2),
+        xlab = "Variable", ylab = "Value", las = 1, 
+        main = "Boxplot of Sen_ecoRM and Prec_ecoRM")
+
+# Adding legend for colors
+legend("bottomright", legend = c("1km", "10km"), fill = c("#FFC300", "#619CFF"),
+       title = "Resolution", bty = "n")
