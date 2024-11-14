@@ -1,3 +1,4 @@
+\dontrun{
 # EcoRM evaluation at different resolutions (>4min runtime)
 root.dir  <- list.files(system.file(package = "gbif.range"), pattern = "extdata", full.names = TRUE)
 
@@ -74,3 +75,4 @@ boxplot(Value ~ Variable + Resolution, data = long_df,
 # Adding legend for colors
 legend("bottomright", legend = c("1km", "10km"), fill = c("#FFC300", "#619CFF"),
        title = "Resolution", bty = "n")
+}

@@ -42,6 +42,7 @@ region (see 'mask') and aggregations of the input maps to different resolutions,
 given the importance of these factors for specific applications (Pinkert et al., 2023).
 }
 \examples{
+\dontrun{
 # EcoRM evaluation at different resolutions (>4min runtime)
 root.dir  <- list.files(system.file(package = "gbif.range"), pattern = "extdata", full.names = TRUE)
 
@@ -118,6 +119,7 @@ boxplot(Value ~ Variable + Resolution, data = long_df,
 # Adding legend for colors
 legend("bottomright", legend = c("1km", "10km"), fill = c("#FFC300", "#619CFF"),
        title = "Resolution", bty = "n")
+}
 }
 \references{
 Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
