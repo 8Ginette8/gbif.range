@@ -2,8 +2,7 @@
 % Please edit documentation in R/conv_function.R
 \name{conv_function}
 \alias{conv_function}
-\title{Create polygon objects in different bioregions.
-Not to be called directly by the user.}
+\title{Create polygon objects in different bioregions.}
 \usage{
 conv_function(sp_coord, bwp, bipl, bwpo, temp_dir, g = NULL)
 }
@@ -21,7 +20,6 @@ conv_function(sp_coord, bwp, bipl, bwpo, temp_dir, g = NULL)
 \item{g}{optional parameter}
 }
 \description{
-Create polygon objects in different bioregions.
 Not to be called directly by the user.
 }
 \keyword{internal}

@@ -1,6 +1,6 @@
-##################################################
-## get_range
-##################################################
+### ==================================================================
+### get_range
+### ==================================================================
 #' Create a species range map based on a get_gbif() output
 #' 
 #' Estimates species ranges based on occurrence data (GBIF or not) and ecoregions

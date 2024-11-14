@@ -1,7 +1,8 @@
-### =========================================================================
-### Meta function: create polygon objects in different bioregions
-### =========================================================================
+### ==================================================================
+### conv_function (meta)
+### ==================================================================
 #' Create polygon objects in different bioregions.
+#' 
 #' Not to be called directly by the user.
 #' @param sp_coord spatial coordinates (type "matrix" or "data.frame)
 #' @param bwp buffer width parameter (type numeric)

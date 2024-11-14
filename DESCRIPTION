@@ -31,4 +31,4 @@ Collate:
     'conv_function.R'
     'make_ecoregion.R'
     'get_bioreg.R'
-    'evaluateRM.R'
+    'evaluate_range.R'
