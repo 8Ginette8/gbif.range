@@ -27,21 +27,21 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
   - *read_bioreg()*: download and read available ecoregion files from different available URL sources. See also associated calls *bioreg_list*, *get_bioreg()* and *check_and_get_bioreg()*.
     
-  - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
+  - *get_status()*: generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy. Children and related doubtful names not used to download the data may also be extracted.
 
   - *obs_filter()*: *obs_filter()* accepts as input a *get_gbif()* output (one or several species) and filter the observations according
   to a specific given grid resolution (one observation per pixel grid kept). This function allows the user to refine the density of GBIF
   observations according to a defined analysis/study's resolution.
 
-  - *make_tiles()*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
+  - *make_tiles()*: may be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
   geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
   *geometry* that uses a POLYGON() argument.
 
-  - *get_doi()*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
+  - *get_doi()*: a small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
   for a set of several gbif species datasets.
 
-  - *make_ecoregion()*: A function to create custom ecoregions based on environmental layers.
+  - *make_ecoregion()*: a function to create custom ecoregions based on environmental layers.
 
   - *evaluate_range()*: evaluation function to validate the species ranges with distribution information provided by the user. Cross-validation process under development.
 
