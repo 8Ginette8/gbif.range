@@ -44,7 +44,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
   - *make_ecoregion()*: A function to create custom ecoregions based on environmental layers.
 
-  - *evaluateRM()*: polygon evaluation pipeline, currently under development.
+  - *evaluateRM()*: evaluation function to validate the species ranges with data provided by the users. Cross-validation process under development.
 
 ## Installation
 
@@ -65,12 +65,12 @@ Let's download worldwide the records of *Panthera tigris* only based on true obs
 
 ``` r
 # Download
-obs_pt = get_gbif(sp_name="Panthera tigris",
-                  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+obs_pt = get_gbif(sp_name = "Panthera tigris",
+                  basis = c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
 countries = vect(ne_countries(type = "countries",returnclass = "sf"))
-plot(countries,col="#bcbddc")
+plot(countries,col = "#bcbddc")
 points(obs_pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
@@ -89,16 +89,16 @@ Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) a
 eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # Range
-range_tiger = get_range(occ_coord=obs_pt,
-                        bioreg=eco_terra,
-                        bioreg_name="ECO_NAME")
+range_tiger = get_range(occ_coord = obs_pt,
+                        bioreg = eco_terra,
+                        bioreg_name = "ECO_NAME")
 ```
 
 Let's plot the result now:
 
 ``` r
-plot(countries,col="#bcbddc")
-plot(range_tiger,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
+plot(countries,col = "#bcbddc")
+plot(range_tiger,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
@@ -133,10 +133,10 @@ my_eco = make_ecoregion(rst,200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
-range_arcto = get_range(occ_coord=obs_arcto,
-                        bioreg=my_eco,
-                        bioreg_name="EcoRegion",
-                        res=20,
+range_arcto = get_range(occ_coord = obs_arcto,
+                        bioreg = my_eco,
+                        bioreg_name = "EcoRegion",
+                        res = 20,
                         degrees_outlier = 5,
                         clustered_points_outlier = 2,
                         buffer_width_point = 4, 
@@ -149,9 +149,9 @@ Here we adapted the extra-parameters to the extent of the study area, e.g., (i) 
 ``` r
 # Plot
 plot(rst[[1]])
-plot(shp_lonlat,add=TRUE)
-plot(range_arcto,add=TRUE,col="darkgreen",axes=FALSE,legend=FALSE)
-points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+plot(shp_lonlat,add = TRUE)
+plot(range_arcto,add = TRUE,col = "darkgreen",axes = FALSE,legend = FALSE)
+points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex=1)
 ```
 
 <img width=60% height=60% src="https://github.com/8Ginette8/gbif.range/assets/43674773/f2043983-0b1f-48aa-83bb-b36fcf3f6432">
@@ -163,8 +163,8 @@ Let's reapply the same process as for Panthera tigris, but with the marine speci
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
 
 ``` r
-obs_dd = get_gbif("Delphinus delphis",occ_samp=1000) # Here the example is a sample of 1000 observations per geographic tile
-get_status("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+obs_dd = get_gbif("Delphinus delphis",occ_samp = 1000) # Here the example is a sample of 1000 observations per geographic tile
+get_status("Delphinus delphis",all = TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
 Let's now generate three range maps of *Delphinus delphis* using the *eco.marine* as ecoregion shapefile:
@@ -183,8 +183,8 @@ The three results are pretty similar because most of the observations are near t
 
 ``` r
 plot(countries,col="#bcbddc")
-plot(range_dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
-points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+plot(range_dd3,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
+points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex = 1)
 ```
 
 <img width=80% height=80% src="https://github.com/8Ginette8/gbif.range/assets/43674773/a84c5dcf-f2c7-4722-b2ed-d13502d45eb1">
