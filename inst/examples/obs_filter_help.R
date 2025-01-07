@@ -8,8 +8,10 @@ rst <- terra::rast(rst.path)
 obs.arcto <- get_gbif("Arctostaphylos alpinus", geo = shp.lonlat)
 obs.saxi <- get_gbif("Saxifraga cernua", geo = shp.lonlat)
 terra::plot(shp.lonlat)
-graphics::points(obs.arcto[,c("decimalLongitude","decimalLatitude")], pch = 20, col = "#238b4550", cex = 1)
-graphics::points(obs.saxi[,c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99000d50", cex = 1)
+graphics::points(obs.arcto[,c("decimalLongitude","decimalLatitude")],
+	pch = 20, col = "#238b4550", cex = 1)
+graphics::points(obs.saxi[,c("decimalLongitude","decimalLatitude")],
+	pch = 20, col = "#99000d50", cex = 1)
 
 # rbind both datasets
 both.sp <- rbind(obs.arcto,obs.saxi)
@@ -22,6 +24,5 @@ terra::plot(shp.lonlat)
 
 graphics::points(obs.filt[obs.filt$Species%in%"Arctostaphylos alpinus",c("x","y")],
 	pch = 20, col = "#238b4550", cex = 1)
-
 graphics::points(obs.filt[obs.filt$Species%in%"Saxifraga cernua",c("x","y")],
 	pch = 20, col = "#99000d50", cex = 1)

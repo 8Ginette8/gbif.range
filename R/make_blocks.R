@@ -33,6 +33,7 @@
 #' @importFrom cluster clara
 #' @importFrom class knn
 #' @importFrom NMOF gridSearch
+#' @importFrom stats quantile
 make_blocks<-function(nfolds = 4,
                       df = data.frame(),
                       nblocks = nfolds*5,
@@ -66,7 +67,7 @@ make_blocks<-function(nfolds = 4,
     if (ncol(df)==1){
 
       ### do quantile-based clustering if df contains only one column
-      rngi = quantile(df[,1],probs=0:(nblocks)/(nblocks))
+      rngi = stats::quantile(df[,1],probs=0:(nblocks)/(nblocks))
       rngi[1] = rngi[1]-1
       rngi[length(rngi)] = rngi[length(rngi)]+1
       clist = as.numeric(cut(df[,1],breaks=rngi,right=TRUE))

@@ -13,7 +13,8 @@ points(obs.pt[,c("decimalLongitude","decimalLatitude")], pch = 20, col = "#238b4
 obs.am <- get_gbif("Ailuropoda melanoleuca", grain = 100000 , duplicates = TRUE,
    time_period = c(1990,3000), add_infos = c("recordedBy","issue"))
 terra::plot(countries, col = "#bcbddc")
-graphics::points(obs.am[,c("decimalLongitude","decimalLatitude")], pch = 20, col = "#238b4550", cex = 4)
+graphics::points(obs.am[,c("decimalLongitude","decimalLatitude")],
+   pch = 20, col = "#238b4550", cex = 4)
 
 # Downloading worlwide the observations of Phascolarctos cinereus (with a 1km grain, after 1980,
 # and keeping raster centroids)

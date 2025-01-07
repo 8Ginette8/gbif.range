@@ -6,9 +6,19 @@
 \usage{
 optme(x, nms, grps, tot)
 }
+\arguments{
+\item{x}{Input 1}
+
+\item{nms}{Input 2}
+
+\item{grps}{Input 3}
+
+\item{tot}{Input 4}
+}
 \description{
 Not to be called directly by the user.
 }
 \author{
 Philipp Brun
 }
+\keyword{internal}
