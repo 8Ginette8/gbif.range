@@ -2,7 +2,7 @@ Package: gbif.range
 Version: 1.0
 Title: A toolbox to generate species range maps based on ecoregions and a user-friendly GBIF wrapper
 Depends: R (>= 4.0.0)
-Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry, cluster, rnaturalearth, mclust, methods, utils, zip
+Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry, cluster, rnaturalearth, mclust, methods, utils, zip, class, NMOF
 Description: This package provides a workflow to generate species range maps from scratch based on ecoregions and a user-friendly GBIF wrapper. It includes functions to create taxa range maps using ecoregions and to interact with the Global Biodiversity Information Facility (GBIF) database (retrieving species records, backbone taxonomy and IUCN conservation status). The package facilitates the process of accessing GBIF data and integrating it with ecoregion information for species distribution analysis.
 License: GPL (>= 3) | file LICENCE
 BugReports: https://github.com/8Ginette8/gbif.range/issues
@@ -32,3 +32,4 @@ Collate:
     'make_ecoregion.R'
     'get_bioreg.R'
     'evaluate_range.R'
+    'make_blocks.R'
