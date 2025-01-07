@@ -33,3 +33,4 @@ Collate:
     'get_bioreg.R'
     'evaluate_range.R'
     'make_blocks.R'
+    'optme.R'
