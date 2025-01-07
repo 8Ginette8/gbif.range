@@ -27,24 +27,23 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
   - *read_bioreg()*: download and read available ecoregion files from different available URL sources. See also associated calls *bioreg_list*, *get_bioreg()* and *check_and_get_bioreg()*.
     
-  - *get_status()*: Generates, based on a given species name, its IUCN red list status and a list of all scientific names
-  (accepted, synonyms) found in the GBIF backbone taxonomy to download the data. Children and related
-  doubtful names not used to download the data may also be extracted.
+  - *get_status()*: generates, based on a given species name, its IUCN red list status and a list of all scientific names
+  (accepted, synonyms) found in the GBIF backbone taxonomy. Children and related doubtful names not used to download the data may also be extracted.
 
   - *obs_filter()*: *obs_filter()* accepts as input a *get_gbif()* output (one or several species) and filter the observations according
   to a specific given grid resolution (one observation per pixel grid kept). This function allows the user to refine the density of GBIF
   observations according to a defined analysis/study's resolution.
 
-  - *make_tiles()*: May be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
+  - *make_tiles()*: may be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
   geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
   *geometry* that uses a POLYGON() argument.
 
-  - *get_doi()*: A small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
+  - *get_doi()*: a small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
   for a set of several gbif species datasets.
 
-  - *make_ecoregion()*: A function to create custom ecoregions based on environmental layers.
+  - *make_ecoregion()*: a function to create custom ecoregions based on environmental layers.
 
-  - *evaluateRM()*: polygon evaluation pipeline, currently under development.
+  - *evaluate_range()*: evaluation function to validate the species ranges with distribution information provided by the user. Cross-validation process under development.
 
 ## Installation
 
@@ -65,12 +64,12 @@ Let's download worldwide the records of *Panthera tigris* only based on true obs
 
 ``` r
 # Download
-obs_pt = get_gbif(sp_name="Panthera tigris",
-                  basis=c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
+obs_pt = get_gbif(sp_name = "Panthera tigris",
+                  basis = c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
 countries = vect(ne_countries(type = "countries",returnclass = "sf"))
-plot(countries,col="#bcbddc")
+plot(countries,col = "#bcbddc")
 points(obs_pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
@@ -89,16 +88,16 @@ Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) a
 eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # Range
-range_tiger = get_range(occ_coord=obs_pt,
-                        bioreg=eco_terra,
-                        bioreg_name="ECO_NAME")
+range_tiger = get_range(occ_coord = obs_pt,
+                        bioreg = eco_terra,
+                        bioreg_name = "ECO_NAME")
 ```
 
 Let's plot the result now:
 
 ``` r
-plot(countries,col="#bcbddc")
-plot(range_tiger,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
+plot(countries,col = "#bcbddc")
+plot(range_tiger,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
@@ -133,10 +132,10 @@ my_eco = make_ecoregion(rst,200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
-range_arcto = get_range(occ_coord=obs_arcto,
-                        bioreg=my_eco,
-                        bioreg_name="EcoRegion",
-                        res=20,
+range_arcto = get_range(occ_coord = obs_arcto,
+                        bioreg = my_eco,
+                        bioreg_name = "EcoRegion",
+                        res = 20,
                         degrees_outlier = 5,
                         clustered_points_outlier = 2,
                         buffer_width_point = 4, 
@@ -149,9 +148,9 @@ Here we adapted the extra-parameters to the extent of the study area, e.g., (i) 
 ``` r
 # Plot
 plot(rst[[1]])
-plot(shp_lonlat,add=TRUE)
-plot(range_arcto,add=TRUE,col="darkgreen",axes=FALSE,legend=FALSE)
-points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+plot(shp_lonlat,add = TRUE)
+plot(range_arcto,add = TRUE,col = "darkgreen",axes = FALSE,legend = FALSE)
+points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex=1)
 ```
 
 <img width=60% height=60% src="https://github.com/8Ginette8/gbif.range/assets/43674773/f2043983-0b1f-48aa-83bb-b36fcf3f6432">
@@ -163,8 +162,8 @@ Let's reapply the same process as for Panthera tigris, but with the marine speci
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
 
 ``` r
-obs_dd = get_gbif("Delphinus delphis",occ_samp=1000) # Here the example is a sample of 1000 observations per geographic tile
-get_status("Delphinus delphis",all=TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+obs_dd = get_gbif("Delphinus delphis",occ_samp = 1000) # Here the example is a sample of 1000 observations per geographic tile
+get_status("Delphinus delphis",all = TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
 Let's now generate three range maps of *Delphinus delphis* using the *eco.marine* as ecoregion shapefile:
@@ -183,8 +182,8 @@ The three results are pretty similar because most of the observations are near t
 
 ``` r
 plot(countries,col="#bcbddc")
-plot(range_dd3,col="#238b45",add=TRUE,axes=FALSE,legend=FALSE)
-points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1)
+plot(range_dd3,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
+points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex = 1)
 ```
 
 <img width=80% height=80% src="https://github.com/8Ginette8/gbif.range/assets/43674773/a84c5dcf-f2c7-4722-b2ed-d13502d45eb1">
@@ -202,7 +201,9 @@ Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Rensk
 
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the European Alps. Ecological monographs, 91(2), e01433. doi: <a href="https://doi.org/10.1002/ecm.1433">10.1002/ecm.1433</a>
 
-Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... & Pellissier, L. (2022). An integrated high‐resolution mapping shows congruent biodiversity patterns of Fagales and Pinales. New Phytologist, 235(2), doi: <a href="https://doi.org/10.1111/nph.18158">10.1111/nph.18158</a>
+Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... & Pellissier, L. (2022). An integrated high‐resolution mapping shows congruent biodiversity patterns of Fagales and Pinales. New Phytologist, 235(2). doi: <a href="https://doi.org/10.1111/nph.18158">10.1111/nph.18158</a>
+
+Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of ecoregional range maps for boosting taxonomic coverage in ecology and conservation. Ecography, 12, e06794. doi: <a href="https://doi.org/10.1111/ecog.06794">10.1111/ecog.06794</a>
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. doi: <a href="https://doi.org/10.5281/zenodo.6023735">10.5281/zenodo.6023735</a>
 

@@ -16,7 +16,7 @@
 #' relevant name from the list (higher taxa level than species allowed here). Also, unlike search=TRUE,
 #' fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class', order'
 #' and 'family' parameters are optionally used only if no convincing name match is found. FALSE is
-#' particularly useful if the given species name already incluede the author.
+#' particularly useful if the given species name already include the author.
 #' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
 #' is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.
 #' @param phylum Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
