@@ -79,7 +79,7 @@ make_blocks<-function(nfolds = 4,
       if (length(pres)==0){
 
         # do kmedoid clustering for 2 or more columns in df
-        kmed = clara(scd,k=nblocks,metric="euclidean")
+        kmed = cluster::clara(scd,k=nblocks,metric="euclidean")
 
         # get clusters
         clist = kmed$clustering
@@ -87,8 +87,8 @@ make_blocks<-function(nfolds = 4,
       } else {
 
         # do kmedoid clustering for 2 or more columns in df
-        kmed = clara(scd[which(pres==1),],k=nblocks,metric="manhattan")
-        knnab = knn(train=scd[which(pres==1),],test=scd[which(pres==0),],cl=kmed$clustering)
+        kmed = cluster::clara(scd[which(pres==1),],k=nblocks,metric="manhattan")
+        knnab = class::knn(train=scd[which(pres==1),],test=scd[which(pres==0),],cl=kmed$clustering)
         clist = kmed$clustering
         cliful = rep(NA,nrow(scd))
         cliful[which(pres==1)] = kmed$clustering
@@ -139,7 +139,7 @@ make_blocks<-function(nfolds = 4,
       sstab = tbl[max(1,(length(tbl)-5)):length(tbl)]
 
       # Run brute-forcing gridSearch obtimization
-      srch = gridSearch(levels=prs,fun=optme,nms=as.vector(sstab),grps=grps,tot=sum(tbl))
+      srch = NMOF::gridSearch(levels=prs,fun=optme,nms=as.vector(sstab),grps=grps,tot=sum(tbl))
 
       # pull out results
       wi = as.numeric(as.character(srch$minlevels))
