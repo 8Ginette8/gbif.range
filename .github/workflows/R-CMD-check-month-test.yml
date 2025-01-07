@@ -44,7 +44,7 @@ jobs:
     - name: Install R packages
       run: |
         Rscript -e '
-          packages <- c("devtools", "remotes", "terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods", "utils", "zip")
+          packages <- c("devtools", "remotes", "terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods", "utils", "zip", "class", "NMOF")
           installed <- rownames(installed.packages())
           missing <- setdiff(packages, installed)
           if (length(missing) > 0) {
