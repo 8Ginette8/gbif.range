@@ -5,9 +5,9 @@
 \title{Block-wise split data into training and testing}
 \usage{
 make_blocks(
-  nfolds = 4,
+  nfolds = 5,
   df = data.frame(),
-  nblocks = nfolds * 5,
+  nblocks = nfolds * 2,
   npoints = NA,
   pres = numeric()
 )
@@ -24,10 +24,9 @@ Minimum is the same number as 'nFolds'. Maximum is nrow(df)/10.}
 \item{npoints}{Optional argument if 'df' is not supplied. For how many points should random sampling be made?}
 
 \item{pres}{Binary vector. Optional argument. If 'df' is supplied, this argument can be used to
-save processing time. '1' stands for the points on which CLARA is appplied (most likely the species
-observations), and '0' stands for the points on which K-nearest neighbors is applied relative to
-the '1' (most likely the absences, background points...). If 'df' is not supplied, for which points
-should random sampling be made?}
+save processing time. '1' stands for the points on which CLARA is appplied, and '0' stands for
+the points on which K-nearest neighbors is applied relative to the '1'. If 'df' is not supplied,
+for which points should random sampling be made?}
 }
 \value{
 Object of class 'vector' of length nrow(df) or 'npoints', with integers defining

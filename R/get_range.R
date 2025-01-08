@@ -314,5 +314,20 @@ get_range <- function (occ_coord = NULL,
   cat("## End of computation for species: ",sp_name," ###", "\n")
 
   # Out
-  return(shp_species)
+  result = list(init.args = list(
+                  occ_coord = occ_coord,
+                  bioreg = bioreg,
+                  bioreg_name = bioreg_name, 
+                  degrees_outlier = degrees_outlier,
+                  clustered_points_outlier = clustered_points_outlier,
+                  buffer_width_point = buffer_width_point,
+                  buffer_increment_point = buffer_increment_point,
+                  buffer_width_polygon = buffer_width_polygon,
+                  dir_temp = dir_temp,
+                  raster = TRUE,
+                  res = res,
+                ),
+                range_output = shp_species)
+
+  return(result)
 }

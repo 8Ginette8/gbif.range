@@ -32,11 +32,18 @@ evaluate_range(
 
 \item{res.fact}{Integer. Factor for coarsening the original resolution}
 }
+\value{
+A data.frame of evaluation for all species and a list of range overlay maps. 
+Precision (ppv) = ntp / (ntp + number of false presences); 
+Sensitivity = number true presences (TP) / [TP + number of false absences (FA)]; 
+Specificity = number true absences (TA) / [TA + number of false presences (FP)]; 
+TSS = Sensitivity + Specificity - 1
+}
 \description{
-Evaluates the sensitivity & precision of range maps based on validation
-data, such as predictions of species distributions (SDMs) or IUCN expert
-range maps. See Pinkert et al. (2023) for metrics and comparisions of 
-various types of range data, including expert range maps, SDMs and ecoregional
+Evaluates the precision (ppv), sensitivity, specificity and TSS of range maps
+based on validation data, such as predictions of species distributions (SDMs)
+or IUCN expert range maps. See Pinkert et al. (2023) for metrics and comparisions
+of various types of range data, including expert range maps, SDMs and ecoregional
 range maps. Optional functionalities include the masking of the focal study 
 region (see 'mask') and aggregations of the input maps to different resolutions,
 given the importance of these factors for specific applications (Pinkert et al., 2023).
@@ -72,14 +79,14 @@ terra::plot(
   breaks = c(-0.5, 0.5, 1.5, 2.5, 3.5),
   legend = FALSE,
   main = paste0("Species: ", res10km$df_eval[1,1],"\n", 
-                "Sensitivity = ", round(res10km$df_eval[1,6], digits = 2)," & ", 
-                "Precision = ", round(res10km$df_eval[1,7], digits = 2)),
+                "Precision = ", round(res10km$df_eval[1,"Prec_ecoRM"], digits = 2)," & ", 
+                "TSS = ", round(res10km$df_eval[1,"TSS_ecoRM"], digits = 2)),
   las = 1
 )
 
 legend("bottomright",
        legend = c(
-         "Abs in both",
+         "Abs in both (TA)",
          "Pres in ecoRM only (FP)",
          "Pres in valRM only (FA)",
          "Pres in both (TP)"

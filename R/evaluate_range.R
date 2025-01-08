@@ -3,10 +3,10 @@
 ### ==================================================================
 #' Evaluate the sensitivity & precision of range maps
 #' 
-#' Evaluates the sensitivity & precision of range maps based on validation
-#' data, such as predictions of species distributions (SDMs) or IUCN expert
-#' range maps. See Pinkert et al. (2023) for metrics and comparisions of 
-#' various types of range data, including expert range maps, SDMs and ecoregional
+#' Evaluates the precision (ppv), sensitivity, specificity and TSS of range maps
+#' based on validation data, such as predictions of species distributions (SDMs)
+#' or IUCN expert range maps. See Pinkert et al. (2023) for metrics and comparisions
+#' of various types of range data, including expert range maps, SDMs and ecoregional
 #' range maps. Optional functionalities include the masking of the focal study 
 #' region (see 'mask') and aggregations of the input maps to different resolutions,
 #' given the importance of these factors for specific applications (Pinkert et al., 2023).
@@ -18,6 +18,11 @@
 #' @param print.map Logical (optional). If verbose=TRUE should a overlap map be printed
 #' @param mask rast object (optional). To mask the study the focal study region
 #' @param res.fact Integer. Factor for coarsening the original resolution
+#' @return A data.frame of evaluation for all species and a list of range overlay maps. 
+#' Precision (ppv) = ntp / (ntp + number of false presences); 
+#' Sensitivity = number true presences (TP) / [TP + number of false absences (FA)]; 
+#' Specificity = number true absences (TA) / [TA + number of false presences (FP)]; 
+#' TSS = Sensitivity + Specificity - 1
 #' @references
 #' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
 #' ecoregional range maps for boosting taxonomic coverage in ecology and 
@@ -113,8 +118,10 @@ evaluate_range <- function(root.dir = NULL,
     nbr_pres_ecoRM = NA,
     nbr_true_pres = NA,
     nbr_false_pres = NA,
-    Sen_ecoRM = NA,
     Prec_ecoRM = NA,
+    Sen_ecoRM = NA,
+    Spec_ecoRM = NA,
+    TSS_ecoRM = NA,
     type = ecoRM.dir
   )
   
@@ -206,21 +213,25 @@ evaluate_range <- function(root.dir = NULL,
     df_eval$nbr_pres_ecoRM[i] <- sum(overlay_raster[] %in% c(1, 3), na.rm = TRUE)
     df_eval$nbr_true_pres[i] <- sum(overlay_raster[] == 3, na.rm = TRUE)
     df_eval$nbr_false_pres[i] <- sum(overlay_raster[] == 1, na.rm = TRUE)
-    
-    df_eval$Sen_ecoRM[i] <- df_eval$nbr_true_pres[i] / df_eval$nbr_pres[i]
+    nbr_abs <- sum(overlay_raster[] %in% c(0, 1), na.rm = TRUE)
+    nbr_true_abs <- sum(overlay_raster[] == 0, na.rm = TRUE)
+
     df_eval$Prec_ecoRM[i] <- df_eval$nbr_true_pres[i] / (df_eval$nbr_true_pres[i] + df_eval$nbr_false_pres[i])
+    df_eval$Sen_ecoRM[i] <- df_eval$nbr_true_pres[i] / df_eval$nbr_pres[i]
+    df_eval$Spec_ecoRM[i] <- nbr_true_abs / nbr_abs
+    df_eval$TSS_ecoRM[i] <- df_eval$Sen_ecoRM[i] + df_eval$Spec_ecoRM[i] - 1
     
     # Plot the overlay raster
     if (verbose && print.map) {
-      if (!dir.exists(file.path(root.dir, "Output"))) {
-        dir.create(file.path(root.dir, "Output"))
+      if (!dir.exists(file.path(root.dir, "eval_output"))) {
+        dir.create(file.path(root.dir, "eval_output"))
       }
       
       aspect_r <- terra::nrow(overlay_raster) / terra::ncol(overlay_raster)
       colors <- c("gray", "red", "blue", "purple")
       breaks <- c(-0.5, 0.5, 1.5, 2.5, 3.5)
       
-      pdf(file = file.path(root.dir, "Output", paste0("Evaluation_map_", f.list_matches[i], ".pdf")), height = (11 * aspect_r)+3, width = 11)
+      pdf(file = file.path(root.dir, "eval_output", paste0("Evaluation_map_", f.list_matches[i], ".pdf")), height = (11 * aspect_r)+3, width = 11)
       par(mfrow = c(1, 1))
       terra::plot(
         overlay_raster,
@@ -228,15 +239,15 @@ evaluate_range <- function(root.dir = NULL,
         breaks = breaks,
         legend = FALSE,
         main = paste0("Overlay validation RM and ecoRM - ", "Species: ", f.list_matches[i],"\n", 
-                       "Sensitivity (TP/[TP+FA]) = ", round(df_eval$Sen_ecoRM[i], digits = 2)," & ", 
-                       "Precision (TP/[TP+FP]) = ", round(df_eval$Prec_ecoRM[i], digits = 2)),
+                       "Precision (TP/[TP+FP]) = ", round(df_eval$Prec_ecoRM[i], digits = 2)," & ", 
+                       "TSS = ", round(df_eval$TSS_ecoRM[i], digits = 2)),
         las = 1
       )
       
       # Adding a legend
       legend("bottomright",
         legend = c(
-          "Abs in both",
+          "Abs in both (TA)",
           "Pres in ecoRM only (FP)",
           "Pres in valRM only (FA)",
           "Pres in both (TP)"
@@ -251,11 +262,11 @@ evaluate_range <- function(root.dir = NULL,
   }
   
   if (verbose) {
-    cat("Cross-species mean Sen & Prec:", round(mean(rowMeans(df_eval[, c("Sen_ecoRM", "Prec_ecoRM")], na.rm = TRUE)), digits = 2), "\n")
+    cat("Cross-species mean Prec & Sensitivity:", round(mean(rowMeans(df_eval[, c("Prec_ecoRM", "Sen_ecoRM")], na.rm = TRUE)), digits = 2), "\n")
   }
   
   if (print.map) {
-    cat("### Maps have been saved to:", file.path(root.dir, "Output"), "###\n")
+    cat("### Maps have been saved to:", file.path(root.dir, "eval_output"), "###\n")
   }
   
   output <- list(df_eval = df_eval, overlay_list = overlay_list)

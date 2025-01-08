@@ -28,14 +28,14 @@ terra::plot(
   breaks = c(-0.5, 0.5, 1.5, 2.5, 3.5),
   legend = FALSE,
   main = paste0("Species: ", res10km$df_eval[1,1],"\n", 
-                "Sensitivity = ", round(res10km$df_eval[1,6], digits = 2)," & ", 
-                "Precision = ", round(res10km$df_eval[1,7], digits = 2)),
+                "Precision = ", round(res10km$df_eval[1,"Prec_ecoRM"], digits = 2)," & ", 
+                "TSS = ", round(res10km$df_eval[1,"TSS_ecoRM"], digits = 2)),
   las = 1
 )
 
 legend("bottomright",
        legend = c(
-         "Abs in both",
+         "Abs in both (TA)",
          "Pres in ecoRM only (FP)",
          "Pres in valRM only (FA)",
          "Pres in both (TP)"
