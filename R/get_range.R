@@ -325,7 +325,7 @@ get_range <- function (occ_coord = NULL,
                   buffer_width_polygon = buffer_width_polygon,
                   dir_temp = dir_temp,
                   raster = TRUE,
-                  res = res,
+                  res = res
                 ),
                 range_output = shp_species)
 
