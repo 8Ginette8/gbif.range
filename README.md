@@ -97,7 +97,7 @@ Let's plot the result now:
 
 ``` r
 plot(countries,col = "#bcbddc")
-plot(range_tiger,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
+plot(range_tiger[[2]],col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
 ```
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
@@ -149,7 +149,7 @@ Here we adapted the extra-parameters to the extent of the study area, e.g., (i) 
 # Plot
 plot(rst[[1]])
 plot(shp_lonlat,add = TRUE)
-plot(range_arcto,add = TRUE,col = "darkgreen",axes = FALSE,legend = FALSE)
+plot(range_arcto[[2]],add = TRUE,col = "darkgreen",axes = FALSE,legend = FALSE)
 points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex=1)
 ```
 
@@ -182,7 +182,7 @@ The three results are pretty similar because most of the observations are near t
 
 ``` r
 plot(countries,col="#bcbddc")
-plot(range_dd3,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
+plot(range_dd3[[2]],col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
 points(obs_dd[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex = 1)
 ```
 
