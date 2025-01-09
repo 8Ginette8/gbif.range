@@ -14,7 +14,7 @@ occ <- get_gbif("Panthera tigris",
 range <- get_range(occ, eco_terra,"ECO_NAME")
 
 # Plot
-terra::plot(range, axes = FALSE, box = FALSE, legend=FALSE, col = "chartreuse4")
+terra::plot(range[[2]], axes = FALSE, box = FALSE, legend=FALSE, col = "chartreuse4")
 
 # Plot political world boundaries
 terra::plot(rnaturalearth::ne_countries(returnclass = "sf")[1], add = TRUE, col = NA)

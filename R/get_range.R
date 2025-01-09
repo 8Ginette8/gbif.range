@@ -60,7 +60,7 @@
 #' - eco_marine and eco_hd_marine (very coastal-precise version) contains three distinct levels:
 #' 'ECOREGION', 'PROVINCE' and 'REALM'.
 #' 
-#' @return A 'SpatVector' or 'SpatRaster'.
+#' @return A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function
 #' @references
 #' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein,
 #' Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building,

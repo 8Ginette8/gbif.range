@@ -63,7 +63,7 @@ achievable resolution of the output will depend on its 'bioreg' precision, e.g.,
 output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.}
 }
 \value{
-A 'SpatVector' or 'SpatRaster'.
+A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function
 }
 \description{
 Estimates species ranges based on occurrence data (GBIF or not) and ecoregions
@@ -109,7 +109,7 @@ occ <- get_gbif("Panthera tigris",
 range <- get_range(occ, eco_terra,"ECO_NAME")
 
 # Plot
-terra::plot(range, axes = FALSE, box = FALSE, legend=FALSE, col = "chartreuse4")
+terra::plot(range[[2]], axes = FALSE, box = FALSE, legend=FALSE, col = "chartreuse4")
 
 # Plot political world boundaries
 terra::plot(rnaturalearth::ne_countries(returnclass = "sf")[1], add = TRUE, col = NA)
