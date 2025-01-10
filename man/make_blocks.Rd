@@ -13,10 +13,11 @@ make_blocks(
 )
 }
 \arguments{
-\item{nfolds}{Numeric. Number of approximately equal-sized classes (folds) to separate groups in block-cross validation}
+\item{nfolds}{Numeric. Number of approximately equal-sized classes (folds) to separate groups in block-cross
+validation.}
 
 \item{df}{Object of class 'data.frame' with n columns containing critera for cluster building.
-Not necessary if argument npoints is supplied}
+Not necessary if argument npoints is supplied.}
 
 \item{nblocks}{Number of clusters (blocks) based on the number of folds that should be built.
 Minimum is the same number as 'nFolds'. Maximum is nrow(df)/10.}
@@ -30,7 +31,7 @@ for which points should random sampling be made?}
 }
 \value{
 Object of class 'vector' of length nrow(df) or 'npoints', with integers defining
-different folds
+different folds.
 }
 \description{
 Creates a stratum vector based on a data.frame with n columns. If the data.frame
@@ -65,7 +66,4 @@ graphics::points(obs.pt[,c("decimalLongitude","decimalLatitude")],
 Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O., Wang, Z., & Zimmermann, N. E. (2020).
 Model complexity affects species distribution projections under climate change.
 Journal of Biogeography, 47(1), 130-142.
-}
-\author{
-Philipp Brun
 }

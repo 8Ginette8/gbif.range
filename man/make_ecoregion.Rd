@@ -25,7 +25,7 @@ the output?}
 is none.}
 
 \item{name}{Character. If 'path' is used, should include the name of the output
-file (without file extension)}
+file (without file extension).}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default
 is FALSE.}
@@ -33,7 +33,7 @@ is FALSE.}
 \item{...}{Additonnal parameters for the function clara() of the clutser R package.}
 }
 \value{
-A TIFF or SHP file
+A TIFF or SHP file.
 }
 \description{
 This function may be used if the in-house ecoregion shapefiles are

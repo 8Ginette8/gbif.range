@@ -4,11 +4,10 @@
 #' Optimization function to create equal-sized strata in the 'make_blocks' function
 #'
 #' Not to be called directly by the user.
-#' @author Philipp Brun
-#' @param x Input 1
-#' @param nms Input 2
-#' @param grps Input 3
-#' @param tot Input 4
+#' @param x Input 1.
+#' @param nms Input 2.
+#' @param grps Input 3.
+#' @param tot Input 4.
 #' @keywords internal
 #' @export
 #' @importFrom stats aggregate

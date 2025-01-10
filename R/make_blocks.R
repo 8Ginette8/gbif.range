@@ -10,9 +10,10 @@
 #' the argument 'npoints' can be provided, which create groups by random sampling. An
 #' opitimization algorithm (function 'gridSearch' from package NMOF) optimizes for equal stratum sizes.
 #'
-#' @param nfolds Numeric. Number of approximately equal-sized classes (folds) to separate groups in block-cross validation
+#' @param nfolds Numeric. Number of approximately equal-sized classes (folds) to separate groups in block-cross
+#' validation.
 #' @param df Object of class 'data.frame' with n columns containing critera for cluster building.
-#' Not necessary if argument npoints is supplied
+#' Not necessary if argument npoints is supplied.
 #' @param nblocks Number of clusters (blocks) based on the number of folds that should be built.
 #' Minimum is the same number as 'nFolds'. Maximum is nrow(df)/10.
 #' @param pres Binary vector. Optional argument. If 'df' is supplied, this argument can be used to
@@ -21,12 +22,11 @@
 #' for which points should random sampling be made? 
 #' @param npoints Optional argument if 'df' is not supplied. For how many points should random sampling be made?
 #' @return Object of class 'vector' of length nrow(df) or 'npoints', with integers defining
-#' different folds
+#' different folds.
 #' @references
 #' Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O., Wang, Z., & Zimmermann, N. E. (2020).
 #' Model complexity affects species distribution projections under climate change.
 #' Journal of Biogeography, 47(1), 130-142.
-#' @author Philipp Brun
 #' @example inst/examples/make_blocks_help.R
 #' @export
 #' @importFrom cluster clara

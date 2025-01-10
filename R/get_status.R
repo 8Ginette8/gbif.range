@@ -9,7 +9,7 @@
 #' the data may also be extracted.
 #'
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
-#' with associated taxonomy and IUCN status
+#' with associated taxonomy and IUCN status.
 #' @param search Logical. If TRUE, the function will strictly look for the most relevant result, based
 #' on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
 #' if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
@@ -32,14 +32,14 @@
 #' @param family Character. Optional. What is the species' Family? Same as above but at the finer family level.
 #' Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
 #' is found.
-#' @param conf_match Numeric. From 0 to 100. Determine the confidence
-#' threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
-#' @param all Logical. Default is FALSE. Should all species names be retrieved or only
-#' the accepted name and its synonyms?
+#' @param conf_match Numeric. From 0 to 100. Determine the confidence threshold of match of 'sp_name' with
+#' the GBIF backbone taxonomy. Default is 90.
+#' @param all Logical. Default is FALSE. Should all species names be retrieved or only the accepted name
+#' and its synonyms?
 #' 
 #' @return Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
 #' (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-#' sp_nameMatch informing how well the input sp_name has matched with the found synonyms
+#' sp_nameMatch informing how well the input sp_name has matched with the found synonyms.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735

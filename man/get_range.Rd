@@ -63,19 +63,18 @@ achievable resolution of the output will depend on its 'bioreg' precision, e.g.,
 output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.}
 }
 \value{
-A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function
+A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function.
 }
 \description{
 Estimates species ranges based on occurrence data (GBIF or not) and ecoregions
-(related functions 'make_ecoregion'). 
-It first deletes outliers from the observation dataset and then creates a polygon 
-(convex hull) with a user specified buffer around all the observations of one ecoregion.
-If there is only one observation in an ecoregion, a buffer around this point will be created. If
-all points in an ecoregion are on a line, the function will also create a buffer
-around these points, however, the buffer size increases with the number of points
-in the line. Finally, also note that in case of too many records, get_range can be
-used with a sub-sample of species observations to ensure a faster polygon process
-and/or to overcome potential RAM crash of the function.
+(related functions 'make_ecoregion'). It first deletes outliers from the observation
+dataset and then creates a polygon (convex hull) with a user specified buffer around
+all the observations of one ecoregion. If there is only one observation in an ecoregion,
+a buffer around this point will be created. If all points in an ecoregion are on a line,
+the function will also create a buffer around these points, however, the buffer size
+increases with the number of points in the line. Finally, also note that in case of
+too many records, get_range can be used with a sub-sample of species observations to
+ensure a faster polygon process and/or to overcome potential RAM crash of the function.
 }
 \details{
 Ecoregions cover relatively large areas of land or water, and contain characteristic,

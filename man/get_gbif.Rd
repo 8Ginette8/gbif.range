@@ -33,7 +33,7 @@ get_gbif(
 }
 \arguments{
 \item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names
-with associated taxonomy and IUCN status}
+with associated taxonomy and IUCN status.}
 
 \item{search}{Logical. If TRUE, the function will strictly look for the most relevant result, based
 on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
@@ -86,7 +86,7 @@ Available (old and new) are 'OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVA
 'LIVING_SPECIMEN', 'LITERATURE', UNKNOWN' and 'OCCURRENCE'. Default setting removes
 specimens and unknown observations.
 Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
-https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html}
+https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html.}
 
 \item{add_infos}{Character. Infos that may be added to the default output information.
 List of IDs may be found at: https://www.gbif.org/developer/occurrence.

@@ -10,14 +10,14 @@
 #' range maps. Optional functionalities include the masking of the focal study 
 #' region (see 'mask') and aggregations of the input maps to different resolutions,
 #' given the importance of these factors for specific applications (Pinkert et al., 2023).
-#' @param root.dir Character. Root directory to files
-#' @param valData.dir Numeric. Directory to validation data
-#' @param ecoRM.dir  Numeric. Directory to range maps (generated with get_range)
-#' @param valData.type Character. Type of valData - either "SHP" or "TIFF"
-#' @param verbose Logical (optional). Report details while running
-#' @param print.map Logical (optional). If verbose=TRUE should a overlap map be printed
-#' @param mask rast object (optional). To mask the study the focal study region
-#' @param res.fact Integer. Factor for coarsening the original resolution
+#' @param root.dir Character. Root directory to files.
+#' @param valData.dir Numeric. Directory to validation data.
+#' @param ecoRM.dir  Numeric. Directory to range maps (generated with get_range).
+#' @param valData.type Character. Type of valData - either "SHP" or "TIFF".
+#' @param verbose Logical (optional). Report details while running.
+#' @param print.map Logical (optional). If verbose=TRUE should a overlap map be printed.
+#' @param mask rast object (optional). To mask the study the focal study region.
+#' @param res.fact Integer. Factor for coarsening the original resolution.
 #' @return A data.frame of evaluation for all species and a list of range overlay maps. 
 #' Precision (ppv) = ntp / (ntp + number of false presences); 
 #' Sensitivity = number true presences (TP) / [TP + number of false absences (FA)]; 

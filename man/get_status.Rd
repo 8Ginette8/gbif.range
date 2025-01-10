@@ -18,7 +18,7 @@ get_status(
 }
 \arguments{
 \item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names
-with associated taxonomy and IUCN status}
+with associated taxonomy and IUCN status.}
 
 \item{search}{Logical. If TRUE, the function will strictly look for the most relevant result, based
 on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
@@ -48,16 +48,16 @@ is found.}
 Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
 is found.}
 
-\item{conf_match}{Numeric. From 0 to 100. Determine the confidence
-threshold of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
+\item{conf_match}{Numeric. From 0 to 100. Determine the confidence threshold of match of 'sp_name' with
+the GBIF backbone taxonomy. Default is 90.}
 
-\item{all}{Logical. Default is FALSE. Should all species names be retrieved or only
-the accepted name and its synonyms?}
+\item{all}{Logical. Default is FALSE. Should all species names be retrieved or only the accepted name
+and its synonyms?}
 }
 \value{
 Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
 (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-sp_nameMatch informing how well the input sp_name has matched with the found synonyms
+sp_nameMatch informing how well the input sp_name has matched with the found synonyms.
 }
 \description{
 Generates, based on a given species name, its IUCN red list status and a list of

@@ -4,12 +4,12 @@
 #' Create polygon objects in different bioregions.
 #' 
 #' Not to be called directly by the user.
-#' @param sp_coord spatial coordinates (type "matrix" or "data.frame)
-#' @param bwp buffer width parameter (type numeric)
-#' @param bipl  number of observation points (type numeric)
-#' @param bwpo buffer width parameter for the convex hull (type numeric)
-#' @param temp_dir temporary directory name (type character)
-#' @param g optional parameter
+#' @param sp_coord spatial coordinates (type "matrix" or "data.frame).
+#' @param bwp buffer width parameter (type numeric).
+#' @param bipl  number of observation points (type numeric).
+#' @param bwpo buffer width parameter for the convex hull (type numeric).
+#' @param temp_dir temporary directory name (type character).
+#' @param g optional parameter.
 #' @keywords internal
 #' @export
 #' @importFrom terra crds buffer aggregate vect crs

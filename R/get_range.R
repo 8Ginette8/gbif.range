@@ -4,15 +4,14 @@
 #' Create a species range map based on a get_gbif() output
 #' 
 #' Estimates species ranges based on occurrence data (GBIF or not) and ecoregions
-#' (related functions 'make_ecoregion'). 
-#' It first deletes outliers from the observation dataset and then creates a polygon 
-#' (convex hull) with a user specified buffer around all the observations of one ecoregion.
-#' If there is only one observation in an ecoregion, a buffer around this point will be created. If
-#' all points in an ecoregion are on a line, the function will also create a buffer
-#' around these points, however, the buffer size increases with the number of points
-#' in the line. Finally, also note that in case of too many records, get_range can be
-#' used with a sub-sample of species observations to ensure a faster polygon process
-#' and/or to overcome potential RAM crash of the function.
+#' (related functions 'make_ecoregion'). It first deletes outliers from the observation
+#' dataset and then creates a polygon (convex hull) with a user specified buffer around
+#' all the observations of one ecoregion. If there is only one observation in an ecoregion,
+#' a buffer around this point will be created. If all points in an ecoregion are on a line,
+#' the function will also create a buffer around these points, however, the buffer size
+#' increases with the number of points in the line. Finally, also note that in case of
+#' too many records, get_range can be used with a sub-sample of species observations to
+#' ensure a faster polygon process and/or to overcome potential RAM crash of the function.
 #' 
 #' @param occ_coord a get_gbif() output or a data.frame containing two columns named
 #' "decimalLongitude" and "decimalLatitude".
@@ -60,7 +59,7 @@
 #' - eco_marine and eco_hd_marine (very coastal-precise version) contains three distinct levels:
 #' 'ECOREGION', 'PROVINCE' and 'REALM'.
 #' 
-#' @return A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function
+#' @return A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function.
 #' @references
 #' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein,
 #' Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building,
@@ -169,6 +168,7 @@ get_range <- function (occ_coord = NULL,
 
   # Remove duplicates
   w_col = c("decimalLongitude","decimalLatitude")
+  occ_coord.k = occ_coord
   occ_coord[,w_col] = round(occ_coord[,w_col],4)
   occ_coord = occ_coord[!duplicated(occ_coord[,w_col]),]
   occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="epsg:4326")
@@ -315,7 +315,7 @@ get_range <- function (occ_coord = NULL,
 
   # Out
   result = list(init.args = list(
-                  occ_coord = occ_coord,
+                  occ_coord = occ_coord.k,
                   bioreg = bioreg,
                   bioreg_name = bioreg_name, 
                   degrees_outlier = degrees_outlier,

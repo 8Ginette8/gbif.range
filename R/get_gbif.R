@@ -20,7 +20,7 @@
 #' hasGeospatialIssue in occ_data() (implemented rgbif function) is set to FALSE.
 #' 
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
-#' with associated taxonomy and IUCN status
+#' with associated taxonomy and IUCN status.
 #' @param search Logical. If TRUE, the function will strictly look for the most relevant result, based
 #' on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
 #' if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
@@ -60,7 +60,7 @@
 #' 'LIVING_SPECIMEN', 'LITERATURE', UNKNOWN' and 'OCCURRENCE'. Default setting removes
 #' specimens and unknown observations.
 #' Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
-#' https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html
+#' https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html.
 #' @param add_infos Character. Infos that may be added to the default output information.
 #' List of IDs may be found at: https://www.gbif.org/developer/occurrence.
 #' Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',

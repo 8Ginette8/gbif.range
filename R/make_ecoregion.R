@@ -20,11 +20,11 @@
 #' @param path Character. Folder path where the output should be saved. Default
 #' is none.
 #' @param name Character. If 'path' is used, should include the name of the output
-#' file (without file extension)
+#' file (without file extension).
 #' @param raster Logical. Whether the output should be a raster layer. Default
 #' is FALSE.
 #' @param ... Additonnal parameters for the function clara() of the clutser R package.
-#' @return A TIFF or SHP file
+#' @return A TIFF or SHP file.
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
 #' Thuiller, W. (2021). Novel methods to correct for observer and sampling bias

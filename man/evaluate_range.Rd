@@ -16,21 +16,21 @@ evaluate_range(
 )
 }
 \arguments{
-\item{root.dir}{Character. Root directory to files}
+\item{root.dir}{Character. Root directory to files.}
 
-\item{valData.dir}{Numeric. Directory to validation data}
+\item{valData.dir}{Numeric. Directory to validation data.}
 
-\item{ecoRM.dir}{Numeric. Directory to range maps (generated with get_range)}
+\item{ecoRM.dir}{Numeric. Directory to range maps (generated with get_range).}
 
-\item{valData.type}{Character. Type of valData - either "SHP" or "TIFF"}
+\item{valData.type}{Character. Type of valData - either "SHP" or "TIFF".}
 
-\item{verbose}{Logical (optional). Report details while running}
+\item{verbose}{Logical (optional). Report details while running.}
 
-\item{print.map}{Logical (optional). If verbose=TRUE should a overlap map be printed}
+\item{print.map}{Logical (optional). If verbose=TRUE should a overlap map be printed.}
 
-\item{mask}{rast object (optional). To mask the study the focal study region}
+\item{mask}{rast object (optional). To mask the study the focal study region.}
 
-\item{res.fact}{Integer. Factor for coarsening the original resolution}
+\item{res.fact}{Integer. Factor for coarsening the original resolution.}
 }
 \value{
 A data.frame of evaluation for all species and a list of range overlay maps. 
