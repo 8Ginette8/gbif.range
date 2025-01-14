@@ -85,15 +85,15 @@ cv_range <- function(range_object = NULL,
   }
 
   # Prepare the evaluation df
-  cv.df = as.data.frame(matrix(NA,6,8))
-  row.names(cv.df) = c("CV1","CV2","CV3","CV4","CV5","Mean")
+  cv.df = as.data.frame(matrix(NA,nfolds+1,8))
+  row.names(cv.df) = c(sprintf("CV%d",1:nfolds),"Mean")
   colnames(cv.df) = c("TP","FA","TA","FP",
                         "Precision","Sensitivity","Specificity","TSS")
 
   # Run nfolds time the get_range function + evaluation
   for (i in 1:nfolds)
   {
-    cat("...",i,sep="")
+    cat("...fold",i,sep="")
 
     # Extract all but %nfolds
     xy.fit = all.xy[!cv.strat%in%i,]
@@ -129,5 +129,7 @@ cv_range <- function(range_object = NULL,
     cv.df[i,"TSS"] = cv.df[i,"Sensitivity"] + cv.df[i,"Specificity"] - 1
   }
 
+  # Finalize average
+  cv.df[nfolds+1,] = apply(cv.df[1:nfolds,],2,mean,na.rm=TRUE)
   return(cv.df)
 }
