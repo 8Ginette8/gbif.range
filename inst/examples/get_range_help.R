@@ -8,8 +8,6 @@ occ <- get_gbif("Panthera tigris",
 				          "HUMAN_OBSERVATION", 
 				          "MACHINE_OBSERVATION"))
 
-#TODO Check why the above under default crashes
-
 # Make range from occurance points
 range <- get_range(occ, eco_terra,"ECO_NAME")
 

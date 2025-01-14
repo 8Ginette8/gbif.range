@@ -5,32 +5,32 @@
 \title{Evaluate the sensitivity & precision of range maps}
 \usage{
 evaluate_range(
-  root.dir = NULL,
-  valData.dir = NULL,
-  ecoRM.dir = NULL,
-  valData.type = NULL,
+  root_dir = NULL,
+  valData_dir = NULL,
+  ecoRM_dir = NULL,
+  valData_type = NULL,
   verbose = TRUE,
-  print.map = TRUE,
+  print_map = TRUE,
   mask = NULL,
-  res.fact = NULL
+  res_fact = NULL
 )
 }
 \arguments{
-\item{root.dir}{Character. Root directory to files.}
+\item{root_dir}{Character. Working directory to load and save target files.}
 
-\item{valData.dir}{Numeric. Directory to validation data.}
+\item{valData_dir}{Numeric. Directory to validation data.}
 
-\item{ecoRM.dir}{Numeric. Directory to range maps (generated with get_range).}
+\item{ecoRM_dir}{Numeric. Directory to range maps (generated with get_range).}
 
-\item{valData.type}{Character. Type of valData - either "SHP" or "TIFF".}
+\item{valData_type}{Character. Type of valData - either "SHP" or "TIFF".}
 
 \item{verbose}{Logical (optional). Report details while running.}
 
-\item{print.map}{Logical (optional). If verbose=TRUE should a overlap map be printed.}
+\item{print_map}{Logical (optional). If verbose=TRUE should a overlap map be printed. Default is TRUE.}
 
-\item{mask}{rast object (optional). To mask the study the focal study region.}
+\item{mask}{rast object (optional). To mask the study the focal study region. Default is TRUE.}
 
-\item{res.fact}{Integer. Factor for coarsening the original resolution.}
+\item{res_fact}{Integer. Factor for coarsening the original resolution.}
 }
 \value{
 A data.frame of evaluation for all species and a list of range overlay maps. 

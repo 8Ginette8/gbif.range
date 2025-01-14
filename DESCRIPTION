@@ -34,3 +34,4 @@ Collate:
     'evaluate_range.R'
     'make_blocks.R'
     'optme.R'
+    'cv_range.R'

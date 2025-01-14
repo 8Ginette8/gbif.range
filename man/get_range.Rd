@@ -15,7 +15,8 @@ get_range(
   buffer_width_polygon = 4,
   dir_temp = tempdir(),
   raster = TRUE,
-  res = 100
+  res = 100,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -61,6 +62,8 @@ polygons (for each ecoregion).}
 e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
 achievable resolution of the output will depend on its 'bioreg' precision, e.g., a species range
 output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.}
+
+\item{verbose}{Logical. Should progession be printed?}
 }
 \value{
 A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function.
@@ -101,8 +104,6 @@ occ <- get_gbif("Panthera tigris",
 				  basis = c("OBSERVATION", 
 				          "HUMAN_OBSERVATION", 
 				          "MACHINE_OBSERVATION"))
-
-#TODO Check why the above under default crashes
 
 # Make range from occurance points
 range <- get_range(occ, eco_terra,"ECO_NAME")

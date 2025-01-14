@@ -10,14 +10,14 @@
 #' range maps. Optional functionalities include the masking of the focal study 
 #' region (see 'mask') and aggregations of the input maps to different resolutions,
 #' given the importance of these factors for specific applications (Pinkert et al., 2023).
-#' @param root.dir Character. Root directory to files.
-#' @param valData.dir Numeric. Directory to validation data.
-#' @param ecoRM.dir  Numeric. Directory to range maps (generated with get_range).
-#' @param valData.type Character. Type of valData - either "SHP" or "TIFF".
+#' @param root_dir Character. Working directory to load and save target files.
+#' @param valData_dir Numeric. Directory to validation data.
+#' @param ecoRM_dir  Numeric. Directory to range maps (generated with get_range).
+#' @param valData_type Character. Type of valData - either "SHP" or "TIFF".
 #' @param verbose Logical (optional). Report details while running.
-#' @param print.map Logical (optional). If verbose=TRUE should a overlap map be printed.
-#' @param mask rast object (optional). To mask the study the focal study region.
-#' @param res.fact Integer. Factor for coarsening the original resolution.
+#' @param print_map Logical (optional). If verbose=TRUE should a overlap map be printed. Default is TRUE.
+#' @param mask rast object (optional). To mask the study the focal study region. Default is TRUE.
+#' @param res_fact Integer. Factor for coarsening the original resolution.
 #' @return A data.frame of evaluation for all species and a list of range overlay maps. 
 #' Precision (ppv) = ntp / (ntp + number of false presences); 
 #' Sensitivity = number true presences (TP) / [TP + number of false absences (FA)]; 
@@ -33,27 +33,34 @@
 #' @importFrom graphics legend par
 #' @example inst/examples/evaluate_range_help.R
 #' @export
-evaluate_range <- function(root.dir = NULL,
-                       valData.dir = NULL,
-                       ecoRM.dir = NULL,
-                       valData.type = NULL,
+evaluate_range <- function(root_dir = NULL,
+                       valData_dir = NULL,
+                       ecoRM_dir = NULL,
+                       valData_type = NULL,
                        verbose = TRUE,
-                       print.map = TRUE,
+                       print_map = TRUE,
                        mask = NULL,
-                       res.fact = NULL) {
+                       res_fact = NULL) {
+  # No root_dir
+  if (is.null(root_dir)){
+    stop(
+      "Please provide a main working directory 'root_dir'... \n"
+      )
+  }
+
   # Create dummy objects 
   overlay_list <- list()
   df_eval <- NULL
   
   # Get ecoRM file list
-  f_list_eco_full <- list.files(file.path(root.dir, ecoRM.dir),
+  f_list_eco_full <- list.files(file.path(root_dir, ecoRM_dir),
                                 pattern = ".tif",
                                 full.names = TRUE)
   f_list_eco <- sub("\\.tif$", "", basename(f_list_eco_full))
   
   # Retrieve valData
   shp_names <- unique(list.files(
-    file.path(root.dir, valData.dir),
+    file.path(root_dir, valData_dir),
     pattern = "\\.shp$",
     full.names = TRUE
   ))
@@ -72,26 +79,26 @@ evaluate_range <- function(root.dir = NULL,
     f.list_valRM <- shp_files$sci_name
   } else {
     f.list_valRM_full <- list.files(
-      file.path(root.dir, valData.dir),
+      file.path(root_dir, valData_dir),
       pattern = "\\.tif$",
       full.names = TRUE,
       recursive = TRUE
     )
     f.list_valRM <- sub("\\.tif$", "", basename(f.list_valRM_full))
-    valData.type = "TIFF"
+    valData_type = "TIFF"
   }
   
   # Check and report match of file names
   if (length(f.list_valRM) == 0) {
     stop(
-      "No names of 'valData.dir' match those of the ecoRMs.
+      "No names of 'valData_dir' match those of the ecoRMs.
          Assuming that your species names of the ecoRMs are separated by a space and followed by '.tif'.
          Text before the species names (all separated with underscores) are ignored. \n"
     )
   }
   
   cat("-Note-", "\n")
-  if (valData.type == "TIFF") {
+  if (valData_type == "TIFF") {
     f.list_matches <- intersect(f_list_eco, basename(f.list_valRM))
     cat(
       sprintf(
@@ -122,7 +129,7 @@ evaluate_range <- function(root.dir = NULL,
     Sen_ecoRM = NA,
     Spec_ecoRM = NA,
     TSS_ecoRM = NA,
-    type = ecoRM.dir
+    type = ecoRM_dir
   )
   
   # Process each species
@@ -139,7 +146,7 @@ evaluate_range <- function(root.dir = NULL,
     ecoRM <- terra::rast(f_list_eco_full[grep(f.list_matches[i], f_list_eco_full)])
     
     # Load validation data
-    if (valData.type == "TIFF") {
+    if (valData_type == "TIFF") {
       valRM <- terra::rast(f.list_valRM_full[grep(f.list_matches[i], f.list_valRM_full)])
       suppressWarnings({
         if (is.na(any(all.equal(terra::crs(ecoRM), terra::crs(valRM))))) {valRM <- terra::project(valRM, ecoRM)}
@@ -161,11 +168,11 @@ evaluate_range <- function(root.dir = NULL,
           max(ext_e[4], ext_v[4])
         )
         domain_raster <- terra::extend(ecoRM, combined_extent)
-        if (valData.type == "SHP") {
+        if (valData_type == "SHP") {
           valRM <- terra::rasterize(valRM, domain_raster, field = 1, background = NA)
         }
       } else {
-        if (valData.type == "SHP") {
+        if (valData_type == "SHP") {
           valRM <- terra::rasterize(valRM, ecoRM, field = 1, background = NA)
         }
         domain_raster <- valRM
@@ -175,8 +182,8 @@ evaluate_range <- function(root.dir = NULL,
     }
     
     # Resample domain raster if resolution factor is provided
-    if (!is.null(res.fact) && res.fact >= 1) {
-      domain_raster <- terra::aggregate(domain_raster, fact = res.fact, fun = max, na.rm = TRUE)
+    if (!is.null(res_fact) && res_fact >= 1) {
+      domain_raster <- terra::aggregate(domain_raster, fact = res_fact, fun = max, na.rm = TRUE)
     }
     
     # Ensure resolution and extent match
@@ -222,16 +229,16 @@ evaluate_range <- function(root.dir = NULL,
     df_eval$TSS_ecoRM[i] <- df_eval$Sen_ecoRM[i] + df_eval$Spec_ecoRM[i] - 1
     
     # Plot the overlay raster
-    if (verbose && print.map) {
-      if (!dir.exists(file.path(root.dir, "eval_output"))) {
-        dir.create(file.path(root.dir, "eval_output"))
+    if (verbose && print_map) {
+      if (!dir.exists(file.path(root_dir, "eval_output"))) {
+        dir.create(file.path(root_dir, "eval_output"))
       }
       
       aspect_r <- terra::nrow(overlay_raster) / terra::ncol(overlay_raster)
       colors <- c("gray", "red", "blue", "purple")
       breaks <- c(-0.5, 0.5, 1.5, 2.5, 3.5)
       
-      pdf(file = file.path(root.dir, "eval_output", paste0("Evaluation_map_", f.list_matches[i], ".pdf")), height = (11 * aspect_r)+3, width = 11)
+      pdf(file = file.path(root_dir, "eval_output", paste0("Evaluation_map_", f.list_matches[i], ".pdf")), height = (11 * aspect_r)+3, width = 11)
       par(mfrow = c(1, 1))
       terra::plot(
         overlay_raster,
@@ -265,8 +272,8 @@ evaluate_range <- function(root.dir = NULL,
     cat("Cross-species mean Prec & Sensitivity:", round(mean(rowMeans(df_eval[, c("Prec_ecoRM", "Sen_ecoRM")], na.rm = TRUE)), digits = 2), "\n")
   }
   
-  if (print.map) {
-    cat("### Maps have been saved to:", file.path(root.dir, "eval_output"), "###\n")
+  if (print_map) {
+    cat("### Maps have been saved to:", file.path(root_dir, "eval_output"), "###\n")
   }
   
   output <- list(df_eval = df_eval, overlay_list = overlay_list)

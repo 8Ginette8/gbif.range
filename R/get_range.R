@@ -45,6 +45,7 @@
 #' e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
 #' achievable resolution of the output will depend on its 'bioreg' precision, e.g., a species range
 #' output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.
+#' @param verbose Logical. Should progession be printed?
 #' @details Ecoregions cover relatively large areas of land or water, and contain characteristic,
 #' geographically distinct assemblages of natural communities sharing a large majority of species,
 #' dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
@@ -128,7 +129,8 @@ get_range <- function (occ_coord = NULL,
                        buffer_width_polygon = 4,
                        dir_temp = tempdir(),
                        raster = TRUE,
-                       res = 100){
+                       res = 100,
+                       verbose = TRUE){
 
   ### =========================================================================
   ### Object conditions + remove duplicates
@@ -181,8 +183,10 @@ get_range <- function (occ_coord = NULL,
   if (nrow(occ_coord) <= clustered_points_outlier+1){
     stop("Too few occurences!")
   } 
-    
-  cat("## Start of computation for species: ",sp_name," ###", "\n") 
+  
+  if (verbose){
+    cat("## Start of computation for species: ",sp_name," ###", "\n") 
+  }
   
   ### =========================================================================
   ### Identify outliers
@@ -195,8 +199,10 @@ get_range <- function (occ_coord = NULL,
   cond = apply(mat_dist, 1, function(x) x[clustered_points_outlier])>degrees_outlier
   
   # Print info
-  cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ",
-    round((sum(cond)/nrow(occ_coord))*100,0), "%\n"))
+  if (verbose){
+    cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ",
+      round((sum(cond)/nrow(occ_coord))*100,0), "%\n"))
+  }
   
   # Remove outliers
   occ_coord_mod = occ_coord[!cond,]
@@ -224,7 +230,9 @@ get_range <- function (occ_coord = NULL,
   for(g in 1:length(uniq)) {
     
     # Print
-    cat('bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
+    if (verbose){
+      cat('bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
+    }
 
     # NAs or not
     q1 = as.data.frame(bioreg)[,bioreg_name] == uniq[g]
@@ -311,7 +319,9 @@ get_range <- function (occ_coord = NULL,
   }
   
   # Final print
-  cat("## End of computation for species: ",sp_name," ###", "\n")
+  if (verbose){
+    cat("## End of computation for species: ",sp_name," ###", "\n")
+  }
 
   # Out
   result = list(init.args = list(
