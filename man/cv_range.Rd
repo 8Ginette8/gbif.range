@@ -22,10 +22,10 @@ cross validation ('block-cv').}
 
 \item{nblocks}{Numeric. Only applies if 'block-cv' is employed. Defined the number of blocks per fold.}
 
-\item{backpoints}{Numeric (optional). Number of regular background points. Defaut is 10,000.}
+\item{backpoints}{Numeric (optional). Number of regular background points that should be sampled. Defaut is 10,000.}
 }
 \value{
-A data.frame with 'nfolds' rows and 4 evaluation columns.
+A data.frame with 'nfolds' rows and 8 evaluation columns.
 }
 \description{
 Assesses the accuracy of a species range map by applying cross-validation using the original
@@ -38,8 +38,8 @@ is chosen for training in each fold, with the model evaluated on the remaining d
 cross-validation, the observations are spatially divided into blocks, and each fold uses a different set
 of blocks for training and testing, ensuring that spatial dependencies are properly considered in the
 evaluation process. Evaluation metrics here employed are Precision, Sensitivity, Specificity and TSS.
-It is important to note that since no absences are available for evaluation, a random layer of background
-points is first generated over the study area extent and used as pseudo-absences proxy.
+It is important to note that since no absences are available for evaluation, a uniform random layer of
+background points is first generated over the study area extent and used as pseudo-absences proxy.
 }
 \examples{
 \dontrun{
