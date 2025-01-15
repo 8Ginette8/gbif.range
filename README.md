@@ -45,7 +45,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
   - *evaluate_range()*: evaluation function to validate the species ranges with distribution information provided by the user.
 
-  - *cv_range()*: cross-validation function to evaluate a *get_range()* output based on its own occurrence data.
+  - *cv_range()*: cross-validation function to evaluate a *get_range()* output based on its occurrence data.
 
 ## Installation
 
