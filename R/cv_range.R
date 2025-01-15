@@ -3,13 +3,13 @@
 ### ==================================================================
 #' Evaluate the performance of a range map with cross-validation
 #' 
-#' Assesses the accuracy of a species range map by applying cross-validation using the original
-#' observations and the function arguments of a get_range() object. By using these initial parameters, the
-#' function iteratively re-generates the range map n times, each time using a defined % of the original
-#' observations for training, while evaluating the quality of the range map using the remaining observations
+#' Assesses the accuracy of a species range map by applying cross-validation using the observations
+#' (restricted to the extent) and function arguments of a get_range() object. By using these initial parameters,
+#' the function iteratively re-generates the range map n times, each time using a defined percentage of the extent
+#' observations for training, while evaluating the quality of the range map using the remaining records
 #' (by default, nfolds = 5 -> calibration = 80%, evaluation = 20%). Two cross-validation methods are available:
 #' random and spatial block cross-validation. In random cross-validation, a random subset of the observations
-#' is chosen for training in each fold, with the model evaluated on the remaining data. In spatial block
+#' is chosen for training in each fold, with the generated map evaluated on the remaining data. In spatial block
 #' cross-validation, the observations are spatially divided into blocks, and each fold uses a different set
 #' of blocks for training and testing, ensuring that spatial dependencies are properly considered in the
 #' evaluation process. Evaluation metrics here employed are Precision, Sensitivity, Specificity and TSS.
