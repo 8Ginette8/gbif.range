@@ -9,8 +9,8 @@
 #' @param grps Input 3.
 #' @param tot Input 4.
 #' @keywords internal
-#' @export
 #' @importFrom stats aggregate
+#' @export
 optme=function(x,nms,grps,tot){
 
   # determine number of observations in each groups from initial step

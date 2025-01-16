@@ -111,7 +111,6 @@
 #' from: Mountain building, climate cooling and the richness of cold-adapted plants in the northern
 #' hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
 #' @example inst/examples/get_range_help.R
-#' @export
 #' @importFrom rnaturalearth ne_countries
 #' @importFrom methods is
 #' @importFrom terra vect crds intersect simplifyGeom buffer rast disagg aggregate rasterize crop
@@ -119,6 +118,7 @@
 #' @importFrom stats kmeans
 #' @importFrom mclust Mclust mclustBIC
 #' @importFrom ClusterR KMeans_rcpp
+#' @export
 get_range <- function (occ_coord = NULL, 
                        bioreg = NULL, 
                        bioreg_name = NULL, 

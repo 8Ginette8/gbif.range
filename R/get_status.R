@@ -46,9 +46,9 @@
 #' @seealso The rgbif package for additional and more general approaches on how to retrieve
 #' scientific names from the GBIF backbone taxonomy.
 #' @example inst/examples/get_status_help.R
-#' @export
 #' @importFrom rgbif name_backbone name_usage
 #' @importFrom methods is
+#' @export
 get_status=function(sp_name = NULL,
                     search = TRUE,
                     rank = NULL,

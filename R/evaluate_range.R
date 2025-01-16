@@ -27,11 +27,11 @@
 #' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
 #' ecoregional range maps for boosting taxonomic coverage in ecology and 
 #' conservation. Ecography, 12, e06794.
+#' @example inst/examples/evaluate_range_help.R
 #' @importFrom terra rast ext crs project aggregate rasterize crop extend resample values classify ncol nrow plot
 #' @importFrom sf st_read st_as_sf st_union st_drop_geometry st_transform
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics legend par
-#' @example inst/examples/evaluate_range_help.R
 #' @export
 evaluate_range <- function(root_dir = NULL,
                        valData_dir = NULL,

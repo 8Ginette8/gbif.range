@@ -18,8 +18,8 @@
 #' @return Data frame with two columns named 'x' and 'y' comprising
 #' the new set of observations filtered at grid resolution.
 #' @example inst/examples/obs_filter_help.R
-#' @export
 #' @importFrom terra rast cellFromXY xyFromCell
+#' @export
 obs_filter=function(gbifs,grid)
 {
     # Check 'ras' input

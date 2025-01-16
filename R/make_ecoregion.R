@@ -44,11 +44,11 @@
 #' Similarity search and applications. SISAP 2019. Lecture Notes in Computer Science (Vol.
 #' 11807, pp. 171–187). Springer. 
 #' @example inst/examples/make_ecoregion_help.R
-#' @export
 #' @importFrom terra rast nlyr writeRaster as.polygons vect buffer writeVector
 #' @importFrom sf st_make_valid st_as_sf
 #' @importFrom cluster clara
 #' @importFrom stats complete.cases
+#' @export
 make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
 {
     # Check ras input

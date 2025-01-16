@@ -28,11 +28,11 @@
 #' Model complexity affects species distribution projections under climate change.
 #' Journal of Biogeography, 47(1), 130-142.
 #' @example inst/examples/make_blocks_help.R
-#' @export
 #' @importFrom cluster clara
 #' @importFrom class knn
 #' @importFrom NMOF gridSearch
 #' @importFrom stats quantile
+#' @export
 make_blocks<-function(nfolds = 5,
                       df = data.frame(),
                       nblocks = nfolds*2,

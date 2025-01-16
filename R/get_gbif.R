@@ -114,10 +114,10 @@
 #' @seealso The (1) rgbif and (2) CoordinateCelaner packages for additional and more general
 #' approaches on (1) downloading GBIF observations and (2) post-filtering those.
 #' @example inst/examples/get_gbif_help.R
-#' @export
 #' @importFrom terra ext
 #' @importFrom rgbif name_backbone occ_data
 #' @importFrom CoordinateCleaner cd_ddmm cd_round
+#' @export
 get_gbif = function(sp_name = NULL,
 					search = TRUE,
 					rank = NULL,

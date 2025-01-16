@@ -32,8 +32,8 @@
 #' Novel methods to correct for observer and sampling bias in presence‐only species distribution models.
 #' Global Ecology and Biogeography, 30(11), 2312-2325.
 #' @example inst/examples/cv_range_help.R
-#' @export
 #' @importFrom terra ext extract
+#' @export
 cv_range <- function(range_object = NULL,
                      cv = 'random-cv',
                      nfolds = 5,
