@@ -128,7 +128,7 @@ Additonally, if the in-house ecoregions are too coarse for a given geographic re
 shp_lonlat = vect(paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp"))
 obs_arcto = get_gbif("Arctostaphylos alpinus",geo=shp_lonlat)
 
-# Create an ecoregion layer of 200 classes, based on 12 environmental spatial layers:
+# Create an ecoregion layer of 200 classes, based on two environmental spatial layers:
 rst = rast(paste0(system.file(package = "gbif.range"),"/extdata/rst.tif"))
 my_eco = make_ecoregion(rst,200)
 
