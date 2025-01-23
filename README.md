@@ -104,7 +104,7 @@ plot(countries,col = "#bcbddc")
 plot(range_tiger$range_output,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
 ```
 
-![image](https://github.com/user-attachments/assets/92e91d1a-dc54-43f2-ac39-46fb47b191ab)
+![image](https://github.com/user-attachments/assets/fbb0dd0f-d022-4ba1-9c7c-1b5b40db5e66)
 
 Here, *clustered_points_outlier = 4* was employed to remove US and European observations of *Panthera tigris* from the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
 
