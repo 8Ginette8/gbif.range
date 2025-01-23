@@ -75,9 +75,9 @@ plot(countries,col = "#bcbddc")
 points(obs_pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
-![image](https://user-images.githubusercontent.com/43674773/203770189-59a8cf8c-b2c2-4e85-ac87-90d8fd23f8fc.png)
+![image](https://github.com/user-attachments/assets/fcb2e2c5-919e-4bbc-ba5a-607dab7ce218)
 
-Note that an additional filtering needs here to be done as one observation is found in the 🔷US🔷. A lot of tigers are being captive in this country hence the recorded observation. Therefore using additional functions from *CoordinateCleaner* might solve this issue. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
+Note that the function did not manage to get rid of observations found in the US and germany (observations from zoos most likely). We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
 
 ``` r
 get_status("Panthera tigris",all=FALSE)
@@ -92,7 +92,8 @@ eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 # Range
 range_tiger = get_range(occ_coord = obs_pt,
                         bioreg = eco_terra,
-                        bioreg_name = "ECO_NAME")
+                        bioreg_name = "ECO_NAME",
+                        clustered_points_outlier = 4)
 ```
 
 Let's plot the result now:
@@ -104,7 +105,7 @@ plot(range_tiger$range_output,col = "#238b45",add = TRUE,axes = FALSE,legend = F
 
 ![image](https://user-images.githubusercontent.com/43674773/203769654-0f5d7182-2b96-43bb-ac5c-306b777be268.png)
 
-Interestingly no tiger range was found in the US. Our *get_range* default parameters allowed the one US record of *Panthera tigris* to be flagged and considered as an outlier. Note that five parameters need to be set in *get_range* and those should be carefully explored before any definite map process.
+Here, *clustered_points_outlier = 4* was employed to remove US and European observations of *Panthera tigris* from the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
 
 ### Available ecoregions
 
