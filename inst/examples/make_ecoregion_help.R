@@ -16,7 +16,8 @@ obs.arcto <- get_gbif("Arctostaphylos alpinus", geo = shp.lonlat)
 range.arcto <- get_range(obs.arcto, my.eco, "EcoRegion", res = 20)
 
 # Plot
-terra::plot(shp.lonlat, col = "grey")
-terra::plot(range.arcto[[2]], add = TRUE, col = rgb(0.2,1,0.2,0.5,1))
+countries <- terra::vect(rnaturalearth::ne_countries(returnclass = "sf")[1])
+terra::plot(terra::crop(countries,terra::ext(rst)),col = "#bcbddc")
+terra::plot(range.arcto$range_output,add = TRUE,col = "darkgreen",axes = FALSE,legend = FALSE)
 graphics::points(obs.arcto[,c("decimalLongitude","decimalLatitude")],
-	pch = 20, col = "orange1", cex = 1)
+	pch = 20,col = "#99340470",cex=1)

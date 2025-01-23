@@ -106,13 +106,19 @@ occ <- get_gbif("Panthera tigris",
 				          "MACHINE_OBSERVATION"))
 
 # Make range from occurance points
-range <- get_range(occ, eco_terra,"ECO_NAME")
+range <- get_range(occ, eco_terra,"ECO_NAME",clustered_points_outlier = 4)
+
 
 # Plot
-terra::plot(range[[2]], axes = FALSE, box = FALSE, legend=FALSE, col = "chartreuse4")
 
 # Plot political world boundaries
-terra::plot(rnaturalearth::ne_countries(returnclass = "sf")[1], add = TRUE, col = NA)
+countries <- terra::vect(rnaturalearth::ne_countries(returnclass = "sf")[1])
+terra::plot(terra::crop(countries,terra::ext(range$range_output)), col = "#bcbddc")
+
+# Plot range 
+terra::plot(range$range_output, axes = FALSE, box = FALSE, legend=FALSE,
+	col = "chartreuse4", add = TRUE)
+
 # Plot the occurance points
 graphics::points(occ[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex = 1.5)
 }

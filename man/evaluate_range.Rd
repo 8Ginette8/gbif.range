@@ -42,7 +42,7 @@ TSS = Sensitivity + Specificity - 1
 \description{
 Evaluates the precision (ppv), sensitivity, specificity and TSS of range maps
 based on validation data, such as predictions of species distributions (SDMs)
-or IUCN expert range maps. See Pinkert et al. (2023) for metrics and comparisions
+or IUCN expert range maps. See Pinkert et al. (2023) for metrics and comparisons
 of various types of range data, including expert range maps, SDMs and ecoregional
 range maps. Optional functionalities include the masking of the focal study 
 region (see 'mask') and aggregations of the input maps to different resolutions,
