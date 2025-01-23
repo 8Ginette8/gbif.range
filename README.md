@@ -151,13 +151,13 @@ Here we adapted the extra-parameters to the extent of the study area, e.g., (i) 
 
 ``` r
 # Plot
-plot(rst[[1]])
-plot(shp_lonlat,add = TRUE)
+plot(crop(countries,ext(rst)),col = "#bcbddc")
 plot(range_arcto$range_output,add = TRUE,col = "darkgreen",axes = FALSE,legend = FALSE)
 points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex=1)
 ```
 
-<img width=60% height=60% src="https://github.com/8Ginette8/gbif.range/assets/43674773/f2043983-0b1f-48aa-83bb-b36fcf3f6432">
+![image](https://github.com/user-attachments/assets/9af43f52-5a8a-4ac8-bb54-95f533c151df)
+
 
 ### Marine species
 
