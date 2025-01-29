@@ -182,7 +182,7 @@ range_dd2 = get_range(obs_dd,eco_marine,"PROVINCE")
 range_dd3 = get_range(obs_dd,eco_marine,"REALM")
 ```
 
-The three results are pretty similar because most of the observations are near the coast. But let's plot the third result:
+The three results are pretty similar because most of the observations are near the coast. But let's plot the first more fine result:
 
 ``` r
 plot(countries,col="#bcbddc")
