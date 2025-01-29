@@ -75,7 +75,7 @@ plot(countries,col = "#bcbddc")
 points(obs_pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
 
-![image](https://github.com/user-attachments/assets/2af40d4a-f1e5-47ba-a9ad-9e6da32a9df4)
+![image](https://github.com/user-attachments/assets/20adc5c6-f01a-4436-872f-5299eedb65a8)
 
 
 Note that the function did not manage to get rid of observations found in the US and germany (observations from zoos most likely). We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
