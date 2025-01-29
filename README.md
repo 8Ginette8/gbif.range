@@ -105,7 +105,7 @@ plot(countries,col = "#bcbddc")
 plot(range_tiger$range_output,col = "#238b45",add = TRUE,axes = FALSE,legend = FALSE)
 ```
 
-![image](https://github.com/user-attachments/assets/fbb0dd0f-d022-4ba1-9c7c-1b5b40db5e66)
+![image](https://github.com/user-attachments/assets/6cf6c8c3-7e0f-4754-9806-05821091173c)
 
 Here, *clustered_points_outlier = 4* was employed to remove US and European observations of *Panthera tigris* from the range process, and *degrees_outlier* slightly increased to *6* to account for more appart observations in the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
 
@@ -157,7 +157,7 @@ plot(range_arcto$range_output,add = TRUE,col = "darkgreen",axes = FALSE,legend =
 points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex=1)
 ```
 
-![image](https://github.com/user-attachments/assets/6cf6c8c3-7e0f-4754-9806-05821091173c)
+![image](https://github.com/user-attachments/assets/832e6d57-f7cb-402a-985e-fdf05d4f96aa)
 
 ### Marine species
 
