@@ -157,7 +157,7 @@ plot(range_arcto$range_output,add = TRUE,col = "darkgreen",axes = FALSE,legend =
 points(obs_arcto[,c("decimalLongitude","decimalLatitude")],pch = 20,col = "#99340470",cex=1)
 ```
 
-![image](https://github.com/user-attachments/assets/93435253-8687-43fd-934a-35d8dd8e4e56)
+![image](https://github.com/user-attachments/assets/6cf6c8c3-7e0f-4754-9806-05821091173c)
 
 ### Marine species
 
