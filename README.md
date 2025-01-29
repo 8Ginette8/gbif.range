@@ -94,7 +94,8 @@ eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 range_tiger = get_range(occ_coord = obs_pt,
                         bioreg = eco_terra,
                         bioreg_name = "ECO_NAME",
-                        clustered_points_outlier = 4)
+                        clustered_points_outlier = 4,
+                        degrees_outlier = 6)
 ```
 
 Let's plot the result now:
@@ -106,7 +107,7 @@ plot(range_tiger$range_output,col = "#238b45",add = TRUE,axes = FALSE,legend = F
 
 ![image](https://github.com/user-attachments/assets/fbb0dd0f-d022-4ba1-9c7c-1b5b40db5e66)
 
-Here, *clustered_points_outlier = 4* was employed to remove US and European observations of *Panthera tigris* from the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
+Here, *clustered_points_outlier = 4* was employed to remove US and European observations of *Panthera tigris* from the range process, and *degrees_outlier* slightly increased to 6 to account observations in the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
 
 ### Available ecoregions
 
