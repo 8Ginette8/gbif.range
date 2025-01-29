@@ -94,7 +94,8 @@ eco_terra = read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 range_tiger = get_range(occ_coord = obs_pt,
                         bioreg = eco_terra,
                         bioreg_name = "ECO_NAME",
-                        clustered_points_outlier = 4)
+                        clustered_points_outlier = 4,
+                        degrees_outlier = 6)
 ```
 
 Let's plot the result now:
