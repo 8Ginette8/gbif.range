@@ -142,7 +142,7 @@ range_arcto = get_range(occ_coord = obs_arcto,
                         bioreg_name = "EcoRegion",
                         res = 20,
                         degrees_outlier = 5,
-                        clustered_points_outlier = 2,
+                        clustered_points_outlier = 3,
                         buffer_width_point = 4, 
                         buffer_increment_point_line = 0.5, 
                         buffer_width_polygon = 0.1)
