@@ -70,7 +70,7 @@ obs_pt = get_gbif(sp_name = "Panthera tigris",
                   basis = c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION"))
 
 # Plot species records
-countries = vect(ne_countries(type = "countries",returnclass = "sf"))
+countries = ne_countries(type = "countries",returnclass = "sv")
 plot(countries,col = "#bcbddc")
 points(obs_pt[,c("decimalLongitude","decimalLatitude")],pch=20,col="#99340470",cex=1.5)
 ```
