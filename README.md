@@ -64,10 +64,8 @@ Let's download worldwide the records of *Panthera tigris* only based on true obs
 
 ``` r
 # Download
-obs_pt <- get_gbif(sp_name = "Panthera tigris",basis = c("OBSERVATION",
-                           "HUMAN_OBSERVATION",
-                           "MACHINE_OBSERVATION",
-                           "OCCURRENCE"))
+obs_pt <- get_gbif(sp_name = "Panthera tigris",
+                   basis = c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION","OCCURRENCE"))
 
 # Plot species records
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
