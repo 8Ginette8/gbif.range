@@ -11,7 +11,7 @@ block.pt <- make_blocks(nfolds = 5,
         nblocks = 10)
 
 # Plot one colour per fold
-countries <- terra::vect(rnaturalearth::ne_countries(type = "countries", returnclass = "sf"))
+countries <- rnaturalearth::ne_countries(type = "countries",returnclass = "sv")
 countries.focus <- terra::crop(countries, terra::ext(60,100,0,40))
 terra::plot(countries.focus, col = "#bcbddc")
 graphics::points(obs.pt[,c("decimalLongitude","decimalLatitude")],

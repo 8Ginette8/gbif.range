@@ -15,7 +15,7 @@ range <- get_range(occ, eco_terra,"ECO_NAME",clustered_points_outlier = 4)
 # Plot
 
 # Plot political world boundaries
-countries <- terra::vect(rnaturalearth::ne_countries(returnclass = "sf")[1])
+countries <- rnaturalearth::ne_countries(type = "countries",returnclass = "sv")
 terra::plot(terra::crop(countries,terra::ext(range$range_output)), col = "#bcbddc")
 
 # Plot range 
