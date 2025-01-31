@@ -1,16 +1,16 @@
 #read example shapefile
-shp.path <- paste0(system.file(package = "gbif.range"),"/extdata/shp_lonlat.shp")
+shp.path <- paste0(system.file(package = "gbif.range"), "/extdata/shp_lonlat.shp")
 shp.lonlat <- terra::vect(shp.path)
-rst.path <- paste0(system.file(package = "gbif.range"),"/extdata/rst_enl.tif")
+rst.path <- paste0(system.file(package = "gbif.range"), "/extdata/rst_enl.tif")
 rst <- terra::rast(rst.path)
 
 # Downloading in the European Alps the observations of two plant species
 obs.arcto <- get_gbif("Arctostaphylos alpinus", geo = shp.lonlat)
 obs.saxi <- get_gbif("Saxifraga cernua", geo = shp.lonlat)
 terra::plot(shp.lonlat)
-graphics::points(obs.arcto[,c("decimalLongitude","decimalLatitude")],
+graphics::points(obs.arcto[, c("decimalLongitude","decimalLatitude")],
 	pch = 20, col = "#238b4550", cex = 1)
-graphics::points(obs.saxi[,c("decimalLongitude","decimalLatitude")],
+graphics::points(obs.saxi[, c("decimalLongitude","decimalLatitude")],
 	pch = 20, col = "#99000d50", cex = 1)
 
 # rbind both datasets
