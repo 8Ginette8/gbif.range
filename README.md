@@ -74,7 +74,7 @@ terra::plot(countries, col = "#bcbddc")
 points(obs_pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1.5)
 ```
 
-![image](https://github.com/user-attachments/assets/2af40d4a-f1e5-47ba-a9ad-9e6da32a9df4)
+![image](https://github.com/user-attachments/assets/a45959a3-3b75-4272-92e3-d8a82447de17)
 
 
 Note that the function did not manage to get rid of observations found in the US and germany (observations from zoos most likely). We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
@@ -104,7 +104,8 @@ terra::plot(countries, col = "#bcbddc")
 terra::plot(range_tiger$range_output, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
 ```
 
-![image](https://github.com/user-attachments/assets/6cf6c8c3-7e0f-4754-9806-05821091173c)
+![image](https://github.com/user-attachments/assets/a723a219-2412-4034-bb0b-11ca46658f31)
+
 
 Here, *clustered_points_outlier = 4* was employed to remove US and European observations of *Panthera tigris* from the range process, and *degrees_outlier* slightly increased to *6* to account for more appart observations in the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
 
