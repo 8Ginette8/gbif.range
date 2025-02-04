@@ -2,23 +2,23 @@
 # EcoRM evaluation at different resolutions (>4min runtime)
 root.dir  <- list.files(system.file(package = "gbif.range"), pattern = "extdata", full.names = TRUE)
 
-res1km <- evaluate_range(root.dir = root.dir, 
-           valData.dir = "SDM", 
-           ecoRM.dir = "EcoRM",
+res1km <- evaluate_range(root_dir = root.dir, 
+           valData_dir = "SDM", 
+           ecoRM_dir = "EcoRM",
            verbose = TRUE, 
-           print.map = TRUE,
-           valData.type = "TIFF", 
+           print_map = TRUE,
+           valData_type = "TIFF", 
            mask = NULL, 
-           res.fact = NULL)
+           res_fact = NULL)
 
-res10km <- evaluate_range(root.dir = root.dir, 
-                   valData.dir = "SDM", 
-                   ecoRM.dir = "EcoRM",
+res10km <- evaluate_range(root_dir = root.dir, 
+                   valData_dir = "SDM", 
+                   ecoRM_dir = "EcoRM",
                    verbose = TRUE, 
-                   print.map = TRUE,
-                   valData.type = "TIFF", 
+                   print_map = TRUE,
+                   valData_type = "TIFF", 
                    mask = NULL, 
-                   res.fact = 10)
+                   res_fact = 10)
 
 
 # Extract and plot a specific overlay map
