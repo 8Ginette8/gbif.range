@@ -140,12 +140,7 @@ my_eco <- make_ecoregion(rst, 200)
 range_arcto <- get_range(occ_coord = obs_arcto,
                         bioreg = my_eco,
                         bioreg_name = "EcoRegion",
-                        res = 20,
-                        degrees_outlier = 5,
-                        clustered_points_outlier = 3,
-                        buffer_width_point = 4, 
-                        buffer_increment_point_line = 0.5, 
-                        buffer_width_polygon = 0.1)
+                        res = 20)
 ```
 
 Here we adapted the extra-parameters to the extent of the study area, e.g., (i) consider points as outliers (a maximum group of three points) if this bunch is away > 555km (1° ~ 111km) from the other cluster points and (ii) apply a buffer of ~10km around the drawn polygons. ⚠️It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
