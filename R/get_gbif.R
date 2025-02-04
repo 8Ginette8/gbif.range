@@ -62,11 +62,11 @@
 #' Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
 #' https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html.
 #' @param add_infos Character. Infos that may be added to the default output information.
-#' List of IDs may be found at: https://www.gbif.org/developer/occurrence.
+#' List of IDs may be found at: https://techdocs.gbif.org/en/data-use/download-formats.
 #' Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
 #' 'acceptedScientificName', 'individualCount', 'decimalLatitude', 'decimalLongitude',
 #' 'basisOfRecord', 'coordinateUncertaintyInMeters', 'countryCode', 'country', 'year', 'datasetKey', 
-#' 'institutionCode', 'publishingOrgKey', 'taxonomicStatus' and 'taxonRank'. 
+#' 'institutionCode', 'publishingOrgKey', 'taxonomicStatus', 'taxonRank' and 'degreeOfEstablishment'. 
 #' @param time_period Numerical vector. Observations will be downloaded according to the chosen
 #' year range. Default is c(1000,3000). Observations with year = NA are kept by default.
 #' @param identic_xy Logical. Should records with identical xy be kept?
