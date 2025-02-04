@@ -20,6 +20,8 @@ get_gbif(
   no_xy = FALSE,
   basis = c("OBSERVATION", "HUMAN_OBSERVATION", "MACHINE_OBSERVATION", "OCCURRENCE",
     "MATERIAL_CITATION", "MATERIAL_SAMPLE", "LITERATURE"),
+  establishment = c("native", "casual", "released", "reproducing", "established",
+    "colonising", "invasive", "widespreadInvasive"),
   add_infos = NULL,
   time_period = c(1000, 3000),
   identic_xy = FALSE,
@@ -88,12 +90,17 @@ specimens and unknown observations.
 Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
 https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html.}
 
+\item{establishment}{Character. Is the individual native, captive or else? Defaut is
+native, casual, released, reproducing, established, colonising and absence of information.
+See https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment for other managed establishments:
+managed, captive, cultivated, released, unestablished and failing}
+
 \item{add_infos}{Character. Infos that may be added to the default output information.
 List of IDs may be found at: https://www.gbif.org/developer/occurrence.
 Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
 'acceptedScientificName', 'individualCount', 'decimalLatitude', 'decimalLongitude',
 'basisOfRecord', 'coordinateUncertaintyInMeters', 'countryCode', 'country', 'year', 'datasetKey', 
-'institutionCode', 'publishingOrgKey', 'taxonomicStatus' and 'taxonRank'.}
+'institutionCode', 'publishingOrgKey', 'taxonomicStatus', 'taxonRank' and 'degreeOfEstablishment'.}
 
 \item{time_period}{Numerical vector. Observations will be downloaded according to the chosen
 year range. Default is c(1000,3000). Observations with year = NA are kept by default.}

@@ -61,8 +61,12 @@
 #' specimens and unknown observations.
 #' Description may be found here: https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
 #' https://gbif.github.io/parsers/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html.
+#' @param establishment Character. Is the individual native, captive or else? Defaut is
+#' native, casual, released, reproducing, established, colonising and absence of information.
+#' See https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment for other managed establishments:
+#' managed, captive, cultivated, released, unestablished and failing
 #' @param add_infos Character. Infos that may be added to the default output information.
-#' List of IDs may be found at: https://techdocs.gbif.org/en/data-use/download-formats.
+#' List of IDs may be found at: https://www.gbif.org/developer/occurrence.
 #' Default IDs contain 'taxonKey', 'scientificName', 'acceptedTaxonKey',
 #' 'acceptedScientificName', 'individualCount', 'decimalLatitude', 'decimalLongitude',
 #' 'basisOfRecord', 'coordinateUncertaintyInMeters', 'countryCode', 'country', 'year', 'datasetKey', 
@@ -133,6 +137,8 @@ get_gbif = function(sp_name = NULL,
 					no_xy = FALSE,
 					basis =  c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION','OCCURRENCE',
 						'MATERIAL_CITATION', 'MATERIAL_SAMPLE','LITERATURE'),
+					establishment = c('native','casual','released','reproducing','established',
+						'colonising','invasive','widespreadInvasive'),
 					add_infos = NULL,
 					time_period = c(1000,3000),
 					identic_xy = FALSE,
@@ -174,7 +180,7 @@ get_gbif = function(sp_name = NULL,
 	gbif_info = c('taxonKey','scientificName','acceptedTaxonKey','acceptedScientificName',
 		'individualCount','occurrenceStatus','establishmentMeans','decimalLatitude','decimalLongitude',
 		'basisOfRecord','coordinateUncertaintyInMeters','countryCode','country', 'year','datasetKey',
-		'institutionCode','publishingOrgKey','taxonomicStatus','taxonRank',add_infos)
+		'institutionCode','publishingOrgKey','taxonomicStatus','taxonRank','degreeOfEstablishment',add_infos)
 	gbif_info = gbif_info[order(gbif_info)]
 
 		# For 'cd_ddmm'
@@ -591,6 +597,21 @@ get_gbif = function(sp_name = NULL,
 		# Removal summary
 	if (any(names(table(id_basis))%in%FALSE)){
 		removed = table(id_basis)[1]
+		cat("Records removed:",removed,"\n")
+	} else {
+		cat("Records removed:",0,"\n")
+	}
+
+
+	############ 4.5) Select establishment of records
+	cat("---> Establishment of records selection...","\n")
+
+	id_esta = gbif_correct$degreeOfEstablishment %in% establishment | is.na(gbif_correct$degreeOfEstablishment)
+	gbif_correct = gbif_correct[id_esta,]
+
+		# Removal summary
+	if (any(names(table(id_esta))%in%FALSE)){
+		removed = table(id_esta)[1]
 		cat("Records removed:",removed,"\n")
 	} else {
 		cat("Records removed:",0,"\n")
