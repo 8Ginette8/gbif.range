@@ -11,7 +11,7 @@
 #' region (see 'mask') and aggregations of the input maps to different resolutions,
 #' given the importance of these factors for specific applications (Pinkert et al., 2023).
 #' @param root_dir Character. Working directory to load and save target files.
-#' @param valData_dir Numeric. Directory to validation data.
+#' @param valData_dir Numeric. Directory to validation spatial data (must have same name as data in ecoRM_dir)
 #' @param ecoRM_dir  Numeric. Directory to range maps (generated with get_range).
 #' @param valData_type Character. Type of valData - either "SHP" or "TIFF".
 #' @param verbose Logical (optional). Report details while running.

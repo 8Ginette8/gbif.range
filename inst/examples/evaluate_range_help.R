@@ -2,7 +2,7 @@
 # EcoRM evaluation at different resolutions (>4min runtime)
 root.dir  <- list.files(system.file(package = "gbif.range"), pattern = "extdata", full.names = TRUE)
 
-res1km <- evaluate_range(root_dir = root.dir, 
+res5km <- evaluate_range(root_dir = root.dir, 
            valData_dir = "SDM", 
            ecoRM_dir = "EcoRM",
            verbose = TRUE, 
@@ -18,7 +18,7 @@ res10km <- evaluate_range(root_dir = root.dir,
                    print_map = TRUE,
                    valData_type = "TIFF", 
                    mask = NULL, 
-                   res_fact = 10)
+                   res_fact = 2)
 
 
 # Extract and plot a specific overlay map
@@ -48,12 +48,12 @@ legend("bottomright",
 
 ## Compare sensitivity and precision outputs ##
 # Calculate overall performance (e.g. mean sensitivity & precision)
-res1km$df_eval$Mean_SenPrec <- (res1km$df_eval$Sen_ecoRM + res1km$df_eval$Prec_ecoRM) / 2
+res5km$df_eval$Mean_SenPrec <- (res5km$df_eval$Sen_ecoRM + res5km$df_eval$Prec_ecoRM) / 2
 res10km$df_eval$Mean_SenPrec <- (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Prec_ecoRM) / 2
 
 # Combine the data frames and add a Resolution column
 combined_df <- rbind(
-  cbind(res1km$df_eval, Resolution = "1km"),
+  cbind(res5km$df_eval, Resolution = "1km"),
   cbind(res10km$df_eval, Resolution = "10km")
 )
 
