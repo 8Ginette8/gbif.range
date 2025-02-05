@@ -44,7 +44,7 @@ background points is first generated over the study area extent and used as pseu
 \examples{
 \dontrun{
 # Load available ecoregions
-eco_terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # First download the worldwide observations of Panthera tigris from GBIF
 occ <- get_gbif(sp_name = "Panthera tigris",
@@ -55,9 +55,9 @@ occ <- get_gbif(sp_name = "Panthera tigris",
                              "OCCURRENCE"))
 
 # Make range from occurance points
-range <- get_range(occ, eco_terra,"ECO_NAME")
+range <- get_range(occ, eco.terra,"ECO_NAME")
 
-cv_range <- cv_range(range_object = range, cv = 'block-cv', nfolds = 5, nblocks = 2)
+cv_range(range_object = range, cv = 'block-cv', nfolds = 5, nblocks = 2)
 }
 }
 \references{

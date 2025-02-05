@@ -64,14 +64,14 @@ Let's download worldwide the records of *Panthera tigris* only based on true obs
 
 ``` r
 # Download
-obs_pt <- get_gbif(sp_name = "Panthera tigris",
+obs.pt <- get_gbif(sp_name = "Panthera tigris",
                    time_period = c(2000, 3000),
                    basis = c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION","OCCURRENCE"))
 
 # Plot species records
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
 terra::plot(countries, col = "#bcbddc")
-points(obs_pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1.5)
+points(obs.pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1.5)
 ```
 
 ![image](https://github.com/user-attachments/assets/a45959a3-3b75-4272-92e3-d8a82447de17)
@@ -87,11 +87,11 @@ Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) a
 
 ``` r
 # Download ecoregion and read
-eco_terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # Range
-range_tiger <- get_range(occ_coord = obs_pt,
-                        bioreg = eco_terra,
+range.tiger <- get_range(occ_coord = obs.pt,
+                        bioreg = eco.terra,
                         bioreg_name = "ECO_NAME",
                         degrees_outlier = 6,
                         clustered_points_outlier = 4)
@@ -101,7 +101,7 @@ Let's plot the result now:
 
 ``` r
 terra::plot(countries, col = "#bcbddc")
-terra::plot(range_tiger$range_output, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
+terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
 ```
 
 ![image](https://github.com/user-attachments/assets/a723a219-2412-4034-bb0b-11ca46658f31)
@@ -128,17 +128,17 @@ Additonally, if the in-house ecoregions are too coarse for a given geographic re
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
-shp_lonlat <- terra::vect(paste0(system.file(package = "gbif.range"), "/extdata/shp_lonlat.shp"))
-obs_arcto <- get_gbif("Arctostaphylos alpinus", geo = shp_lonlat)
+shp.lonlat <- terra::vect(paste0(system.file(package = "gbif.range"), "/extdata/shp_lonlat.shp"))
+obs.arcto <- get_gbif("Arctostaphylos alpinus", geo = shp.lonlat)
 
 # Create an ecoregion layer of 200 classes, based on two environmental spatial layers:
 rst <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
-my_eco <- make_ecoregion(rst, 200)
+my.eco <- make_ecoregion(rst, 200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
-range_arcto <- get_range(occ_coord = obs_arcto,
-                        bioreg = my_eco,
+range.arcto <- get_range(occ_coord = obs.arcto,
+                        bioreg = my.eco,
                         bioreg_name = "EcoRegion",
                         res = 20)
 ```
@@ -148,8 +148,8 @@ Here we adapted the extra-parameters to the extent of the study area, e.g., (i) 
 ``` r
 # Plot
 terra::plot(crop(countries,ext(rst)), col = "#bcbddc")
-terra::plot(range_arcto$range_output, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
-points(obs_arcto[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
+terra::plot(range.arcto$rangeOutput, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
+points(obs.arcto[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
 ```
 
 ![image](https://github.com/user-attachments/assets/832e6d57-f7cb-402a-985e-fdf05d4f96aa)
@@ -161,7 +161,7 @@ Let's reapply the same process as for Panthera tigris, but with the marine speci
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
 
 ``` r
-obs_dd <- get_gbif("Delphinus delphis", occ_samp = 1000) # Here the example is a sample of 1000 observations per geographic tile
+obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000) # Here the example is a sample of 1000 observations per geographic tile
 get_status("Delphinus delphis", all = TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
 ```
 
@@ -169,20 +169,20 @@ Let's now generate three range maps of *Delphinus delphis* using the *eco.marine
 
 ``` r
 # Download ecoregion and read
-eco_marine <- read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
+eco.marine <- read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
 
 # Range from different levels
-range_dd1 <- get_range(obs_dd, eco_marine, "ECOREGION")
-range_dd2 <- get_range(obs_dd, eco_marine, "PROVINCE")
-range_dd3 <- get_range(obs_dd, eco_marine, "REALM")
+range.dd1 <- get_range(obs.dd, eco.marine, "ECOREGION")
+range.dd2 <- get_range(obs.dd, eco.marine, "PROVINCE")
+range.dd3 <- get_range(obs.dd, eco.marine, "REALM")
 ```
 
 The three results are pretty similar because most of the observations are near the coast. But let's plot the first more fine result:
 
 ``` r
 terra::plot(countries, col = "#bcbddc")
-terra::plot(range_dd3$range_output, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
-points(obs_dd[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
+terra::plot(range.dd3$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
+points(obs.dd[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
 ```
 
 <img width=80% height=80% src="https://github.com/8Ginette8/gbif.range/assets/43674773/a84c5dcf-f2c7-4722-b2ed-d13502d45eb1">

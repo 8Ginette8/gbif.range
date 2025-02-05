@@ -23,7 +23,7 @@
 #' @example inst/examples/get_doi_help.R
 #' @importFrom rgbif derived_dataset
 #' @export
-get_doi = function(gbifs = NULL,
+get_doi <- function(gbifs = NULL,
 				   title = NULL,
 				   description = NULL,
 				   source_url = "https://example.com/", 
@@ -32,16 +32,21 @@ get_doi = function(gbifs = NULL,
 				   ...) {
 
 	# If data.frame, transform in list for code homogenisation
-	if (class(gbifs)%in%"data.frame") {gbifs=list(gbifs)}
+	if (class(gbifs) %in% "data.frame") {gbifs <- list(gbifs)}
 
 	# Combine everything
-	all_obs = do.call("rbind",gbifs)
+	all.obs <- do.call("rbind", gbifs)
 
 	# Pre-compile a bit
-	d_target = table(all_obs$datasetKey)
-	d_summary = data.frame(datasetKey=names(d_target),count=as.numeric(d_target))
+	d.target <- table(all.obs$datasetKey)
+	d.summary <- data.frame(datasetKey = names(d.target), count = as.numeric(d.target))
 
 	# Run the doi function from rgbif
-	rgbif::derived_dataset(citation_data=d_summary,title=title,
-		description=description,source_url=source_url,user=user,pwd=pwd,...)
+	rgbif::derived_dataset(citation_data = d.summary,
+						   title = title,
+						   description = description,
+						   source_url = source_url,
+						   user = user,
+						   pwd = pwd,
+						   ...)
 }

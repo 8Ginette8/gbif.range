@@ -11,25 +11,25 @@
 #' @keywords internal
 #' @importFrom stats aggregate
 #' @export
-optme=function(x,nms,grps,tot){
+optme <- function(x, nms, grps, tot){
 
   # determine number of observations in each groups from initial step
-  grp = sapply(grps,"sum")
+  grp <- sapply(grps,"sum")
 
   # aggregate remaining observations by suggested cluster grouping
-  x = as.numeric(as.character(x))
-  agg.vals = stats::aggregate(nms,by=list(x),FUN="sum")
+  x <- as.numeric(as.character(x))
+  agg.vals <- stats::aggregate(nms, by = list(x), FUN = "sum")
 
   for (i in 1:length(grp)){
 
-    if (i%in%agg.vals$Group.1){
+    if (i %in% agg.vals$Group.1){
       
-      grp[i] = agg.vals$x[which(agg.vals$Group.1==i)]+grp[i]
+      grp[i] <- agg.vals$x[which(agg.vals$Group.1 == i)] + grp[i]
     }
   }
 
   # Calculate difference from equal distribution
-  pen = (grp-tot/length(grp))^2
+  pen <- (grp - tot / length(grp))^2
 
   return(sum(pen))
 

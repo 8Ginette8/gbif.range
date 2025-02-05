@@ -49,22 +49,22 @@
 #' @importFrom cluster clara
 #' @importFrom stats complete.cases
 #' @export
-make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
+make_ecoregion <- function(env = NULL, nclass = NULL, path = "", name = "", raster = FALSE, ...)
 {
     # Check ras input
-    if(!(class(env)%in%c("SpatRaster"))) {
-      env = terra::rast(env)
+    if(!(class(env) %in% c("SpatRaster"))) {
+      env <- terra::rast(env)
     }
 
     # 'nclass' must be at least equal to '2'
-    if (nclass<=1 || is.null(nclass)){
+    if (nclass <= 1 || is.null(nclass)){
       stop("'nclust' must be equal to 2 or more...!")
     }
 
     # env must be of a specific class
-    if (!(class(env)%in%c("SpatRaster","RasterBrick","RasterStack"))){
-      stop("'env' must be an object of class 'SpatRaster','RasterBrick' or 'RasterStack'...!")
-    } else if (is.null(env) || terra::nlyr(env)%in%1){
+    if (!(class(env) %in% c("SpatRaster", "RasterBrick", "RasterStack"))){
+      stop("'env' must be an object of class 'SpatRaster', 'RasterBrick' or 'RasterStack'...!")
+    } else if (is.null(env) || terra::nlyr(env) %in%1 ){
       stop("'ras' must include more than one raster layer...!")
     }
 
@@ -72,43 +72,43 @@ make_ecoregion=function(env=NULL,nclass=NULL,path="",name="",raster=FALSE,...)
     cat("CLARA algorithm processing...","\n")
   
     # Convert raster in the right CLARA format
-    id_toReplace = stats::complete.cases(env[])
-    toClara = env[][id_toReplace,]
+    id.toReplace <- stats::complete.cases(env[])
+    toClara <- env[][id.toReplace, ]
 
     # Run CLARA and assign results to right pixels
-    blocks = cluster::clara(toClara,nclass,...)
-    toNew_ras = env[[1]]
-    toNew_ras[][id_toReplace] = blocks$clustering
-    toNew_ras[][!id_toReplace] = NA
+    blocks <- cluster::clara(toClara, nclass, ...)
+    toNew.ras <- env[[1]]
+    toNew.ras[][id.toReplace] <- blocks$clustering
+    toNew.ras[][!id.toReplace] <- NA
 
     # Save in raster or shapefile
-    if (raster&path=="") {
-      return(toNew_ras)
+    if (raster&path == "") {
+      return(toNew.ras)
 
-    } else if (raster&path!="") {
-      terra::writeRaster(toNew_ras,paste0(path,"/",name,".tif"),overwrite=TRUE,
-        datatype="INT4S",gdal=c("COMPRESS=DEFLATE","PREDICTOR=2"))
+    } else if (raster&path != "") {
+      terra::writeRaster(toNew.ras, paste0(path ,"/", name, ".tif"), overwrite = TRUE,
+        datatype = "INT4S", gdal = c("COMPRESS=DEFLATE", "PREDICTOR=2"))
     
     } else {
 
       # Change raster into a shapefile
-      topoly = terra::as.polygons(toNew_ras,dissolve=TRUE)
+      topoly <- terra::as.polygons(toNew.ras, dissolve = TRUE)
 
       # For now, because get_range not yet compatible with Spatvect
       cat("Generating polygons...","\n")
-      names(topoly)="CLARA"
-      topoly$EcoRegion=as.character(1:nrow(data.frame(topoly)))
+      names(topoly) <- "CLARA"
+      topoly$EcoRegion <- as.character(1:nrow(data.frame(topoly)))
 
       # Testing if polygons are valid and correct if not
-      topoly = terra::vect(sf::st_make_valid(sf::st_as_sf(topoly)))
-      topoly = terra::buffer(topoly,width=0) 
+      topoly <- terra::vect(sf::st_make_valid(sf::st_as_sf(topoly)))
+      topoly <- terra::buffer(topoly, width = 0) 
 
-      if (!raster&path=="") {
+      if (!raster&path == "") {
         return(topoly)
       
       } else {
-        terra::writeVector(topoly,paste0(path,"/",name,".shp"),overwrite=TRUE,
-          filetype="ESRI Shapefile",layer=name)
+        terra::writeVector(topoly, paste0(path, "/", name, ".shp"), overwrite = TRUE,
+          filetype = "ESRI Shapefile", layer = name)
       }
     }
 }

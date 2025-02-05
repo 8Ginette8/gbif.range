@@ -20,34 +20,34 @@
 #' @example inst/examples/obs_filter_help.R
 #' @importFrom terra rast cellFromXY xyFromCell
 #' @export
-obs_filter=function(gbifs,grid)
+obs_filter <- function(gbifs, grid)
 {
     # Check 'ras' input
-    if(!(class(grid)%in%c("SpatRaster"))) {
-      grid = terra::rast(grid)
+    if(!(class(grid) %in% c("SpatRaster"))) {
+      grid <- terra::rast(grid)
     }
 
     # Check number of species in 'get_gbif' output
-    n_sp = unique(gbifs$input.search)
+    n.sp <- unique(gbifs$input.search)
 
     # Loop over species
-    out_sp =
-    lapply(n_sp,function(x)
+    out.sp <-
+    lapply(n.sp, function(x)
     {
       # Extract coordinates of the species
-      coords = gbifs[gbifs$input.search%in%x,c("decimalLongitude","decimalLatitude")]
+      coords <- gbifs[gbifs$input.search %in% x, c("decimalLongitude", "decimalLatitude")]
 
       # Extract related cells
-      posP = terra::cellFromXY(grid,as.matrix(coords))
+      posP <- terra::cellFromXY(grid, as.matrix(coords))
 
       # Extract one observation per grid cell
-      new_oxy = data.frame(Species=x,terra::xyFromCell(grid,unique(posP)))
+      new.oxy <- data.frame(Species = x, terra::xyFromCell(grid, unique(posP)))
 
       # Return
-      return(new_oxy)
+      return(new.oxy)
     })
 
     # Compile and return
-    final_out = do.call("rbind",out_sp)
-    return(final_out)
+    final.out <- do.call("rbind", out.sp)
+    return(final.out)
 }

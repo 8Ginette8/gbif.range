@@ -122,7 +122,7 @@
 #' @importFrom rgbif name_backbone occ_data
 #' @importFrom CoordinateCleaner cd_ddmm cd_round
 #' @export
-get_gbif = function(sp_name = NULL,
+get_gbif <- function(sp_name = NULL,
 					search = TRUE,
 					rank = NULL,
 					phylum = NULL,
@@ -155,7 +155,7 @@ get_gbif = function(sp_name = NULL,
 	######################################################
 
 
-	if (is.null(sp_name)|is.na(sp_name)) {
+	if (is.null(sp_name) | is.na(sp_name)) {
 		stop("Given 'sp_name' is NA or NULL, a string must be provided...")
 	}
 
@@ -166,38 +166,39 @@ get_gbif = function(sp_name = NULL,
 
 
 	# For precision
-	deci_preci = list(seq(0,10,1),rev(0.000011 * 10^(0:10)))
-	deci_chosen = deci_preci[[1]][which(grain>=deci_preci[[2]])[1]]
+	deci.preci <- list(seq(0,10,1), rev(0.000011 * 10^(0:10)))
+	deci.chosen <- deci.preci[[1]][which(grain >= deci.preci[[2]])[1]]
 
 	# For study area
 	if (!is.null(geo)) {
-		if (!(class(geo)%in%"SpatExtent")) {geo = terra::ext(geo)}
+		if (!(class(geo) %in% "SpatExtent")) {geo <- terra::ext(geo)}
 	} else {
-		geo = terra::ext(-180,180,-90,90)
+		geo <- terra::ext(-180, 180, -90, 90)
 	}
 
 	# For fields
-	gbif_info = c('taxonKey','scientificName','acceptedTaxonKey','acceptedScientificName',
-		'individualCount','occurrenceStatus','establishmentMeans','decimalLatitude','decimalLongitude',
-		'basisOfRecord','coordinateUncertaintyInMeters','countryCode','country', 'year','datasetKey',
-		'institutionCode','publishingOrgKey','taxonomicStatus','taxonRank','degreeOfEstablishment',add_infos)
-	gbif_info = gbif_info[order(gbif_info)]
+	gbif.info <- c('taxonKey', 'scientificName', 'acceptedTaxonKey', 'acceptedScientificName',
+		'individualCount', 'occurrenceStatus', 'establishmentMeans', 'degreeOfEstablishment', 
+		'decimalLatitude', 'decimalLongitude', 'basisOfRecord', 'coordinateUncertaintyInMeters',
+		'countryCode', 'country', 'year', 'datasetKey', 'institutionCode', 'publishingOrgKey',
+		'taxonomicStatus', 'taxonRank', add_infos)
+	gbif.info <- gbif.info[order(gbif.info)]
 
 		# For 'cd_ddmm'
-	diff_records = list(c(0,5000,100000 * 10^(0:9)),rev(0.00000000001 * 10^(0:11)))
-	xy_span = 10*10^(-(deci_chosen-1))
+	diff.records <- list(c(0,5000,100000 * 10^(0:9)),rev(0.00000000001 * 10^(0:11)))
+	xy.span <- 10 * 10^(-(deci.chosen - 1))
 
 		# Create an empty ouptut
-	e_output = data.frame(matrix(ncol=length(gbif_info),nrow=0,
-		dimnames=list(NULL,gbif_info)))
+	e.output <- data.frame(matrix(ncol = length(gbif.info), nrow = 0,
+		dimnames = list(NULL, gbif.info)))
 
 
 	# Set geo.ref
-	geo_ref = paste0("POLYGON((",geo$xmin," ",geo$ymin,", ",
-							 	geo$xmax," ",geo$ymin,", ",
-							  geo$xmax," ",geo$ymax,", ",
-							  geo$xmin," ",geo$ymax,", ",
-							  geo$xmin," ",geo$ymin,"))")
+	geo.ref <- paste0("POLYGON((", geo$xmin, " ", geo$ymin, ", ",
+							 	geo$xmax, " ", geo$ymin, ", ",
+							  geo$xmax, " ", geo$ymax, ", ",
+							  geo$xmin, " ", geo$ymax, ", ",
+							  geo$xmin, " ", geo$ymin, "))")
 
 
 	######################################################
@@ -207,7 +208,7 @@ get_gbif = function(sp_name = NULL,
 
 	if (!search){
     # Search input name via fuzzy match and direct search
-    bone_search = rgbif::name_backbone(sp_name,
+    bone.search <- rgbif::name_backbone(sp_name,
                                      rank = rank,
                                      phylum = phylum,
                                      class = class,
@@ -217,118 +218,122 @@ get_gbif = function(sp_name = NULL,
                                      strict = FALSE)
   } else {
     # Search input name via strict match and refined search
-    bone_search = rgbif::name_backbone(sp_name,
+    bone.search <- rgbif::name_backbone(sp_name,
                                        verbose = TRUE,
                                        strict = TRUE)
 
-    q_crit = !sapply(list(rank,phylum,class,order,family),is.null) 
+    q.crit <- !sapply(list(rank,phylum,class,order,family),is.null) 
 
     # Filter by given criterias if results
-    if (!bone_search$matchType[1]%in%"NONE"){ 
-      if (any(q_crit)){
-        id_crit = c("rank","phylum","class","order","family")[q_crit]
-        p_crit = unlist(list(rank,phylum,class,order,family)[q_crit])
-        n_test = id_crit%in%names(bone_search)
-        if (any(n_test)){
+    if (!bone.search$matchType[1] %in% "NONE"){ 
+      if (any(q.crit)){
+        id.crit <- c("rank", "phylum", "class", "order", "family")[q.crit]
+        p.crit <- unlist(list(rank, phylum, class, order, family)[q.crit])
+        n.test <- id.crit %in% names(bone.search)
+        if (any(n.test)){
           # selecting which
-          id_crit2 = id_crit[n_test]
-          p_crit2 = p_crit[n_test]
+          id.crit2 <- id.crit[n.test]
+          p.crit2 <- p.crit[n.test]
           # Apply the rigth criterias
-          for (i in 1:length(id_crit2)){
-            bone_search = bone_search[c(bone_search[,id_crit2[i]])[[1]]%in%p_crit2[i],]
-            if (nrow(bone_search)==0){
-              bone_search = data.frame(matchType="NONE")
+          for (i in 1:length(id.crit2)){
+            bone.search <- bone.search[c(bone.search[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
+            if (nrow(bone.search) == 0){
+              bone.search <- data.frame(matchType = "NONE")
             }
           }
         }
-        if (!all(n_test)){
-          pp = paste(id_crit[!n_test],collapse=", ")
-          warning(paste0("'",pp,"' level(s) not available for this taxa in GBIF, could not be employed..."))
+        if (!all(n.test)){
+          pp <- paste(id.crit[!n.test], collapse = ", ")
+          warning(paste0("'", pp, "' level(s) not available for this taxa in GBIF, could not be employed..."))
         }
       }
     }
     
     # Normal procedure with or without criterias
-    if (nrow(bone_search)>1){
-      if (all(!bone_search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"))){
-        cat("Not match found...","\n")
-        return(e_output)
+    if (nrow(bone.search) > 1){
+      if (all(!bone.search$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
+        cat("Not match found...", "\n")
+        return(e.output)
 
       } else {
-        s_keep = bone_search[bone_search$rank%in%c("SPECIES","SUBSPECIES","VARIETY"),]
-        s_keep = s_keep[s_keep$status%in%c("ACCEPTED","SYNONYM"),]
-        if (nrow(s_keep)==0){
-          cat("Not match found...","\n")
-          return(e_output)
+        s.keep <- bone.search[bone.search$rank %in% c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
+        s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
+        if (nrow(s.keep) == 0){
+          cat("Not match found...", "\n")
+          return(e.output)
 
-        } else if (nrow(s_keep)>1){
+        } else if (nrow(s.keep) > 1){
 
           # If we only find subpsecies and variety, we need to (default) prioritize
-          if (all(s_keep$rank%in%c("VARIETY","SUBSPECIES"))){
-            if ("var."%in%strsplit(sp_name," ")[[1]]){
-              bone_search = s_keep[s_keep$rank%in%"VARIETY",]
-              if (nrow(bone_search)==0){
-                bone_search = s_keep[s_keep$rank%in%"SUBSPECIES",]
+          if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
+            if ("var." %in% strsplit(sp_name," ")[[1]]){
+              bone.search <- s.keep[s.keep$rank %in% "VARIETY", ]
+              if (nrow(bone.search) == 0){
+                bone.search <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
               }
 
             } else {
-              bone_search = s_keep[s_keep$rank%in%"SUBSPECIES",]
+              bone.search <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
             }
 
           } else {
-            bone_search = s_keep[s_keep$rank%in%"SPECIES",]
+            bone.search <- s.keep[s.keep$rank %in% "SPECIES", ]
           }
 
-          coltax = c("familyKey","orderKey","classKey","phylumKey")%in%colnames(bone_search)
-          key_test = bone_search[,c("familyKey","orderKey","classKey","phylumKey")[coltax]]
+          coltax <- c("familyKey", "orderKey", "classKey", "phylumKey") %in% colnames(bone.search)
+          key.test <- bone.search[ ,c("familyKey", "orderKey", "classKey", "phylumKey")[coltax]]
 
-          if (any(bone_search$status%in%"ACCEPTED") & length(unique(key_test[,1]))==1){
-            bone_search = bone_search[bone_search$status%in%"ACCEPTED",]
+          if (any(bone.search$status %in% "ACCEPTED") & length(unique(key.test[, 1])) == 1){
+            bone.search <- bone.search[bone.search$status %in% "ACCEPTED", ]
           }
 
         } else {
-          bone_search = s_keep
+          bone.search <- s.keep
         }
         # If not the same species overall return empty
-        s_usp = length(unique(bone_search$speciesKey))==1
-        if (!s_usp){
+        s.usp <- length(unique(bone.search$speciesKey)) == 1
+        if (!s.usp){
           cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
-          return(e_output)
+          return(e.output)
 
         } else {
-          bone_search = bone_search[1,]
+          bone.search <- bone.search[1, ]
         } 
       }
     }
   }
 
-  if (bone_search$matchType%in%"NONE") {
+  if (bone.search$matchType %in% "NONE") {
     cat("No species name found...","\n")
-    return(e_output)
+    return(e.output)
   }
 
-  if (bone_search$confidence[1]<conf_match) {
+  if (bone.search$confidence[1] < conf_match) {
     cat("Confidence match not high enough...","\n")
-    return(e_output)
+    return(e.output)
   }  
 
 	# Get the accepetedKey
-	if (bone_search$status %in% "SYNONYM"){
-		sp_key = bone_search$acceptedUsageKey
+	if (bone.search$status %in% "SYNONYM"){
+		sp.key <- bone.search$acceptedUsageKey
 	} else {
-		sp_key = bone_search$usageKey
+		sp.key <- bone.search$usageKey
 	}
 
 	# Check number of records in 'geo' first
-	gbif_records = rgbif::occ_data(taxonKey=sp_key,limit=1,hasCoordinate=!no_xy,
-			hasGeospatialIssue=FALSE,geometry=geo_ref)[1]$meta$count
+	gbif.records <- rgbif::occ_data(taxonKey = sp.key,
+																  limit = 1,
+																  hasCoordinate = !no_xy,
+																  hasGeospatialIssue = FALSE,
+																  geometry = geo.ref
+																  )[1]$meta$count
 
-	cat(">>>>>>>> Total number of records:",gbif_records,"\n")
+	cat(">>>>>>>> Total number of records:",gbif.records,"\n")
 
 	# Cancel request if n=0
-	if (gbif_records==0) {
+	if (gbif.records ==0 ) {
 		cat("No species records found...","\n")
-		return(e_output)
+		return(e.output)
 	}
 
 
@@ -338,93 +343,101 @@ get_gbif = function(sp_name = NULL,
 
 
 	## 1) If species records > 100'000, search for the optimum tiles
-	if (gbif_records > 99000)
+	if (gbif.records > 99000)
 	{
 		cat(">>>>>>>> Too many records: Retrieving relevant geographic tiles...","\n")
 
 		# Start with 200 tiles
-		tile_100 = make_tiles(geo,Ntiles=200,sext=TRUE)
-		geo_tiles = tile_100[[1]]
-		geo_meta = lapply(tile_100[[2]],function(x) x[])
+		tile.100 <- make_tiles(geo, Ntiles = 200, sext = TRUE)
+		geo.tiles <- tile.100[[1]]
+		geo.meta <- lapply(tile.100[[2]], function(x) x[])
 
 		# Check number of records for each tiles
-		gbif_tiles =
-		sapply(geo_tiles, function(x) {
-			gt_out = rgbif::occ_data(taxonKey=sp_key,limit=1,hasCoordinate=!no_xy,
-				hasGeospatialIssue=FALSE,geometry=x)[1]$meta$count
-			return(gt_out)
+		gbif.tiles <-
+		sapply(geo.tiles, function(x) {
+			gt.out <- rgbif::occ_data(taxonKey = sp.key,
+																limit = 1,
+																hasCoordinate = !no_xy,
+																hasGeospatialIssue = FALSE,
+																geometry = x
+																)[1]$meta$count
+			return(gt.out)
 		})
 
 		# We make sure that each tile will be fragmented enough
 		# (i.e., < 100'000 species records each)
-		keep_tiles =
-		lapply(1:length(gbif_tiles),function(x){
+		keep.tiles <-
+		lapply(1:length(gbif.tiles), function(x){
 
 			# Which tile
-			tile_n = gbif_tiles[x]
+			tile.n <- gbif.tiles[x]
 
 			# Return NULL or POLYGON if 0 records or > 100'000 records
-			if (tile_n==0) {return(NULL)}
-			if (tile_n<99000) {return(geo_tiles[x])}
+			if (tile.n == 0) {return(NULL)}
+			if (tile.n < 99000) {return(geo.tiles[x])}
 
 			# Keep fragmenting if > 100'000 records
-			new_geo = list(geo_meta[[x]])
-			pol_store=list()
-			while (length(new_geo)!=0)
+			new.geo <- list(geo.meta[[x]])
+			pol.store <- list()
+			while (length(new.geo) != 0)
 			{
-				m_process =
-				lapply(1:length(new_geo),function(y){
+				m.process <-
+				lapply(1:length(new.geo), function(y){
 
 					# Convert to extent and create 100 new micro tiles
-					new_ext = terra::ext(new_geo[[y]])
-					micro_100 = make_tiles(new_ext,Ntiles=100,sext=TRUE)
+					new.ext <- terra::ext(new.geo[[y]])
+					micro.100 <- make_tiles(new.ext, Ntiles = 100, sext = TRUE)
 
 					# If micro.100 is NULL return NULL (in case of an incorrect extent)
-					if (is.null(micro_100)) {
+					if (is.null(micro.100)) {
 						return(list(NULL,NULL))
 					}
 
 					# Continue
-					micro_tiles = micro_100[[1]]
-					micro_meta = lapply(micro_100[[2]],function(z) z[])
+					micro.tiles <- micro.100[[1]]
+					micro.meta <- lapply(micro.100[[2]], function(z) z[])
 
 					# And count records again
-					gbif_micro =
-						sapply(micro_tiles, function(z) {
-							gt_out = try(rgbif::occ_data(taxonKey=sp_key,limit=1,hasCoordinate=!no_xy,
-							hasGeospatialIssue=FALSE,geometry=z)[1]$meta$count,silent=TRUE)
-						return(gt_out)
+					gbif.micro <-
+						sapply(micro.tiles, function(z) {
+							gt.out <- try(rgbif::occ_data(taxonKey = sp.key,
+																						limit = 1,
+																						hasCoordinate = !no_xy,
+																						hasGeospatialIssue = FALSE,
+																						geometry = z
+																						)[1]$meta$count, silent = TRUE)
+						return(gt.out)
 					})
 
 					# Transform in 0 when the polygon is too small for occ_data
-					gbif_micro[sapply(gbif_micro,function(z) grepl("Error",z))]=0
-					gbif_micro=as.numeric(gbif_micro)
+					gbif.micro[sapply(gbif.micro, function(z) grepl("Error", z))] <- 0
+					gbif.micro <- as.numeric(gbif.micro)
 
 					# Store if tiles with < 99'000 observations found
-					goody = micro_tiles[gbif_micro<99000 & gbif_micro!=0]
-					bady = micro_meta[!gbif_micro<99000 & gbif_micro!=0]
+					goody <- micro.tiles[gbif.micro < 99000 & gbif.micro != 0]
+					bady <- micro.meta[!gbif.micro < 99000 & gbif.micro != 0]
 					return(list(goody,bady))
 				})
 
 				# Restructure
-				all_good = lapply(m_process,function(y) y[[1]])
-				all_good[sapply(all_good, is.null)] = NULL
-				all_bad = lapply(m_process,function(y) y[[2]])
-				all_bad[sapply(all_bad, is.null)] = NULL
+				all.good <- lapply(m.process,function(y) y[[1]])
+				all.good[sapply(all.good, is.null)] <- NULL
+				all.bad <- lapply(m.process, function(y) y[[2]])
+				all.bad[sapply(all.bad, is.null)] <- NULL
 
 				# Store if no blocks with > 99'000 observations found
-				pol_store = c(pol_store,unlist(all_good,recursive=FALSE))
-				new_geo = unlist(all_bad,recursive=FALSE)
+				pol.store <- c(pol.store, unlist(all.good, recursive = FALSE))
+				new.geo <- unlist(all.bad,recursive = FALSE)
 
 				# Finally remove too small windows (for "invisible" GBIF duplicated records)
-				inf_id = sapply(new_geo,function(y) y[2]-y[1]<1e-7)
-				new_geo = new_geo[!inf_id]
+				inf.id <- sapply(new.geo, function(y) (y[2] - y[1]) < 1e-7)
+				new.geo <- new.geo[!inf.id]
 			}
-			return(unlist(pol_store,recursive=FALSE))
+			return(unlist(pol.store, recursive = FALSE))
 		})
 
 		# Final list of POLYGONS with n observations < 100'000 observations
-		geo_ref = unlist(keep_tiles)
+		geo.ref <- unlist(keep.tiles)
 	}
 	
 	######################################################
@@ -432,82 +445,89 @@ get_gbif = function(sp_name = NULL,
 	######################################################
 
 	# Infromation messages
-	if (occ_samp!=99000) {
+	if (occ_samp != 99000) {
 		cat("...GBIF records of",sp_name,": download of sample of records starting...","\n")
 	} else {
 		cat("...GBIF records of",sp_name,": download of all records starting...","\n")
 	}
 
 	# Run the gbif search with the acceptedName per chosen tiles
-	batch_search =
-	lapply(1:length(geo_ref),function(x) {
+	batch.search <-
+	lapply(1:length(geo.ref), function(x) {
 
-		cat("\r",round(x*100/length(geo_ref),2),"%...")
+		cat("\r",round(x * 100/length(geo.ref), 2), "%...")
 
 		## Try the download first: may be request overload problems
-		go_tile = geo_ref[x]
-		gbif_search = try(
-			rgbif::occ_data(taxonKey=sp_key,limit=occ_samp,hasCoordinate=!no_xy,
-				hasGeospatialIssue=FALSE,geometry=go_tile),
-		silent=TRUE)
+		go.tile <- geo.ref[x]
+		gbif.search <- try(
+			rgbif::occ_data(taxonKey = sp.key,
+											limit = occ_samp,
+											hasCoordinate = !no_xy,
+											hasGeospatialIssue = FALSE,
+											geometry = go.tile),
+			silent=TRUE)
 
 		# If problems, just try to rerun with while with n attempts, otherwise return NULL
-		if (class(gbif_search) %in% "try-error") {
-			print(gbif_search[1])
-			warning("GBIF query overload or rgbif package error [taxonKey=",sp_key,"]...","\n",sep="")
+		if (class(gbif.search) %in% "try-error") {
+			print(gbif.search[1])
+			warning("GBIF query overload or rgbif package error [taxonKey=", sp.key,"]...","\n",sep="")
 
 			# While
-			if (class(gbif_search) %in% "try-error") {
-				j = 0
-				while (class(gbif_search) %in% "try-error" & j<ntries)
+			if (class(gbif.search) %in% "try-error") {
+				j <- 0
+				while (class(gbif.search) %in% "try-error" & j < ntries)
 				{
-					cat("Attempt",j+1,"...","\n")
-					j = j+1
-					gbif_search = try(
-						rgbif::occ_data(taxonKey=sp_key,limit=occ_samp,hasCoordinate=!no_xy,
-							hasGeospatialIssue=FALSE,geometry=go_tile),
-					silent=TRUE)
-					Sys.sleep(2)
+					cat("Attempt", j + 1, "...", "\n")
+					j <- j + 1
+					gbif.search <- try(
+						rgbif::occ_data(taxonKey = sp.key,
+														limit = occ_samp,
+														hasCoordinate = !no_xy,
+														hasGeospatialIssue = FALSE,
+														geometry = go.tile),
+						silent=TRUE)
+					  Sys.sleep(2)
 				}
-				if (class(gbif_search) %in% "try-error") {
+
+				if (class(gbif.search) %in% "try-error") {
 					if (error_skip){
 						cat("Attempts to download failed...Returning no results")
-						return(e_output)
+						return(e.output)
 					} else {
-						stop("ERROR (not skipped) for [taxonKey=",sp_key,"]...","\n",sep="")
+						stop("ERROR (not skipped) for [taxonKey=",sp.key,"]...","\n",sep="")
 					}
 				}
 			}
 		}
 
 		# If no results
-		if (is.null(gbif_search$data)){
+		if (is.null(gbif.search$data)){
 			
-			return(e_output)
+			return(e.output)
 		
 		} else {
 
 			# Convert to a data.frame is needed
-			if (class(gbif_search$data)[1]!="data.frame"){
-				gbif_search = as.data.frame(gbif_search$data)
+			if (class(gbif.search$data)[1] != "data.frame"){
+				gbif.search <- as.data.frame(gbif.search$data)
 			}
 
 			# Reordering data.frame and correcting if missing columns
-			gbif_reorder = gbif_search[,order(names(gbif_search))]
-			missing_col = gbif_info[!(gbif_info%in%names(gbif_reorder))]
-			gbif_reorder[,missing_col] = NA
-			gbif_correct = gbif_reorder[,order(names(gbif_reorder))]
+			gbif.reorder <- gbif.search[, order(names(gbif.search))]
+			missing.col <- gbif.info[!(gbif.info %in% names(gbif.reorder))]
+			gbif.reorder[, missing.col] <- NA
+			gbif.correct <- gbif.reorder[, order(names(gbif.reorder))]
 
 			# Remove row we don't want
-			return(gbif_correct[,gbif_info])
+			return(gbif.correct[, gbif.info])
 		}
 	})
 
 	# Combine all results in one data.frame
-	gbif_compile = do.call("rbind",batch_search)
+	gbif.compile <- do.call("rbind",batch.search)
 
 	# Keep specific fields (just for safety)
-	gbif_compile = gbif_compile[,gbif_info]
+	gbif.compile <- gbif.compile[, gbif.info]
 
 
 	#############################################################
@@ -519,33 +539,33 @@ get_gbif = function(sp_name = NULL,
 	cat("\n","---> Grain filtering...","\n",sep="")
 		
 		# GBIF uncertainty
-	id_certain = gbif_compile$coordinateUncertaintyInMeters<=grain/2
-	id_certain[is.na(id_certain)] = TRUE
-	gbif_correct = gbif_compile[id_certain,]
+	id.certain <- gbif.compile$coordinateUncertaintyInMeters <= grain / 2
+	id.certain[is.na(id.certain)] <- TRUE
+	gbif.correct <- gbif.compile[id.certain, ]
 
 		# GBIF lon/lat decimals
 	if (grain < 1.1e5) {
 
 		# Remove latitude or/and longitude with no decimals
-		lonlat_format = data.frame(decimalLatitude=as.character(gbif_correct$decimalLatitude),
-			decimalLongitude=as.character(gbif_correct$decimalLongitude))
-		id_deci = grepl("\\.",lonlat_format[,1]) + grepl("\\.",lonlat_format[,2])
-		lonlat_deci = lonlat_format[id_deci %in% 2,]
-		gbif_correct = gbif_correct[id_deci %in% 2,]
+		lonlat.format <- data.frame(decimalLatitude = as.character(gbif.correct$decimalLatitude),
+																decimalLongitude = as.character(gbif.correct$decimalLongitude))
+		id.deci <- grepl("\\.",lonlat.format[,1]) + grepl("\\.",lonlat.format[,2])
+		lonlat.deci <- lonlat.format[id.deci %in% 2,]
+		gbif.correct <- gbif.correct[id.deci %in% 2,]
 
 		# Keep coordinates compatible with the input 'grain'
-		declat = gsub(".*\\.","",lonlat_deci[,1])
-		declon = gsub(".*\\.","",lonlat_deci[,2])
-		id_grain = nchar(declon)>=deci_chosen & nchar(declat)>=deci_chosen
-		gbif_correct = gbif_correct[id_grain,]
+		declat <- gsub(".*\\.", "", lonlat.deci[, 1])
+		declon <- gsub(".*\\.", "", lonlat.deci[, 2])
+		id.grain <- nchar(declon) >= deci.chosen & nchar(declat) >= deci.chosen
+		gbif.correct <- gbif.correct[id.grain, ]
 
 	} else {
-		id_grain = NULL
+		id.grain <- NULL
 	}
 
 		# Removal summary
-	if (any(names(table(c(id_certain,id_grain))) %in% FALSE)){
-		removed = table(c(id_certain,id_grain))[1]
+	if (any(names(table(c(id.certain,id.grain))) %in% FALSE)){
+		removed <- table(c(id.certain,id.grain))[1]
 		cat("Records removed:",removed,"\n")
 	} else {
 		cat("Records removed:",0,"\n")
@@ -557,12 +577,12 @@ get_gbif = function(sp_name = NULL,
 
 		cat("---> Removal of duplicated records...","\n")
 		
-		id_dup = !duplicated(gbif_correct[,c("decimalLongitude","decimalLatitude")])
-		gbif_correct = gbif_correct[id_dup,]
+		id.dup <- !duplicated(gbif.correct[, c("decimalLongitude","decimalLatitude")])
+		gbif.correct <- gbif.correct[id.dup, ]
 
 		# Removal summary
-		if (any(names(table(id_dup))%in%FALSE)){
-			removed = table(id_dup)[1]
+		if (any(names(table(id.dup) %in% FALSE))){
+			removed <- table(id.dup)[1]
 			cat("Records removed:",removed,"\n")
 		} else {
 			cat("Records removed:",0,"\n")
@@ -575,12 +595,12 @@ get_gbif = function(sp_name = NULL,
 
 		cat("---> Removal of absence records...","\n")
 		
-		id_abs = !(gbif_correct$individualCount %in% 0 | gbif_correct$occurrenceStatus %in% "ABSENT")
-		gbif_correct = gbif_correct[id_abs,]
+		id.abs <- !(gbif.correct$individualCount %in% 0 | gbif.correct$occurrenceStatus %in% "ABSENT")
+		gbif.correct <- gbif.correct[id.abs, ]
 
 		# Removal summary
-		if (any(names(table(id_abs))%in%FALSE)){
-			removed = table(id_abs)[1]
+		if (any(names(table(id.abs)) %in% FALSE)){
+			removed <- table(id.abs)[1]
 			cat("Records removed:",removed,"\n")
 		} else {
 			cat("Records removed:",0,"\n")
@@ -591,12 +611,12 @@ get_gbif = function(sp_name = NULL,
 	############ 4) Select basis of records
 	cat("---> Basis of records selection...","\n")
 
-	id_basis = gbif_correct$basisOfRecord %in% basis
-	gbif_correct = gbif_correct[id_basis,]
+	id.basis <- gbif.correct$basisOfRecord %in% basis
+	gbif.correct <- gbif.correct[id.basis, ]
 
 		# Removal summary
-	if (any(names(table(id_basis))%in%FALSE)){
-		removed = table(id_basis)[1]
+	if (any(names(table(id.basis)) %in% FALSE)){
+		removed <- table(id.basis)[1]
 		cat("Records removed:",removed,"\n")
 	} else {
 		cat("Records removed:",0,"\n")
@@ -606,12 +626,12 @@ get_gbif = function(sp_name = NULL,
 	############ 4.5) Select establishment of records
 	cat("---> Establishment of records selection...","\n")
 
-	id_esta = gbif_correct$degreeOfEstablishment %in% establishment | is.na(gbif_correct$degreeOfEstablishment)
-	gbif_correct = gbif_correct[id_esta,]
+	id.esta <- gbif.correct$degreeOfEstablishment %in% establishment | is.na(gbif.correct$degreeOfEstablishment)
+	gbif.correct <- gbif.correct[id.esta, ]
 
 		# Removal summary
-	if (any(names(table(id_esta))%in%FALSE)){
-		removed = table(id_esta)[1]
+	if (any(names(table(id.esta))%in%FALSE)){
+		removed <- table(id.esta)[1]
 		cat("Records removed:",removed,"\n")
 	} else {
 		cat("Records removed:",0,"\n")
@@ -621,13 +641,13 @@ get_gbif = function(sp_name = NULL,
 	############ 5) Select records according to year range
 	cat("---> Time period selection...","\n")
 
-	id_year = gbif_correct$year >= min(time_period) & gbif_correct$year <= max(time_period)
-	id_year[is.na(id_year)] = TRUE
-	gbif_correct = gbif_correct[id_year,]
+	id.year <- gbif.correct$year >= min(time_period) & gbif.correct$year <= max(time_period)
+	id.year[is.na(id.year)] <- TRUE
+	gbif.correct <- gbif.correct[id.year, ]
 
 		# Removal summary
-	if (any(names(table(id_year))%in%FALSE)){
-		removed = table(id_year)[1]
+	if (any(names(table(id.year)) %in% FALSE)){
+		removed <- table(id.year)[1]
 		cat("Records removed:",removed,"\n")
 	} else {
 		cat("Records removed:",0,"\n")
@@ -635,18 +655,18 @@ get_gbif = function(sp_name = NULL,
 
 	
 	############ 6) Remove records with identical xy
-	if (nrow(gbif_correct) > 0){
+	if (nrow(gbif.correct) > 0){
 		if (!identic_xy){
 		
 			cat("---> Removal of identical xy records...","\n")
 
-			id_diff = c(!(abs(gbif_correct[,"decimalLatitude"]) ==
-				abs(gbif_correct[,"decimalLongitude"])))
-			gbif_correct = gbif_correct[id_diff,]
+			id.diff <- c(!(abs(gbif.correct[, "decimalLatitude"]) ==
+				abs(gbif.correct[, "decimalLongitude"])))
+			gbif.correct <- gbif.correct[id.diff, ]
 
 			# Removal summary
-			if (any(names(table(id_diff))%in%FALSE)){
-				removed = table(id_diff)[1]
+			if (any(names(table(id.diff))%in%FALSE)){
+				removed <- table(id.diff)[1]
 				cat("Records removed:",removed,"\n")
 			} else {
 				cat("Records removed:",0,"\n")
@@ -656,83 +676,97 @@ get_gbif = function(sp_name = NULL,
 
 
 	############ 7) Remove wrongly lon/lat converted xy (only if > 50 records in one dataset)
-	gbif_correct = as.data.frame(gbif_correct)
-	gbif_nrow = nrow(gbif_correct)
+	gbif.correct <- as.data.frame(gbif.correct)
+	gbif.nrow <- nrow(gbif.correct)
 
-	if (nrow(gbif_correct) > 0){
+	if (nrow(gbif.correct) > 0){
 		if (!wConverted_xy){
 
 			cat("---> Removal of wrong lon/lat converted records...","\n")
 
 			# Keep dataset with NAs
-			gbif_na = gbif_correct[is.na(gbif_correct$datasetKey),]
+			gbif.na <- gbif.correct[is.na(gbif.correct$datasetKey),]
 
 			# Summary of datasets & cd_ddmm parameter choice
-			gbif_datasets = names(table(gbif_correct$datasetKey))
-			if (nrow(gbif_correct) < 10000) {mat_size = 100} else {mat_size = 1000}
+			gbif.datasets <- names(table(gbif.correct$datasetKey))
+			if (nrow(gbif.correct) < 10000) {mat.size <- 100} else {mat.size <- 1000}
 
 			# Apply correction if the dataset > 50 records
-			gbif_ddmm =
-			lapply(1:length(gbif_datasets), function(x){
+			gbif.ddmm <-
+			lapply(1:length(gbif.datasets), function(x){
 
-				gbif_dataset = gbif_correct[gbif_correct$datasetKey%in%gbif_datasets[x],]
-				if (nrow(gbif_dataset) > 50){
-					diff_chosen = diff_records[[2]][which(nrow(gbif_dataset)<diff_records[[1]])[1]]
-					gbif_dataset = CoordinateCleaner::cd_ddmm(gbif_dataset,lon="decimalLongitude",
-						lat="decimalLatitude",ds="datasetKey",mat_size=mat_size,diff=diff_chosen,min_span=xy_span)
+				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
+				if (nrow(gbif.dataset) > 50){
+					diff.chosen <- diff.records[[2]][which(nrow(gbif.dataset) < diff.records[[1]])[1]]
+					gbif.dataset <- CoordinateCleaner::cd_ddmm(gbif.dataset,
+																				 lon = "decimalLongitude",
+																				 lat = "decimalLatitude",
+																				 ds = "datasetKey",
+																				 mat_size = mat.size,
+																				 diff = diff.chosen,
+																				 min_span = xy.span)
 				}
-				return(gbif_dataset)
+				return(gbif.dataset)
 			})
-			gbif_Wna = do.call("rbind", gbif_ddmm)
-			gbif_correct = rbind(gbif_na,gbif_Wna)
+			gbif.Wna <- do.call("rbind", gbif.ddmm)
+			gbif.correct <- rbind(gbif.na, gbif.Wna)
 
 			# Removal summary
-			cat("Records removed:",gbif_nrow-nrow(gbif_correct),"\n")
+			cat("Records removed:",gbif.nrow - nrow(gbif.correct),"\n")
 		}
 	}
 
 
 	############ 8) Remove raster centroids (only if > 100 records in one dataset) (ref:coordinate cleaner article in methods)
-	gbif_nrow = nrow(gbif_correct)
+	gbif.nrow <- nrow(gbif.correct)
 
-	if (nrow(gbif_correct) > 0){
+	if (nrow(gbif.correct) > 0){
 		if (!centroids){
 
 			cat("---> Removal of raster centroids...","\n")
 
 			# Keep dataset with NAs
-			gbif_na = gbif_correct[is.na(gbif_correct$datasetKey),]
+			gbif.na <- gbif.correct[is.na(gbif.correct$datasetKey), ]
 			
 			# Summary of datasets & cd_ddmm parameter choice
-			gbif_datasets = names(table(gbif_correct$datasetKey))
+			gbif.datasets <- names(table(gbif.correct$datasetKey))
 
 			# Apply correction if the dataset > 100 records
-			gbif_round =
-			lapply(1:length(gbif_datasets), function(x){
+			gbif.round <-
+			lapply(1:length(gbif.datasets), function(x){
 
-				gbif_dataset = gbif_correct[gbif_correct$datasetKey%in%gbif_datasets[x],]
-				if (nrow(gbif_dataset) > 100){
-					gbif_temp = try(CoordinateCleaner::cd_round(gbif_dataset,lon="decimalLongitude",
-						lat="decimalLatitude",ds="datasetKey",graphs=FALSE,...),silent=TRUE)
-					if (class(gbif_temp)%in%"try-error") {
-						return(gbif_dataset)
+				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
+				if (nrow(gbif.dataset) > 100){
+					gbif.temp <- try(CoordinateCleaner::cd_round(gbif.dataset,
+																						 lon = "decimalLongitude",
+																						 lat = "decimalLatitude",
+																						 ds = "datasetKey",
+																						 graphs = FALSE,
+																						 ...),
+					silent=TRUE)
+					
+					if (class(gbif.temp) %in% "try-error") {
+						return(gbif.dataset)
+
 					} else {
-						gbif_dataset=gbif_temp
+						gbif.dataset <- gbif.temp
 					}
 				}
-				return(gbif_dataset)
+				return(gbif.dataset)
 			})
-			gbif_Wna = do.call("rbind", gbif_round)
-			gbif_correct = rbind(gbif_na,gbif_Wna)
+
+			gbif.Wna <- do.call("rbind", gbif.round)
+			gbif.correct <- rbind(gbif.na, gbif.Wna)
 
 			# Removal summary
-			cat("Records removed:",gbif_nrow-nrow(gbif_correct),"\n")
+			cat("Records removed:",gbif.nrow - nrow(gbif.correct),"\n")
 		}
 	}
-	if (nrow(gbif_correct)==0) {
+	if (nrow(gbif.correct) == 0) {
 		cat("No records left after selection...","\n")
-		return(e_output)
+		return(e.output)
+
 	} else {
-		return(cbind(input.search=sp_name,gbif_correct))
+		return(cbind(input_search = sp_name,gbif.correct))
 	}
 }

@@ -137,55 +137,55 @@ get_range <- function (occ_coord = NULL,
   ### =========================================================================
 
   # Bioreg and convert to sf
-  if (!class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","SpatVector","sf")) {
+  if (!class(bioreg)[1] %in% c("SpatialPolygonsDataFrame", "SpatVector", "sf")) {
      stop("Wrong 'bioreg' class (not a spatial object)...")
   }
-  if (class(bioreg)[1]%in%c("SpatialPolygonsDataFrame","sf")) {
-    bioreg = terra::vect(bioreg)
+  if (class(bioreg)[1] %in% c("SpatialPolygonsDataFrame", "sf")) {
+    bioreg <- terra::vect(bioreg)
   }
 
   # Bioreg name
-  if (names(bioreg)[1]%in%"CLARA") {
-    bioreg_name = "EcoRegion"
+  if (names(bioreg)[1] %in% "CLARA") {
+    bioreg_name <- "EcoRegion"
   } 
-  if (methods::is(bioreg_name,"NULL")) {
+  if (methods::is(bioreg_name, "NULL")) {
     stop("Name of the desired ecoregion level/category ('bioreg_name' parameter) is missing, please provide one...")
   } 
 
   # occ_coord
-  if (!methods::is(occ_coord,"data.frame")) {
+  if (!methods::is(occ_coord, "data.frame")) {
     stop("'occ_coord' is not a data.frame...")
   } 
-  if (!any(names(occ_coord)%in%"decimalLongitude")) {
+  if (!any(names(occ_coord) %in% "decimalLongitude")) {
     stop("Longitute/Latitude columns wrongly defined...")
   }
   
-  # get sp_name, and stop if not unique
-  sp_name <- unique(occ_coord$input.search)
-  if (length(sp_name) > 1) {
+  # get sp.name, and stop if not unique
+  sp.name <- unique(occ_coord$input_search)
+  if (length(sp.name) > 1) {
     stop("More than one species in the input data.frame... \n
          gbifRange is meant to be used for one species at a time. \n
          Only consider multiple species if they are closely related and share the same ecological niche.")
   }
 
   # Remove duplicates
-  w_col = c("decimalLongitude","decimalLatitude")
-  occ_coord.k = occ_coord
-  occ_coord[,w_col] = round(occ_coord[,w_col],4)
-  occ_coord = occ_coord[!duplicated(occ_coord[,w_col]),]
-  occ_coord = terra::vect(occ_coord,geom=c("decimalLongitude","decimalLatitude"), crs="epsg:4326")
+  w.col <- c("decimalLongitude","decimalLatitude")
+  occ.coord.k <- occ_coord
+  occ_coord[, w.col] <- round(occ_coord[,w.col], 4)
+  occ_coord <- occ_coord[!duplicated(occ_coord[, w.col]), ]
+  occ_coord <- terra::vect(occ_coord, geom = c("decimalLongitude","decimalLatitude"), crs = "epsg:4326")
 
   ### =========================================================================
   ### Check if sufficient data
   ### =========================================================================
   
   # Check if there sufficient species & if not, make an entry in the log-file and end the function
-  if (nrow(occ_coord) <= clustered_points_outlier+1){
+  if (nrow(occ_coord) <= clustered_points_outlier +1 ){
     stop("Too few occurences!")
   } 
   
   if (verbose){
-    cat("## Start of computation for species: ",sp_name," ###", "\n") 
+    cat("## Start of computation for species: ", sp.name, " ###", "\n") 
   }
   
   ### =========================================================================
@@ -193,22 +193,22 @@ get_range <- function (occ_coord = NULL,
   ### =========================================================================
   
   # Create distance matrix...
-  mat_dist = as.matrix(FNN::knn.dist(terra::crds(occ_coord), k=clustered_points_outlier))
+  mat.dist <- as.matrix(FNN::knn.dist(terra::crds(occ_coord), k = clustered_points_outlier))
   
   # Mark outliers
-  cond = apply(mat_dist, 1, function(x) x[clustered_points_outlier])>degrees_outlier
+  cond <- apply(mat.dist, 1, function(x) x[clustered_points_outlier]) > degrees_outlier
   
   # Print info
   if (verbose){
     cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ",
-      round((sum(cond)/nrow(occ_coord))*100,0), "%\n"))
+      round((sum(cond) / nrow(occ_coord)) * 100,0), "%\n"))
   }
   
   # Remove outliers
-  occ_coord_mod = occ_coord[!cond,]
+  occ.coord.mod <- occ_coord[!cond, ]
 
   # Stop if too many outliers in data set
-  if(nrow(occ_coord_mod) == 0){
+  if(nrow(occ.coord.mod) == 0){
     stop('Too few occurrences within outlier threshold!')
   } 
 
@@ -217,16 +217,16 @@ get_range <- function (occ_coord = NULL,
   ### =========================================================================
   
   # Set number of ecoregions
-  ovo_coord_mod = terra::intersect(bioreg,occ_coord_mod)
-  uniq = levels(factor(ovo_coord_mod[[bioreg_name]][[1]]))
+  ovo.coord.mod <- terra::intersect(bioreg,occ.coord.mod)
+  uniq <- levels(factor(ovo.coord.mod[[bioreg_name]][[1]]))
 
   # Handling NA error
-  if (length(ovo_coord_mod)==0) {
+  if (length(ovo.coord.mod) == 0) {
     stop("No overlap of ecoregion info, please use another 'bioreg_name'")
   }
   
   # Loop over bioregions
-  SP_dist = list()
+  SP.dist <- list()
   for(g in 1:length(uniq)) {
     
     # Print
@@ -235,51 +235,51 @@ get_range <- function (occ_coord = NULL,
     }
 
     # NAs or not
-    q1 = as.data.frame(bioreg)[,bioreg_name] == uniq[g]
-    q1[is.na(q1)] = FALSE
+    q1 <- as.data.frame(bioreg)[, bioreg_name] == uniq[g]
+    q1[is.na(q1)] <- FALSE
 
     # Continue
-    tmp = terra::simplifyGeom(bioreg[q1,],tolerance=0.001,preserveTopology=TRUE)
-    a = ovo_coord_mod[ovo_coord_mod[[bioreg_name]][[1]] == uniq[g]]
+    tmp <- terra::simplifyGeom(bioreg[q1, ], tolerance = 0.001, preserveTopology = TRUE)
+    a <- ovo.coord.mod[ovo.coord.mod[[bioreg_name]][[1]] == uniq[g]]
     
     if (length(a) < 3) {
-      k = 1
-      cluster_k = stats::kmeans(terra::crds(a),k)
-      cluster_k$clusters = cluster_k$cluster 
+      k <- 1
+      cluster.k <- stats::kmeans(terra::crds(a), k)
+      cluster.k$clusters <- cluster.k$cluster 
 
     } else {
 
-      if (all(terra::crds(a)[,1] == terra::crds(a)[,2])) {
-        terra::crds(a)[,2] = terra::crds(a)[,2]+0.00001
+      if (all(terra::crds(a)[, 1] == terra::crds(a)[, 2])) {
+        terra::crds(a)[, 2] <- terra::crds(a)[, 2] + 0.00001
       }
       
       # Determine number of clusters
-      m_clust = mclust::Mclust(terra::crds(a)+1000, verbose=FALSE)
+      m.clust <- mclust::Mclust(terra::crds(a) + 1000, verbose = FALSE)
       
       # k = number of clusters
-      k = m_clust$G 
+      k <- m.clust$G 
       
       # Reduce k if necessary so that KMeans_rcpp() will run
-      while (k > length(a)-2) {k = k-1} 
-      if (k==0) {k <- 1}
+      while (k > length(a)-2) {k <- k-1} 
+      if (k == 0) {k <- 1}
       
-      cluster_k = ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
+      cluster.k <- ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
       
-      while (length(unique(cluster_k$clusters)) < k) {
-        k = k-1
-        cluster_k = ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
+      while (length(unique(cluster.k$clusters)) < k) {
+        k <- k-1
+        cluster.k <- ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
       }
       
     }
    
-    polygons_list <- list() 
+    polygons.list <- list() 
     for (i in 1:k)
     {
       # kmeans (with number of clusters from mcluster)
-      a_temp = a[cluster_k$clusters==i]
+      a.temp <- a[cluster.k$clusters == i]
 
       # Generate polygon
-      my_shpe = conv_function(sp_coord = a_temp,
+      my.shpe <- conv_function(sp_coord = a.temp,
                             bwp = buffer_width_point,
                             bipl = buffer_increment_point_line,
                             bwpo = buffer_width_polygon,
@@ -287,45 +287,45 @@ get_range <- function (occ_coord = NULL,
                             g = g)
       
       # Intersect polygon with ecoregion (zero buffer to avoid error)
-      b1 = terra::buffer(my_shpe,width=0)
-      b2 = terra::buffer(tmp,width=0)
-      polygons_list[[i]] = terra::intersect(b1,b2)
+      b1 <- terra::buffer(my.shpe, width = 0)
+      b2 <- terra::buffer(tmp, width = 0)
+      polygons.list[[i]] <- terra::intersect(b1, b2)
     }  
     
-    SP_dist[[g]] = do.call("rbind",polygons_list)
+    SP.dist[[g]] <- do.call("rbind", polygons.list)
   } 
   
-  lala = SP_dist[!is.na(SP_dist)]
+  lala <- SP.dist[!is.na(SP.dist)]
   
   ### =========================================================================
   ### Check and return output
   ### =========================================================================
   
   if (!dir.exists(dir_temp)) {
-    unlink(dir_temp, recursive=TRUE)
+    unlink(dir_temp, recursive = TRUE)
   }
   
   if (length(lala) == 0) {
     stop('No occurrences within Bioregions. Empty raster produced...')
   }
-  shp_species = do.call("rbind",lala)
+  shp.species <- do.call("rbind", lala)
 
   # Convert to raster or not
   if (raster) {
-    ras_res = terra::rast(terra::disagg(terra::rast(),res))
-    sp_range_u = terra::aggregate(shp_species)
-    ras = terra::rasterize(sp_range_u,ras_res)
-    shp_species = terra::crop(ras,sp_range_u)
+    ras.res <- terra::rast(terra::disagg(terra::rast(), res))
+    sp.range.u <- terra::aggregate(shp.species)
+    ras <- terra::rasterize(sp.range.u, ras.res)
+    shp.species <- terra::crop(ras, sp.range.u)
   }
   
   # Final print
   if (verbose){
-    cat("## End of computation for species: ",sp_name," ###", "\n")
+    cat("## End of computation for species: ", sp.name, " ###", "\n")
   }
 
   # Out
-  result = list(init.args = list(
-                  occ_coord = occ_coord.k,
+  result <- list(init.args = list(
+                  occ_coord = occ.coord.k,
                   bioreg = bioreg,
                   bioreg_name = bioreg_name, 
                   degrees_outlier = degrees_outlier,
@@ -337,7 +337,7 @@ get_range <- function (occ_coord = NULL,
                   raster = TRUE,
                   res = res
                 ),
-                range_output = shp_species)
+                rangeOutput = shp.species)
 
   return(result)
 }
