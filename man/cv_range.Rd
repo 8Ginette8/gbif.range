@@ -61,10 +61,10 @@ range.tiger <- get_range(occ_coord = obs.pt,
                          degrees_outlier = 6,
                          clustered_points_outlier = 4)
 
-cv.eval = cv_range(range_object = range.tiger,
-                   cv = 'block-cv',
-                   nfolds = 5,
-                   nblocks = 2)
+cv_range(range_object = range.tiger,
+         cv = 'block-cv',
+         nfolds = 5,
+         nblocks = 2)
 }
 }
 \references{
