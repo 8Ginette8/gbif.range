@@ -31,8 +31,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   (accepted, synonyms) found in the GBIF backbone taxonomy. Children and related doubtful names not used to download the data may also be extracted.
 
   - *obs_filter()*: *obs_filter()* accepts as input a *get_gbif()* output (one or several species) and filter the observations according
-  to a specific given grid resolution (one observation per pixel grid kept). This function allows the user to refine the density of GBIF
-  observations according to a defined analysis/study's resolution.
+  to a specific given grid resolution. It can retain one observation per grid pixel and/or remove observations from grid pixels that contain fewer than a specified number of records.
 
   - *make_tiles()*: may be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
   geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
