@@ -19,9 +19,9 @@
 #' @param mask rast object (optional). To mask the study the focal study region. Default is TRUE.
 #' @param res_fact Integer. Factor for coarsening the original resolution.
 #' @return A data.frame of evaluation for all species and a list of range overlay maps. 
-#' Precision (ppv) = ntp / (ntp + number of false presences); 
-#' Sensitivity = number true presences (TP) / [TP + number of false absences (FA)]; 
-#' Specificity = number true absences (TA) / [TA + number of false presences (FP)]; 
+#' Precision (ppv) = number true presences (TP) / [TP + number false presences (FP)]; 
+#' Sensitivity = number true presences (TP) / [TP + number false absences (FA)]; 
+#' Specificity = number true absences (TA) / [TA + number false presences (FP)]; 
 #' TSS = Sensitivity + Specificity - 1
 #' @references
 #' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 

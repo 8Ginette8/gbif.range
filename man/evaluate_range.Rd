@@ -34,9 +34,9 @@ evaluate_range(
 }
 \value{
 A data.frame of evaluation for all species and a list of range overlay maps. 
-Precision (ppv) = ntp / (ntp + number of false presences); 
-Sensitivity = number true presences (TP) / [TP + number of false absences (FA)]; 
-Specificity = number true absences (TA) / [TA + number of false presences (FP)]; 
+Precision (ppv) = number true presences (TP) / [TP + number false presences (FP)]; 
+Sensitivity = number true presences (TP) / [TP + number false absences (FA)]; 
+Specificity = number true absences (TA) / [TA + number false presences (FP)]; 
 TSS = Sensitivity + Specificity - 1
 }
 \description{

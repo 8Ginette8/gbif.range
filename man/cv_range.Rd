@@ -25,7 +25,11 @@ cross validation ('block-cv').}
 \item{backpoints}{Numeric (optional). Number of regular background points that should be sampled. Defaut is 10,000.}
 }
 \value{
-A data.frame with 'nfolds' rows and 8 evaluation columns.
+A data.frame with 'nfolds' rows and 8 evaluation columns: 
+Precision (ppv) = number true presences (TP) / [TP + number false presences (FP)]; 
+Sensitivity = number true presences (TP) / [TP + number false absences (FA)]; 
+Specificity = number true absences (TA) / [TA + number false presences (FP)]; 
+TSS = Sensitivity + Specificity - 1
 }
 \description{
 Assesses the accuracy of a species range map by applying cross-validation using the observations

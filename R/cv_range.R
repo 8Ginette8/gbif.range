@@ -22,7 +22,11 @@
 #' @param nfolds Numeric. Number of chosen folds for cross-validation.
 #' @param nblocks Numeric. Only applies if 'block-cv' is employed. Defined the number of blocks per fold.
 #' @param backpoints Numeric (optional). Number of regular background points that should be sampled. Defaut is 10,000.
-#' @return A data.frame with 'nfolds' rows and 8 evaluation columns.
+#' @return A data.frame with 'nfolds' rows and 8 evaluation columns: 
+#' Precision (ppv) = number true presences (TP) / [TP + number false presences (FP)]; 
+#' Sensitivity = number true presences (TP) / [TP + number false absences (FA)]; 
+#' Specificity = number true absences (TA) / [TA + number false presences (FP)]; 
+#' TSS = Sensitivity + Specificity - 1
 #' @references
 #' Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera‐Arroita, G., ... & Dormann, C. F.
 #' (2017). Cross‐validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure.
