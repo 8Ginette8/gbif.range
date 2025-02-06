@@ -85,7 +85,7 @@ cv_range <- function(range_object = NULL,
   }
 
   # Prepare the evaluation df
-  cv.df <- as.data.frame(matrix(NA, nfolds+1, 8))
+  cv.df <- as.data.frame(matrix(NA, nfolds + 1, 8))
   row.names(cv.df) <- c(sprintf("CV%d", 1:nfolds),"Mean")
   colnames(cv.df) <- c("TP", "FA", "TA", "FP",
                         "Precision", "Sensitivity", "Specificity", "TSS")
@@ -123,9 +123,9 @@ cv_range <- function(range_object = NULL,
     cv.df[i, "FA"] <- length(which(xy.eval$Pres %in% 1 & xy.eval$Pred %in% 0))
     cv.df[i, "TA"] <- length(which(xy.eval$Pres %in% 0 & xy.eval$Pred %in% 0))
     cv.df[i, "FP"] <- length(which(xy.eval$Pres %in% 0 & xy.eval$Pred %in% 1))
-    cv.df[i, "Precision"] <- cv.df[i, "TP"]/(cv.df[i, "TP"]+cv.df[i, "FP"])
-    cv.df[i, "Sensitivity"] <- cv.df[i, "TP"]/(cv.df[i, "TP"]+cv.df[i, "FA"])
-    cv.df[i, "Specificity"] <- cv.df[i, "TA"]/(cv.df[i, "TA"]+cv.df[i, "FP"])
+    cv.df[i, "Precision"] <- cv.df[i, "TP"] / (cv.df[i, "TP"] + cv.df[i, "FP"])
+    cv.df[i, "Sensitivity"] <- cv.df[i, "TP"] / (cv.df[i, "TP"] + cv.df[i, "FA"])
+    cv.df[i, "Specificity"] <- cv.df[i, "TA"] / (cv.df[i, "TA"] + cv.df[i, "FP"])
     cv.df[i, "TSS"] <- cv.df[i, "Sensitivity"] + cv.df[i, "Specificity"] - 1
   }
 

@@ -2,40 +2,50 @@
 % Please edit documentation in R/obs_filter.R
 \name{obs_filter}
 \alias{obs_filter}
-\title{Filter a set of GBIF observations according to a defined grain}
+\title{Filter a set of GBIF observations according to a defined grid resolution}
 \usage{
-obs_filter(gbifs, grid)
+obs_filter(gbifs, grid, threshold = NULL)
 }
 \arguments{
-\item{gbifs}{One get_gbif() output including one or several species. Note
+\item{gbifs}{Output from `get_gbif()` including one or several species. Note
 that if GBIF absences are kept in the output(s), the function should be used
 distinctively for observations and absences.}
 
-\item{grid}{Object of class SpatRaster, RasterLayer, RasterBrick or
+\item{grid}{Object of class SpatRaster, RasterLayer, RasterBrick, or
 RasterStack of desired resolution and extent (WGS84).}
+
+\item{threshold}{Optional integer specifying the minimum number of observations
+per grid pixel to retain. Default is `NULL`, meaning no threshold filtering.}
 }
 \value{
-Data frame with two columns named 'x' and 'y' comprising
+Data frame with columns 'Species', 'x', and 'y' comprising
 the new set of observations filtered at grid resolution.
 }
 \description{
-Whereas the 'grain' parameter in get_gbif() allows GBIF observations to be
-filtered according to a certain spatial precision, obs_filter() accepts
-as input a get_gbif() output (one or several species) and filter the
-observations according to a given grid resolution (one observation
-per pixel grid kept). This function allows the user to refine the density of
-GBIF observations according to a defined analysis/study's resolution.
+The `obs_filter()` function processes the output from `get_gbif()` (which can
+include data for one or multiple species) and filters the observations based on
+a specified grid resolution. It can retain one observation per grid pixel and/or
+remove observations from grid pixels that contain fewer than a specified number
+of records (e.g., fewer than 3 observations per pixel). This function helps users
+refine the spatial density of GBIF datasets by retaining one observation per grid pixel
+and/or removing observations from grid pixels with fewer than a user-defined threshold
+of records.
 }
 \examples{
-#read example shapefile
+# Load data
 shp.path <- paste0(system.file(package = "gbif.range"), "/extdata/shp_lonlat.shp")
 shp.lonlat <- terra::vect(shp.path)
 rst.path <- paste0(system.file(package = "gbif.range"), "/extdata/rst_enl.tif")
 rst <- terra::rast(rst.path)
 
 # Downloading in the European Alps the observations of two plant species
-obs.arcto <- get_gbif("Arctostaphylos alpinus", geo = shp.lonlat)
-obs.saxi <- get_gbif("Saxifraga cernua", geo = shp.lonlat)
+obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
+					  geo = shp.lonlat)
+obs.saxi <- get_gbif(sp_name = "Saxifraga cernua",
+					 geo = shp.lonlat)
+
+
+# Tes plot
 terra::plot(shp.lonlat)
 graphics::points(obs.arcto[, c("decimalLongitude","decimalLatitude")],
 	pch = 20, col = "#238b4550", cex = 1)
@@ -46,11 +56,12 @@ graphics::points(obs.saxi[, c("decimalLongitude","decimalLatitude")],
 both.sp <- rbind(obs.arcto,obs.saxi)
 
 # Run function
-obs.filt <- obs_filter(both.sp,rst)
+obs.filt <- obs_filter(gbifd = both.sp,
+					   grid = rst,
+					   threshold = 4)
 
 # Check new points
 terra::plot(shp.lonlat)
-
 graphics::points(obs.filt[obs.filt$Species\%in\%"Arctostaphylos alpinus",c("x","y")],
 	pch = 20, col = "#238b4550", cex = 1)
 graphics::points(obs.filt[obs.filt$Species\%in\%"Saxifraga cernua",c("x","y")],

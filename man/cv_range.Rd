@@ -55,9 +55,16 @@ occ <- get_gbif(sp_name = "Panthera tigris",
                              "OCCURRENCE"))
 
 # Make range from occurance points
-range <- get_range(occ, eco.terra,"ECO_NAME")
+range.tiger <- get_range(occ_coord = obs.pt,
+                         bioreg = eco.terra,
+                         bioreg_name = "ECO_NAME",
+                         degrees_outlier = 6,
+                         clustered_points_outlier = 4)
 
-cv_range(range_object = range, cv = 'block-cv', nfolds = 5, nblocks = 2)
+cv.eval = cv_range(range_object = range.tiger,
+                   cv = 'block-cv',
+                   nfolds = 5,
+                   nblocks = 2); cv.eval
 }
 }
 \references{
