@@ -48,7 +48,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
 ## Installation
 
-You can install the development version from GitHub with:
+You can install the development version from GitHub with (make sure the R package *remotes* is up to date):
 
 ``` r
 remotes::install_github("8Ginette8/gbif.range")
