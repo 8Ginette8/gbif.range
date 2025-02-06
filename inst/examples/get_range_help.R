@@ -3,7 +3,7 @@
 eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # First download the worldwide observations of Panthera tigris from GBIF
-occ <- get_gbif(sp_name = "Panthera tigris",
+obs.pt <- get_gbif(sp_name = "Panthera tigris",
                 time_period = c(2000, 3000),
                 basis = c("OBSERVATION",
                           "HUMAN_OBSERVATION",
@@ -28,6 +28,6 @@ terra::plot(range.tiger$rangeOutput, axes = FALSE, box = FALSE, legend = FALSE,
 	col = "chartreuse4", add = TRUE)
 
 # Plot the occurance points
-graphics::points(occ[, c("decimalLongitude","decimalLatitude")],
+graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
     pch = 20,col = "#99340470",cex = 1.5)
 }

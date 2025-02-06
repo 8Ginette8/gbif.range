@@ -3,7 +3,7 @@
 eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
 # First download the worldwide observations of Panthera tigris from GBIF
-occ <- get_gbif(sp_name = "Panthera tigris",
+obs.pt <- get_gbif(sp_name = "Panthera tigris",
                    time_period = c(2000, 3000),
                    basis = c("OBSERVATION",
                              "HUMAN_OBSERVATION",
