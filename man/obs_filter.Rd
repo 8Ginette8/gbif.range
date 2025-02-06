@@ -56,7 +56,7 @@ graphics::points(obs.saxi[, c("decimalLongitude","decimalLatitude")],
 both.sp <- rbind(obs.arcto,obs.saxi)
 
 # Run function
-obs.filt <- obs_filter(gbifd = both.sp,
+obs.filt <- obs_filter(gbifs = both.sp,
 					   grid = rst,
 					   threshold = 4)
 
