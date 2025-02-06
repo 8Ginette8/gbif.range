@@ -145,7 +145,7 @@ Here we adapted the extra-parameters to the extent of the study area, e.g., (i) 
 
 ``` r
 # Plot
-terra::plot(crop(countries,ext(rst)), col = "#bcbddc")
+terra::plot(terra::crop(countries,terra::ext(rst)), col = "#bcbddc")
 terra::plot(range.arcto$rangeOutput, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
 points(obs.arcto[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
 ```
