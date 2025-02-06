@@ -64,7 +64,7 @@ range.tiger <- get_range(occ_coord = obs.pt,
 cv.eval = cv_range(range_object = range.tiger,
                    cv = 'block-cv',
                    nfolds = 5,
-                   nblocks = 2); cv.eval
+                   nblocks = 2)
 }
 }
 \references{

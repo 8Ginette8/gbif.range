@@ -129,6 +129,7 @@ cv_range <- function(range_object = NULL,
     cv.df[i, "TSS"] <- cv.df[i, "Sensitivity"] + cv.df[i, "Specificity"] - 1
   }
 
+  cat("","\n")
   # Finalize average
   cv.df[nfolds+1, ] <- apply(cv.df[1:nfolds, ], 2, mean, na.rm = TRUE)
   return(cv.df)
