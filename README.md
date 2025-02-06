@@ -59,12 +59,11 @@ library(gbif.range)
 
 ### Terrestrial species
 
-Let's download worldwide the records of *Panthera tigris* only based on true observations from 2000 to now:
+Let's download worldwide the records of *Panthera tigris* only based on true observations:
 
 ``` r
 # Download
 obs.pt <- get_gbif(sp_name = "Panthera tigris",
-                   time_period = c(2000, 3000),
                    basis = c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION","OCCURRENCE"))
 
 # Plot species records
@@ -73,7 +72,7 @@ terra::plot(countries, col = "#bcbddc")
 points(obs.pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1.5)
 ```
 
-![image](https://github.com/user-attachments/assets/a45959a3-3b75-4272-92e3-d8a82447de17)
+![image](https://github.com/user-attachments/assets/bcf1c8eb-37bc-42ee-9676-ca9aa9248da5)
 
 
 Note that the function did not manage to get rid of observations found in the US and germany (observations from zoos most likely). We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
@@ -103,7 +102,7 @@ terra::plot(countries, col = "#bcbddc")
 terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
 ```
 
-![image](https://github.com/user-attachments/assets/a723a219-2412-4034-bb0b-11ca46658f31)
+![image](https://github.com/user-attachments/assets/dbc7995f-34ba-44f5-b46e-1945dc7f99d8)
 
 
 Here, *clustered_points_outlier = 4* was employed to remove European observations of *Panthera tigris* from the range process, and *degrees_outlier* slightly increased to *6* to account for more appart observations in the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
