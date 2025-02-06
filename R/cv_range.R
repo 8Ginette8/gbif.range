@@ -119,10 +119,10 @@ cv_range <- function(range_object = NULL,
     xy.eval[is.na(xy.eval$Pred), "Pred"] <- 0
 
     # Generate evaluation metrics
-    cv.df[i, "TP"] <- length(which(xy.eval$Pres %in% 1 & xy.eval$Pred %in% 1))
-    cv.df[i, "FA"] <- length(which(xy.eval$Pres %in% 1 & xy.eval$Pred %in% 0))
-    cv.df[i, "TA"] <- length(which(xy.eval$Pres %in% 0 & xy.eval$Pred %in% 0))
-    cv.df[i, "FP"] <- length(which(xy.eval$Pres %in% 0 & xy.eval$Pred %in% 1))
+    cv.df[i, "TP"] <- as.integer(length(which(xy.eval$Pres %in% 1 & xy.eval$Pred %in% 1)))
+    cv.df[i, "FA"] <- as.integer(length(which(xy.eval$Pres %in% 1 & xy.eval$Pred %in% 0)))
+    cv.df[i, "TA"] <- as.integer(length(which(xy.eval$Pres %in% 0 & xy.eval$Pred %in% 0)))
+    cv.df[i, "FP"] <- as.integer(length(which(xy.eval$Pres %in% 0 & xy.eval$Pred %in% 1)))
     cv.df[i, "Precision"] <- cv.df[i, "TP"] / (cv.df[i, "TP"] + cv.df[i, "FP"])
     cv.df[i, "Sensitivity"] <- cv.df[i, "TP"] / (cv.df[i, "TP"] + cv.df[i, "FA"])
     cv.df[i, "Specificity"] <- cv.df[i, "TA"] / (cv.df[i, "TA"] + cv.df[i, "FP"])
@@ -130,6 +130,7 @@ cv_range <- function(range_object = NULL,
   }
 
   cat("","\n")
+  
   # Finalize average
   cv.df[nfolds+1, ] <- apply(cv.df[1:nfolds, ], 2, mean, na.rm = TRUE)
   return(cv.df)
