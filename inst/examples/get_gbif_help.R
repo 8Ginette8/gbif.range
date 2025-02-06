@@ -1,6 +1,5 @@
 # Downloading worldwide the observations of Panthera tigris
 obs.pt <- get_gbif(sp_name = "Panthera tigris",
-                   time_period = c(2000, 3000),
                    basis = c("OBSERVATION",
                              "HUMAN_OBSERVATION",
                              "MACHINE_OBSERVATION",

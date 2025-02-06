@@ -165,7 +165,6 @@ if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
 \examples{
 # Downloading worldwide the observations of Panthera tigris
 obs.pt <- get_gbif(sp_name = "Panthera tigris",
-                   time_period = c(2000, 3000),
                    basis = c("OBSERVATION",
                              "HUMAN_OBSERVATION",
                              "MACHINE_OBSERVATION",

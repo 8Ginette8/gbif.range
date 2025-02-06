@@ -45,7 +45,6 @@ opitimization algorithm (function 'gridSearch' from package NMOF) optimizes for 
 \dontrun{
 # Downloading worldwide the observations of Panthera tigris
 obs.pt <- get_gbif(sp_name = "Panthera tigris",
-                   time_period = c(2000, 3000),
                    basis = c("OBSERVATION",
                              "HUMAN_OBSERVATION",
                              "MACHINE_OBSERVATION",
@@ -53,8 +52,8 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris",
 
 # Create a vector of folds (n = 5) spatially blocked (n = 10)
 block.pt <- make_blocks(nfolds = 5,
-        df = obs.pt[, c("decimalLatitude","decimalLongitude")],
-        nblocks = 10)
+                df = obs.pt[, c("decimalLatitude","decimalLongitude")],
+                nblocks = 10)
 
 # Plot one colour per fold
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
