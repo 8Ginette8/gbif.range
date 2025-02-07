@@ -10,7 +10,12 @@ my.eco <- make_ecoregion(env = rst,
 						 nclass = 50)
 
 # Test plot
-terra::plot(my.eco)
+col_palette = colorRampPalette(c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", 
+            "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", 
+            "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"))
+colcol = col_palette(length(my.eco))
+my.eco$color = sample(paste0(colcol,""), length(my.eco), replace = FALSE)
+terra::plot(my.eco, col = my.eco$color)
 
 # Downloading in the European Alps the observations of one plant species
 obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
