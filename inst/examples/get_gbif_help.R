@@ -1,9 +1,5 @@
 # Downloading worldwide the observations of Panthera tigris
-obs.pt <- get_gbif(sp_name = "Panthera tigris",
-                   basis = c("OBSERVATION",
-                             "HUMAN_OBSERVATION",
-                             "MACHINE_OBSERVATION",
-                             "OCCURRENCE"))
+obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Plot
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
