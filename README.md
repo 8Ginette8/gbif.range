@@ -59,12 +59,11 @@ library(gbif.range)
 
 ### Terrestrial species
 
-Let's download worldwide the records of *Panthera tigris* only based on true observations:
+Let's download worldwide the records of *Panthera tigris* only based on true observations and literature (default):
 
 ``` r
 # Download
-obs.pt <- get_gbif(sp_name = "Panthera tigris",
-                   basis = c("OBSERVATION","HUMAN_OBSERVATION","MACHINE_OBSERVATION","OCCURRENCE"))
+obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Plot species records
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
