@@ -265,7 +265,7 @@ evaluate_range <- function(root_dir = NULL,
         legend = FALSE,
         main = paste0("Overlay validation RM and ecoRM - ", "Species: ", f.list.matches[i],"\n", 
                        "Precision (TP/[TP+FP]) = ", round(df.eval$Prec_ecoRM[i], digits = 2)," & ", 
-                       "TSS = ", round(df.eval$TSS_ecoRM[i], digits = 2)),
+                       "Sensitivity (TP/[TP+FA]) = ", round(df.eval$Sen_ecoRM[i], digits = 2)),
         las = 1
       )
       

@@ -29,7 +29,7 @@ terra::plot(
   legend = FALSE,
   main = paste0("Species: ", res10km$df_eval[1,1],"\n", 
                 "Precision = ", round(res10km$df_eval[1,"Prec_ecoRM"], digits = 2)," & ", 
-                "TSS = ", round(res10km$df_eval[1,"TSS_ecoRM"], digits = 2)),
+                "Sensitivity = ", round(res10km$df_eval[1,"Sen_ecoRM"], digits = 2)),
   las = 1
 )
 
@@ -53,7 +53,7 @@ res10km$df_eval$Mean_SenPrec <- (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Pre
 
 # Combine the data frames and add a Resolution column
 combined.df <- rbind(
-  cbind(res5km$df_eval, Resolution = "1km"),
+  cbind(res5km$df_eval, Resolution = "5km"),
   cbind(res10km$df_eval, Resolution = "10km")
 )
 
@@ -73,6 +73,6 @@ boxplot(Value ~ Variable + Resolution, data = long_df,
         main = "Boxplot of Sen_ecoRM and Prec_ecoRM")
 
 # Adding legend for colors
-legend("bottomright", legend = c("1km", "10km"), fill = c("#FFC300", "#619CFF"),
+legend("bottomright", legend = c("5km", "10km"), fill = c("#FFC300", "#619CFF"),
        title = "Resolution", bty = "n")
 }

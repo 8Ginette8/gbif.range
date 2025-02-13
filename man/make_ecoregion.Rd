@@ -55,7 +55,7 @@ rst <- terra::crop(rst, shp.lonlat)
 
 # Apply the function by infering 50 classes of environments
 my.eco <- make_ecoregion(env = rst,
-						 nclass = 50)
+			 nclass = 50)
 
 # Test plot
 col_palette = colorRampPalette(c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", 
@@ -67,13 +67,13 @@ terra::plot(my.eco, col = my.eco$color)
 
 # Downloading in the European Alps the observations of one plant species
 obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
-					  geo = shp.lonlat)
+		      geo = shp.lonlat)
 
 # Create the range map based on our custom ecoregion
 range.arcto <- get_range(occ_coord = obs.arcto,
-						 bioreg = my.eco, 
-						 bioreg_name = "EcoRegion",
-						 res = 20)
+			 bioreg = my.eco, 
+			 bioreg_name = "EcoRegion",
+			 res = 20)
 
 # Plot
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
