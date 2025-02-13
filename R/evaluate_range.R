@@ -1,3 +1,12 @@
+root_dir = "~/GitHub/gbif.range/inst/extdata"
+valData_dir = "SDM"
+ecoRM_dir = "EcoRM"
+valData_type = "TIFF"
+verbose = TRUE
+print_map = TRUE
+mask = NULL
+res_fact = NULL
+
 ### ==================================================================
 ### evaluate_range
 ### ==================================================================
@@ -158,7 +167,7 @@ evaluate_range <- function(root_dir = NULL,
     if (valData_type == "TIFF") {
       valRM <- terra::rast(f.list.valRM.full[grep(f.list.matches[i], f.list.valRM.full)])
       suppressWarnings({
-        if (is.na(any(all.equal(terra::crs(ecoRM), terra::crs(valRM))))) {valRM <- terra::project(valRM, ecoRM)}
+        if (isTRUE(all.equal(terra::crs(ecoRM), terra::crs(valRM)))==FALSE) {valRM <- terra::project(valRM, ecoRM)}
       })
 
     } else {
@@ -171,7 +180,8 @@ evaluate_range <- function(root_dir = NULL,
     
     if (is.null(mask)) {
 
-      if (is.na(any(all.equal(ext.e, ext.v)))) {
+      if (isTRUE(all.equal(ext.e, ext.v))==FALSE) {
+        
         combined.extent <- terra::ext(
           min(ext.e[1], ext.v[1]),
           max(ext.e[2], ext.v[2]),
@@ -192,7 +202,7 @@ evaluate_range <- function(root_dir = NULL,
       }
 
       domain.raster[] <- 0
-      domain.raster[is.na(valRM[])] <- NA
+      domain.raster[which(is.na(valRM[]))] <- NA
     }
     
     # Resample domain raster if resolution factor is provided
@@ -226,7 +236,8 @@ evaluate_range <- function(root_dir = NULL,
     
     # Burn into the overlay layer with domain_raster properties
     overlay.raster <- valRM.pres * 2 + ecoRM.bin
-    overlay.raster[is.na(domain.raster[])] <- NA
+    overlay.raster[is.na(domain.raster[])] <- NA 
+    
     names(overlay.raster) <- f.list.matches[i]
     overlay.list[[i]] <- overlay.raster
     
@@ -278,7 +289,7 @@ evaluate_range <- function(root_dir = NULL,
         fill = colors,
         bg = NA,
         box.col = NA,
-        inset = c(0,0.05)
+        inset = c(0,0.1)
       )
       dev.off()
     }
