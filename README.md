@@ -74,7 +74,7 @@ points(obs.pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 ![image](https://github.com/user-attachments/assets/a3dbba66-8cb5-48ae-bec5-7022c72d272d)
 
 
-Note that the function did not manage to get rid of observations from most likely captive individuals (e.g., in Europe, U.S. and South Africa). We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
+Note that the function did not manage to get rid of observations from most likely captive individuals (e.g., in Europe, U.S. and South Africa); see the *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
 
 ``` r
 get_status("Panthera tigris", all = FALSE)
