@@ -1,12 +1,3 @@
-root_dir = "~/GitHub/gbif.range/inst/extdata"
-valData_dir = "SDM"
-ecoRM_dir = "EcoRM"
-valData_type = "TIFF"
-verbose = TRUE
-print_map = TRUE
-mask = NULL
-res_fact = NULL
-
 ### ==================================================================
 ### evaluate_range
 ### ==================================================================
