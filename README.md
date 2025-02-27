@@ -163,8 +163,11 @@ Let's reapply the same process as for Panthera tigris, but with the marine speci
 ⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
 
 ``` r
-obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000) # Here the example is a sample of 1000 observations per geographic tile
-get_status("Delphinus delphis", all = TRUE) # Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+# Here the example is a sample of 1000 observations per geographic tile
+obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000)
+
+# Here the list is longer because 'all=TRUE' includes every names (even doubtful)
+get_status("Delphinus delphis", all = TRUE)
 ```
 
 Let's now generate three range maps of *Delphinus delphis* using the *eco.marine* as ecoregion shapefile:
