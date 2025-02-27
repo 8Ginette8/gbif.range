@@ -124,7 +124,9 @@ Additonally, if the in-house ecoregions are too coarse for a given geographic re
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
 shp.lonlat <- terra::vect(paste0(system.file(package = "gbif.range"), "/extdata/shp_lonlat.shp"))
-obs.arcto <- get_gbif("Arctostaphylos alpinus", geo = shp.lonlat)
+obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
+                      geo = shp.lonlat,
+                      grain = 10)
 
 # Create an ecoregion layer of 200 classes, based on two environmental spatial layers:
 rst <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
@@ -135,11 +137,10 @@ my.eco <- make_ecoregion(rst, 200)
 range.arcto <- get_range(occ_coord = obs.arcto,
                         bioreg = my.eco,
                         bioreg_name = "EcoRegion",
-                        grain = 10,
                         res = 20)
 ```
 
-Unlike at larger-scales, we have here decreased here *grain* parameter from 100km to 10km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species compared to the study extend. ⚠️It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
+Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 10km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species compared to the study extend. ⚠️It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
 ``` r
 # Plot
