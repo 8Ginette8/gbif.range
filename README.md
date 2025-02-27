@@ -99,7 +99,7 @@ terra::plot(countries, col = "#bcbddc")
 terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
 ```
 
-![image](https://github.com/user-attachments/assets/967d2c26-ff43-4d45-b93a-4b0966324458)
+![image](https://github.com/user-attachments/assets/a262f050-fd74-42b5-95de-7cca788415d7)
 
 
 Here, default parameters were employed, however, *clustered_points_outlier* could have been increased to remove larger clusters of more isolated observations of *Panthera tigris*, and *degrees_outlier* to account for more appart observations in the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
