@@ -144,7 +144,7 @@ range.arcto <- get_range(occ_coord = obs.arcto,
                         res = 20)
 ```
 
-Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 10km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species compared to the study extent. *clustered_points_outlier* and *degrees_outlier* were here also kept defaults, so relative to the study extent, no clustered or too distance observations (per ecoregion) were considered as outliers. ⚠️It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
+Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 10km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *clustered_points_outlier* and *degrees_outlier* were here also kept defaults, so relative to the study extent, no clustered or too distance observations (per ecoregion) were considered as outliers. ⚠️It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
 ``` r
 # Plot
