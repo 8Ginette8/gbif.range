@@ -457,7 +457,7 @@ get_gbif <- function(sp_name = NULL,
 
     Sys.sleep(1)
 
-		cat("\r","...",round(x * 100/length(geo.ref), 2), "%...")
+		cat("\r","-----------------",round(x * 100/length(geo.ref), 2), "%...")
 
 		## Try the download first: may be request overload problems
 		go.tile <- geo.ref[x]
