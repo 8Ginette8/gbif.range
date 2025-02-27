@@ -89,9 +89,7 @@ eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 # Range
 range.tiger <- get_range(occ_coord = obs.pt,
                         bioreg = eco.terra,
-                        bioreg_name = "ECO_NAME",
-                        degrees_outlier = 6,
-                        clustered_points_outlier = 4)
+                        bioreg_name = "ECO_NAME")
 ```
 
 Let's plot the result now:
@@ -101,10 +99,10 @@ terra::plot(countries, col = "#bcbddc")
 terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
 ```
 
-![image](https://github.com/user-attachments/assets/b25133a9-71be-44bd-9113-b28554d13239)
+![image](https://github.com/user-attachments/assets/967d2c26-ff43-4d45-b93a-4b0966324458)
 
 
-Here, *clustered_points_outlier = 4* was employed to remove more isolated observations of *Panthera tigris*, and *degrees_outlier = 6* to account for more appart observations in the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
+Here, default parameters were employed, however, *clustered_points_outlier* could have been increased to remove larger clusters of more isolated observations of *Panthera tigris*, and *degrees_outlier* to account for more appart observations in the range process. Note that buffer and filtering parameters can be be set in *get_range* and should be carefully explored before any definite range map generation.
 
 ### Available ecoregions
 
