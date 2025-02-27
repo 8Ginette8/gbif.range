@@ -21,7 +21,7 @@
 #' 
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
 #' with associated taxonomy and IUCN status.
-#' @param search Logical. If TRUE, the function will strictly look for the most relevant result, based
+#' @param search Logical. If TRUE (default), the function will strictly look for the most relevant result, based
 #' on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
 #' if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
 #' relevant name from the list (higher taxa level than species allowed here). Also, unlike search=TRUE,
@@ -45,15 +45,14 @@
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold of match
 #' of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
 #' @param geo Object of class Extent, SpatExtent, SpatialPolygon, SpatialPolygonDataframe,
-#' or SpatVector (WGS84) to define the study's area extent. Default is NULL i.e. the whole globe.
-#' @param grain Numeric. Specify in meters the study resolution. Used to
-#' filter gbif records according to their (1) spatial uncertainties and (2) number of coordinate
-#' decimals. Records with no information on coordinate uncertainties (column
-#' 'coordinateUncertaintyInMeters') are be kept by default. See details.
-#' @param duplicates Logical. Should duplicated records be kept?
-#' @param absences Logical. Should absence records be kept?
-#' @param no_xy Logical. Default is FALSE i.e., only records with coordinates are
-#' downloaded. If TRUE, records with no coordinates are also downloaded.
+#' or SpatVector (WGS84) to define the study's area extent. Default is NULL, i.e., the whole globe.
+#' @param grain Numeric. Specify in kilometers the study resolution. Default is 100. Used to filter gbif records
+#' according to their (1) spatial uncertainties and (2) number of coordinate decimals. Records with no information
+#' on coordinate uncertainties (column coordinateUncertaintyInMeters') are be kept by default. See details.
+#' @param duplicates Logical. Should duplicated records be kept? Default is FALSE.
+#' @param absences Logical. Should absence records be kept? Default is FALSE.
+#' @param no_xy Logical. Only records with coordinates are downloaded. Default is FALSE.
+#' If TRUE, records with no coordinates are also downloaded.
 #' @param basis Character. Which basis of records should be selected?
 #' Available (old and new) are 'OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
 #' 'MATERIAL_CITATION', MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN', 'FOSSIL_SPECIMEN',
@@ -73,10 +72,11 @@
 #' 'institutionCode', 'publishingOrgKey', 'taxonomicStatus', 'taxonRank' and 'degreeOfEstablishment'. 
 #' @param time_period Numerical vector. Observations will be downloaded according to the chosen
 #' year range. Default is c(1000,3000). Observations with year = NA are kept by default.
-#' @param identic_xy Logical. Should records with identical xy be kept?
-#' @param wConverted_xy Logical. Should incorrectly converted lon/lat be kept?
-#' Uses cd_ddmm() from 'CoordinateCleaner' R package.
-#' @param centroids Logical. Should species records from raster centroids be kept?
+#' @param identic_xy Logical. Should records with identical xy be kept? Default is FALSE.
+#' @param wConverted_xy Logical. Should incorrectly converted lon/lat be kept? Default is TRUE.
+#' Otherwise, implements an approximate version of cd_ddmm() from the 'CoordinateCleaner'
+#' R package. See the package for more advanced options.
+#' @param centroids Logical. Should species records from raster centroids be kept? Default is TRUE.
 #' Uses cd_round() from 'CoordinateCleaner' R package.
 #' @param ntries Numeric. In case of failure from GBIF server or within the rgbif package, how many
 #' download attempts should the function request? Default is '10' with a 2 seconds interval
@@ -131,7 +131,7 @@ get_gbif <- function(sp_name = NULL,
 					family = NULL,
 					conf_match = 80,
 					geo = NULL,
-					grain = 1000,
+					grain = 100,
 					duplicates = FALSE,
 					absences = FALSE,
 					no_xy = FALSE,
@@ -142,7 +142,7 @@ get_gbif <- function(sp_name = NULL,
 					add_infos = NULL,
 					time_period = c(1000,3000),
 					identic_xy = FALSE,
-					wConverted_xy = FALSE,
+					wConverted_xy = TRUE,
 					centroids = FALSE,
 					ntries = 10,
 					error_skip = TRUE,
@@ -165,9 +165,12 @@ get_gbif <- function(sp_name = NULL,
 	######################################################
 
 
-	# For precision
+	# For precision and 'cd_ddm'
+	grain = grain*1000
 	deci.preci <- list(seq(0,10,1), rev(0.000011 * 10^(0:10)))
 	deci.chosen <- deci.preci[[1]][which(grain >= deci.preci[[2]])[1]]
+	diff.records <- list(c(0,5000,100000 * 10^(0:9)),rev(0.00000000001 * 10^(0:11)))
+	xy.span <- 10 * 10^(-(deci.chosen - 1))
 
 	# For study area
 	if (!is.null(geo)) {
@@ -183,10 +186,6 @@ get_gbif <- function(sp_name = NULL,
 		'countryCode', 'country', 'year', 'datasetKey', 'institutionCode', 'publishingOrgKey',
 		'taxonomicStatus', 'taxonRank', add_infos)
 	gbif.info <- gbif.info[order(gbif.info)]
-
-		# For 'cd_ddmm'
-	diff.records <- list(c(0,5000,100000 * 10^(0:9)),rev(0.00000000001 * 10^(0:11)))
-	xy.span <- 10 * 10^(-(deci.chosen - 1))
 
 		# Create an empty ouptut
 	e.output <- data.frame(matrix(ncol = length(gbif.info), nrow = 0,
@@ -689,7 +688,13 @@ get_gbif <- function(sp_name = NULL,
 
 			# Summary of datasets & cd_ddmm parameter choice
 			gbif.datasets <- names(table(gbif.correct$datasetKey))
-			if (nrow(gbif.correct) < 10000) {mat.size <- 100} else {mat.size <- 1000}
+			if (nrow(gbif.correct) < 10000) {
+				mat.size <- 100
+			} else if (nrow(gbif.correct) < 1e6) {
+				mat.size <- 1000
+			} else {
+				mat.size = 10000
+			}
 
 			# Apply correction if the dataset > 50 records
 			gbif.ddmm <-
