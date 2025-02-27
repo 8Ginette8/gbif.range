@@ -99,7 +99,7 @@ terra::plot(countries, col = "#bcbddc")
 terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
 ```
 
-![image](https://github.com/user-attachments/assets/16a8e23a-86eb-480d-ac61-b5b0fcc33fc8)
+![image](https://github.com/user-attachments/assets/97f6d768-4858-42ca-89f4-9d66e2394171)
 
 
 Here, default parameters were employed, however, *clustered_points_outlier* could have been increased to remove larger clusters of more isolated observations, and *degrees_outlier* to account for more appart observations in the range process. Here default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
