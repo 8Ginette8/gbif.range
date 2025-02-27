@@ -320,12 +320,11 @@ get_gbif <- function(sp_name = NULL,
 	}
 
 	# Check number of records in 'geo' first
-	gbif.records <- rgbif::occ_data(taxonKey = sp.key,
-																  limit = 1,
+	gbif.records <- rgbif::occ_count(taxonKey = sp.key,
 																  hasCoordinate = !no_xy,
 																  hasGeospatialIssue = FALSE,
 																  geometry = geo.ref
-																  )[1]$meta$count
+																  )
 
 	cat(">>>>>>>> Total number of records:",gbif.records,"\n")
 
@@ -346,20 +345,19 @@ get_gbif <- function(sp_name = NULL,
 	{
 		cat(">>>>>>>> Too many records: Retrieving relevant geographic tiles...","\n")
 
-		# Start with 200 tiles
-		tile.100 <- make_tiles(geo, Ntiles = 200, sext = TRUE)
+		# Start with 10 tiles
+		tile.100 <- make_tiles(geo, Ntiles = 10, sext = TRUE)
 		geo.tiles <- tile.100[[1]]
 		geo.meta <- lapply(tile.100[[2]], function(x) x[])
 
 		# Check number of records for each tiles
 		gbif.tiles <-
 		sapply(geo.tiles, function(x) {
-			gt.out <- rgbif::occ_data(taxonKey = sp.key,
-																limit = 1,
+			gt.out <- rgbif::occ_count(taxonKey = sp.key,
 																hasCoordinate = !no_xy,
 																hasGeospatialIssue = FALSE,
 																geometry = x
-																)[1]$meta$count
+																)
 			return(gt.out)
 		})
 
@@ -383,9 +381,11 @@ get_gbif <- function(sp_name = NULL,
 				m.process <-
 				lapply(1:length(new.geo), function(y){
 
-					# Convert to extent and create 100 new micro tiles
+          Sys.sleep(1)
+
+					# Convert to extent and create 5 new micro tiles
 					new.ext <- terra::ext(new.geo[[y]])
-					micro.100 <- make_tiles(new.ext, Ntiles = 100, sext = TRUE)
+					micro.100 <- make_tiles(new.ext, Ntiles = 5, sext = TRUE)
 
 					# If micro.100 is NULL return NULL (in case of an incorrect extent)
 					if (is.null(micro.100)) {
@@ -399,12 +399,11 @@ get_gbif <- function(sp_name = NULL,
 					# And count records again
 					gbif.micro <-
 						sapply(micro.tiles, function(z) {
-							gt.out <- try(rgbif::occ_data(taxonKey = sp.key,
-																						limit = 1,
+							gt.out <- try(rgbif::occ_count(taxonKey = sp.key,
 																						hasCoordinate = !no_xy,
 																						hasGeospatialIssue = FALSE,
 																						geometry = z
-																						)[1]$meta$count, silent = TRUE)
+																						),silent = TRUE)
 						return(gt.out)
 					})
 
@@ -415,6 +414,8 @@ get_gbif <- function(sp_name = NULL,
 					# Store if tiles with < 99'000 observations found
 					goody <- micro.tiles[gbif.micro < 99000 & gbif.micro != 0]
 					bady <- micro.meta[!gbif.micro < 99000 & gbif.micro != 0]
+
+          # Return
 					return(list(goody,bady))
 				})
 
@@ -454,7 +455,9 @@ get_gbif <- function(sp_name = NULL,
 	batch.search <-
 	lapply(1:length(geo.ref), function(x) {
 
-		cat("\r",round(x * 100/length(geo.ref), 2), "%...")
+    Sys.sleep(1)
+
+		cat("\r","...",round(x * 100/length(geo.ref), 2), "%...")
 
 		## Try the download first: may be request overload problems
 		go.tile <- geo.ref[x]
@@ -469,14 +472,14 @@ get_gbif <- function(sp_name = NULL,
 		# If problems, just try to rerun with while with n attempts, otherwise return NULL
 		if (class(gbif.search) %in% "try-error") {
 			print(gbif.search[1])
-			warning("GBIF query overload or rgbif package error [taxonKey=", sp.key,"]...","\n",sep="")
+			warning("\n","GBIF query overload or rgbif package error [taxonKey=", sp.key,"]...","\n",sep="")
 
 			# While
 			if (class(gbif.search) %in% "try-error") {
 				j <- 0
 				while (class(gbif.search) %in% "try-error" & j < ntries)
 				{
-					cat("Attempt", j + 1, "...", "\n")
+					cat("\n","Attempt", j + 1, "...", "\n")
 					j <- j + 1
 					gbif.search <- try(
 						rgbif::occ_data(taxonKey = sp.key,
@@ -490,10 +493,10 @@ get_gbif <- function(sp_name = NULL,
 
 				if (class(gbif.search) %in% "try-error") {
 					if (error_skip){
-						cat("Attempts to download failed...Returning no results")
+						cat("\n","Attempts to download failed...Returning no results")
 						return(e.output)
 					} else {
-						stop("ERROR (not skipped) for [taxonKey=",sp.key,"]...","\n",sep="")
+						stop("\n","ERROR (not skipped) for [taxonKey=",sp.key,"]...","\n",sep="")
 					}
 				}
 			}
