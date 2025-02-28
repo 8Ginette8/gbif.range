@@ -104,7 +104,7 @@ terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, 
 ![image](https://github.com/user-attachments/assets/97f6d768-4858-42ca-89f4-9d66e2394171)
 
 
-Here, default parameters were employed, however, *clustered_points_outlier* (in degrees) could have been increased to remove (per ecoregion) larger clusters of more isolated observations, and *degrees_outlier* to account for more appart observations in the range process. Here default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
+Here, default parameters were employed, however, *clustered_points_outlier* (in degrees, ~330 km here) could have been increased to remove (per ecoregion) larger clusters of more isolated observations, and *degrees_outlier* (~550 km here) to account for more appart observations in the range process. Here default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
 
 ### Available ecoregions
 
@@ -144,7 +144,7 @@ range.arcto <- get_range(occ_coord = obs.arcto,
                         res = 20)
 ```
 
-Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *clustered_points_outlier* and *degrees_outlier* were here also kept defaults, so relative to the study extent, almost no clustered or too distance observations (per ecoregion) were considered outliers.
+Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *clustered_points_outlier* and *degrees_outlier* were here also kept defaults (~550 and 330 km, respectively), so relative to the study extent, almost no clustered or too distance observations (per ecoregion) were considered outliers.
 
 It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
