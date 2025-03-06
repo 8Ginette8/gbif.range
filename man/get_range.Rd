@@ -15,7 +15,7 @@ get_range(
   buffer_width_polygon = 4,
   dir_temp = tempdir(),
   raster = TRUE,
-  res = 100,
+  res = 0.01,
   verbose = TRUE
 )
 }
@@ -58,10 +58,10 @@ polygons (for each ecoregion).}
 
 \item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
 
-\item{res}{Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
-e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
-achievable resolution of the output will depend on its 'bioreg' precision, e.g., a species range
-output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.}
+\item{res}{Numeric. If raster = TRUE, which resolution of the output in degrees (1° = ~111 km at
+the equator). Default is 0.01 (~1.1 km). It is important to note that the highest achievable resolution
+of the output will depend on its 'bioreg' precision, e.g., a species range output can reach the same
+resolution of the rasters used to create a 'make_ecoregion' object.}
 
 \item{verbose}{Logical. Should progession be printed?}
 }
@@ -105,9 +105,7 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 # Make range from occurance points
 range.tiger <- get_range(occ_coord = obs.pt,
                          bioreg = eco.terra,
-                         bioreg_name = "ECO_NAME",
-                         degrees_outlier = 6,
-                         clustered_points_outlier = 4)
+                         bioreg_name = "ECO_NAME")
 
 # Plot
 
@@ -121,7 +119,7 @@ terra::plot(range.tiger$rangeOutput, axes = FALSE, box = FALSE, legend = FALSE,
 
 # Plot the occurance points
 graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
-    pch = 20,col = "#99340470",cex = 1.5)
+    pch = 20, col = "#99340470", cex = 1.5)
 }
 }
 \references{

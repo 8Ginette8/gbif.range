@@ -8,8 +8,7 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 # Make range from occurance points
 range.tiger <- get_range(occ_coord = obs.pt,
                          bioreg = eco.terra,
-                         bioreg_name = "ECO_NAME",
-                         degrees_outlier = 6)
+                         bioreg_name = "ECO_NAME")
 
 # Plot
 
@@ -23,5 +22,5 @@ terra::plot(range.tiger$rangeOutput, axes = FALSE, box = FALSE, legend = FALSE,
 
 # Plot the occurance points
 graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
-    pch = 20,col = "#99340470",cex = 1.5)
+    pch = 20, col = "#99340470", cex = 1.5)
 }
