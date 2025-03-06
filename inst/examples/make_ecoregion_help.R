@@ -25,7 +25,7 @@ obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
 range.arcto <- get_range(occ_coord = obs.arcto,
 			 bioreg = my.eco, 
 			 bioreg_name = "EcoRegion",
-			 res = 20)
+			 res = 0.05)
 
 # Plot
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
