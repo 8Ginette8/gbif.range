@@ -104,7 +104,7 @@ terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, 
 ![image](https://github.com/user-attachments/assets/97f6d768-4858-42ca-89f4-9d66e2394171)
 
 
-Here, default parameters were employed, however, *clustered_points_outlier* (in degrees, ~330 km here) could have been increased to remove larger clusters of more isolated observations, and *degrees_outlier* (~550 km here) to account for more appart observations in the range process. Here, default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
+Here, default parameters were employed, however, *clustered_points_outlier* (in degrees, ~330 km here) could have been increased to remove larger isolated clusters of observations, and *degrees_outlier* (~550 km here) to account for more appart observations in the range process. Here, default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
 
 ### Available ecoregions
 
