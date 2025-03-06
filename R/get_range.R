@@ -41,10 +41,10 @@
 #' @param dir_temp Character. Where should the temporary text file for the convex hull be saved?
 #' (text file will be deleted again). Default value is \code{tempdir()}.
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
-#' @param res Numeric. If raster = TRUE, which resolution? Final resolution in ° = 1°/res
-#' e.g.,  = 0.1° (i.e. ~10km) if res = 10. Default is 100 (~1km). It is important to note that the highest
-#' achievable resolution of the output will depend on its 'bioreg' precision, e.g., a species range
-#' output can reach the same resolution of the rasters used to create a 'make_ecoregion' object.
+#' @param res Numeric. If raster = TRUE, which resolution of the output in degrees (1° = ~111 km at
+#' the equator). Default is 0.01 (~1.1 km). It is important to note that the highest achievable resolution
+#' of the output will depend on its 'bioreg' precision, e.g., a species range output can reach the same
+#' resolution of the rasters used to create a 'make_ecoregion' object.
 #' @param verbose Logical. Should progession be printed?
 #' @details Ecoregions cover relatively large areas of land or water, and contain characteristic,
 #' geographically distinct assemblages of natural communities sharing a large majority of species,
@@ -129,7 +129,7 @@ get_range <- function (occ_coord = NULL,
                        buffer_width_polygon = 4,
                        dir_temp = tempdir(),
                        raster = TRUE,
-                       res = 100,
+                       res = 0.01,
                        verbose = TRUE){
 
   ### =========================================================================
@@ -312,7 +312,8 @@ get_range <- function (occ_coord = NULL,
 
   # Convert to raster or not
   if (raster) {
-    ras.res <- terra::rast(terra::disagg(terra::rast(), res))
+    res.use = 1 / res
+    ras.res <- terra::rast(terra::disagg(terra::rast(), res.use))
     sp.range.u <- terra::aggregate(shp.species)
     ras <- terra::rasterize(sp.range.u, ras.res)
     shp.species <- terra::crop(ras, sp.range.u)
