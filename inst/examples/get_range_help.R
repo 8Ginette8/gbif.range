@@ -9,8 +9,7 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 range.tiger <- get_range(occ_coord = obs.pt,
                          bioreg = eco.terra,
                          bioreg_name = "ECO_NAME",
-                         degrees_outlier = 6,
-                         clustered_points_outlier = 4)
+                         degrees_outlier = 6)
 
 # Plot
 
