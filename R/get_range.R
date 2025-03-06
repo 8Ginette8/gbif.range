@@ -170,7 +170,7 @@ get_range <- function (occ_coord = NULL,
 
   # Remove duplicates
   w.col <- c("decimalLongitude","decimalLatitude")
-  occ.coord.k <- occ_coord
+  #occ.coord.k <- occ_coord
   occ_coord[, w.col] <- round(occ_coord[,w.col], 4)
   occ_coord <- occ_coord[!duplicated(occ_coord[, w.col]), ]
   occ_coord <- terra::vect(occ_coord, geom = c("decimalLongitude","decimalLatitude"), crs = "epsg:4326")
@@ -326,7 +326,7 @@ get_range <- function (occ_coord = NULL,
 
   # Out
   result <- list(init.args = list(
-                  occ_coord = occ.coord.k,
+                  occ_coord = occ.coord.mod,
                   bioreg = bioreg,
                   bioreg_name = bioreg_name, 
                   degrees_outlier = degrees_outlier,
