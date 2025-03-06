@@ -206,6 +206,7 @@ get_range <- function (occ_coord = NULL,
   
   # Remove outliers
   occ.coord.mod <- occ_coord[!cond, ]
+  occ.coord.k <- occ.coord.mod
 
   # Stop if too many outliers in data set
   if(nrow(occ.coord.mod) == 0){
@@ -326,7 +327,7 @@ get_range <- function (occ_coord = NULL,
 
   # Out
   result <- list(init.args = list(
-                  occ_coord = occ.coord.mod,
+                  occ_coord = occ.coord.k,
                   bioreg = bioreg,
                   bioreg_name = bioreg_name, 
                   degrees_outlier = degrees_outlier,
