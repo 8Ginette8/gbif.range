@@ -164,8 +164,8 @@ get_range <- function (occ_coord = NULL,
   sp.name <- unique(occ_coord$input_search)
   if (length(sp.name) > 1) {
     stop("More than one species in the input data.frame... \n
-         gbifRange is meant to be used for one species at a time. \n
-         Only consider multiple species if they are closely related and share the same ecological niche.")
+         gbif.range is meant to be used for one species at a time. \n
+         Only consider multiple species (with a common ID) if they are closely related and share similar ecological characteristics.")
   }
 
   # Remove duplicates
