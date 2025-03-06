@@ -42,7 +42,7 @@
 #' (text file will be deleted again). Default value is \code{tempdir()}.
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
 #' @param res Numeric. If raster = TRUE, which resolution of the output in degrees (1° = ~111 km at
-#' the equator). Default is 0.01 (~1.1 km). It is important to note that the highest achievable resolution
+#' the equator). Default is 0.1 (~11.1 km). It is important to note that the highest achievable resolution
 #' of the output will depend on its 'bioreg' precision, e.g., a species range output can reach the same
 #' resolution of the rasters used to create a 'make_ecoregion' object.
 #' @param verbose Logical. Should progession be printed?
@@ -129,7 +129,7 @@ get_range <- function (occ_coord = NULL,
                        buffer_width_polygon = 4,
                        dir_temp = tempdir(),
                        raster = TRUE,
-                       res = 0.01,
+                       res = 0.1,
                        verbose = TRUE){
 
   ### =========================================================================
