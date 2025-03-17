@@ -141,7 +141,7 @@ range.arcto <- get_range(occ_coord = obs.arcto,
                         bioreg_name = "EcoRegion",
                         degrees_outlier = 5,
                         clustered_points_outlier = 3,
-                        res = 20)
+                        res = 0.05)
 ```
 
 Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *clustered_points_outlier* and *degrees_outlier* were here also kept defaults (~550 and 330 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
