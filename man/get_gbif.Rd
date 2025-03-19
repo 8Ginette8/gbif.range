@@ -29,7 +29,7 @@ get_gbif(
   centroids = FALSE,
   ntries = 10,
   error_skip = TRUE,
-  occ_samp = 99000,
+  occ_samp = 10000,
   ...
 )
 }
@@ -121,7 +121,7 @@ between tries. If the attempts failed, an empty data.frame is return by default.
 
 \item{occ_samp}{Numeric. Determine how many GBIF occurrences will be sampled per geographic
 tiles of the fragmented study area. Default is the maximum number of GBIF observations found
-in a tile (i.e. ~100'000 records). A lower number may be set (<99'000) if the user only wants
+in a tile (i.e. ~10'000 records). A lower number may be set (<10'000) if the user only wants
 a sample of the species GBIF observations, hence increasing the download process and the
 generation of its range map if get_range() is employed afterwards.}
 
@@ -143,14 +143,14 @@ records related to its accepted name and synonyms are extracted. The function
 also (2) bypasses the rgbif hard limit on the number of records (100'000 max).
 For this purpose, a dynamic moving window is created and used across the geographic
 extent defined by the user. This window automatically fragments the specified
-study area in succesive tiles of different sizes, until all tiles include < 100'000
-observations. The function also (3) automatically applies a post-filtering of
-observations based on the chosen resolution of the study/analysis and by partly
-employing the CoordinateCleaner R package. Filtering options may be chosen and
-involve several choices: study's extent, removal of duplicates, removal of absences,
-basis of records selection, removal of invalid/uncertain xy coordinates (WGS84), time
-period selection and removal of raster centroids. By default, the argument
-hasGeospatialIssue in occ_data() (implemented rgbif function) is set to FALSE.
+study area in succesive tiles of different sizes, until all tiles include < 10'000
+observations (instead of 100'000 for extraction speed efficiency). The function also
+(3) automatically applies a post-filtering of observations based on the chosen
+resolution of the study/analysis and by partly employing the CoordinateCleaner R package.
+Filtering options may be chosen and involve several choices: study's extent, removal of
+duplicates, removal of absences, basis of records selection, removal of invalid/uncertain
+xy coordinates (WGS84), time period selection and removal of raster centroids. By default,
+the argument hasGeospatialIssue in occ_data() (implemented rgbif function) is set to FALSE.
 }
 \details{
 Argument `grain` used for two distinct gbif records filtering. (1) Records filtering

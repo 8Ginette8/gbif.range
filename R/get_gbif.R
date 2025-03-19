@@ -10,14 +10,14 @@
 #' also (2) bypasses the rgbif hard limit on the number of records (100'000 max).
 #' For this purpose, a dynamic moving window is created and used across the geographic
 #' extent defined by the user. This window automatically fragments the specified
-#' study area in succesive tiles of different sizes, until all tiles include < 100'000
-#' observations. The function also (3) automatically applies a post-filtering of
-#' observations based on the chosen resolution of the study/analysis and by partly
-#' employing the CoordinateCleaner R package. Filtering options may be chosen and
-#' involve several choices: study's extent, removal of duplicates, removal of absences,
-#' basis of records selection, removal of invalid/uncertain xy coordinates (WGS84), time
-#' period selection and removal of raster centroids. By default, the argument
-#' hasGeospatialIssue in occ_data() (implemented rgbif function) is set to FALSE.
+#' study area in succesive tiles of different sizes, until all tiles include < 10'000
+#' observations (instead of 100'000 for extraction speed efficiency). The function also
+#' (3) automatically applies a post-filtering of observations based on the chosen
+#' resolution of the study/analysis and by partly employing the CoordinateCleaner R package.
+#' Filtering options may be chosen and involve several choices: study's extent, removal of
+#' duplicates, removal of absences, basis of records selection, removal of invalid/uncertain
+#' xy coordinates (WGS84), time period selection and removal of raster centroids. By default,
+#' the argument hasGeospatialIssue in occ_data() (implemented rgbif function) is set to FALSE.
 #' 
 #' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
 #' with associated taxonomy and IUCN status.
@@ -84,7 +84,7 @@
 #' @param error_skip Logical. Should the search process continues if ntries failed ?
 #' @param occ_samp Numeric. Determine how many GBIF occurrences will be sampled per geographic
 #' tiles of the fragmented study area. Default is the maximum number of GBIF observations found
-#' in a tile (i.e. ~100'000 records). A lower number may be set (<99'000) if the user only wants
+#' in a tile (i.e. ~10'000 records). A lower number may be set (<10'000) if the user only wants
 #' a sample of the species GBIF observations, hence increasing the download process and the
 #' generation of its range map if get_range() is employed afterwards.
 #' @param ... Additonnal parameters for the function cd_round() of CoordinateCleaner.
@@ -146,7 +146,7 @@ get_gbif <- function(sp_name = NULL,
 					centroids = FALSE,
 					ntries = 10,
 					error_skip = TRUE,
-					occ_samp = 99000,
+					occ_samp = 10000,
 					...) {
 
 
@@ -166,7 +166,7 @@ get_gbif <- function(sp_name = NULL,
 
 
 	# For precision and 'cd_ddm'
-	grain = grain*1000
+	grain = grain * 1000
 	deci.preci <- list(seq(0,10,1), rev(0.000011 * 10^(0:10)))
 	deci.chosen <- deci.preci[[1]][which(grain >= deci.preci[[2]])[1]]
 	diff.records <- list(c(0,5000,100000 * 10^(0:9)),rev(0.00000000001 * 10^(0:11)))
@@ -336,12 +336,12 @@ get_gbif <- function(sp_name = NULL,
 
 
 	######################################################
-	### Find the tiles where obs. < 100'000 observations
+	### Find the tiles where obs. < 10'000 observations
 	######################################################
 
 
-	## 1) If species records > 100'000, search for the optimum tiles
-	if (gbif.records > 99000)
+	## 1) If species records > 10'000, search for the optimum tiles
+	if (gbif.records > 10000)
 	{
 		cat(">>>>>>>> Too many records: Retrieving relevant geographic tiles...","\n")
 
@@ -362,18 +362,18 @@ get_gbif <- function(sp_name = NULL,
 		})
 
 		# We make sure that each tile will be fragmented enough
-		# (i.e., < 100'000 species records each)
+		# (i.e., < 10'000 species records each)
 		keep.tiles <-
 		lapply(1:length(gbif.tiles), function(x){
 
 			# Which tile
 			tile.n <- gbif.tiles[x]
 
-			# Return NULL or POLYGON if 0 records or > 100'000 records
+			# Return NULL or POLYGON if 0 records or > 10'000 records
 			if (tile.n == 0) {return(NULL)}
-			if (tile.n < 99000) {return(geo.tiles[x])}
+			if (tile.n < 10000) {return(geo.tiles[x])}
 
-			# Keep fragmenting if > 100'000 records
+			# Keep fragmenting if > 10'000 records
 			new.geo <- list(geo.meta[[x]])
 			pol.store <- list()
 			while (length(new.geo) != 0)
@@ -381,7 +381,7 @@ get_gbif <- function(sp_name = NULL,
 				m.process <-
 				lapply(1:length(new.geo), function(y){
 
-          Sys.sleep(1)
+          Sys.sleep(2)
 
 					# Convert to extent and create 5 new micro tiles
 					new.ext <- terra::ext(new.geo[[y]])
@@ -411,9 +411,9 @@ get_gbif <- function(sp_name = NULL,
 					gbif.micro[sapply(gbif.micro, function(z) grepl("Error", z))] <- 0
 					gbif.micro <- as.numeric(gbif.micro)
 
-					# Store if tiles with < 99'000 observations found
-					goody <- micro.tiles[gbif.micro < 99000 & gbif.micro != 0]
-					bady <- micro.meta[!gbif.micro < 99000 & gbif.micro != 0]
+					# Store if tiles with < 10'000 observations found
+					goody <- micro.tiles[gbif.micro < 10000 & gbif.micro != 0]
+					bady <- micro.meta[!gbif.micro < 10000 & gbif.micro != 0]
 
           # Return
 					return(list(goody,bady))
@@ -425,7 +425,7 @@ get_gbif <- function(sp_name = NULL,
 				all.bad <- lapply(m.process, function(y) y[[2]])
 				all.bad[sapply(all.bad, is.null)] <- NULL
 
-				# Store if no blocks with > 99'000 observations found
+				# Store if no blocks with > 10'000 observations found
 				pol.store <- c(pol.store, unlist(all.good, recursive = FALSE))
 				new.geo <- unlist(all.bad,recursive = FALSE)
 
@@ -436,7 +436,7 @@ get_gbif <- function(sp_name = NULL,
 			return(unlist(pol.store, recursive = FALSE))
 		})
 
-		# Final list of POLYGONS with n observations < 100'000 observations
+		# Final list of POLYGONS with n observations < 10'000 observations
 		geo.ref <- unlist(keep.tiles)
 	}
 	
@@ -444,8 +444,8 @@ get_gbif <- function(sp_name = NULL,
 	#################### API Search ######################
 	######################################################
 
-	# Infromation messages
-	if (occ_samp != 99000) {
+	# Information messages
+	if (occ_samp != 10000) {
 		cat("...GBIF records of",sp_name,": download of sample of records starting...","\n")
 	} else {
 		cat("...GBIF records of",sp_name,": download of all records starting...","\n")
@@ -455,7 +455,7 @@ get_gbif <- function(sp_name = NULL,
 	batch.search <-
 	lapply(1:length(geo.ref), function(x) {
 
-    Sys.sleep(1)
+    Sys.sleep(2)
 
 		cat("\r","-----------------",round(x * 100/length(geo.ref), 2), "%...")
 
@@ -520,7 +520,7 @@ get_gbif <- function(sp_name = NULL,
 			gbif.reorder[, missing.col] <- NA
 			gbif.correct <- gbif.reorder[, order(names(gbif.reorder))]
 
-			# Remove row we don't want
+			# Remove columns we don't want
 			return(gbif.correct[, gbif.info])
 		}
 	})
@@ -583,7 +583,7 @@ get_gbif <- function(sp_name = NULL,
 		gbif.correct <- gbif.correct[id.dup, ]
 
 		# Removal summary
-		if (any(names(table(id.dup) %in% FALSE))){
+		if (any(names(table(id.dup)) %in% FALSE)){
 			removed <- table(id.dup)[1]
 			cat("Records removed:",removed,"\n")
 		} else {
@@ -632,7 +632,7 @@ get_gbif <- function(sp_name = NULL,
 	gbif.correct <- gbif.correct[id.esta, ]
 
 		# Removal summary
-	if (any(names(table(id.esta))%in%FALSE)){
+	if (any(names(table(id.esta)) %in% FALSE)){
 		removed <- table(id.esta)[1]
 		cat("Records removed:",removed,"\n")
 	} else {
@@ -667,7 +667,7 @@ get_gbif <- function(sp_name = NULL,
 			gbif.correct <- gbif.correct[id.diff, ]
 
 			# Removal summary
-			if (any(names(table(id.diff))%in%FALSE)){
+			if (any(names(table(id.diff)) %in% FALSE)){
 				removed <- table(id.diff)[1]
 				cat("Records removed:",removed,"\n")
 			} else {

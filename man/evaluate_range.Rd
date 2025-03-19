@@ -30,7 +30,7 @@ evaluate_range(
 
 \item{mask}{rast object (optional). To mask the study the focal study region. Default is TRUE.}
 
-\item{res_fact}{Integer. Factor for coarsening the original resolution.}
+\item{res_fact}{Integer. Factor for coarsening the original resolution (i.e., that of the species range map)}
 }
 \value{
 A data.frame of evaluation for all species and a list of range overlay maps. 

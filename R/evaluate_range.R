@@ -17,7 +17,7 @@
 #' @param verbose Logical (optional). Report details while running.
 #' @param print_map Logical (optional). If verbose=TRUE should a overlap map be printed. Default is TRUE.
 #' @param mask rast object (optional). To mask the study the focal study region. Default is TRUE.
-#' @param res_fact Integer. Factor for coarsening the original resolution.
+#' @param res_fact Integer. Factor for coarsening the original resolution (i.e., that of the species range map)
 #' @return A data.frame of evaluation for all species and a list of range overlay maps. 
 #' Precision (ppv) = number true presences (TP) / [TP + number false presences (FP)]; 
 #' Sensitivity = number true presences (TP) / [TP + number false absences (FA)]; 
