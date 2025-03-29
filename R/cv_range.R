@@ -1,7 +1,7 @@
 ### ==================================================================
 ### cv_range
 ### ==================================================================
-#' Evaluate the performance of a range map with cross-validation
+#' Evaluate the accuracy of a range map using cross-validation
 #' 
 #' Assesses the accuracy of a species range map by applying cross-validation using the observations
 #' and function arguments of a get_range() object (inclduing its extent). By using these initial parameters,
@@ -16,7 +16,7 @@
 #' It is important to note that since no absences are available for evaluation, a uniform random layer of
 #' background points is first generated over the study area extent and used as pseudo-absences proxy.
 #' 
-#' @param range_object A get_range() object.
+#' @param range_object A get_range() object containing the range map and associated parameters.
 #' @param cv Character. Should the range map be evaluated with random ('random-cv') or spatial block
 #' cross validation ('block-cv').
 #' @param nfolds Numeric. Number of chosen folds for cross-validation.
