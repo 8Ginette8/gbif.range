@@ -2,7 +2,7 @@
 % Please edit documentation in R/cv_range.R
 \name{cv_range}
 \alias{cv_range}
-\title{Evaluate the performance of a range map with cross-validation}
+\title{Evaluate the accuracy of a range map using cross-validation}
 \usage{
 cv_range(
   range_object = NULL,
@@ -13,7 +13,7 @@ cv_range(
 )
 }
 \arguments{
-\item{range_object}{A get_range() object.}
+\item{range_object}{A get_range() object containing the range map and associated parameters.}
 
 \item{cv}{Character. Should the range map be evaluated with random ('random-cv') or spatial block
 cross validation ('block-cv').}

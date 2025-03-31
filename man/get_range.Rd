@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_range.R
 \name{get_range}
 \alias{get_range}
-\title{Create a species range map based on a get_gbif() output}
+\title{Create a species range map based on get_gbif() output}
 \usage{
 get_range(
   occ_coord = NULL,
@@ -69,15 +69,14 @@ resolution of the rasters used to create a 'make_ecoregion' object.}
 A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function.
 }
 \description{
-Estimates species ranges based on occurrence data (GBIF or not) and ecoregions
-(related functions 'make_ecoregion'). It first deletes outliers from the observation
-dataset and then creates a polygon (convex hull) with a user specified buffer around
-all the observations of one ecoregion. If there is only one observation in an ecoregion,
-a buffer around this point will be created. If all points in an ecoregion are on a line,
-the function will also create a buffer around these points, however, the buffer size
-increases with the number of points in the line. Finally, also note that in case of
-too many records, get_range can be used with a sub-sample of species observations to
-ensure a faster polygon process and/or to overcome potential RAM crash of the function.
+This function estimates species ranges from occurrence data (GBIF or otherwise) and ecoregions
+(see 'make_ecoregion'). It first removes outliers from the observation dataset, then creates
+a convex hull polygon with a user-specified buffer around all observations within each
+ecoregion. If there is only one observation in an ecoregion, the function creates a buffer
+around that point. If all points in an ecoregion lie on a line, the function also creates a
+buffer around them, but the buffer size increases with the number of points in the line.
+If there are too many records, get_range can process a sub-sample of species observations to
+speed up polygon creation or avoid potential RAM issues.
 }
 \details{
 Ecoregions cover relatively large areas of land or water, and contain characteristic,
@@ -128,7 +127,7 @@ Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Moun
 climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. Journal of
 Biogeography. doi: 10.1111/jbi.13653
 
-Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... &
+Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... & 
 Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
 patterns of Fagales and Pinales. New Phytologist, 235(2), 759-772 10.1111/nph.18158
 

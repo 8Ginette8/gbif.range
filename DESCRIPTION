@@ -8,7 +8,7 @@ License: GPL (>= 3) | file LICENCE
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Authors@R: c(
     person("Yohann", "Chauvier", role = c("cre","aut"), email = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
     person("Oskar", "Hagen", role = c("aut"), email = "oskar@hagen.bio", comment = "0000-0002-7931-6571"),
