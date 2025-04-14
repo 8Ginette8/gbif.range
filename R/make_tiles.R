@@ -1,8 +1,13 @@
 ### =========================================================================
 ### make_tiles
 ### =========================================================================
-#' Create a specific number of tiles based on a raster extent
+#' Generate Spatial Tiles from a Raster Extent or Geometry
 #'
+#' Divides a given spatial extent or geometry into a specified number of tiles.
+#' Each tile is returned as a POLYGON() geometry. The original extent can be:
+#' (1) converted into a single POLYGON(), or (2) subdivided into approximately
+#' \code{Ntiles} regular fragments, each returned as a POLYGON() and, optionally,
+#' as a \code{SpatExtent}.
 #' Based on a specific extent, one or several tiles are generated. Tiles can be smaller
 #' raster extents or geometry arguments POLYGON(). The original extent is therefore either
 #' converted into a POLYGON() argument, or divided into Ntiles of regular fragments which are
