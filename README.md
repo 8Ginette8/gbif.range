@@ -196,18 +196,15 @@ points(obs.dd[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 
 Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
 
-## Citation
-Yohann Chauvier; Oskar Hagen; Camille Albouy; Patrice Descombes; Fabian Fopp; Michael P. Nobis; Philipp Brun; Lisha Lyu; Loïc Pellissier; Katalin Csilléry (2022). gbif.range - An R package to generate species range maps based on ecoregions and a user-friendly GBIF wrapper. EnviDat. doi: <a href="https://www.envidat.ch/#/metadata/gbif-range-r">10.16904/envidat.352</a>
-
 ## References
 
-Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building, climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. Journal of Biogeography. doi: <a href="https://doi.org/10.1111/jbi.13653">10.1111/jbi.13653</a>
+[//]: #Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building, climate cooling and the richness of cold-adapted plants #in the Northern Hemisphere. Journal of Biogeography. doi: <a href="https://doi.org/10.1111/jbi.13653">10.1111/jbi.13653</a>
 
-Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the European Alps. Ecological monographs, 91(2), e01433. doi: <a href="https://doi.org/10.1002/ecm.1433">10.1002/ecm.1433</a>
+[//]: #Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the European Alps. Ecological monographs, 91(2), e01433. doi: <a href="https://doi.org/10.1002/ecm.1433">10.1002/ecm.1433</a>
 
 Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... & Pellissier, L. (2022). An integrated high‐resolution mapping shows congruent biodiversity patterns of Fagales and Pinales. New Phytologist, 235(2). doi: <a href="https://doi.org/10.1111/nph.18158">10.1111/nph.18158</a>
 
-Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of ecoregional range maps for boosting taxonomic coverage in ecology and conservation. Ecography, 12, e06794. doi: <a href="https://doi.org/10.1111/ecog.06794">10.1111/ecog.06794</a>
+[//]: #Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of ecoregional range maps for boosting taxonomic coverage in ecology and conservation. Ecography, 12, e06794. doi: <a href="https://doi.org/10.1111/ecog.06794">10.1111/ecog.06794</a>
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. doi: <a href="https://doi.org/10.5281/zenodo.6023735">10.5281/zenodo.6023735</a>
 
