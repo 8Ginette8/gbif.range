@@ -381,7 +381,7 @@ get_gbif <- function(sp_name = NULL,
 				m.process <-
 				lapply(1:length(new.geo), function(y){
 
-          Sys.sleep(2)
+          Sys.sleep(4)
 
 					# Convert to extent and create 5 new micro tiles
 					new.ext <- terra::ext(new.geo[[y]])
@@ -455,7 +455,7 @@ get_gbif <- function(sp_name = NULL,
 	batch.search <-
 	lapply(1:length(geo.ref), function(x) {
 
-    Sys.sleep(2)
+    Sys.sleep(4)
 
 		cat("\r","-----------------",round(x * 100/length(geo.ref), 2), "%...")
 
@@ -488,7 +488,7 @@ get_gbif <- function(sp_name = NULL,
 														hasGeospatialIssue = FALSE,
 														geometry = go.tile),
 						silent=TRUE)
-					  Sys.sleep(2)
+					  Sys.sleep(4)
 				}
 
 				if (class(gbif.search) %in% "try-error") {
