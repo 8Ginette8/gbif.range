@@ -198,7 +198,8 @@ Althought our result map follows the sampling pattern found in <a href="https://
 
 ## Citation
 
-Yohann Chauvier, Oskar Hagen, Stefan Pinkert, Camille Albouy, Fabian Fopp, Philipp Brun, Patrice Descombes, Florian Altermatt, Loic Pellissier, Katalin Csilléry. gbif.range: An R package to generate ecologically-informed species range maps from occurrence data with seamless GBIF integration. Authorea. June 30, 2025. DOI: <a href="https://doi.org/10.22541/au.175130858.83083354/v1">10.22541/au.175130858.83083354/v1</a>
+Yohann Chauvier, Oskar Hagen, Stefan Pinkert, Camille Albouy, Fabian Fopp, Philipp Brun, Patrice Descombes, Florian Altermatt, Loic Pellissier, Katalin Csilléry. gbif.range: An R package to generate ecologically-informed species range maps from occurrence data with seamless GBIF integration. Authorea. June 30, 2025.
+doi: <a href="https://doi.org/10.22541/au.175130858.83083354/v1">10.22541/au.175130858.83083354/v1</a>
 
 ## References 
 
