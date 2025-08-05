@@ -87,6 +87,8 @@
 #' in a tile (i.e. ~10'000 records). A lower number may be set (<10'000) if the user only wants
 #' a sample of the species GBIF observations, hence increasing the download process and the
 #' generation of its range map if get_range() is employed afterwards.
+#' @param should_use_occ_download Logical. If TRUE, the function will use the rgbif::occ_download()
+#' instead of rgbif::occ_data(). This requires GBIF credentials! Defaults to FALSE.
 #' @param ... Additonnal parameters for the function cd_round() of CoordinateCleaner.
 #' @details Argument `grain` used for two distinct gbif records filtering. (1) Records filtering
 #' according to gbif 'coordinateUncertaintyInMeters'; every records uncertainty > grain/2
@@ -147,6 +149,7 @@ get_gbif <- function(sp_name = NULL,
 					ntries = 10,
 					error_skip = TRUE,
 					occ_samp = 10000,
+					should_use_occ_download = FALSE,
 					...) {
 
 
@@ -328,8 +331,8 @@ get_gbif <- function(sp_name = NULL,
 
 	cat(">>>>>>>> Total number of records:",gbif.records,"\n")
 
-	# Cancel request if n=0
-	if (gbif.records ==0 ) {
+	# Cancel request if n==0
+	if (gbif.records == 0 ) {
 		cat("No species records found...","\n")
 		return(e.output)
 	}
@@ -341,9 +344,7 @@ get_gbif <- function(sp_name = NULL,
 
 
 	## 1) If species records > 10'000, search for the optimum tiles
-	if (gbif.records > 10000)
-	{
-		cat(">>>>>>>> Too many records: Retrieving relevant geographic tiles...","\n")
+	if (!should_use_occ_download && gbif.records > 10000) {
 
 		# Start with 10 tiles
 		tile.100 <- make_tiles(geo, Ntiles = 10, sext = TRUE)
@@ -461,16 +462,35 @@ get_gbif <- function(sp_name = NULL,
 
 		## Try the download first: may be request overload problems
 		go.tile <- geo.ref[x]
-		gbif.search <- try(
-			rgbif::occ_data(taxonKey = sp.key,
-											limit = occ_samp,
-											hasCoordinate = !no_xy,
-											hasGeospatialIssue = FALSE,
-											geometry = go.tile),
-			silent=TRUE)
+		gbif.search <- if (should_use_occ_download) {
+			req_id = rgbif::occ_download(
+				rgbif::pred("taxonKey", sp.key),
+				rgbif::pred("hasCoordinate", !no_xy),
+				rgbif::pred("hasGeospatialIssue", FALSE),
+				rgbif::pred_within(go.tile),
+				format = "SIMPLE_CSV",
+				curlopts=list(http_version=2)
+			)
+			cat(">>> Download request ID:", req_id, "\n")
+			rgbif::occ_download_wait(req_id, status_ping = 5, curlopts = list(http_version=2), quiet = FALSE)
+			download <- rgbif::occ_download_get(req_id)
+			try(rgbif::occ_download_import(download), silent = FALSE)
+		} else {
+    	cat(">>>> #", x, " (", round(x * 100/length(geo.ref), 2), "%): ", sep="")
+			try(
+				rgbif::occ_data(
+					taxonKey = sp.key,
+					limit = occ_samp,
+					hasCoordinate = !no_xy,
+					hasGeospatialIssue = FALSE,
+					geometry = go.tile
+				),
+				silent=TRUE
+			)
+		}
 
 		# If problems, just try to rerun with while with n attempts, otherwise return NULL
-		if (class(gbif.search) %in% "try-error") {
+		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
 			print(gbif.search[1])
 			warning("\n","GBIF query overload or rgbif package error [taxonKey=", sp.key,"]...","\n",sep="")
 
@@ -502,6 +522,8 @@ get_gbif <- function(sp_name = NULL,
 			}
 		}
 
+		if (should_use_occ_download) gbif.search$data <- gbif.search
+
 		# If no results
 		if (is.null(gbif.search$data)){
 			
@@ -510,7 +532,7 @@ get_gbif <- function(sp_name = NULL,
 		} else {
 
 			# Convert to a data.frame is needed
-			if (class(gbif.search$data)[1] != "data.frame"){
+			if (class(gbif.search$data)[1] != "data.frame") {
 				gbif.search <- as.data.frame(gbif.search$data)
 			}
 
