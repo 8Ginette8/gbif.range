@@ -89,6 +89,9 @@
 #' generation of its range map if get_range() is employed afterwards.
 #' @param should_use_occ_download Logical. If TRUE, the function will use the rgbif::occ_download()
 #' instead of rgbif::occ_data(). This requires GBIF credentials! Defaults to FALSE.
+#' @param occ_download_user Character. GBIF username. Required if should_use_occ_download = TRUE.
+#' @param occ_download_pwd Character. GBIF password. Required if should_use_occ_download = TRUE.
+#' @param occ_download_email Character. GBIF email. Required if should_use_occ_download = TRUE.
 #' @param ... Additonnal parameters for the function cd_round() of CoordinateCleaner.
 #' @details Argument `grain` used for two distinct gbif records filtering. (1) Records filtering
 #' according to gbif 'coordinateUncertaintyInMeters'; every records uncertainty > grain/2
@@ -104,18 +107,18 @@
 #' may still be applied afterwards. Although crucial preliminary checks of species records
 #' are done by the function, additional post exploration with the CoordinateCleaner R
 #' package is still highly recommended.
-#' @references 
+#' @references
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
 #' N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
 #' European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
-#' 
+#'
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735
-#' 
+#'
 #' Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli,
 #' A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection
 #' databases. Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152
-#' 
+#'
 #' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
 #' @seealso The (1) rgbif and (2) CoordinateCelaner packages for additional and more general
 #' approaches on (1) downloading GBIF observations and (2) post-filtering those.
@@ -150,9 +153,10 @@ get_gbif <- function(sp_name = NULL,
 					error_skip = TRUE,
 					occ_samp = 10000,
 					should_use_occ_download = FALSE,
+					occ_download_user = NULL,
+					occ_download_pwd = NULL,
+					occ_download_email = NULL,
 					...) {
-
-
 	######################################################
 	### Stop message
 	######################################################
@@ -463,6 +467,15 @@ get_gbif <- function(sp_name = NULL,
 		## Try the download first: may be request overload problems
 		go.tile <- geo.ref[x]
 		gbif.search <- if (should_use_occ_download) {
+			## Try to use parameter creds if provided, otherwise use env variables
+			user <- if(is.null(occ_download_user)) Sys.getenv("GBIF_USER") else occ_download_user
+			pwd <- if(is.null(occ_download_pwd)) Sys.getenv("GBIF_PWD") else occ_download_pwd
+			email <- if(is.null(occ_download_email)) Sys.getenv("GBIF_EMAIL") else occ_download_email
+
+			if (any(c(user, pwd, email) %in% "")){
+				stop("GBIF credentials missing... please provide the parameters occ_download_user, occ_download_pwd, and occ_download_email or set the as environment variables GBIF_USER, GBIF_PWD, and GBIF_EMAIL...")
+			}
+
 			req_id = rgbif::occ_download(
 				rgbif::pred("taxonKey", sp.key),
 				rgbif::pred("hasCoordinate", !no_xy),
