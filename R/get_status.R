@@ -286,9 +286,28 @@ get_status <- function(sp_name = NULL,
                         IUCN_status = iucn,
                         sp_nameMatch = bone.search$matchType)
 
-  # Remove duplicated and change sp_nameMatch to know which row related to the sp_name input
+  # Remove duplicated & # change sp_nameMatch to know which row related to the sp_name input
   e.output <- e.output[!duplicated(e.output$scientificName), ]
   e.output[e.output$scientificName %in% sc.name, "sp_nameMatch"][1] <- "INPUT"
 
+  # In case missing match
+  if (!"INPUT"%in%e.output$sp_nameMatch){
+    
+    # Normalize hybrid symbol spacing (replace plain x or × with no spaces around)
+    e.output$scientificName <- gsub("\\s*[x×]\\s*", "×", e.output$scientificName)
+    sc.name <- gsub("\\s*[x×]\\s*", "×", sc.name)
+
+    # Normalize spaces and trim
+    e.output$scientificName <- gsub("\\s+", " ", trimws(e.output$scientificName))
+    sc.name <- gsub("\\s+", " ", trimws(sc.name))
+
+    # Use agrep for approximate matching with max.distance of 0.1 (1% difference)
+    matches <- agrep(sc.name, e.output$scientificName, max.distance = 0.01, ignore.case = TRUE)
+
+    # Assign "INPUT" to the first matched index if any found
+    if (length(matches) > 0) {
+      e.output$sp_nameMatch[matches[1]] <- "INPUT"
+    }
+  }
   return(e.output)
 }
