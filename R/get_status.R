@@ -291,7 +291,7 @@ get_status <- function(sp_name = NULL,
   e.output[e.output$scientificName %in% sc.name, "sp_nameMatch"][1] <- "INPUT"
 
   # In case missing match
-  if (!"INPUT"%in%e.output$sp_nameMatch){
+  if (!"INPUT"%in%e.output$sp_nameMatch) {
     
     # Normalize hybrid symbol spacing (replace plain x or × with no spaces around)
     e.output$scientificName <- gsub("\\s*[x×]\\s*", "×", e.output$scientificName)
