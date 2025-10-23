@@ -294,8 +294,8 @@ get_status <- function(sp_name = NULL,
   if (!"INPUT"%in%e.output$sp_nameMatch) {
     
     # Normalize hybrid symbol spacing (replace plain x or × with no spaces around)
-    e.output$scientificName <- gsub("\\s*[x×]\\s*", "×", e.output$scientificName)
-    sc.name <- gsub("\\s*[x×]\\s*", "×", sc.name)
+    e.output$scientificName <- gsub("\\s*[x\u00D7]\\s*", "\u00D7", e.output$scientificName)
+    sc.name <- gsub("\\s*[x\u00D7]\\s*", "\u00D7", sc.name)
 
     # Normalize spaces and trim
     e.output$scientificName <- gsub("\\s+", " ", trimws(e.output$scientificName))

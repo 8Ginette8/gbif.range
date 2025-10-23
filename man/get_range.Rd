@@ -23,8 +23,8 @@ get_range(
 \item{occ_coord}{a get_gbif() output or a data.frame containing two columns named
 "decimalLongitude" and "decimalLatitude".}
 
-\item{bioreg}{'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containg different
-ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
+\item{bioreg}{Define the range extent and ecoregions. 'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object
+containing different ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
 that this parameter may be fed with an external, generated (function make_ecoregion) or
 in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (see functions read_bioreg()
 and others): 'eco_terra' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),

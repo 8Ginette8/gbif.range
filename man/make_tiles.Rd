@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_tiles.R
 \name{make_tiles}
 \alias{make_tiles}
-\title{Create a specific number of tiles based on a raster extent}
+\title{Generate Spatial Tiles from a Raster Extent or Geometry}
 \usage{
 make_tiles(geo, Ntiles, sext = TRUE)
 }
@@ -20,6 +20,11 @@ A list of geometry arguments POLYGON() of length Ntiles (and of SpatExtent
 if sext=TRUE).
 }
 \description{
+Divides a given spatial extent or geometry into a specified number of tiles.
+Each tile is returned as a POLYGON() geometry. The original extent can be:
+(1) converted into a single POLYGON(), or (2) subdivided into approximately
+\code{Ntiles} regular fragments, each returned as a POLYGON() and, optionally,
+as a \code{SpatExtent}.
 Based on a specific extent, one or several tiles are generated. Tiles can be smaller
 raster extents or geometry arguments POLYGON(). The original extent is therefore either
 converted into a POLYGON() argument, or divided into Ntiles of regular fragments which are
