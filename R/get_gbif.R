@@ -87,6 +87,11 @@
 #' in a tile (i.e. ~10'000 records). A lower number may be set (<10'000) if the user only wants
 #' a sample of the species GBIF observations, hence increasing the download process and the
 #' generation of its range map if get_range() is employed afterwards.
+#' @param should_use_occ_download Logical. If TRUE, the function will use the rgbif::occ_download()
+#' instead of rgbif::occ_data(). This requires GBIF credentials! Defaults to FALSE.
+#' @param occ_download_user Character. GBIF username. Required if should_use_occ_download = TRUE.
+#' @param occ_download_pwd Character. GBIF password. Required if should_use_occ_download = TRUE.
+#' @param occ_download_email Character. GBIF email. Required if should_use_occ_download = TRUE.
 #' @param ... Additonnal parameters for the function cd_round() of CoordinateCleaner.
 #' @details Argument `grain` used for two distinct gbif records filtering. (1) Records filtering
 #' according to gbif 'coordinateUncertaintyInMeters'; every records uncertainty > grain/2
@@ -102,18 +107,18 @@
 #' may still be applied afterwards. Although crucial preliminary checks of species records
 #' are done by the function, additional post exploration with the CoordinateCleaner R
 #' package is still highly recommended.
-#' @references 
+#' @references
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger, D. N., ... & Zimmermann,
 #' N. E. (2021). Influence of climate, soil, and land cover on plant species distribution in the
 #' European Alps. Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
-#' 
+#'
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
 #' information facility API. 10.5281/zenodo.6023735
-#' 
+#'
 #' Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli,
 #' A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection
 #' databases. Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152
-#' 
+#'
 #' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
 #' @seealso The (1) rgbif and (2) CoordinateCelaner packages for additional and more general
 #' approaches on (1) downloading GBIF observations and (2) post-filtering those.
@@ -147,9 +152,11 @@ get_gbif <- function(sp_name = NULL,
 					ntries = 10,
 					error_skip = TRUE,
 					occ_samp = 10000,
+					should_use_occ_download = FALSE,
+					occ_download_user = NULL,
+					occ_download_pwd = NULL,
+					occ_download_email = NULL,
 					...) {
-
-
 	######################################################
 	### Stop message
 	######################################################
@@ -328,8 +335,8 @@ get_gbif <- function(sp_name = NULL,
 
 	cat(">>>>>>>> Total number of records:",gbif.records,"\n")
 
-	# Cancel request if n=0
-	if (gbif.records ==0 ) {
+	# Cancel request if n==0
+	if (gbif.records == 0 ) {
 		cat("No species records found...","\n")
 		return(e.output)
 	}
@@ -341,9 +348,7 @@ get_gbif <- function(sp_name = NULL,
 
 
 	## 1) If species records > 10'000, search for the optimum tiles
-	if (gbif.records > 10000)
-	{
-		cat(">>>>>>>> Too many records: Retrieving relevant geographic tiles...","\n")
+	if (!should_use_occ_download && gbif.records > 10000) {
 
 		# Start with 10 tiles
 		tile.100 <- make_tiles(geo, Ntiles = 10, sext = TRUE)
@@ -461,16 +466,44 @@ get_gbif <- function(sp_name = NULL,
 
 		## Try the download first: may be request overload problems
 		go.tile <- geo.ref[x]
-		gbif.search <- try(
-			rgbif::occ_data(taxonKey = sp.key,
-											limit = occ_samp,
-											hasCoordinate = !no_xy,
-											hasGeospatialIssue = FALSE,
-											geometry = go.tile),
-			silent=TRUE)
+		gbif.search <- if (should_use_occ_download) {
+			## Try to use parameter creds if provided, otherwise use env variables
+			user <- if(is.null(occ_download_user)) Sys.getenv("GBIF_USER") else occ_download_user
+			pwd <- if(is.null(occ_download_pwd)) Sys.getenv("GBIF_PWD") else occ_download_pwd
+			email <- if(is.null(occ_download_email)) Sys.getenv("GBIF_EMAIL") else occ_download_email
+
+			if (any(c(user, pwd, email) %in% "")){
+				stop("GBIF credentials missing... please provide the parameters occ_download_user, occ_download_pwd, and occ_download_email or set the as environment variables GBIF_USER, GBIF_PWD, and GBIF_EMAIL...")
+			}
+
+			req_id = rgbif::occ_download(
+				rgbif::pred("taxonKey", sp.key),
+				rgbif::pred("hasCoordinate", !no_xy),
+				rgbif::pred("hasGeospatialIssue", FALSE),
+				rgbif::pred_within(go.tile),
+				format = "SIMPLE_CSV",
+				curlopts=list(http_version=2)
+			)
+			cat(">>> Download request ID:", req_id, "\n")
+			rgbif::occ_download_wait(req_id, status_ping = 5, curlopts = list(http_version=2), quiet = FALSE)
+			download <- rgbif::occ_download_get(req_id)
+			try(rgbif::occ_download_import(download), silent = FALSE)
+		} else {
+    	cat(">>>> #", x, " (", round(x * 100/length(geo.ref), 2), "%): ", sep="")
+			try(
+				rgbif::occ_data(
+					taxonKey = sp.key,
+					limit = occ_samp,
+					hasCoordinate = !no_xy,
+					hasGeospatialIssue = FALSE,
+					geometry = go.tile
+				),
+				silent=TRUE
+			)
+		}
 
 		# If problems, just try to rerun with while with n attempts, otherwise return NULL
-		if (class(gbif.search) %in% "try-error") {
+		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
 			print(gbif.search[1])
 			warning("\n","GBIF query overload or rgbif package error [taxonKey=", sp.key,"]...","\n",sep="")
 
@@ -502,6 +535,8 @@ get_gbif <- function(sp_name = NULL,
 			}
 		}
 
+		if (should_use_occ_download) gbif.search$data <- gbif.search
+
 		# If no results
 		if (is.null(gbif.search$data)){
 			
@@ -510,7 +545,7 @@ get_gbif <- function(sp_name = NULL,
 		} else {
 
 			# Convert to a data.frame is needed
-			if (class(gbif.search$data)[1] != "data.frame"){
+			if (class(gbif.search$data)[1] != "data.frame") {
 				gbif.search <- as.data.frame(gbif.search$data)
 			}
 
