@@ -328,10 +328,10 @@ get_gbif <- function(sp_name = NULL,
 
 	# Check number of records in 'geo' first
 	gbif.records <- rgbif::occ_count(taxonKey = sp.key,
-																  hasCoordinate = !no_xy,
-																  hasGeospatialIssue = FALSE,
-																  geometry = geo.ref
-																  )
+																	 hasCoordinate = !no_xy,
+																	 hasGeospatialIssue = FALSE,
+																	 geometry = geo.ref
+																	 )
 
 	cat(">>>>>>>> Total number of records:",gbif.records,"\n")
 
@@ -359,10 +359,10 @@ get_gbif <- function(sp_name = NULL,
 		gbif.tiles <-
 		sapply(geo.tiles, function(x) {
 			gt.out <- rgbif::occ_count(taxonKey = sp.key,
-																hasCoordinate = !no_xy,
-																hasGeospatialIssue = FALSE,
-																geometry = x
-																)
+																 hasCoordinate = !no_xy,
+																 hasGeospatialIssue = FALSE,
+																 geometry = x
+																 )
 			return(gt.out)
 		})
 
@@ -405,10 +405,10 @@ get_gbif <- function(sp_name = NULL,
 					gbif.micro <-
 						sapply(micro.tiles, function(z) {
 							gt.out <- try(rgbif::occ_count(taxonKey = sp.key,
-																						hasCoordinate = !no_xy,
-																						hasGeospatialIssue = FALSE,
-																						geometry = z
-																						),silent = TRUE)
+																						 hasCoordinate = !no_xy,
+																						 hasGeospatialIssue = FALSE,
+																						 geometry = z
+																						 ),silent = TRUE)
 						return(gt.out)
 					})
 
@@ -462,21 +462,20 @@ get_gbif <- function(sp_name = NULL,
 
     Sys.sleep(3)
 
-		cat("\r","-----------------",round(x * 100/length(geo.ref), 2), "%...")
-
 		## Try the download first: may be request overload problems
 		go.tile <- geo.ref[x]
 		gbif.search <- if (should_use_occ_download) {
+			
 			## Try to use parameter creds if provided, otherwise use env variables
-			user <- if(is.null(occ_download_user)) Sys.getenv("GBIF_USER") else occ_download_user
-			pwd <- if(is.null(occ_download_pwd)) Sys.getenv("GBIF_PWD") else occ_download_pwd
-			email <- if(is.null(occ_download_email)) Sys.getenv("GBIF_EMAIL") else occ_download_email
+			user <- if (is.null(occ_download_user)) Sys.getenv("GBIF_USER") else occ_download_user
+			pwd <- if (is.null(occ_download_pwd)) Sys.getenv("GBIF_PWD") else occ_download_pwd
+			email <- if (is.null(occ_download_email)) Sys.getenv("GBIF_EMAIL") else occ_download_email
 
 			if (any(c(user, pwd, email) %in% "")){
 				stop("GBIF credentials missing... please provide the parameters occ_download_user, occ_download_pwd, and occ_download_email or set the as environment variables GBIF_USER, GBIF_PWD, and GBIF_EMAIL...")
 			}
 
-			req_id = rgbif::occ_download(
+			req_id <- rgbif::occ_download(
 				rgbif::pred("taxonKey", sp.key),
 				rgbif::pred("hasCoordinate", !no_xy),
 				rgbif::pred("hasGeospatialIssue", FALSE),
@@ -484,22 +483,24 @@ get_gbif <- function(sp_name = NULL,
 				format = "SIMPLE_CSV",
 				curlopts=list(http_version=2)
 			)
+			
 			cat(">>> Download request ID:", req_id, "\n")
+			
 			rgbif::occ_download_wait(req_id, status_ping = 5, curlopts = list(http_version=2), quiet = FALSE)
 			download <- rgbif::occ_download_get(req_id)
 			try(rgbif::occ_download_import(download), silent = FALSE)
+		
 		} else {
-    	cat(">>>> #", x, " (", round(x * 100/length(geo.ref), 2), "%): ", sep="")
+
+    	cat("\r", "----------------- #", x, " (", round(x * 100/length(geo.ref), 2), "%...)\033[K", sep="")
+			
 			try(
 				rgbif::occ_data(
 					taxonKey = sp.key,
 					limit = occ_samp,
 					hasCoordinate = !no_xy,
 					hasGeospatialIssue = FALSE,
-					geometry = go.tile
-				),
-				silent=TRUE
-			)
+					geometry = go.tile), silent = TRUE)
 		}
 
 		# If problems, just try to rerun with while with n attempts, otherwise return NULL
@@ -519,8 +520,7 @@ get_gbif <- function(sp_name = NULL,
 														limit = occ_samp,
 														hasCoordinate = !no_xy,
 														hasGeospatialIssue = FALSE,
-														geometry = go.tile),
-						silent=TRUE)
+														geometry = go.tile), silent = TRUE)
 					  Sys.sleep(3)
 				}
 
@@ -742,12 +742,12 @@ get_gbif <- function(sp_name = NULL,
 				if (nrow(gbif.dataset) > 50){
 					diff.chosen <- diff.records[[2]][which(nrow(gbif.dataset) < diff.records[[1]])[1]]
 					gbif.dataset <- CoordinateCleaner::cd_ddmm(gbif.dataset,
-																				 lon = "decimalLongitude",
-																				 lat = "decimalLatitude",
-																				 ds = "datasetKey",
-																				 mat_size = mat.size,
-																				 diff = diff.chosen,
-																				 min_span = xy.span)
+																										 lon = "decimalLongitude",
+																										 lat = "decimalLatitude",
+																										 ds = "datasetKey",
+																										 mat_size = mat.size,
+																										 diff = diff.chosen,
+																										 min_span = xy.span)
 				}
 				return(gbif.dataset)
 			})
@@ -781,12 +781,11 @@ get_gbif <- function(sp_name = NULL,
 				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
 				if (nrow(gbif.dataset) > 100){
 					gbif.temp <- try(CoordinateCleaner::cd_round(gbif.dataset,
-																						 lon = "decimalLongitude",
-																						 lat = "decimalLatitude",
-																						 ds = "datasetKey",
-																						 graphs = FALSE,
-																						 ...),
-					silent=TRUE)
+																											 lon = "decimalLongitude",
+																											 lat = "decimalLatitude",
+																											 ds = "datasetKey",
+																											 graphs = FALSE,
+																											 ...), silent = TRUE)
 					
 					if (class(gbif.temp) %in% "try-error") {
 						return(gbif.dataset)

@@ -30,6 +30,10 @@ get_gbif(
   ntries = 10,
   error_skip = TRUE,
   occ_samp = 10000,
+  should_use_occ_download = FALSE,
+  occ_download_user = NULL,
+  occ_download_pwd = NULL,
+  occ_download_email = NULL,
   ...
 )
 }
@@ -124,6 +128,15 @@ tiles of the fragmented study area. Default is the maximum number of GBIF observ
 in a tile (i.e. ~10'000 records). A lower number may be set (<10'000) if the user only wants
 a sample of the species GBIF observations, hence increasing the download process and the
 generation of its range map if get_range() is employed afterwards.}
+
+\item{should_use_occ_download}{Logical. If TRUE, the function will use the rgbif::occ_download()
+instead of rgbif::occ_data(). This requires GBIF credentials! Defaults to FALSE.}
+
+\item{occ_download_user}{Character. GBIF username. Required if should_use_occ_download = TRUE.}
+
+\item{occ_download_pwd}{Character. GBIF password. Required if should_use_occ_download = TRUE.}
+
+\item{occ_download_email}{Character. GBIF email. Required if should_use_occ_download = TRUE.}
 
 \item{...}{Additonnal parameters for the function cd_round() of CoordinateCleaner.}
 }
