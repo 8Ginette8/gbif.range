@@ -150,8 +150,8 @@ It is also important to note that the resolution parameter (*res*) can be change
 
 ``` r
 # Plot
-alps.shp = terra::crop(countries,terra::ext(rst))
-r.arcto = terra::mask(range.arcto$rangeOutput,alps.shp)
+alps.shp <- terra::crop(countries,terra::ext(rst))
+r.arcto <- terra::mask(range.arcto$rangeOutput,alps.shp)
 terra::plot(alps.shp, col = "#bcbddc")
 terra::plot(r.arcto, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
 points(obs.arcto[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
