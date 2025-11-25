@@ -132,7 +132,8 @@ obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
 
 # Create an ecoregion layer of 200 classes, based on two environmental spatial layers:
 rst <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
-my.eco <- make_ecoregion(rst, 200)
+my.eco <- make_ecoregion(env = rst,
+                        nclass = 200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
