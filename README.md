@@ -158,7 +158,7 @@ terra::plot(r.arcto, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE
 points(obs.arcto[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
 ```
 
-![image](https://github.com/user-attachments/assets/696faba0-b303-44a7-af72-12fb54c32122)
+<img width="559" height="394" alt="image" src="https://github.com/user-attachments/assets/39928ecc-d5b8-4063-8980-cf5efae2833f" />
 
 
 ### Marine species
