@@ -91,7 +91,7 @@ range.tiger <- get_range(occ_coord = obs.pt,
                         bioreg = eco.terra,
                         bioreg_name = "ECO_NAME",
                         degrees_outlier = 5,
-                        clustered_points_outlier = 3)
+                        clust_pts_outlier = 3)
 ```
 
 Let's plot the result now:
@@ -140,7 +140,7 @@ range.arcto <- get_range(occ_coord = obs.arcto,
                         bioreg = my.eco,
                         bioreg_name = "EcoRegion",
                         degrees_outlier = 5,
-                        clustered_points_outlier = 3,
+                        clust_pts_outlier = 3,
                         res = 0.05)
 ```
 
