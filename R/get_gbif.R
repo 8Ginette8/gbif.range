@@ -489,7 +489,7 @@ get_gbif <- function(sp_name = NULL,
 				)
 				return(gt.out)
 			},
-			FUN.VALUE = integer(1)
+			FUN.VALUE = numeric(1)
 		)
 
 		# We make sure that each tile will be fragmented enough
@@ -543,7 +543,7 @@ get_gbif <- function(sp_name = NULL,
 							)
 						return(gt.out)
 						},
-						FUN.VALUE = integer(1)
+						FUN.VALUE = numeric(1)
 					)
 
 					# Transform in 0 when the polygon is too small for occ_search
