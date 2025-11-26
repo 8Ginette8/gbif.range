@@ -918,13 +918,17 @@ get_gbif <- function(sp_name = NULL,
 				if (nrow(gbif.dataset) > 50){
 					diff.chosen <-
 						diff.records[[2]][which(nrow(gbif.dataset) < diff.records[[1]])[1]]
-					gbif.dataset <- CoordinateCleaner::cd_ddmm(gbif.dataset,
-															   lon = "decimalLongitude",
-															   lat = "decimalLatitude",
-															   ds = "datasetKey",
-															   mat_size = mat.size,
-															   diff = diff.chosen,
-															   min_span = xy.span)
+					gbif.dataset <- suppressWarnings(
+						CoordinateCleaner::cd_ddmm(
+							x = gbif.dataset,
+							lon = "decimalLongitude",
+							lat = "decimalLatitude",
+							ds = "datasetKey",
+							mat_size = mat.size,
+							diff = diff.chosen,
+							min_span = xy.span
+						)
+					)
 				}
 				return(gbif.dataset)
 			})
@@ -957,12 +961,17 @@ get_gbif <- function(sp_name = NULL,
 
 				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
 				if (nrow(gbif.dataset) > 100){
-					gbif.temp <- try(CoordinateCleaner::cd_round(gbif.dataset,
-																 lon = "decimalLongitude",
-																 lat = "decimalLatitude",
-																 ds = "datasetKey",
-																 graphs = FALSE,
-																 ...), silent = TRUE)
+					gbif.temp <- suppressWarnings(
+						try(CoordinateCleaner::cd_round(
+							x = gbif.dataset,
+							lon = "decimalLongitude",
+							lat = "decimalLatitude",
+							ds = "datasetKey",
+							graphs = FALSE,
+							...
+							),
+						silent = TRUE)
+					)
 					
 					if (class(gbif.temp) %in% "try-error") {
 						return(gbif.dataset)
