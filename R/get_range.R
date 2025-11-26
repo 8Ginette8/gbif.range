@@ -3,116 +3,144 @@
 ### ==================================================================
 #' Create a species range map based on get_gbif() output
 #'
-#' This function estimates species ranges from occurrence data (GBIF or otherwise) and ecoregions
-#' (see 'make_ecoregion'). It first removes outliers from the observation dataset, then creates
-#' a convex hull polygon with a user-specified buffer around all observations within each
-#' ecoregion. If there is only one observation in an ecoregion, the function creates a buffer
-#' around that point. If all points in an ecoregion lie on a line, the function also creates a
-#' buffer around them, but the buffer size increases with the number of points in the line.
-#' If there are too many records, get_range can process a sub-sample of species observations to
-#' speed up polygon creation or avoid potential RAM issues.
+#' This function estimates species ranges from occurrence data (GBIF or
+#' otherwise) and ecoregions (see 'make_ecoregion'). It first removes outliers
+#' from the observation dataset, then creates a convex hull polygon with a
+#' user-specified buffer around all observations within each ecoregion. If
+#' there is only one observation in an ecoregion, the function creates a buffer
+#' around that point. If all points in an ecoregion lie on a line, the function
+#' also creates a buffer around them, but the buffer size increases with the
+#' number of points in the line. If there are too many records, get_range can
+#' process a sub-sample of species observations to speed up polygon creation or
+#' avoid potential RAM issues.
 #' 
-#' @param occ_coord a get_gbif() output or a data.frame containing two columns named
-#' "decimalLongitude" and "decimalLatitude".
-#' @param bioreg  Define the range extent and ecoregions. 'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object
-#' containing different ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
-#' that this parameter may be fed with an external, generated (function make_ecoregion) or
-#' in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (see functions read_bioreg()
-#' and others): 'eco_terra' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
-#' 'eco_marine' and 'eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and 'eco_fresh' (for freshwater
-#' species; Abell & al. 2008). For marine species, 'eco_terra' may also be used if the user wants to represent
-#' the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be
-#' done if the user considers that terrestrial ecoregions should be more representative of the species ecology.
-#' @param bioreg_name Character. One ecoregion level/category name from the 'bioreg' polygon must be supplied.
-#' E.g., very detailed level of 'eco_terra' is 'ECO_NAME'. Note that default applies if a make_ecoregion()
-#' polygon is provided as 'bioreg'.
-#' @param degrees_outlier Numeric. Distance threshold (degrees) for outlier classification.
-#' If the nearest minimal distance to the next point is larger than this threshold, it will be
-#' considered as an outlier.
-#' @param clustered_points_outlier Numeric. Maximum number of points which are closer to each other
-#' than the degrees_outlier, but should still be considered as outliers.
-#' @param buffer_width_point Numeric. Buffer (in degrees) which will be applied around single
-#' observations.
-#' @param buffer_increment_point_line Numeric. How much should the buffer be increased for each point
-#' on a line.
-#' @param buffer_width_polygon Numeric. Buffer (in degrees) which will be applied around distribution
-#' polygons (for each ecoregion).
-#' @param dir_temp Character. Where should the temporary text file for the convex hull be saved?
-#' (text file will be deleted again). Default value is \code{tempdir()}.
+#' @param occ_coord a 'getGBIF' object (get_gbif function) or a data.frame
+#' containing two columns named "decimalLongitude" and "decimalLatitude".
+#' @param bioreg  Define the range extent and ecoregions.
+#' 'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containing
+#' different ecoregions (convex hulls will be classified on a bioreg basis)
+#' and of CRS WGS84. Note that this parameter may be fed with an external,
+#' generated (function make_ecoregion) or in-house ecoregion shapefile.
+#' Four shapefiles can be downloaded with the library (see functions
+#' read_bioreg() and others): 'eco_terra' (for terrestrial species; Nature
+#' conservancy version adapted from Olson & al. 2001), eco_marine' and
+#' eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and
+#' eco_fresh' (for freshwater species; Abell & al. 2008). For marine species,
+#' eco_terra' may also be used if the user wants to represent the terrestrial
+#' range of species that also partially settle on mainland. For fresh water
+#' species, same may be done if the user considers that terrestrial ecoregions
+#' should be more representative of the species ecology.
+#' @param bioreg_name Character. One ecoregion level/category name from the
+#' 'bioreg' polygon must be supplied. E.g., very detailed level of 'eco_terra'
+#' is 'ECO_NAME'. Note that default applies if a make_ecoregion() polygon is
+#' provided as 'bioreg'.
+#' @param degrees_outlier Numeric. Distance threshold (degrees) for outlier
+#' classification. If the nearest minimal distance to the next point is larger
+#' than this threshold, it will be considered as an outlier.
+#' @param clust_pts_outlier Numeric. Maximum number of points which are closer
+#' to each other than the degrees_outlier, but should still be considered as
+#' outliers.
+#' @param buffer_width_point Numeric. Buffer (in degrees) which will be applied
+#' around single observations.
+#' @param buff_incrmt_pt_line Numeric. How much should the buffer be increased
+#' for each point on a line.
+#' @param buffer_width_polygon Numeric. Buffer (in degrees) which will be
+#' applied around distribution polygons (for each ecoregion).
+#' @param dir_temp Character. Where should the temporary text file for the
+#' convex hull be saved? (text file will be deleted again). Default value
+#' is \code{tempdir()}.
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
-#' @param res Numeric. If raster = TRUE, which resolution of the output in degrees (1° = ~111 km at
-#' the equator). Default is 0.1 (~11.1 km). It is important to note that the highest achievable resolution
-#' of the output will depend on its 'bioreg' precision, e.g., a species range output can reach the same
-#' resolution of the rasters used to create a 'make_ecoregion' object.
+#' @param res Numeric. If raster = TRUE, which resolution of the output in
+#' degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
+#' important to note that the highest achievable resolution of the output will
+#' depend on its 'bioreg' precision, e.g., a species range output can reach
+#' the same resolution of the rasters used to create a 'make_ecoregion' object.
 #' @param verbose Logical. Should progession be printed?
-#' @details Ecoregions cover relatively large areas of land or water, and contain characteristic,
-#' geographically distinct assemblages of natural communities sharing a large majority of species,
-#' dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
-#' characterise an ecoregion tends to be distinct from that of other ecoregions
+#' @details Ecoregions cover relatively large areas of land or water, and
+#' contain characteristic, geographically distinct assemblages of natural
+#' communities sharing a large majority of species, dynamics, and environmental
+#' conditions. The biodiversity of flora, fauna and ecosystems that characterise
+#' an ecoregion tends to be distinct from that of other ecoregions
 #' (https://en.wikipedia.org/wiki/Ecoregion).
 #' 
-#' Each ecoregion shapefile has one or more categories, which describe more or less precisely the
-#' ecoregion world distribution (from the more to the less detailed):
+#' Each ecoregion shapefile has one or more categories, which describe more or
+#' less precisely the ecoregion world distribution (from the more to the less
+#' detailed):
 #' 
-#' - eco_terra has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
+#' - eco_terra has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and
+#' 'WWF_REALM2'.
 #' - eco_fresh has only one: 'ECOREGION'.
-#' - eco_marine and eco_hd_marine (very coastal-precise version) contains three distinct levels:
-#' 'ECOREGION', 'PROVINCE' and 'REALM'.
+#' - eco_marine and eco_hd_marine (very coastal-precise version) contains
+#' three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
 #' 
-#' @return A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function.
+#' @return A getRange object with two fields: 'init.args' (parameters and data
+#' employed) and 'rangeOutput' ('SpatVector' or 'SpatRaster' depending on what
+#' the user set as 'raster').
 #' @references
-#' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein,
-#' Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building,
-#' climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. Journal of
+#' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger,
+#' Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese,
+#' Loïc Pellissier. (2019) Mountain building, climate cooling and the
+#' richness of cold-adapted plants in the Northern Hemisphere. Journal of
 #' Biogeography. doi: 10.1111/jbi.13653
 #' 
-#' Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... & 
-#' Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
-#' patterns of Fagales and Pinales. New Phytologist, 235(2), 759-772 10.1111/nph.18158
+#' Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S.,
+#' ... &  Pellissier, L. (2022). An integrated high resolution mapping shows
+#' congruent biodiversity patterns of Fagales and Pinales. New Phytologist,
+#' 235(2), 759-772 10.1111/nph.18158
 #' 
-#' Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N.,
-#' Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J.,
-#' Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem,
-#' K. R. 2001. Terrestrial ecoregions of the world: a new map of life on Earth.
-#' Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+#' Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
+#' Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,
+#' Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F.,
+#' Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao,
+#' P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map
+#' of life on Earth. Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
 #' 
-#' The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types, Biogeographical Realms
-#' and The Nature Conservancy Terrestrial Assessment Units. GIS layers developed by The Nature
-#' Conservancy with multiple partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
+#' The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
+#' Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
+#' Units. GIS layers developed by The Nature Conservancy with multiple partners,
+#' combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge
+#' (UK): The Nature Conservancy.
+#' 
+#' Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A.
+#' Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana,
+#' Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer Molnar, Cheri
+#' A. Recchia, James Robertson, Marine Ecoregions of the World: A
+#' Bioregionalization of Coastal and Shelf Areas, BioScience, Volume 57,
+#' Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+#' 
+#' Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
+#' Pelagic provinces of the world: a biogeographic classification of the
+#' world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
+#' doi: 10.1016/j.ocecoaman.2011.12.016
+#' 
+#' The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
+#' of the World. GIS layers developed by The Nature Conservancy with multiple
+#' partners, combined from Spalding et al. (2007) and Spalding et al. (2012).
 #' Cambridge (UK): The Nature Conservancy.
 #' 
-#' Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A. Ferdaña, Max
-#' Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana, Sara A. Lourie, Kirsten D.
-#' Martin, Edmund McManus, Jennifer Molnar, Cheri A. Recchia, James Robertson, Marine
-#' Ecoregions of the World: A Bioregionalization of Coastal and Shelf Areas, BioScience,
-#' Volume 57, Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+#' Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice
+#' Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras
+#' Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald R.
+#' Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf, James
+#' Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric
+#' Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G.
+#' Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of
+#' the World: A New Map of Biogeographic Units for Freshwater Biodiversity
+#' Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414.
+#' doi: 10.1641/B580507
 #' 
-#' Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012). Pelagic provinces of the world:
-#' a biogeographic classification of the world’s surface pelagic waters. Ocean & Coastal Management,
-#' 60, 19-30. doi: 10.1016/j.ocecoaman.2011.12.016
-#' 
-#' The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces of the World. GIS layers
-#' developed by The Nature Conservancy with multiple partners, combined from Spalding et al. (2007)
-#' and Spalding et al. (2012). Cambridge (UK): The Nature Conservancy.
-#' 
-#' Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice Kottelat, Nina Bogutskaya,
-#' Brian Coad, Nick Mandrak, Salvador Contreras Balderas, William Bussing, Melanie L. J. Stiassny,
-#' Paul Skelton, Gerald R. Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf,
-#' James Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric Wikramanayake,
-#' David Olson, Hugo L. López, Roberto E. Reis, John G. Lundberg, Mark H. Sabaj Pérez,
-#' Paulo Petry, Freshwater Ecoregions of the World: A New Map of Biogeographic Units for
-#' Freshwater Biodiversity Conservation, BioScience, Volume 58, Issue 5, May 2008,
-#' Pages 403–414. doi: 10.1641/B580507
-#' 
-#' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
+#' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
+#' (2022). Terra - CRAN
 #' @seealso
-#' For more information on the original code and methods, check Hagen, Oskar et al. (2019), Data
-#' from: Mountain building, climate cooling and the richness of cold-adapted plants in the northern
-#' hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
+#' For more information on the original code and methods, check Hagen et al.
+#' (2019), Data from: Mountain building, climate cooling and the richness
+#' of cold-adapted plants in the northern hemisphere, Dryad, Dataset,
+#' https://doi.org/10.5061/dryad.0ff6b04.
 #' @example inst/examples/get_range_help.R
 #' @importFrom rnaturalearth ne_countries
-#' @importFrom methods is
-#' @importFrom terra vect crds intersect simplifyGeom buffer rast disagg aggregate rasterize crop
+#' @importFrom methods is new
+#' @importFrom terra vect crds intersect simplifyGeom buffer
+#' rast disagg aggregate rasterize crop
 #' @importFrom FNN knn.dist
 #' @importFrom stats kmeans
 #' @importFrom mclust Mclust mclustBIC
@@ -122,24 +150,38 @@ get_range <- function (occ_coord = NULL,
                        bioreg = NULL, 
                        bioreg_name = NULL, 
                        degrees_outlier = 5,
-                       clustered_points_outlier = 3,
+                       clust_pts_outlier = 4,
                        buffer_width_point = 4, 
-                       buffer_increment_point_line = 0.5, 
+                       buff_incrmt_pt_line = 0.5, 
                        buffer_width_polygon = 4,
                        dir_temp = tempdir(),
                        raster = TRUE,
                        res = 0.1,
                        verbose = TRUE){
 
-  ### =========================================================================
-  ### Object conditions + remove duplicates
-  ### =========================================================================
+  ######################################################
+  ### Stop messages
+  ######################################################
+
+
+  check_numeric(degrees_outlier, "degrees_outlier")
+  check_numeric(clust_pts_outlier, "clust_pts_outlier")
+  check_numeric(buffer_width_point, "buffer_width_point")
+  check_numeric(buff_incrmt_pt_line, "buff_incrmt_pt_line")
+  check_numeric(buffer_width_polygon, "buffer_width_polygon")
+  check_logical(raster, "raster")
+  check_numeric(res, "res")
+  check_logical(verbose, "verbose")
+
+  # Spatial class
+  spatial.class <- c("SpatialPolygonsDataFrame",
+    "SpatialPolygons","sf", "SpatVector")
 
   # Bioreg and convert to sf
-  if (!class(bioreg)[1] %in% c("SpatialPolygonsDataFrame", "SpatVector", "sf")) {
+  if (!class(bioreg)[1] %in% spatial.class) {
      stop("Wrong 'bioreg' class (not a spatial object)...")
   }
-  if (class(bioreg)[1] %in% c("SpatialPolygonsDataFrame", "sf")) {
+  if (class(bioreg)[1] %in% spatial.class[c(1,2)]) {
     bioreg <- terra::vect(bioreg)
   }
 
@@ -148,7 +190,8 @@ get_range <- function (occ_coord = NULL,
     bioreg_name <- "EcoRegion"
   } 
   if (methods::is(bioreg_name, "NULL")) {
-    stop("Name of the desired ecoregion level/category ('bioreg_name' parameter) is missing, please provide one...")
+    stop("Name of the desired ecoregion level/category
+      ('bioreg_name' parameter) is missing, please provide one...")
   } 
 
   # occ_coord
@@ -162,9 +205,13 @@ get_range <- function (occ_coord = NULL,
   # get sp.name, and stop if not unique
   sp.name <- unique(occ_coord$input_search)
   if (length(sp.name) > 1) {
-    stop("More than one species in the input data.frame... \n
-         gbif.range is meant to be used for one species at a time. \n
-         Only consider multiple species (with a common ID) if they are closely related and share similar ecological characteristics.")
+    stop(
+      paste(
+      "More than one species in the input data.frame...",
+      "gbif.range is meant to be used for one species at a time.",
+      "Only consider multiple species (with a common ID) if they are",
+      "closely related and share similar ecological characteristics."
+    ))
   }
 
   # Remove duplicates
@@ -172,14 +219,21 @@ get_range <- function (occ_coord = NULL,
   occ.coord.k <- occ_coord
   occ_coord[, w.col] <- round(occ_coord[,w.col], 4)
   occ_coord <- occ_coord[!duplicated(occ_coord[, w.col]), ]
-  occ_coord <- terra::vect(occ_coord, geom = c("decimalLongitude","decimalLatitude"), crs = "epsg:4326")
+  occ_coord <- terra::vect(
+    x = as.data.frame(occ_coord),
+    geom = c("decimalLongitude","decimalLatitude"),
+    crs = "epsg:4326"
+  )
+
 
   ### =========================================================================
   ### Check if sufficient data
   ### =========================================================================
+
   
-  # Check if there sufficient species & if not, make an entry in the log-file and end the function
-  if (nrow(occ_coord) <= clustered_points_outlier +1 ){
+  # Check if there sufficient species & if not, make an entry in the
+  # log-file and end the function
+  if (nrow(occ_coord) <= clust_pts_outlier +1){
     stop("Too few occurences!")
   } 
   
@@ -187,20 +241,32 @@ get_range <- function (occ_coord = NULL,
     cat("## Start of computation for species: ", sp.name, " ###", "\n") 
   }
   
+
   ### =========================================================================
   ### Identify outliers
   ### =========================================================================
   
+
   # Create distance matrix...
-  mat.dist <- as.matrix(FNN::knn.dist(terra::crds(occ_coord), k = clustered_points_outlier))
+  mat.dist <- as.matrix(
+    FNN::knn.dist(
+      data = terra::crds(occ_coord),
+      k = clust_pts_outlier
+    )
+  )
   
   # Mark outliers
-  cond <- apply(mat.dist, 1, function(x) x[clustered_points_outlier]) > degrees_outlier
+  cond <- apply(mat.dist, 1,
+    function(x) x[clust_pts_outlier]) > degrees_outlier
   
   # Print info
   if (verbose){
-    cat(paste0(sum(cond), " outlier's from " ,nrow(occ_coord), " | proportion from total points: ",
-      round((sum(cond) / nrow(occ_coord)) * 100,0), "%\n"))
+    cat(
+      paste0(sum(cond)," outlier's from " ,
+        nrow(occ_coord), " | proportion from total points: ",
+        round((sum(cond) / nrow(occ_coord)) * 100,0), "%\n"
+      )
+    )
   }
   
   # Remove outliers
@@ -211,12 +277,17 @@ get_range <- function (occ_coord = NULL,
     stop('Too few occurrences within outlier threshold!')
   } 
 
+
   ### =========================================================================
   ### Define those polygons
   ### =========================================================================
   
+
   # Set number of ecoregions
-  ovo.coord.mod <- terra::intersect(bioreg,occ.coord.mod)
+  ovo.coord.mod <- terra::intersect(
+    x = bioreg,
+    y = occ.coord.mod
+  )
   uniq <- levels(factor(ovo.coord.mod[[bioreg_name]][[1]]))
 
   # Handling NA error
@@ -226,7 +297,7 @@ get_range <- function (occ_coord = NULL,
   
   # Loop over bioregions
   SP.dist <- list()
-  for(g in 1:length(uniq)) {
+  for(g in seq_along(uniq)) {
     
     # Print
     if (verbose){
@@ -238,12 +309,19 @@ get_range <- function (occ_coord = NULL,
     q1[is.na(q1)] <- FALSE
 
     # Continue
-    tmp <- terra::simplifyGeom(bioreg[q1, ], tolerance = 0.001, preserveTopology = TRUE)
+    tmp <- terra::simplifyGeom(
+      x = bioreg[q1, ],
+      tolerance = 0.001,
+      preserveTopology = TRUE
+    )
     a <- ovo.coord.mod[ovo.coord.mod[[bioreg_name]][[1]] == uniq[g]]
     
     if (length(a) < 3) {
       k <- 1
-      cluster.k <- stats::kmeans(terra::crds(a), k)
+      cluster.k <- stats::kmeans(
+        x = terra::crds(a),
+        centers = k
+      )
       cluster.k$clusters <- cluster.k$cluster 
 
     } else {
@@ -253,7 +331,10 @@ get_range <- function (occ_coord = NULL,
       }
       
       # Determine number of clusters
-      m.clust <- mclust::Mclust(terra::crds(a) + 1000, verbose = FALSE)
+      m.clust <- mclust::Mclust(
+        data = terra::crds(a) + 1000,
+        verbose = FALSE
+      )
       
       # k = number of clusters
       k <- m.clust$G 
@@ -262,28 +343,39 @@ get_range <- function (occ_coord = NULL,
       while (k > length(a)-2) {k <- k-1} 
       if (k == 0) {k <- 1}
       
-      cluster.k <- ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
+      cluster.k <- ClusterR::KMeans_rcpp(
+        data = terra::crds(a),
+        clusters = k,
+        num_init = 20,
+        initializer = 'random'
+      )
       
       while (length(unique(cluster.k$clusters)) < k) {
         k <- k-1
-        cluster.k <- ClusterR::KMeans_rcpp(terra::crds(a), k, num_init = 20, initializer = 'random')
+        cluster.k <- ClusterR::KMeans_rcpp(
+          data = terra::crds(a),
+          clusters = k,
+          num_init = 20,
+          initializer = 'random'
+        )
       }
-      
     }
    
     polygons.list <- list() 
-    for (i in 1:k)
+    for (i in seq_len(k))
     {
       # kmeans (with number of clusters from mcluster)
       a.temp <- a[cluster.k$clusters == i]
 
       # Generate polygon
-      my.shpe <- conv_function(sp_coord = a.temp,
-                            bwp = buffer_width_point,
-                            bipl = buffer_increment_point_line,
-                            bwpo = buffer_width_polygon,
-                            temp_dir = dir_temp,
-                            g = g)
+      my.shpe <- conv_function(
+        sp_coord = a.temp,
+        bwp = buffer_width_point,
+        bipl = buff_incrmt_pt_line,
+        bwpo = buffer_width_polygon,
+        temp_dir = dir_temp,
+        g = g
+      )
       
       # Intersect polygon with ecoregion (zero buffer to avoid error)
       b1 <- terra::buffer(my.shpe, width = 0)
@@ -296,10 +388,12 @@ get_range <- function (occ_coord = NULL,
   
   lala <- SP.dist[!is.na(SP.dist)]
   
+
   ### =========================================================================
   ### Check and return output
   ### =========================================================================
   
+
   if (!dir.exists(dir_temp)) {
     unlink(dir_temp, recursive = TRUE)
   }
@@ -311,7 +405,7 @@ get_range <- function (occ_coord = NULL,
 
   # Convert to raster or not
   if (raster) {
-    res.use = 1 / res
+    res.use <- 1 / res
     ras.res <- terra::rast(terra::disagg(terra::rast(), res.use))
     sp.range.u <- terra::aggregate(shp.species)
     ras <- terra::rasterize(sp.range.u, ras.res)
@@ -324,20 +418,19 @@ get_range <- function (occ_coord = NULL,
   }
 
   # Out
-  result <- list(init.args = list(
-                  occ_coord = occ.coord.k,
-                  bioreg = bioreg,
-                  bioreg_name = bioreg_name, 
-                  degrees_outlier = degrees_outlier,
-                  clustered_points_outlier = clustered_points_outlier,
-                  buffer_width_point = buffer_width_point,
-                  buffer_increment_point_line = buffer_increment_point_line,
-                  buffer_width_polygon = buffer_width_polygon,
-                  dir_temp = dir_temp,
-                  raster = TRUE,
-                  res = res
-                ),
-                rangeOutput = shp.species)
+  result <- getRange$new()
+  result$init.args <- list(occ_coord = occ.coord.k,
+                           bioreg = bioreg,
+                           bioreg_name = bioreg_name, 
+                           degrees_outlier = degrees_outlier,
+                           clust_pts_outlier = clust_pts_outlier,
+                           buffer_width_point = buffer_width_point,
+                           buff_incrmt_pt_line = buff_incrmt_pt_line,
+                           buffer_width_polygon = buffer_width_polygon,
+                           dir_temp = dir_temp,
+                           raster = TRUE,
+                           res = res)
+  result$rangeOutput <- shp.species
 
   return(result)
 }

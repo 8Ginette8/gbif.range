@@ -1,4 +1,5 @@
-# Download worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
+# Download worldwide the observations of Panthera tigris
+# and Ailuropoda melanoleuca
 obspt <- get_gbif("Panthera tigris")
 obsam <- get_gbif("Ailuropoda melanoleuca")
 

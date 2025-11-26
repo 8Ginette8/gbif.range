@@ -7,15 +7,19 @@
 check_and_get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 }
 \arguments{
-\item{bioreg_name}{filename of the desired bioregion to be checked and downloaded if necessary. See `bioreg_list` for available options.}
+\item{bioreg_name}{filename of the desired bioregion to be checked and
+downloaded if necessary. See `bioreg_list` for available options.}
 
-\item{save_dir}{The directory to save the downloaded files. Defaults to "inst/extdata/downloads" within the package structure.}
+\item{save_dir}{The directory to save the downloaded files. Defaults to
+"inst/extdata/downloads" within the package structure.}
 }
 \value{
-NULL. Checks and downloads the files to the specified directory if necessary.
+NULL. Checks and downloads the files to the specified directory
+if necessary.
 }
 \description{
-Checks if a directory exists and contains at least one .shp file. If not, calls get_bioreg to download the data.
+Checks if a directory exists and contains at least one .shp file.
+If not, calls get_bioreg to download the data.
 }
 \examples{
 \dontrun{

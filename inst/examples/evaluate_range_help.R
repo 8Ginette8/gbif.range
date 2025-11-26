@@ -1,6 +1,8 @@
 \dontrun{
 # EcoRM evaluation at different resolutions (>4min runtime)
-root.dir  <- list.files(system.file(package = "gbif.range"), pattern = "extdata", full.names = TRUE)
+root.dir  <- list.files(system.file(package = "gbif.range"),
+                        pattern = "extdata",
+                        full.names = TRUE)
 
 res5km <- evaluate_range(root_dir = root.dir, 
            valData_dir = "SDM", 
@@ -27,9 +29,12 @@ terra::plot(
   col = c("gray", "red", "blue", "purple"),
   breaks = c(-0.5, 0.5, 1.5, 2.5, 3.5),
   legend = FALSE,
-  main = paste0("Species: ", res10km$df_eval[1,1],"\n", 
-                "Precision = ", round(res10km$df_eval[1,"Prec_ecoRM"], digits = 2)," & ", 
-                "Sensitivity = ", round(res10km$df_eval[1,"Sen_ecoRM"], digits = 2)),
+  main = paste0("Species: ",
+                res10km$df_eval[1,1],"\n", 
+                "Precision = ",
+                round(res10km$df_eval[1,"Prec_ecoRM"], digits = 2)," & ", 
+                "Sensitivity = ",
+                round(res10km$df_eval[1,"Sen_ecoRM"], digits = 2)),
   las = 1
 )
 
@@ -48,8 +53,10 @@ legend("bottomright",
 
 ## Compare sensitivity and precision outputs ##
 # Calculate overall performance (e.g. mean sensitivity & precision)
-res5km$df_eval$Mean_SenPrec <- (res5km$df_eval$Sen_ecoRM + res5km$df_eval$Prec_ecoRM) / 2
-res10km$df_eval$Mean_SenPrec <- (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Prec_ecoRM) / 2
+res5km$df_eval$Mean_SenPrec <-
+  (res5km$df_eval$Sen_ecoRM + res5km$df_eval$Prec_ecoRM) / 2
+res10km$df_eval$Mean_SenPrec <-
+  (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Prec_ecoRM) / 2
 
 # Combine the data frames and add a Resolution column
 combined.df <- rbind(

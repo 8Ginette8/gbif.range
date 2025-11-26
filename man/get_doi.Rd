@@ -15,7 +15,7 @@ get_doi(
 )
 }
 \arguments{
-\item{gbifs}{data.frame or list. One get_gbif() output or a list of several.}
+\item{gbifs}{data.frame or list. A getGBIF object or a list of several.}
 
 \item{title}{Title for your derived dataset.}
 
@@ -40,7 +40,8 @@ rgbif R package, compatible with one or several get_gbif() outputs.
 see derived_dataset() function from the rgbif R package.
 }
 \examples{
-# Download worldwide the observations of Panthera tigris and Ailuropoda melanoleuca
+# Download worldwide the observations of Panthera tigris
+# and Ailuropoda melanoleuca
 obspt <- get_gbif("Panthera tigris")
 obsam <- get_gbif("Ailuropoda melanoleuca")
 
@@ -63,9 +64,10 @@ get_doi(gbifd = list(obspt,obsam),
 }
 }
 \references{
-Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
-information facility API. 10.5281/zenodo.6023735
+Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
+global biodiversity information facility API. 10.5281/zenodo.6023735
 }
 \seealso{
-The rgbif package for additional and more general approaches to get GBIF DOI.
+The rgbif package for additional and more general approaches
+to get GBIF DOI.
 }

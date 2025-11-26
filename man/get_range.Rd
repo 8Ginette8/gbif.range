@@ -9,9 +9,9 @@ get_range(
   bioreg = NULL,
   bioreg_name = NULL,
   degrees_outlier = 5,
-  clustered_points_outlier = 3,
+  clust_pts_outlier = 4,
   buffer_width_point = 4,
-  buffer_increment_point_line = 0.5,
+  buff_incrmt_pt_line = 0.5,
   buffer_width_polygon = 4,
   dir_temp = tempdir(),
   raster = TRUE,
@@ -20,83 +20,100 @@ get_range(
 )
 }
 \arguments{
-\item{occ_coord}{a get_gbif() output or a data.frame containing two columns named
-"decimalLongitude" and "decimalLatitude".}
+\item{occ_coord}{a 'getGBIF' object (get_gbif function) or a data.frame
+containing two columns named "decimalLongitude" and "decimalLatitude".}
 
-\item{bioreg}{Define the range extent and ecoregions. 'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object
-containing different ecoregions (convex hulls will be classified on a bioreg basis) and of CRS WGS84. Note
-that this parameter may be fed with an external, generated (function make_ecoregion) or
-in-house ecoregion shapefile. Four shapefiles can be downloaded with the library (see functions read_bioreg()
-and others): 'eco_terra' (for terrestrial species; Nature conservancy version adapted from Olson & al. 2001),
-'eco_marine' and 'eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and 'eco_fresh' (for freshwater
-species; Abell & al. 2008). For marine species, 'eco_terra' may also be used if the user wants to represent
-the terrestrial range of species that also partially settle on mainland. For fresh water species, same may be
-done if the user considers that terrestrial ecoregions should be more representative of the species ecology.}
+\item{bioreg}{Define the range extent and ecoregions.
+'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containing
+different ecoregions (convex hulls will be classified on a bioreg basis)
+and of CRS WGS84. Note that this parameter may be fed with an external,
+generated (function make_ecoregion) or in-house ecoregion shapefile.
+Four shapefiles can be downloaded with the library (see functions
+read_bioreg() and others): 'eco_terra' (for terrestrial species; Nature
+conservancy version adapted from Olson & al. 2001), eco_marine' and
+eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and
+eco_fresh' (for freshwater species; Abell & al. 2008). For marine species,
+eco_terra' may also be used if the user wants to represent the terrestrial
+range of species that also partially settle on mainland. For fresh water
+species, same may be done if the user considers that terrestrial ecoregions
+should be more representative of the species ecology.}
 
-\item{bioreg_name}{Character. One ecoregion level/category name from the 'bioreg' polygon must be supplied.
-E.g., very detailed level of 'eco_terra' is 'ECO_NAME'. Note that default applies if a make_ecoregion()
-polygon is provided as 'bioreg'.}
+\item{bioreg_name}{Character. One ecoregion level/category name from the
+'bioreg' polygon must be supplied. E.g., very detailed level of 'eco_terra'
+is 'ECO_NAME'. Note that default applies if a make_ecoregion() polygon is
+provided as 'bioreg'.}
 
-\item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier classification.
-If the nearest minimal distance to the next point is larger than this threshold, it will be
-considered as an outlier.}
+\item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier
+classification. If the nearest minimal distance to the next point is larger
+than this threshold, it will be considered as an outlier.}
 
-\item{clustered_points_outlier}{Numeric. Maximum number of points which are closer to each other
-than the degrees_outlier, but should still be considered as outliers.}
+\item{clust_pts_outlier}{Numeric. Maximum number of points which are closer
+to each other than the degrees_outlier, but should still be considered as
+outliers.}
 
-\item{buffer_width_point}{Numeric. Buffer (in degrees) which will be applied around single
-observations.}
+\item{buffer_width_point}{Numeric. Buffer (in degrees) which will be applied
+around single observations.}
 
-\item{buffer_increment_point_line}{Numeric. How much should the buffer be increased for each point
-on a line.}
+\item{buff_incrmt_pt_line}{Numeric. How much should the buffer be increased
+for each point on a line.}
 
-\item{buffer_width_polygon}{Numeric. Buffer (in degrees) which will be applied around distribution
-polygons (for each ecoregion).}
+\item{buffer_width_polygon}{Numeric. Buffer (in degrees) which will be
+applied around distribution polygons (for each ecoregion).}
 
-\item{dir_temp}{Character. Where should the temporary text file for the convex hull be saved?
-(text file will be deleted again). Default value is \code{tempdir()}.}
+\item{dir_temp}{Character. Where should the temporary text file for the
+convex hull be saved? (text file will be deleted again). Default value
+is \code{tempdir()}.}
 
 \item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
 
-\item{res}{Numeric. If raster = TRUE, which resolution of the output in degrees (1° = ~111 km at
-the equator). Default is 0.1 (~11.1 km). It is important to note that the highest achievable resolution
-of the output will depend on its 'bioreg' precision, e.g., a species range output can reach the same
-resolution of the rasters used to create a 'make_ecoregion' object.}
+\item{res}{Numeric. If raster = TRUE, which resolution of the output in
+degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
+important to note that the highest achievable resolution of the output will
+depend on its 'bioreg' precision, e.g., a species range output can reach
+the same resolution of the rasters used to create a 'make_ecoregion' object.}
 
 \item{verbose}{Logical. Should progession be printed?}
 }
 \value{
-A 'SpatVector' or 'SpatRaster' + the list of all arguments used in the function.
+A getRange object with two fields: 'init.args' (parameters and data
+employed) and 'rangeOutput' ('SpatVector' or 'SpatRaster' depending on what
+the user set as 'raster').
 }
 \description{
-This function estimates species ranges from occurrence data (GBIF or otherwise) and ecoregions
-(see 'make_ecoregion'). It first removes outliers from the observation dataset, then creates
-a convex hull polygon with a user-specified buffer around all observations within each
-ecoregion. If there is only one observation in an ecoregion, the function creates a buffer
-around that point. If all points in an ecoregion lie on a line, the function also creates a
-buffer around them, but the buffer size increases with the number of points in the line.
-If there are too many records, get_range can process a sub-sample of species observations to
-speed up polygon creation or avoid potential RAM issues.
+This function estimates species ranges from occurrence data (GBIF or
+otherwise) and ecoregions (see 'make_ecoregion'). It first removes outliers
+from the observation dataset, then creates a convex hull polygon with a
+user-specified buffer around all observations within each ecoregion. If
+there is only one observation in an ecoregion, the function creates a buffer
+around that point. If all points in an ecoregion lie on a line, the function
+also creates a buffer around them, but the buffer size increases with the
+number of points in the line. If there are too many records, get_range can
+process a sub-sample of species observations to speed up polygon creation or
+avoid potential RAM issues.
 }
 \details{
-Ecoregions cover relatively large areas of land or water, and contain characteristic,
-geographically distinct assemblages of natural communities sharing a large majority of species,
-dynamics, and environmental conditions. The biodiversity of flora, fauna and ecosystems that
-characterise an ecoregion tends to be distinct from that of other ecoregions
+Ecoregions cover relatively large areas of land or water, and
+contain characteristic, geographically distinct assemblages of natural
+communities sharing a large majority of species, dynamics, and environmental
+conditions. The biodiversity of flora, fauna and ecosystems that characterise
+an ecoregion tends to be distinct from that of other ecoregions
 (https://en.wikipedia.org/wiki/Ecoregion).
 
-Each ecoregion shapefile has one or more categories, which describe more or less precisely the
-ecoregion world distribution (from the more to the less detailed):
+Each ecoregion shapefile has one or more categories, which describe more or
+less precisely the ecoregion world distribution (from the more to the less
+detailed):
 
-- eco_terra has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
+- eco_terra has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and
+'WWF_REALM2'.
 - eco_fresh has only one: 'ECOREGION'.
-- eco_marine and eco_hd_marine (very coastal-precise version) contains three distinct levels:
-'ECOREGION', 'PROVINCE' and 'REALM'.
+- eco_marine and eco_hd_marine (very coastal-precise version) contains
+three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
 }
 \examples{
 \dontrun{
 # Load available ecoregions
-eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_bioreg(bioreg_name = "eco_terra",
+                         save_dir = NULL)
 
 # First download the worldwide observations of Panthera tigris from GBIF
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
@@ -109,66 +126,85 @@ range.tiger <- get_range(occ_coord = obs.pt,
 # Plot
 
 # Plot political world boundaries
-countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
-terra::plot(terra::crop(countries, terra::ext(range.tiger$rangeOutput)), col = "#bcbddc")
+countries <- rnaturalearth::ne_countries(type = "countries",
+                                         returnclass = "sv")
+terra::plot(terra::crop(countries, terra::ext(range.tiger$rangeOutput)),
+            col = "#bcbddc")
 
 # Plot range 
-terra::plot(range.tiger$rangeOutput, axes = FALSE, box = FALSE, legend = FALSE,
-	col = "chartreuse4", add = TRUE)
+terra::plot(range.tiger$rangeOutput,
+            axes = FALSE,
+            box = FALSE,
+            legend = FALSE,
+            col = "chartreuse4",
+            add = TRUE)
 
 # Plot the occurance points
 graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
-    pch = 20, col = "#99340470", cex = 1.5)
+                 pch = 20,
+                 col = "#99340470",
+                 cex = 1.5)
 }
 }
 \references{
-Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger, Renske E. Onstein,
-Charles Novaes de Santana, Christopher R. Scotese, Loïc Pellissier. (2019) Mountain building,
-climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. Journal of
+Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger,
+Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese,
+Loïc Pellissier. (2019) Mountain building, climate cooling and the
+richness of cold-adapted plants in the Northern Hemisphere. Journal of
 Biogeography. doi: 10.1111/jbi.13653
 
-Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S., ... & 
-Pellissier, L. (2022). An integrated high resolution mapping shows congruent biodiversity
-patterns of Fagales and Pinales. New Phytologist, 235(2), 759-772 10.1111/nph.18158
+Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S.,
+... &  Pellissier, L. (2022). An integrated high resolution mapping shows
+congruent biodiversity patterns of Fagales and Pinales. New Phytologist,
+235(2), 759-772 10.1111/nph.18158
 
-Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N.,
-Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J.,
-Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem,
-K. R. 2001. Terrestrial ecoregions of the world: a new map of life on Earth.
-Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
+Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,
+Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F.,
+Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao,
+P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map
+of life on Earth. Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
 
-The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types, Biogeographical Realms
-and The Nature Conservancy Terrestrial Assessment Units. GIS layers developed by The Nature
-Conservancy with multiple partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
+The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
+Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
+Units. GIS layers developed by The Nature Conservancy with multiple partners,
+combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge
+(UK): The Nature Conservancy.
+
+Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A.
+Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana,
+Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer Molnar, Cheri
+A. Recchia, James Robertson, Marine Ecoregions of the World: A
+Bioregionalization of Coastal and Shelf Areas, BioScience, Volume 57,
+Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+
+Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
+Pelagic provinces of the world: a biogeographic classification of the
+world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
+doi: 10.1016/j.ocecoaman.2011.12.016
+
+The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
+of the World. GIS layers developed by The Nature Conservancy with multiple
+partners, combined from Spalding et al. (2007) and Spalding et al. (2012).
 Cambridge (UK): The Nature Conservancy.
 
-Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A. Ferdaña, Max
-Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana, Sara A. Lourie, Kirsten D.
-Martin, Edmund McManus, Jennifer Molnar, Cheri A. Recchia, James Robertson, Marine
-Ecoregions of the World: A Bioregionalization of Coastal and Shelf Areas, BioScience,
-Volume 57, Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice
+Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras
+Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald R.
+Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf, James
+Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric
+Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G.
+Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of
+the World: A New Map of Biogeographic Units for Freshwater Biodiversity
+Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414.
+doi: 10.1641/B580507
 
-Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012). Pelagic provinces of the world:
-a biogeographic classification of the world’s surface pelagic waters. Ocean & Coastal Management,
-60, 19-30. doi: 10.1016/j.ocecoaman.2011.12.016
-
-The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces of the World. GIS layers
-developed by The Nature Conservancy with multiple partners, combined from Spalding et al. (2007)
-and Spalding et al. (2012). Cambridge (UK): The Nature Conservancy.
-
-Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice Kottelat, Nina Bogutskaya,
-Brian Coad, Nick Mandrak, Salvador Contreras Balderas, William Bussing, Melanie L. J. Stiassny,
-Paul Skelton, Gerald R. Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf,
-James Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric Wikramanayake,
-David Olson, Hugo L. López, Roberto E. Reis, John G. Lundberg, Mark H. Sabaj Pérez,
-Paulo Petry, Freshwater Ecoregions of the World: A New Map of Biogeographic Units for
-Freshwater Biodiversity Conservation, BioScience, Volume 58, Issue 5, May 2008,
-Pages 403–414. doi: 10.1641/B580507
-
-Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Terra - CRAN
+Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
+(2022). Terra - CRAN
 }
 \seealso{
-For more information on the original code and methods, check Hagen, Oskar et al. (2019), Data
-from: Mountain building, climate cooling and the richness of cold-adapted plants in the northern
-hemisphere, Dryad, Dataset, https://doi.org/10.5061/dryad.0ff6b04.
+For more information on the original code and methods, check Hagen et al.
+(2019), Data from: Mountain building, climate cooling and the richness
+of cold-adapted plants in the northern hemisphere, Dryad, Dataset,
+https://doi.org/10.5061/dryad.0ff6b04.
 }

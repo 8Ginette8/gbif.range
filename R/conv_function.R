@@ -23,13 +23,16 @@ conv_function <- function (sp_coord,
   
   # Preps and convert degrees to meters
   x <- terra::crds(sp_coord)
-  row.names(x) <- 1:nrow(x)
+  row.names(x) <- seq_len(nrow(x))
   bwp.bipl.m <- (bwp + (nrow(x)-1) * bipl) * 111111
   bwpo.m <- bwpo * 111111
 
-  # Check number of observations points in each bioregion, if <3 create point buffer
+  # Number of observations points in each bioregion, if <3 create point buffer
   if (nrow(data.frame(x)) < 3) { 
-    rtn <- terra::buffer(terra::aggregate(sp_coord), width = bwp.bipl.m)
+    rtn <- terra::buffer(
+      x = terra::aggregate(sp_coord),
+      width = bwp.bipl.m
+    )
     return(rtn) 
     
   } else {
@@ -48,10 +51,15 @@ conv_function <- function (sp_coord,
     if (all(abs(is.line) == 0)) { 
       
       # Print
-      cat('\n','bioreg=',g,nrow(x),'points laying on one line. Using buffer width of ',bwp.bipl.m/1000,'km','\n')
+      cat('\n','bioreg=',g,nrow(x),
+        'points laying on one line. Using buffer width of ',
+        bwp.bipl.m/1000,'km','\n')
 
       # Buffer
-      rtn <- terra::buffer(terra::aggregate(sp_coord), width = bwp.bipl.m)
+      rtn <- terra::buffer(
+        x = terra::aggregate(sp_coord),
+        width = bwp.bipl.m
+      )
       
       # Out
       return(rtn)
@@ -76,7 +84,10 @@ conv_function <- function (sp_coord,
       P1 <- sf::st_polygon(list(coord.conv))
       P1 <- terra::vect(P1)
       terra::crs(P1) <- terra::crs(sp_coord)
-      rtn <- terra::buffer(P1, width = bwpo.m)
+      rtn <- terra::buffer(
+        x = P1,
+        width = bwpo.m
+      )
       terra::crs(rtn) <- terra::crs(sp_coord) # Safety measure...
 
       # Out

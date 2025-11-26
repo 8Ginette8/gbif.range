@@ -3,48 +3,56 @@
 ### ==================================================================
 #' Retrieve from GBIF the IUCN and taxonomy status of a specific Taxa
 #'
-#' Generates, based on a given species name, its IUCN red list status and a list of
-#' all scientific names (accepted, synonyms) found in the GBIF backbone taxonomy and used to
-#' download the data in get_gbif(). Children and related doubtful names not used to download
-#' the data may also be extracted.
+#' Generates, based on a given species name, its IUCN red list status and
+#' a list of all scientific names (accepted, synonyms) found in the GBIF
+#' backbone taxonomy and used to download the data in get_gbif(). Children
+#' and related doubtful names not used to download the data may also be
+#' extracted.
 #'
-#' @param sp_name Character. Species name from which the user wants to retrieve all existing GBIF names
-#' with associated taxonomy and IUCN status.
-#' @param search Logical. If TRUE, the function will strictly look for the most relevant result, based
-#' on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
-#' if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
-#' relevant name from the list (higher taxa level than species allowed here). Also, unlike search=TRUE,
-#' fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class', order'
-#' and 'family' parameters are optionally used only if no convincing name match is found. FALSE is
-#' particularly useful if the given species name already include the author.
-#' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
-#' is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.
-#' @param phylum Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
-#' name matches and select the right synonym. Available options are the GBIF Phylums
-#' (listed per Kingdom --> https://www.gbif.org/species/1). If search = FALSE, used only if no direct match
-#' is found.
-#' @param class Character. Optional. What is the species' Class? Same as above but at the finer class level.
-#' Available options are the GBIF Classes (same url). If search = FALSE, used only if no direct match
-#' is found.
-#' @param order Character. Optional. What is the species' Order? Same as above but at the finer order level.
-#' Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
-#' is found.
-#' @param family Character. Optional. What is the species' Family? Same as above but at the finer family level.
-#' Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
-#' is found.
-#' @param conf_match Numeric. From 0 to 100. Determine the confidence threshold of match of 'sp_name' with
-#' the GBIF backbone taxonomy. Default is 90.
-#' @param all Logical. Default is FALSE. Should all species names be retrieved or only the accepted name
-#' and its synonyms?
+#' @param sp_name Character. Species name from which the user wants to
+#' retrieve all existing GBIF names with associated taxonomy and IUCN status.
+#' @param search Logical. If TRUE, the function will strictly look for the
+#' most relevant result, based on a list of names given by rgbif (only species,
+#' subspecies and variety allowed here), and give an error if name matching was
+#' impeded by synonym duplicates. If FALSE, the function will simply pick the
+#' first most relevant name from the list (higher taxa level than species
+#' allowed here). Also, unlike search=TRUE, fuzzy search (~approximative name
+#' match) is here allowed, and the 'rank', phylum', 'class', order' and
+#' 'family' parameters are optionally used only if no convincing name match
+#' is found. FALSE is particularly useful if the given species name already
+#' include the author.
+#' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
+#' (default), the order of priority is (1) species, (2) subspecies and (3)
+#' variety unless "subsp." or "var." is found in 'sp_name'.
+#' @param phylum Character. Optional. What is the species' Phylum? Adds a
+#' criteria to deal with alternative name matches and select the right synonym.
+#' Available options are the GBIF Phylums (listed per Kingdom -->
+#' https://www.gbif.org/species/1). If search = FALSE, used only if no
+#' direct match is found.
+#' @param class Character. Optional. What is the species' Class? Same as above
+#' but at the finer class level. Available options are the GBIF Classes
+#' (same url). If search = FALSE, used only if no direct match is found.
+#' @param order Character. Optional. What is the species' Order? Same as
+#' above but at the finer order level. Available options are the GBIF Orders
+#' (same url). If search = FALSE, used only if no direct match is found.
+#' @param family Character. Optional. What is the species' Family? Same as
+#' above but at the finer family level. Available options are the GBIF Families
+#' (same url). If search = FALSE, used only if no direct match is found.
+#' @param conf_match Numeric. From 0 to 100. Determine the confidence threshold
+#' of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
+#' @param all Logical. Default is FALSE. Should all species names be retrieved
+#' or only the accepted name and its synonyms?
 #' 
-#' @return Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
-#' (3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-#' sp_nameMatch informing how well the input sp_name has matched with the found synonyms.
+#' @return Data.frame with nine columns: (0) Simplified name,
+#' (1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
+#' (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
+#' (9) sp_nameMatch informing how well the input sp_name has matched with
+#' the found synonyms.
 #' @references 
-#' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
-#' information facility API. 10.5281/zenodo.6023735
-#' @seealso The rgbif package for additional and more general approaches on how to retrieve
-#' scientific names from the GBIF backbone taxonomy.
+#' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
+#' global biodiversity information facility API. 10.5281/zenodo.6023735
+#' @seealso The rgbif package for additional and more general approaches on
+#' how to retrieve scientific names from the GBIF backbone taxonomy.
 #' @example inst/examples/get_status_help.R
 #' @importFrom rgbif name_backbone name_usage
 #' @importFrom methods is
@@ -59,10 +67,22 @@ get_status <- function(sp_name = NULL,
                     conf_match = 80,
                     all = FALSE)
 {
-  # Error message
-  if (is.na(sp_name) | is.null(sp_name)){
-    stop("Given 'sp_name' is NA or NULL, a string must be provided...")
-  }
+
+  ######################################################
+  ### Stop messages
+  ######################################################
+
+
+  # General
+  check_character_vector(sp_name, "sp_name")
+  check_logical(search, "search")
+  check_numeric(conf_match, "conf_match")
+  check_logical(all, "all")
+
+
+  ######################################################
+  ### Get the status
+  ######################################################
 
   # Empty output
   e.output <- data.frame(canonicalName = NA,
@@ -95,7 +115,11 @@ get_status <- function(sp_name = NULL,
                                        verbose = TRUE,
                                        strict = TRUE)
 
-    q.crit <- !sapply(list(rank, phylum, class, order, family), is.null) 
+    q.crit <- !vapply(
+      list(rank, phylum, class, order, family),
+      is.null,
+      FUN.VALUE = logical(1)
+    )
 
     # Filter by given criterias if results
     if (!bone.search$matchType[1] %in% "NONE"){ 
@@ -111,8 +135,9 @@ get_status <- function(sp_name = NULL,
           p.crit2 <- p.crit[n.test]
 
           # Apply the rigth criterias
-          for (i in 1:length(id.crit2)){
-            bone.search <- bone.search[c(bone.search[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
+          for (i in seq_along(id.crit2)){
+            bone.search <-
+              bone.search[c(bone.search[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
 
             if (nrow(bone.search) == 0){
               bone.search <- data.frame(matchType = "NONE")
@@ -122,7 +147,12 @@ get_status <- function(sp_name = NULL,
 
         if (!all(n.test)){
           pp <- paste(id.crit[!n.test],collapse = ", ")
-          warning(paste0("'",pp,"' level(s) not available for this taxa in GBIF, could not be employed..."))
+          warning(
+            paste0(
+              "'",pp,"' level(s) not available for this taxa in GBIF",
+              " could not be employed..."
+            )
+          )
         }
       }
     }
@@ -135,7 +165,8 @@ get_status <- function(sp_name = NULL,
         return(e.output)
 
       } else {
-        s.keep <- bone.search[bone.search$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"),]
+        s.keep <- bone.search[bone.search$rank
+                      %in% c("SPECIES", "SUBSPECIES", "VARIETY"),]
         s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
         if (nrow(s.keep) == 0){
           cat("Not match found...","\n")
@@ -143,7 +174,8 @@ get_status <- function(sp_name = NULL,
 
         } else if (nrow(s.keep) > 1){
 
-          # If we only find subpsecies and variety, we need to (default) prioritize
+          # If we only find subpsecies and variety,
+          # we need to (default) prioritize
           if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
 
             if ("var." %in% strsplit(sp_name," ")[[1]]){
@@ -161,10 +193,12 @@ get_status <- function(sp_name = NULL,
             bone.search <- s.keep[s.keep$rank %in% "SPECIES",]
           }
 
-          coltax <- c("familyKey", "orderKey", "classKey", "phylumKey") %in% colnames(bone.search)
-          key.test <- bone.search[, c("familyKey", "orderKey", "classKey", "phylumKey")[coltax]]
+          focp <- c("familyKey", "orderKey", "classKey", "phylumKey")
+          coltax <- focp %in% colnames(bone.search)
+          key.test <- bone.search[, focp[coltax]]
 
-          if (any(bone.search$status %in% "ACCEPTED") & length(unique(key.test[, 1][[1]])) == 1){
+          if (any(bone.search$status %in% "ACCEPTED")
+                & length(unique(key.test[, 1][[1]])) == 1) {
             bone.search <- bone.search[bone.search$status %in% "ACCEPTED", ]
           }
 
@@ -176,7 +210,12 @@ get_status <- function(sp_name = NULL,
         s.usp <- length(unique(bone.search$speciesKey)) == 1
 
         if (!s.usp){
-          cat("No synonyms distinction could be made. Consider using phylum/class/order/family...","\n")
+          cat(
+            paste(
+              "No synonyms distinction could be made.",
+              "Consider using phylum/class/order/family..."
+            ),
+          "\n")
           return(e.output)
 
         } else {
@@ -211,8 +250,19 @@ get_status <- function(sp_name = NULL,
   accep.name <- rgbif::name_usage(accep.key, data = "name")$data
   syn.syn <- rgbif::name_usage(accep.key, data = "synonyms")$data
   main.dat <-  rgbif::name_usage(accep.key, data = "all")$data
-  iucn <- try(rgbif::name_usage(accep.key, data = "iucnRedListCategory")$data, silent = TRUE)
-  if (methods::is(iucn,"try-error")) {iucn <- "NOT_FOUND"} else {iucn <- iucn$category}
+  iucn <- try(
+    rgbif::name_usage(
+      accep.key, data = "iucnRedListCategory"
+    )$data,
+    silent = TRUE
+  )
+
+  if (methods::is(iucn,"try-error")) {
+    iucn <- "NOT_FOUND"
+
+    } else {
+      iucn <- iucn$category
+    }
 
   # Avoid the canonicalName error (sometimes the column is absent wtf...)
   if (!"canonicalName" %in% colnames(main.dat)){
@@ -223,13 +273,22 @@ get_status <- function(sp_name = NULL,
 
   # Specific columns
   c.key <- suppressWarnings(c(accep.key, syn.syn$key))
-  c.sc <- suppressWarnings(c(accep.name$scientificName, syn.syn$scientificName))
-  c.can <- suppressWarnings(c(accep.name$canonicalName, syn.syn$canonicalName))
-  c.status <- c("ACCEPTED", rep("SYNONYM", length(suppressWarnings(syn.syn$scientificName))))
+  c.sc <- suppressWarnings(
+    c(accep.name$scientificName,
+      syn.syn$scientificName)
+  )
+  c.can <- suppressWarnings(
+    c(accep.name$canonicalName,
+      syn.syn$canonicalName)
+  )
+  c.status <- c("ACCEPTED",
+    rep("SYNONYM",
+      length(suppressWarnings(syn.syn$scientificName)))
+  )
 
-  # If all=TRUE, then we continue the search to find possible name correspondence
+  # If all=TRUE, then continue the search to find possible name correspondence
   if (all) {
-    # Combine everything and search for related names (i.e. other string version)
+    # Combine everything and search for related names
     all.key <- suppressWarnings(c(accep.key, syn.syn$key, main.dat$key))
     all.version <-
     lapply(all.key, function(x){
@@ -242,24 +301,48 @@ get_status <- function(sp_name = NULL,
       } else {
         n.ref <- c("canonicalName", "scientificName")
         r.col <- n.ref[n.ref %in% names(out)]
-        r.out <- data.frame(canonicalName = rep(NA,nrow(out)), scientificName = rep(NA,nrow(out)))
+        r.out <- data.frame(
+          canonicalName = rep(NA,nrow(out)),
+          scientificName = rep(NA,nrow(out))
+        )
         r.out[,r.col] <- out[, r.col]
-        return(data.frame(key = x,
-                          canonicalName = r.out$canonicalName,
-                          scientificName = r.out$scientificName))
+        return(
+          data.frame(
+            key = x,
+            canonicalName = r.out$canonicalName,
+            scientificName = r.out$scientificName
+          )
+        )
       }
     })
 
     # Extract all names
-    accep.n <- suppressWarnings(accep.name[, c("canonicalName", "key", "scientificName")])
+    accep.n <- suppressWarnings(
+      accep.name[, c("canonicalName", "key", "scientificName")]
+    )
     accep.n$key <- accep.key
-    c.n <- suppressWarnings(main.dat[, c("canonicalName", "key", "scientificName")])
-    r.n <- suppressWarnings(unique(do.call("rbind", all.version)))
+    c.n <- suppressWarnings(
+      main.dat[, c("canonicalName", "key", "scientificName")]
+    )
+    r.n <- suppressWarnings(
+      unique(do.call("rbind", all.version))
+    )
 
     # Conditions for synonymy
-    syn.n <- try(suppressWarnings(syn.syn[, c("canonicalName", "key", "scientificName")]), silent = TRUE)
-    if (class(syn.n)[1] %in% "try-error") {syn.n <- data.frame(canonicalName = NULL, key = NULL, scientificName = NULL)}
-    all.names = rbind(accep.n, syn.n, c.n, r.n)
+    syn.n <- try(
+      suppressWarnings(
+        syn.syn[, c("canonicalName", "key", "scientificName")]
+      ), 
+      silent = TRUE
+    )
+    if (class(syn.n)[1] %in% "try-error") {
+      syn.n <- data.frame(
+        canonicalName = NULL,
+        key = NULL,
+        scientificName = NULL
+      )
+    }
+    all.names <- rbind(accep.n, syn.n, c.n, r.n)
 
     # Specific columns
     c.key <- all.names$key
@@ -272,37 +355,58 @@ get_status <- function(sp_name = NULL,
   }
 
   # Which is null in main.dat for Genus, Family, Order, Phyllum?
-  exist.not <- c("genus", "family", "order", "class", "phylum") %in% names(main.dat)
-  main.out <- data.frame(Genus = NA, Family = NA, Order = NA, Class = NA, Phylum = NA)
-  main.out[exist.not] <- main.dat[, c("genus", "family", "order", "class", "phylum")[exist.not]]
+  gfocp <- c("genus", "family", "order", "class", "phylum")
+  exist.not <- gfocp %in% names(main.dat)
+  main.out <- data.frame(
+    Genus = NA,
+    Family = NA,
+    Order = NA,
+    Class = NA,
+    Phylum = NA
+  )
+  main.out[exist.not] <- main.dat[, gfocp[exist.not]]
 
   # Extract accepted names and synonyms
-  e.output <- data.frame(canonicalName = c.can,
-                        rank = bone.search$rank,
-                        gbif_key = c.key,
-                        scientificName = c.sc,
-                        gbif_status = c.status,
-                        main.out,
-                        IUCN_status = iucn,
-                        sp_nameMatch = bone.search$matchType)
+  e.output <- data.frame(
+    canonicalName = c.can,
+    rank = bone.search$rank,
+    gbif_key = c.key,
+    scientificName = c.sc,
+    gbif_status = c.status,
+    main.out,
+    IUCN_status = iucn,
+    sp_nameMatch = bone.search$matchType
+  )
 
-  # Remove duplicated & # change sp_nameMatch to know which row related to the sp_name input
+  # Remove duplicated & # change sp_nameMatch to know which
+  # row related to the sp_name input
   e.output <- e.output[!duplicated(e.output$scientificName), ]
   e.output[e.output$scientificName %in% sc.name, "sp_nameMatch"][1] <- "INPUT"
 
   # In case missing match
   if (!"INPUT"%in%e.output$sp_nameMatch) {
     
-    # Normalize hybrid symbol spacing (replace plain x or × with no spaces around)
-    e.output$scientificName <- gsub("\\s*[x\u00D7]\\s*", "\u00D7", e.output$scientificName)
-    sc.name <- gsub("\\s*[x\u00D7]\\s*", "\u00D7", sc.name)
+    # Normalize hybrid symbol spacing
+    # (replace plain x or × with no spaces around)
+    e.output$scientificName <-
+            gsub("\\s*[x\u00D7]\\s*", "\u00D7", e.output$scientificName)
+    sc.name <-
+            gsub("\\s*[x\u00D7]\\s*", "\u00D7", sc.name)
 
     # Normalize spaces and trim
-    e.output$scientificName <- gsub("\\s+", " ", trimws(e.output$scientificName))
-    sc.name <- gsub("\\s+", " ", trimws(sc.name))
+    e.output$scientificName <-
+            gsub("\\s+", " ", trimws(e.output$scientificName))
+    sc.name <-
+            gsub("\\s+", " ", trimws(sc.name))
 
-    # Use agrep for approximate matching with max.distance of 0.1 (1% difference)
-    matches <- agrep(sc.name, e.output$scientificName, max.distance = 0.01, ignore.case = TRUE)
+    # Use agrep for approximate matching
+    # with max.distance of 0.1 (1% difference)
+    matches <- agrep(
+      sc.name,
+      e.output$scientificName,
+      max.distance = 0.01,
+      ignore.case = TRUE
+    )
 
     # Assign "INPUT" to the first matched index if any found
     if (length(matches) > 0) {

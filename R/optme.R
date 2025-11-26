@@ -1,7 +1,8 @@
 ### =========================================================================
 ### optimization function for cluster distribution (meta)
 ### =========================================================================
-#' Optimization function to create equal-sized strata in the 'make_blocks' function
+#' Optimization function to create equal-sized strata in the
+#' make_blocks' function
 #'
 #' Not to be called directly by the user.
 #' @param x Input 1.
@@ -10,17 +11,16 @@
 #' @param tot Input 4.
 #' @keywords internal
 #' @importFrom stats aggregate
-#' @export
 optme <- function(x, nms, grps, tot){
 
   # determine number of observations in each groups from initial step
-  grp <- sapply(grps,"sum")
+  grp <- vapply(grps, sum, FUN.VALUE = numeric(1))
 
   # aggregate remaining observations by suggested cluster grouping
   x <- as.numeric(as.character(x))
   agg.vals <- stats::aggregate(nms, by = list(x), FUN = "sum")
 
-  for (i in 1:length(grp)){
+  for (i in seq_along(grp)){
 
     if (i %in% agg.vals$Group.1){
       

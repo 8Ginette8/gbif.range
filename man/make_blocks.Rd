@@ -13,33 +13,38 @@ make_blocks(
 )
 }
 \arguments{
-\item{nfolds}{Numeric. Number of approximately equal-sized classes (folds) to separate groups in block-cross
-validation.}
+\item{nfolds}{Numeric. Number of approximately equal-sized classes (folds)
+to separate groups in block-cross validation.}
 
-\item{df}{Object of class 'data.frame' with n columns containing critera for cluster building.
-Not necessary if argument npoints is supplied.}
+\item{df}{Object of class 'data.frame' with n columns containing critera
+for cluster building. Not necessary if argument npoints is supplied.}
 
-\item{nblocks}{Number of clusters (blocks) based on the number of folds that should be built.
-Minimum is the same number as 'nFolds'. Maximum is nrow(df)/10.}
+\item{nblocks}{Number of clusters (blocks) based on the number of folds
+that should be built. Minimum is the same number as 'nFolds'. Maximum is
+nrow(df)/10.}
 
-\item{npoints}{Optional argument if 'df' is not supplied. For how many points should random sampling be made?}
+\item{npoints}{Optional argument if 'df' is not supplied. For how many
+points should random sampling be made?}
 
-\item{pres}{Binary vector. Optional argument. If 'df' is supplied, this argument can be used to
-save processing time. '1' stands for the points on which CLARA is appplied, and '0' stands for
-the points on which K-nearest neighbors is applied relative to the '1'. If 'df' is not supplied,
-for which points should random sampling be made?}
+\item{pres}{Binary vector. Optional argument. If 'df' is supplied, this
+argument can be used to save processing time. '1' stands for the points
+on which CLARA is appplied, and '0' stands for the points on which K-nearest
+neighbors is applied relative to the '1'. If 'df' is not supplied, for which
+points should random sampling be made?}
 }
 \value{
-Object of class 'vector' of length nrow(df) or 'npoints', with integers defining
-different folds.
+Object of class 'vector' of length nrow(df) or 'npoints',
+with integers defining different folds.
 }
 \description{
-Creates a stratum vector based on a data.frame with n columns. If the data.frame
-has one column, strata vector is created based on clusters separated by quantiles. If
-the data.frame has two or more columns, strata vector is created based on 'Clustering
-Large Applications' (function 'clara' from package cluster). Also, instead of a data.frame
-the argument 'npoints' can be provided, which create groups by random sampling. An
-opitimization algorithm (function 'gridSearch' from package NMOF) optimizes for equal stratum sizes.
+Creates a stratum vector based on a data.frame with n columns. If the
+data.frame has one column, strata vector is created based on clusters
+separated by quantiles. If the data.frame has two or more columns,
+strata vector is created based on 'Clustering Large Applications'
+(function 'clara' from package cluster). Also, instead of a data.frame
+the argument 'npoints' can be provided, which create groups by random
+sampling. An opitimization algorithm (function 'gridSearch' from package
+NMOF) optimizes for equal stratum sizes.
 }
 \examples{
 \dontrun{
@@ -52,19 +57,25 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris",
 
 # Create a vector of folds (n = 5) spatially blocked (n = 10)
 block.pt <- make_blocks(nfolds = 5,
-                df = obs.pt[, c("decimalLatitude","decimalLongitude")],
-                nblocks = 10)
+                        df = obs.pt[, c("decimalLatitude","decimalLongitude")],
+                        nblocks = 10)
 
 # Plot one colour per fold
-countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
-countries.focus <- terra::crop(countries, terra::ext(60,100,0,40))
-terra::plot(countries.focus, col = "#bcbddc")
+countries <- rnaturalearth::ne_countries(type = "countries",
+                                         returnclass = "sv")
+countries.focus <- terra::crop(countries,
+                               terra::ext(60,100,0,40))
+terra::plot(countries.focus,
+            col = "#bcbddc")
 graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
-        pch = 20, col = block.pt, cex = 1)
+                pch = 20,
+                col = block.pt,
+                cex = 1)
 }
 }
 \references{
-Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O., Wang, Z., & Zimmermann, N. E. (2020).
-Model complexity affects species distribution projections under climate change.
-Journal of Biogeography, 47(1), 130-142.
+Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O.,
+Wang, Z., & Zimmermann, N. E. (2020). Model complexity affects species
+distribution projections under climate change. Journal of Biogeography,
+47(1), 130-142.
 }

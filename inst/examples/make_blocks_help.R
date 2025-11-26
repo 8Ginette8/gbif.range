@@ -8,13 +8,18 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris",
 
 # Create a vector of folds (n = 5) spatially blocked (n = 10)
 block.pt <- make_blocks(nfolds = 5,
-                df = obs.pt[, c("decimalLatitude","decimalLongitude")],
-                nblocks = 10)
+                        df = obs.pt[, c("decimalLatitude","decimalLongitude")],
+                        nblocks = 10)
 
 # Plot one colour per fold
-countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
-countries.focus <- terra::crop(countries, terra::ext(60,100,0,40))
-terra::plot(countries.focus, col = "#bcbddc")
+countries <- rnaturalearth::ne_countries(type = "countries",
+                                         returnclass = "sv")
+countries.focus <- terra::crop(countries,
+                               terra::ext(60,100,0,40))
+terra::plot(countries.focus,
+            col = "#bcbddc")
 graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
-        pch = 20, col = block.pt, cex = 1)
+                pch = 20,
+                col = block.pt,
+                cex = 1)
 }

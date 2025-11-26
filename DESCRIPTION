@@ -35,3 +35,5 @@ Collate:
     'make_blocks.R'
     'optme.R'
     'cv_range.R'
+    'classes.R'
+    'helpers.R'

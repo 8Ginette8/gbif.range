@@ -2,7 +2,8 @@
 % Please edit documentation in R/optme.R
 \name{optme}
 \alias{optme}
-\title{Optimization function to create equal-sized strata in the 'make_blocks' function}
+\title{Optimization function to create equal-sized strata in the
+make_blocks' function}
 \usage{
 optme(x, nms, grps, tot)
 }

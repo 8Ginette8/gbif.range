@@ -18,40 +18,53 @@ evaluate_range(
 \arguments{
 \item{root_dir}{Character. Working directory to load and save target files.}
 
-\item{valData_dir}{Numeric. Directory to validation spatial data (must have same name as data in ecoRM_dir)}
+\item{valData_dir}{Character. Directory to validation spatial data (must have
+same name as data in ecoRM_dir)}
 
-\item{ecoRM_dir}{Numeric. Directory to range maps (generated with get_range).}
+\item{ecoRM_dir}{Character. Directory to range maps (generated with
+get_range).}
 
 \item{valData_type}{Character. Type of valData - either "SHP" or "TIFF".}
 
 \item{verbose}{Logical (optional). Report details while running.}
 
-\item{print_map}{Logical (optional). If verbose=TRUE should a overlap map be printed. Default is TRUE.}
+\item{print_map}{Logical (optional). If verbose=TRUE should a overlap map be
+printed. Default is TRUE.}
 
-\item{mask}{rast object (optional). To mask the study the focal study region. Default is TRUE.}
+\item{mask}{rast object (optional). To mask the study the focal study region.
+Default is TRUE.}
 
-\item{res_fact}{Integer. Factor for coarsening the original resolution (i.e., that of the species range map)}
+\item{res_fact}{Integer. Factor for coarsening the original resolution (i.e.,
+that of the species range map)}
 }
 \value{
-A data.frame of evaluation for all species and a list of range overlay maps. 
-Precision (ppv) = number true presences (TP) / [TP + number false presences (FP)]; 
-Sensitivity = number true presences (TP) / [TP + number false absences (FA)]; 
-Specificity = number true absences (TA) / [TA + number false presences (FP)]; 
-TSS = Sensitivity + Specificity - 1
+A data.frame of evaluation for all species and a list of range
+overlay maps. 
+--Precision (ppv) =
+number true presences (TP) / [TP + number false presences (FP)]; 
+--Sensitivity =
+number true presences (TP) / [TP + number false absences (FA)]; 
+--Specificity =
+number true absences (TA) / [TA + number false presences (FP)]; 
+--TSS =
+Sensitivity + Specificity - 1
 }
 \description{
 Evaluates the precision (ppv), sensitivity, specificity and TSS of range maps
 based on validation data, such as predictions of species distributions (SDMs)
-or IUCN expert range maps. See Pinkert et al. (2023) for metrics and comparisons
-of various types of range data, including expert range maps, SDMs and ecoregional
-range maps. Optional functionalities include the masking of the focal study 
-region (see 'mask') and aggregations of the input maps to different resolutions,
-given the importance of these factors for specific applications (Pinkert et al., 2023).
+or IUCN expert range maps. See Pinkert et al. (2023) for metrics and
+comparisons of various types of range data, including expert range maps, SDMs
+and ecoregional range maps. Optional functionalities include the masking of
+the focal study region (see 'mask') and aggregations of the input maps to
+different resolutions, given the importance of these factors for specific
+applications (Pinkert et al., 2023).
 }
 \examples{
 \dontrun{
 # EcoRM evaluation at different resolutions (>4min runtime)
-root.dir  <- list.files(system.file(package = "gbif.range"), pattern = "extdata", full.names = TRUE)
+root.dir  <- list.files(system.file(package = "gbif.range"),
+                        pattern = "extdata",
+                        full.names = TRUE)
 
 res5km <- evaluate_range(root_dir = root.dir, 
            valData_dir = "SDM", 
@@ -78,9 +91,12 @@ terra::plot(
   col = c("gray", "red", "blue", "purple"),
   breaks = c(-0.5, 0.5, 1.5, 2.5, 3.5),
   legend = FALSE,
-  main = paste0("Species: ", res10km$df_eval[1,1],"\n", 
-                "Precision = ", round(res10km$df_eval[1,"Prec_ecoRM"], digits = 2)," & ", 
-                "Sensitivity = ", round(res10km$df_eval[1,"Sen_ecoRM"], digits = 2)),
+  main = paste0("Species: ",
+                res10km$df_eval[1,1],"\n", 
+                "Precision = ",
+                round(res10km$df_eval[1,"Prec_ecoRM"], digits = 2)," & ", 
+                "Sensitivity = ",
+                round(res10km$df_eval[1,"Sen_ecoRM"], digits = 2)),
   las = 1
 )
 
@@ -99,8 +115,10 @@ legend("bottomright",
 
 ## Compare sensitivity and precision outputs ##
 # Calculate overall performance (e.g. mean sensitivity & precision)
-res5km$df_eval$Mean_SenPrec <- (res5km$df_eval$Sen_ecoRM + res5km$df_eval$Prec_ecoRM) / 2
-res10km$df_eval$Mean_SenPrec <- (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Prec_ecoRM) / 2
+res5km$df_eval$Mean_SenPrec <-
+  (res5km$df_eval$Sen_ecoRM + res5km$df_eval$Prec_ecoRM) / 2
+res10km$df_eval$Mean_SenPrec <-
+  (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Prec_ecoRM) / 2
 
 # Combine the data frames and add a Resolution column
 combined.df <- rbind(

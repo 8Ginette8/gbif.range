@@ -17,64 +17,73 @@ get_status(
 )
 }
 \arguments{
-\item{sp_name}{Character. Species name from which the user wants to retrieve all existing GBIF names
-with associated taxonomy and IUCN status.}
+\item{sp_name}{Character. Species name from which the user wants to
+retrieve all existing GBIF names with associated taxonomy and IUCN status.}
 
-\item{search}{Logical. If TRUE, the function will strictly look for the most relevant result, based
-on a list of names given by rgbif (only species, subspecies and variety allowed here), and give an error
-if name matching was impeded by synonym duplicates. If FALSE, the function will simply pick the first most
-relevant name from the list (higher taxa level than species allowed here). Also, unlike search=TRUE,
-fuzzy search (~approximative name match) is here allowed, and the 'rank', phylum', 'class', order'
-and 'family' parameters are optionally used only if no convincing name match is found. FALSE is
-particularly useful if the given species name already include the author.}
+\item{search}{Logical. If TRUE, the function will strictly look for the
+most relevant result, based on a list of names given by rgbif (only species,
+subspecies and variety allowed here), and give an error if name matching was
+impeded by synonym duplicates. If FALSE, the function will simply pick the
+first most relevant name from the list (higher taxa level than species
+allowed here). Also, unlike search=TRUE, fuzzy search (~approximative name
+match) is here allowed, and the 'rank', phylum', 'class', order' and
+'family' parameters are optionally used only if no convincing name match
+is found. FALSE is particularly useful if the given species name already
+include the author.}
 
-\item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL (default), the order of priority
-is (1) species, (2) subspecies and (3) variety unless "subsp." or "var." is found in 'sp_name'.}
+\item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
+(default), the order of priority is (1) species, (2) subspecies and (3)
+variety unless "subsp." or "var." is found in 'sp_name'.}
 
-\item{phylum}{Character. Optional. What is the species' Phylum? Adds a criteria to deal with alternative
-name matches and select the right synonym. Available options are the GBIF Phylums
-(listed per Kingdom --> https://www.gbif.org/species/1). If search = FALSE, used only if no direct match
-is found.}
+\item{phylum}{Character. Optional. What is the species' Phylum? Adds a
+criteria to deal with alternative name matches and select the right synonym.
+Available options are the GBIF Phylums (listed per Kingdom -->
+https://www.gbif.org/species/1). If search = FALSE, used only if no
+direct match is found.}
 
-\item{class}{Character. Optional. What is the species' Class? Same as above but at the finer class level.
-Available options are the GBIF Classes (same url). If search = FALSE, used only if no direct match
-is found.}
+\item{class}{Character. Optional. What is the species' Class? Same as above
+but at the finer class level. Available options are the GBIF Classes
+(same url). If search = FALSE, used only if no direct match is found.}
 
-\item{order}{Character. Optional. What is the species' Order? Same as above but at the finer order level.
-Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
-is found.}
+\item{order}{Character. Optional. What is the species' Order? Same as
+above but at the finer order level. Available options are the GBIF Orders
+(same url). If search = FALSE, used only if no direct match is found.}
 
-\item{family}{Character. Optional. What is the species' Family? Same as above but at the finer family level.
-Available options are the GBIF Orders (same url). If search = FALSE, used only if no direct match
-is found.}
+\item{family}{Character. Optional. What is the species' Family? Same as
+above but at the finer family level. Available options are the GBIF Families
+(same url). If search = FALSE, used only if no direct match is found.}
 
-\item{conf_match}{Numeric. From 0 to 100. Determine the confidence threshold of match of 'sp_name' with
-the GBIF backbone taxonomy. Default is 90.}
+\item{conf_match}{Numeric. From 0 to 100. Determine the confidence threshold
+of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
 
-\item{all}{Logical. Default is FALSE. Should all species names be retrieved or only the accepted name
-and its synonyms?}
+\item{all}{Logical. Default is FALSE. Should all species names be retrieved
+or only the accepted name and its synonyms?}
 }
 \value{
-Data.frame with nine columns: (0) Simplified name, (1) GBIF taxonomic key, (2) scientificName, 
-(3) Backbone Taxonomy Status, (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-sp_nameMatch informing how well the input sp_name has matched with the found synonyms.
+Data.frame with nine columns: (0) Simplified name,
+(1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
+(4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
+(9) sp_nameMatch informing how well the input sp_name has matched with
+the found synonyms.
 }
 \description{
-Generates, based on a given species name, its IUCN red list status and a list of
-all scientific names (accepted, synonyms) found in the GBIF backbone taxonomy and used to
-download the data in get_gbif(). Children and related doubtful names not used to download
-the data may also be extracted.
+Generates, based on a given species name, its IUCN red list status and
+a list of all scientific names (accepted, synonyms) found in the GBIF
+backbone taxonomy and used to download the data in get_gbif(). Children
+and related doubtful names not used to download the data may also be
+extracted.
 }
 \examples{
-# Get the taxonomy and IUCN status of Panthera tigris (with and without related names)
+# Get the taxonomy and IUCN status of Panthera tigris
+# (with and without related names)
 get_status("Cypripedium calceolus", all = FALSE)
 get_status("Cypripedium calceolus", all = TRUE)
 }
 \references{
-Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity
-information facility API. 10.5281/zenodo.6023735
+Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
+global biodiversity information facility API. 10.5281/zenodo.6023735
 }
 \seealso{
-The rgbif package for additional and more general approaches on how to retrieve
-scientific names from the GBIF backbone taxonomy.
+The rgbif package for additional and more general approaches on
+how to retrieve scientific names from the GBIF backbone taxonomy.
 }
