@@ -91,7 +91,7 @@ range.tiger <- get_range(occ_coord = obs.pt,
                         bioreg = eco.terra,
                         bioreg_name = "ECO_NAME",
                         degrees_outlier = 5,
-                        clustered_points_outlier = 3)
+                        clust_pts_outlier = 3)
 ```
 
 Let's plot the result now:
@@ -132,7 +132,8 @@ obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
 
 # Create an ecoregion layer of 200 classes, based on two environmental spatial layers:
 rst <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
-my.eco <- make_ecoregion(rst, 200)
+my.eco <- make_ecoregion(env = rst,
+                        nclass = 200)
 
 # Create the range map based on our custom ecoregion
 # (always set 'EcoRegion' as a name when using a make_ecoregion() output):
@@ -140,22 +141,24 @@ range.arcto <- get_range(occ_coord = obs.arcto,
                         bioreg = my.eco,
                         bioreg_name = "EcoRegion",
                         degrees_outlier = 5,
-                        clustered_points_outlier = 3,
+                        clust_pts_outlier = 4,
                         res = 0.05)
 ```
 
-Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *clustered_points_outlier* and *degrees_outlier* were here also kept defaults (~550 and 330 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
+Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *degrees_outlier* and *clust_pts_outlier* were here also kept defaults (~550 and 440 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
 
-It is also important to note that the resolution parameter ('res') can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
+It is also important to note that the resolution parameter (*res*) can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
 ``` r
 # Plot
-terra::plot(terra::crop(countries,terra::ext(rst)), col = "#bcbddc")
-terra::plot(range.arcto$rangeOutput, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
+alps.shp <- terra::crop(countries,terra::ext(rst))
+r.arcto <- terra::mask(range.arcto$rangeOutput,alps.shp)
+terra::plot(alps.shp, col = "#bcbddc")
+terra::plot(r.arcto, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
 points(obs.arcto[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
 ```
 
-![image](https://github.com/user-attachments/assets/696faba0-b303-44a7-af72-12fb54c32122)
+<img width="559" height="394" alt="image" src="https://github.com/user-attachments/assets/39928ecc-d5b8-4063-8980-cf5efae2833f" />
 
 
 ### Marine species
