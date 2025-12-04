@@ -108,7 +108,7 @@ Here, default parameters were employed, however, *clust_pts_outlier* (in degrees
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in *get_range()* as input, note that ecoregion shapefiles may be dowload using the package: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
+Although whatever shapefile may be set in *get_range()* as input, note that ecoregion shapefiles may be dowload using the package: *eco.earth* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
 - *eco_terra* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco_fresh* has only one: 'ECOREGION'.
 - *eco_marine* and *eco_hd_marine* (very coastal-precise version) contains three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
