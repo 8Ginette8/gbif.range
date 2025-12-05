@@ -108,7 +108,7 @@ Here, default parameters were employed, however, *clust_pts_outlier* (in degrees
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in *get_range()* as input, note that ecoregion shapefiles may be dowload using the package: *eco.earh* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
+Although whatever shapefile may be set in *get_range()* as input, note that ecoregion shapefiles may be dowload using the package: *eco.earth* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
 - *eco_terra* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco_fresh* has only one: 'ECOREGION'.
 - *eco_marine* and *eco_hd_marine* (very coastal-precise version) contains three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
@@ -145,7 +145,7 @@ range.arcto <- get_range(occ_coord = obs.arcto,
                         res = 0.05)
 ```
 
-Unlike at larger-scales, we have here decreased here the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *degrees_outlier* and *clust_pts_outlier* were here also kept defaults (~550 and 440 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
+Unlike at larger-scales, we have here decreased the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *degrees_outlier* and *clust_pts_outlier* were here also kept defaults (~550 and 440 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
 
 It is also important to note that the resolution parameter (*res*) can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
 
