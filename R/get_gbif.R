@@ -613,21 +613,15 @@ get_gbif <- function(sp_name = NULL,
 		gbif.search <- if (should_use_occ_download) {
 			
 			## Try to use parameter creds if provided, otherwise use env variables
-			user <- if (is.null(occ_download_user)) {
-					Sys.getenv("GBIF_USER")
-				} else {
-					occ_download_user
-				}
-			pwd <- if (is.null(occ_download_pwd)) {
-					Sys.getenv("GBIF_PWD")
-				} else {
-					occ_download_pwd
-				}
-			email <- if (is.null(occ_download_email)) {
-					Sys.getenv("GBIF_EMAIL")
-				} else {
-					occ_download_email
-				}
+			# If credentials provided, set them as environment variables
+			if (!is.null(occ_download_user)) Sys.setenv(GBIF_USER = occ_download_user)
+			if (!is.null(occ_download_pwd))  Sys.setenv(GBIF_PWD  = occ_download_pwd)
+			if (!is.null(occ_download_email)) Sys.setenv(GBIF_EMAIL = occ_download_email)
+
+			# Then read credentials from environment
+			user  <- Sys.getenv("GBIF_USER")
+			pwd   <- Sys.getenv("GBIF_PWD")
+			email <- Sys.getenv("GBIF_EMAIL")
 
 			if (any(c(user, pwd, email) %in% "")){
 				stop(paste(
