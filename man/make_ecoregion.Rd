@@ -47,6 +47,10 @@ method (CLARA), which recognize patterns and relationships existing in
 spatial data, and classify it in clusters.
 }
 \examples{
+###########################################
+### Example plot
+###########################################
+
 # Open data
 rst.path <- paste0(system.file(package = "gbif.range"),
 				   "/extdata/rst_enl.tif")
@@ -59,20 +63,6 @@ rst <- terra::crop(rst, shp.lonlat)
 # Apply the function by infering 50 classes of environments
 my.eco <- make_ecoregion(env = rst,
 						nclass = 200)
-
-# Test plot
-col_palette <- colorRampPalette(c("#a6cee3", "#1f78b4", 
-								  "#b2df8a", "#33a02c", 
-								  "#fb9a99", "#e31a1c", 
-								  "#fdbf6f", "#ff7f00", 
-								  "#cab2d6", "#6a3d9a",
-								  "#ffff99", "#b15928"))
-colcol <- col_palette(length(my.eco))
-my.eco$color <- sample(paste0(colcol, ""),
-					   length(my.eco),
-					   replace = FALSE)
-terra::plot(my.eco,
-			col = my.eco$color)
 
 # Downloading in the European Alps the observations of one plant species
 obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
@@ -88,7 +78,7 @@ range.arcto <- get_range(occ_coord = obs.arcto,
 # Plot
 countries <- rnaturalearth::ne_countries(type = "countries",
 										returnclass = "sv")
-alps.shp <- terra::crop(countries,terra::ext(rst))
+alps.shp <- terra::aggregate(terra::crop(countries,terra::ext(rst)))
 r.arcto <- terra::mask(range.arcto$rangeOutput,alps.shp)
 terra::plot(terra::crop(countries,terra::ext(rst)),
 			col = "#bcbddc")
@@ -101,6 +91,71 @@ graphics::points(obs.arcto[, c("decimalLongitude","decimalLatitude")],
 				pch = 20,
 				col = "#99340470",
 				cex= 1)
+
+\dontrun{
+
+###########################################
+### Package manuscript plot (Fig 1b)
+###########################################
+
+# Assign colors to ecoregions
+eco.alps <- terra::crop(my.eco,terra::ext(shp.lonlat))
+eco.alps2 <- terra::intersect(eco.alps,alps.shp)
+col.palette <- colorRampPalette(c("#a6cee3", "#1f78b4",
+	"#b2df8a", "#33a02c", "#fb9a99", "#e31a1c",
+	"#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a",
+	"#ffff99", "#b15928"))
+colcol <- col.palette(length(my.eco))
+set.seed(7)
+eco.alps2$color <- sample(
+	paste0(colcol,""),
+	length(eco.alps2),
+	replace=FALSE)
+
+# Extract ecoregions values for points
+pt.col <- terra::extract(
+	x = eco.alps2,
+	y = as.data.frame(obs.arcto[,c("decimalLongitude","decimalLatitude")])
+)
+pt.plot <- obs.arcto[!is.na(pt.col$color),
+						c("decimalLongitude","decimalLatitude")]
+pt.col2 <- pt.col[!is.na(pt.col$color),"color"]
+# install.packages("colorspace")
+pt.col3 <- colorspace::darken(pt.col2,amount=0.6)
+
+# Plot
+png(
+	"fig1_arcto.png",
+	width=100,
+	height=70,
+	unit="cm",
+	res=100,
+	pointsize=110
+)
+par(
+	mfrow=c(1,1),
+	mar=c(5,5,5,20),
+	lwd=10,
+	cex=1
+)
+terra::plot(
+	eco.alps2,
+	col = paste0(eco.alps2$color, "99"),
+	border = NA,
+	axes = FALSE
+)
+terra::plot(
+	terra::as.polygons(r.arcto),
+	border = "black",
+	lwd = 7,
+	col = "#00000099",
+	add = TRUE
+)
+terra::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
+terra::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
+dev.off()
+
+}
 }
 \references{
 Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
