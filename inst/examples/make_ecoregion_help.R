@@ -76,10 +76,7 @@ pt.col3 <- colorspace::darken(pt.col2,amount=0.6)
 
 # Plot
 png(
-	filename = paste0(
-        system.file(package = "gbif.range"),
-        "/extplots/fig1_arcto.png"
-    ),
+	"fig1_arcto.png",
 	width=100,
 	height=70,
 	unit="cm",

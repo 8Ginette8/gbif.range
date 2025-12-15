@@ -81,10 +81,7 @@ out.plot <- obs.pt[op.na,c("decimalLongitude","decimalLatitude")]
 
 # Plot
 png(
-    filename = paste0(
-        system.file(package = "gbif.range"),
-        "/extplots/fig1_tiger.png"
-    ),
+    filename = "fig1_tiger.png",
     width = 100,
     height = 70,
     unit = "cm",
