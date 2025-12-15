@@ -1,4 +1,8 @@
 \dontrun{
+###########################################
+### Example plot
+###########################################
+
 # Load available ecoregions
 eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 
@@ -14,4 +18,9 @@ cv_range(range_object = range.tiger,
          cv = 'block-cv',
          nfolds = 5,
          nblocks = 2)
+
+###########################################
+### Package manuscript plot (Fig 2)
+###########################################
+
 }

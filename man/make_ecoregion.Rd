@@ -93,10 +93,22 @@ graphics::points(obs.arcto[, c("decimalLongitude","decimalLatitude")],
 				cex= 1)
 
 \dontrun{
-
 ###########################################
 ### Package manuscript plot (Fig 1b)
 ###########################################
+
+# Root and package
+root_dir <- list.files(
+	system.file(package = "gbif.range"),
+	pattern = "extdata",
+	full.names = TRUE
+)
+if (!dir.exists(file.path(root_dir, "fig_plots"))) {
+    dir.create(file.path(root_dir, "fig_plots"))
+}
+if (!requireNamespace("colorspace", quietly = TRUE)) {
+  install.packages("colorspace")
+}
 
 # Assign colors to ecoregions
 eco.alps <- terra::crop(my.eco,terra::ext(shp.lonlat))
@@ -120,12 +132,14 @@ pt.col <- terra::extract(
 pt.plot <- obs.arcto[!is.na(pt.col$color),
 						c("decimalLongitude","decimalLatitude")]
 pt.col2 <- pt.col[!is.na(pt.col$color),"color"]
-# install.packages("colorspace")
 pt.col3 <- colorspace::darken(pt.col2,amount=0.6)
 
 # Plot
 png(
-	"fig1_arcto.png",
+	paste0(
+		root_dir,
+		"/fig_plots/fig1_arcto.png"
+	),
 	width=100,
 	height=70,
 	unit="cm",

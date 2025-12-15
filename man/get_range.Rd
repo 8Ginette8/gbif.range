@@ -148,10 +148,22 @@ graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
                  cex = 1.5)
 
 \dontrun{
-
 ###########################################
 ### Package manuscript plot (Fig 1a)
 ###########################################
+
+# Root and package
+root_dir <- list.files(
+    system.file(package = "gbif.range"),
+    pattern = "extdata",
+    full.names = TRUE
+)
+if (!dir.exists(file.path(root_dir, "fig_plots"))) {
+    dir.create(file.path(root_dir, "fig_plots"))
+}
+if (!requireNamespace("colorspace", quietly = TRUE)) {
+  install.packages("colorspace")
+}
 
 # Extent adjust
 ext.temp <- terra::ext(range.tiger$rangeOutput)
@@ -193,7 +205,10 @@ out.plot <- obs.pt[op.na,c("decimalLongitude","decimalLatitude")]
 
 # Plot
 png(
-    filename = "fig1_tiger.png",
+    paste0(
+        root_dir,
+        "/fig_plots/fig1_tiger.png"
+    ),
     width = 100,
     height = 70,
     unit = "cm",
