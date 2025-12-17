@@ -8,7 +8,7 @@
 #' object (including its extent).
 #' 
 #' @param range_object Object of class \code{getRange}
-#' (see \code{get_range()}) containing the range map and associated parameters.
+#' [see \code{get_range()}] containing the range map and associated parameters.
 #' @param cv Character. Should the range map be evaluated with random
 #' ("random-cv") or spatial block cross validation ("block-cv").
 #' @param nfolds Numeric. Number of chosen folds for cross-validation.
@@ -20,7 +20,8 @@
 #' re-generates the range map n times, each time using a defined percentage
 #' of the observations for training, while evaluating
 #' the quality of the range map using the remaining ones (by default,
-#' nfolds = 5, i.e., calibration = \code{80\%}, evaluation = \code{20\%}).
+#' \code{nfolds = 5}, i.e., calibration = \code{80\%},
+#' evaluation = \code{20\%}).
 #'
 #' Two cross-validation methods are available: (1) random and (2) spatial block
 #' cross-validation:

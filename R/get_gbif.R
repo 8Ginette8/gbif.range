@@ -21,8 +21,8 @@
 #' (~approximative name match) is here allowed, and the \code{rank},
 #' \code{phylum}, \code{class}, \code{order} and \code{family} parameters are
 #' optionally used only if no convincing name match is found. \code{FALSE} is
-#' particularly useful if the given species name already include the author.
-#' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
+#' particularly useful if the given species name already includes the author.
+#' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
 #' (default), the order of priority is (1) species, (2) subspecies and (3)
 #' variety unless "subsp." or "var." is found in the \code{sp_name} parameter.
 #' @param phylum Character. Optional. What is the species' Phylum? Adds a

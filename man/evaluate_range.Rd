@@ -18,11 +18,11 @@ evaluate_range(
 \arguments{
 \item{root_dir}{Character. Working directory to load and save target files.}
 
-\item{valData_dir}{Character. Directory to spatial validation data (must have
-same name as data in ecoRM_dir).}
+\item{valData_dir}{Character. Directory to spatial validation data. Must have
+same name as data in \code{ecoRM_dir}.}
 
-\item{ecoRM_dir}{Character. Directory to range maps (generated with
-\code{get_range()}).}
+\item{ecoRM_dir}{Character. Directory to range maps generated with
+\code{get_range()}.}
 
 \item{valData_type}{Character. Type of valData: either "SHP" or "TIFF".}
 
@@ -39,7 +39,7 @@ that of the species range map)}
 }
 \value{
 A data.frame of evaluation for all species and a list of range
-overlay maps.\cr
+overlay maps:\cr
 - Precision (ppv) =
 number true presences (TP) / [TP + number false presences (FP)]\cr 
 - Sensitivity =
@@ -50,7 +50,7 @@ number true absences (TA) / [TA + number false presences (FP)]\cr
 }
 \description{
 Evaluates the precision (ppv), sensitivity, specificity and TSS of range
-maps based on validation data, such as predictions of species
+maps based on independent validation data, such as predictions of species
 distributions (SDMs) or IUCN expert range maps.
 }
 \details{

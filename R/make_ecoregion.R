@@ -24,10 +24,10 @@
 #' eco.fresh', 'eco.marine') are too coarse for a given geographic region
 #' (e.g., for local studies) or a shapefile of finer environmental details is
 #' needed. The classes are calculated with the 'Clustering Large Applications'
-#' method (\code{clara()} from the cluster R \code{package}), which recognize
+#' method [\code{clara()} from the cluster R \code{package}], which recognize
 #' patterns and relationships existing in spatial data, and classify it into
 #' clusters.
-#' @return A \code{.tif} or \code{.shp} file.
+#' @return \code{tif} or \code{shp} file.
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
 #' Thuiller, W. (2021). Novel methods to correct for observer and sampling bias

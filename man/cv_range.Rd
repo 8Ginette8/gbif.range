@@ -14,7 +14,7 @@ cv_range(
 }
 \arguments{
 \item{range_object}{Object of class \code{getRange}
-(see \code{get_range()}) containing the range map and associated parameters.}
+[see \code{get_range()}] containing the range map and associated parameters.}
 
 \item{cv}{Character. Should the range map be evaluated with random
 ("random-cv") or spatial block cross validation ("block-cv").}
@@ -48,7 +48,8 @@ By using \code{get_range()} arguments, the function iteratively
 re-generates the range map n times, each time using a defined percentage
 of the observations for training, while evaluating
 the quality of the range map using the remaining ones (by default,
-nfolds = 5, i.e., calibration = \code{80\%}, evaluation = \code{20\%}).
+\code{nfolds = 5}, i.e., calibration = \code{80\%},
+evaluation = \code{20\%}).
 
 Two cross-validation methods are available: (1) random and (2) spatial block
 cross-validation:

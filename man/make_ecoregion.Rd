@@ -35,7 +35,7 @@ is \code{FALSE}.}
 \code{clutser} R package.}
 }
 \value{
-A \code{.tif} or \code{.shp} file.
+\code{tif} or \code{shp} file.
 }
 \description{
 Based on chosen environmental layers, this function can generate a map
@@ -46,7 +46,7 @@ Useful if the in-house ecoregion shapefiles ('eco.terra',
 eco.fresh', 'eco.marine') are too coarse for a given geographic region
 (e.g., for local studies) or a shapefile of finer environmental details is
 needed. The classes are calculated with the 'Clustering Large Applications'
-method (\code{clara()} from the cluster R \code{package}), which recognize
+method [\code{clara()} from the cluster R \code{package}], which recognize
 patterns and relationships existing in spatial data, and classify it into
 clusters.
 }

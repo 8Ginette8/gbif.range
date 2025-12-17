@@ -10,9 +10,9 @@
 #' \code{SpatialPolygon}, \code{SpatialPolygonDataframe} or \code{SpaVector}
 #' (WGS84 or planar) to define the study's area extent.
 #' Default is \code{NULL} i.e. the whole globe.
-#' @param ntiles Numeric. In how many tiles/fragments should geo be
+#' @param ntiles Numeric. Into how many tiles/fragments should \code{geo} be
 #' divided approximately?
-#' @param sext Logical. Should a list of SpatExtent also be returned
+#' @param sext Logical. Should a list of \code{SpatExtent} also be returned
 #' for each generated \code{POLYGON()}?
 #' @details The original extent can be:
 #' 
@@ -25,9 +25,9 @@
 #' Tiles can be smaller raster extents or geometry arguments \code{POLYGON()}.
 #' The original extent is therefore either converted into a \code{POLYGON()}
 #' argument, or divided into \code{ntiles} of regular fragments which are
-#' converted into \code{POLYGON()} arguments and smaller SpatExtent.
-#' @return A list of geometry arguments POLYGON() of length \code{ntiles},
-#' and of \code{SpatExtent} if \code{sext = TRUE}).
+#' converted into \code{POLYGON()} arguments and smaller \code{SpatExtent}.
+#' @return A list of geometry arguments \code{POLYGON()} of length
+#' \code{ntiles}, and of \code{SpatExtent} if \code{sext = TRUE}).
 #' @references 
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
 #' Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate,

@@ -19,9 +19,63 @@ A terra::vect object representing the shapefile.
 \description{
 Loads a shapefile based on the provided bioregion name and the bioreg_list.
 }
+\details{
+Four shapefiles can be downloaded with the library:
+
+(1) 'eco_terra' (for terrestrial species, Nature conservancy version adapted
+from Olson & al. 2001).\cn
+
+(2) 'eco_marine' (for marine species, Spalding & al. 2007, 2012).\cn
+
+(3) 'eco_hd_marine' (higher resolution).\cn
+
+(4) 'eco_fresh' (for freshwater species, Abell & al. 2008).
+}
 \examples{
 \dontrun{
 shp_eco_terra <- read_bioreg("eco_terra")
 plot(shp_eco_terra)
 }
+}
+\references{
+Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
+Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,
+Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F.,
+Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao,
+P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map
+of life on Earth. Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+
+The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
+Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
+Units. GIS layers developed by The Nature Conservancy with multiple partners,
+combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge
+(UK): The Nature Conservancy.
+
+Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A.
+Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana,
+Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer Molnar, Cheri
+A. Recchia, James Robertson, Marine Ecoregions of the World: A
+Bioregionalization of Coastal and Shelf Areas, BioScience, Volume 57,
+Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+
+Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
+Pelagic provinces of the world: a biogeographic classification of the
+world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
+doi: 10.1016/j.ocecoaman.2011.12.016
+
+The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
+of the World. GIS layers developed by The Nature Conservancy with multiple
+partners, combined from Spalding et al. (2007) and Spalding et al. (2012).
+Cambridge (UK): The Nature Conservancy.
+
+Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice
+Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras
+Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald R.
+Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf, James
+Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric
+Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G.
+Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of
+the World: A New Map of Biogeographic Units for Freshwater Biodiversity
+Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414.
+doi: 10.1641/B580507
 }

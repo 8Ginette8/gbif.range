@@ -12,15 +12,15 @@ make_tiles(geo, ntiles, sext = TRUE)
 (WGS84 or planar) to define the study's area extent.
 Default is \code{NULL} i.e. the whole globe.}
 
-\item{ntiles}{Numeric. In how many tiles/fragments should geo be
+\item{ntiles}{Numeric. Into how many tiles/fragments should \code{geo} be
 divided approximately?}
 
-\item{sext}{Logical. Should a list of SpatExtent also be returned
+\item{sext}{Logical. Should a list of \code{SpatExtent} also be returned
 for each generated \code{POLYGON()}?}
 }
 \value{
-A list of geometry arguments POLYGON() of length \code{ntiles},
-and of \code{SpatExtent} if \code{sext = TRUE}).
+A list of geometry arguments \code{POLYGON()} of length
+\code{ntiles}, and of \code{SpatExtent} if \code{sext = TRUE}).
 }
 \description{
 Divides a given spatial extent or geometry into a specified number of tiles.
@@ -38,7 +38,7 @@ Based on a specific extent, one or several tiles are generated.
 Tiles can be smaller raster extents or geometry arguments \code{POLYGON()}.
 The original extent is therefore either converted into a \code{POLYGON()}
 argument, or divided into \code{ntiles} of regular fragments which are
-converted into \code{POLYGON()} arguments and smaller SpatExtent.
+converted into \code{POLYGON()} arguments and smaller \code{SpatExtent}.
 }
 \examples{
 # Load the European Alps Extent

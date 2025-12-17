@@ -4,25 +4,19 @@
 #' Create a species range map based on \code{get_gbif()} object
 #'
 #' This function estimates species ranges from occurrence data (GBIF or
-#' else) and ecoregions (see \code{make_ecoregion()} or \code{bioreg_list}).
+#' else) and ecoregions [see \code{make_ecoregion()} or \code{bioreg_list}].
 #' 
-#' @param occ_coord Object of class \code{getGBIF} (see \code{get_gbif()})
-#' or a data.frame containing two columns named 'decimalLongitude' and
-#' 'decimalLatitude'.
+#' @param occ_coord Object of class \code{getGBIF} [see \code{get_gbif()}]
+#' or a \code{data.frame} containing two columns named 'decimalLongitude'
+#' and 'decimalLatitude'.
 #' @param bioreg  Object of class \code{SpatialPolygonsDataFrame},
-#' \code{SpatVector} or \code{sf} containing different ecoregions and of
-#' \code{CRS WGS84}. Define the range extent and ecoregions. Note that this
+#' \code{SpatVector} or \code{sf} containing different ecoregions (WGS84).
+#' Define the range extent and ecoregions. Note that this
 #' parameter may be fed with an external, generated
-#' (see \code{make_ecoregion()}) or downloaded ecoregion shapefile.
-#' Four shapefiles can be downloaded with the library (see \code{read_bioreg()}
-#' and others): 'eco_terra' (for terrestrial species; Nature
-#' conservancy version adapted from Olson & al. 2001), 'eco_marine' and
-#' 'eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and
-#' 'eco_fresh' (for freshwater species; Abell & al. 2008). For marine species,
-#' 'eco_terra' may also be used if the user wants to represent the terrestrial
-#' range of species that also partially settle on mainland. For fresh water
-#' species, same may be done if the user considers that terrestrial ecoregions
-#' should be more representative of the species ecology.
+#' [see \code{make_ecoregion()}] or downloaded ecoregion shapefile
+#' [see \code{read_bioreg()}]. Four ecoregions can be downloaded
+#' with the library: 'eco_terra', 'eco_marine', 'eco_hd_marine'
+#' and 'eco_fresh' (see \code{bioreg_list} and details below).
 #' @param bioreg_name Character. One ecoregion level/category name from the
 #' \code{bioreg} parameter polygon must be supplied, e.g., very detailed level of
 #' 'eco_terra' is "ECO_NAME". Note that default applies if a
@@ -72,13 +66,19 @@
 #' less precisely the ecoregion world distribution (from the more to the less
 #' detailed):
 #'
-#' (1) eco_terra has three different levels: "ECO_NAME", "WWF_MHTNAM" and
-#' "WWF_REALM2".
+#' (1) 'eco_terra' is for terrestrial species. Has three different levels:
+#' "ECO_NAME", "WWF_MHTNAM" and "WWF_REALM2".
 #'
-#' (2) eco_fresh has only one: "ECOREGION".
+#' (2) 'eco_fresh' is for freshwater species. Has only one: "ECOREGION".
 #' 
-#' (3) eco_marine and eco_hd_marine (very coastal-precise version) contains
+#' (3) 'eco_marine' and 'eco_hd_marine' is for marine species. It contains
 #' three distinct levels: "ECOREGION", "PROVINCE" and "REALM".
+
+#' For marine species, 'eco_terra' may also be used if the user wants to
+#' represent the terrestrial range of species that also partially settle
+#' on mainland. For fresh water species, same may be done if the user
+#' considers that terrestrial ecoregions should be more representative of
+#' the species ecology.
 #' @return An object of class \code{getRange} with two fields:
 #' \code{init.args} (parameters and data employed) and
 #' \code{rangeOutput} (object of class \code{SpatVector} or

@@ -3,7 +3,7 @@
 ### =========================================================================
 #' Block-wise split data into training and testing
 #'
-#' Creates a stratum vector based on a data.frame with n columns. 
+#' Creates a stratum vector based on a data.frame with \emph{n} columns. 
 #'
 #' @param nfolds Numeric. Number of approximately equal-sized classes (folds)
 #' to separate groups in block-cross validation.
@@ -23,9 +23,9 @@
 #' @details If \code{df} has one column, the output vector is created based on
 #' clusters separated by quantiles. If \code{df} has two or more columns,
 #' the output vector is created based on the 'Clustering Large Applications'
-#' method (\code{clara()} from the \code{cluster} R package). Also,
-#' instead of a \code{data.frame} the argument 'npoints' can be provided, which
-#' create groups by random sampling. An opitimization algorithm optimizes
+#' method [\code{clara()} from the \code{cluster} R package]. Also,
+#' instead of a \code{data.frame} the argument \code{npoints} can be provided,
+#' which create groups by random sampling. An opitimization algorithm optimizes
 #' for equal stratum sizes: (\code{gridSearch} from the \code{NMOF} R package)
 #' @return Object of class vector of length \code{nrow(df)} or \code{npoints},
 #' with integers defining different folds.
