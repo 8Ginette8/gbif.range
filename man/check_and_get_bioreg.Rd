@@ -14,7 +14,7 @@ downloaded if necessary. See \code{bioreg_list} for available options.}
 "inst/extdata/downloads" within the package structure.}
 }
 \value{
-NULL. Checks and downloads the files to the specified directory
+\code{NULL}. Checks and downloads the files to the specified directory
 if necessary.
 }
 \description{

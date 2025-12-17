@@ -38,7 +38,7 @@ variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 \item{phylum}{Character. Optional. What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
 Available options are the GBIF Phylums
-(listed per Kingdom/Phylum --> https://www.gbif.org/species/search).
+(listed per Kingdom/Phylum: https://www.gbif.org/species/search).
 If \code{search = FALSE}, only used if no direct match is found.}
 
 \item{class}{Character. Optional. What is the species' Class? Same as above
@@ -64,7 +64,7 @@ retrieved or only the accepted name and its synonyms?}
 Data.frame with nine columns: (0) Simplified name,
 (1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
 (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-(9) sp_nameMatch informing which scientific name has matched with
+(9) 'sp_nameMatch' informing which scientific name has matched with
 \code{sp_name}.
 }
 \description{

@@ -7,7 +7,7 @@
 get_bioreg(bioreg_name = "all", save_dir = NULL)
 }
 \arguments{
-\item{bioreg_name}{"all" or the filename of the desired bioregion to be
+\item{bioreg_name}{Character. "all" or the filename of the desired bioregion to be
 downloaded. See \code{bioreg_list} for available options. This contains a list
 of data file information with elements containing `link`, `filename`,
 and `description`.}
@@ -16,7 +16,7 @@ and `description`.}
 "inst/extdata/downloads" within the package structure.}
 }
 \value{
-NULL. Downloads the files to the specified directory.
+\code{NULL}. Downloads the files to the specified directory.
 }
 \description{
 Downloads data files from a provided list of links and saves them

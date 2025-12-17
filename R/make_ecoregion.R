@@ -10,23 +10,24 @@
 #' cover), this function can generate a map of environmental regions containing
 #' \emph{n} categories/classes. The classes are calculated with the
 #' 'Clustering Large Applications' method (\code{clara()} from the cluster R
-#' \code{package}), which recognize patterns and relationships existing in spatial
-#' data, and classify it into clusters.
+#' \code{package}), which recognize patterns and relationships existing in
+#' spatial data, and classify it into clusters.
 #'
-#' @param env Object of class SpatRaster, RasterBrick or RasterStack of desired
-#' resolution, crs and extent defining the study area. Used to generate a map of
-#' clusters summarizing the environmental space of the study area.
-#' @param nclass Numeric, How many number of environmental classes
+#' @param env Object of class \code{SpatRaster}, \code{RasterBrick} or
+#' \code{RasterStack} of desired resolution, crs and extent defining the study
+#' area. Used to generate a map of clusters summarizing the environmental space
+#' of the study area.
+#' @param nclass Numeric. How many number of environmental classes
 #' should have the output?
 #' @param path Character. Folder path where the output should be saved.
 #' Default is none.
 #' @param name Character. If \code{path} is used, should include the name of the
-#' output file (without file extension).
+#' output file without file extension.
 #' @param raster Logical. Whether the output should be a raster layer. Default
 #' is \code{FALSE}.
 #' @param ... Additonnal parameters for the function \code{clara()} of the
 #' \code{clutser} R package.
-#' @return A TIFF or SHP file.
+#' @return A \code{.tif} or \code{.shp} file.
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
 #' Thuiller, W. (2021). Novel methods to correct for observer and sampling bias

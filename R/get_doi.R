@@ -7,7 +7,7 @@
 #' (\code{rgbif} R package), compatible with one or several
 #' \code{get_gbif()} outputs.
 #' 
-#' @param gbifs Object of class getGBIF or a list of several.
+#' @param gbifs Object of class \code{getGBIF} or a list of several.
 #' @param title Character. Chosen title for the GBIF dataset.
 #' @param description Character. Description of the GBIF dataset.
 #' @param source_url  Character. Link to where the dataset is stored.

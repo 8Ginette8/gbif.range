@@ -13,8 +13,8 @@ cv_range(
 )
 }
 \arguments{
-\item{range_object}{Object of class getRange (see \code{get_range})
-containing the range map and associated parameters.}
+\item{range_object}{Object of class \code{getRange}
+(see \code{get_range()}) containing the range map and associated parameters.}
 
 \item{cv}{Character. Should the range map be evaluated with random
 ("random-cv") or spatial block cross validation ("block-cv").}
@@ -28,13 +28,13 @@ the number of blocks per fold.}
 that should be sampled. Defaut is 10,000.}
 }
 \value{
-A data.frame with \code{nfolds} rows and 8 evaluation columns: 
+A data.frame with \code{nfolds} rows and 8 evaluation columns:\cr 
 -- Precision (ppv) =
-number true presences (TP) / [TP + number false presences (FP)]; 
+number true presences (TP) / [TP + number false presences (FP)]\cr 
 -- Sensitivity =
-number true presences (TP) / [TP + number false absences (FA)]; 
+number true presences (TP) / [TP + number false absences (FA)]\cr
 -- Specificity =
-number true absences (TA) / [TA + number false presences (FP)]; 
+number true absences (TA) / [TA + number false presences (FP)]\cr
 -- TSS =
 Sensitivity + Specificity - 1
 }
@@ -45,7 +45,7 @@ object (including its extent). By using these same arguments, the
 function iteratively re-generates the range map n times, each time using
 a defined percentage of the observations for training, while evaluating
 the quality of the range map using the remaining ones (by default,
-nfolds = 5 -> calibration = 80%, evaluation = 20%). Two cross-validation
+nfolds = 5, i.e., calibration = 80%, evaluation = 20%). Two cross-validation
 methods are available: random and spatial block cross-validation.
 In random cross-validation, a random subset of the observations is chosen
 for training in each fold, with the generated map evaluated on the remaining

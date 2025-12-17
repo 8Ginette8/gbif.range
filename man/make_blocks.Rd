@@ -16,11 +16,12 @@ make_blocks(
 \item{nfolds}{Numeric. Number of approximately equal-sized classes (folds)
 to separate groups in block-cross validation.}
 
-\item{df}{Object of class data.frame with n columns containing critera
-for cluster building. Not necessary if parameter \code{npoints} is supplied.}
+\item{df}{Object of class \code{data.frame} with \emph{n} columns
+containing critera for cluster building. Not necessary if parameter
+\code{npoints} is supplied.}
 
 \item{nblocks}{Numeric. Number of clusters (blocks) based on the number
-Maximum is nrow(\code{df})/10.}
+Maximum is \code{nrow(df) / 10}.}
 
 \item{npoints}{Optional argument if \code{df} is not supplied. For how many
 points should random sampling be made?}
@@ -32,7 +33,7 @@ neighbors is applied relative to the 1. If \code{df} is not supplied, for
 which points should random sampling be made?}
 }
 \value{
-Object of class vector of length nrow(\code{df}) or \code{npoints},
+Object of class vector of length \code{nrow(df)} or \code{npoints},
 with integers defining different folds.
 }
 \description{
@@ -42,9 +43,8 @@ separated by quantiles. If the data.frame has two or more columns,
 strata vector is created based on the 'Clustering Large Applications'
 method (\code{clara()} from the \code{cluster} R package). Also,
 instead of a data.frame the argument 'npoints' can be provided, which
-create groups by random sampling. An opitimization algorithm
-(\code{gridSearch} from the \code{NMOF} R package) optimizes for
-equal stratum sizes.
+create groups by random sampling. An opitimization algorithm optimizes
+for equal stratum sizes: (\code{gridSearch} from the \code{NMOF} R package)
 }
 \examples{
 \dontrun{

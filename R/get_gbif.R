@@ -4,22 +4,23 @@
 #' Massively download and filter GBIF observations for sound spatial analyses
 #'
 #' Implement an user-friendly workflow to download and clean gbif taxa
-#' observations. The function uses the rgbif R package but (1) implements the
-#' same search result when www.gbif.org is employed, i.e., based on the
-#' input taxa name, all species records related to its accepted name and
-#' synonyms are extracted. The function also (2) bypasses the rgbif hard limit
-#' on the number of records (100'000 max). For this purpose, a dynamic moving
-#' window is created and used across the geographic extent defined by the user.
-#' This window automatically fragments the specified study area in succesive
-#' tiles of different sizes, until all tiles include < 10'000 observations
-#' (instead of 100'000 for extraction speed efficiency). The function also (3)
-#' automatically applies a post-filtering of observations based on the chosen
-#' resolution of the study and by partly employing the CoordinateCleaner R
-#' package. Filtering options may be chosen and involve several choices:
-#' study's extent, removal of duplicates, removal of absences, basis of records
-#' selection, removal of invalid/uncertain xy coordinates (WGS84), time period
-#' selection and removal of raster centroids. By default, the argument
-#' \code{hasGeospatialIssue} in \code{occ_search()} (rgbif R function)
+#' observations. The function uses the \code{rgbif} R package but (1)
+#' implements the same search result when www.gbif.org is employed, i.e.,
+#' based on the input taxa name, all species records related to its accepted
+#' name and synonyms are extracted. The function also (2) bypasses the
+#' \code{rgbif} hard limit for number of records (100'000 max). For this
+#' purpose, a dynamic moving window is created and used across the geographic
+#' extent defined by the user. This window automatically fragments the
+#' specified study area in succesive tiles of different sizes, until all
+#' tiles include < 10'000 observations (instead of 100'000 for extraction
+#' speed efficiency). The function also (3) automatically applies a post-
+#' filtering of observations based on the chosen resolution of the study and
+#' by partly employing the \code{CoordinateCleaner} R package. Filtering
+#' options may be chosen and involve several choices: study's extent,
+#' removal of duplicates, removal of absences, basis of records selection,
+#' removal of invalid/uncertain xy coordinates (WGS84), time period selection
+#' and removal of raster centroids. By default, the argument
+#' \code{hasGeospatialIssue} in \code{occ_search()} (\code{rgbif} R function)
 #' is set to \code{FALSE}.
 #' 
 #' @param sp_name Character. Species name from which the user wants to retrieve
@@ -40,7 +41,7 @@
 #' @param phylum Character. Optional. What is the species' Phylum? Adds a
 #' criteria to deal with alternative name matches and select the right synonym.
 #' Available options are the GBIF Phylums
-#' (listed per Kingdom/Phylum --> https://www.gbif.org/species/search).
+#' (listed per Kingdom/Phylum: https://www.gbif.org/species/search).
 #' If \code{search = FALSE}, only used if no direct match is found.
 #' @param class Character. Optional. What is the species' Class? Same as above
 #' but at the finer class level. Available options are the GBIF Classes
@@ -54,9 +55,10 @@
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold
 #' of match between \code{sp_name} and the GBIF backbone taxonomy.
 #' Default is 90.
-#' @param geo Object of class Extent, SpatExtent, SpatialPolygon,
-#' SpatialPolygonDataframe, SpatVector or sf (WGS84) to define the study's
-#' area extent. Default is NULL, i.e., the whole globe.
+#' @param geo Object of class \code{Extent}, \code{SpatExtent},
+#' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
+#' or \code{sf} (WGS84) to define the study's area extent. Default is
+#' \code{NULL}, i.e., the whole globe.
 #' @param grain Numeric. Specifies in kilometers the study resolution. Default
 #' is 100. Used to filter gbif records according to their (1) spatial
 #' uncertainties and (2) number of coordinate decimals. Records with no
@@ -78,8 +80,8 @@
 #' https://docs.gbif.org/course-data-use/en/basis-of-record.html. 
 #' @param establishment Character. Is the individual native, captive or else?
 #' Defaut is native, casual, released, reproducing, established, colonising
-#' and absence of information. See descriptions here 
-#' https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment
+#' and absence of information. See descriptions (
+#' https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment)
 #' for other managed establishments: managed, captive, cultivated, released,
 #' unestablished and failing
 #' @param add_infos Character. Infos that may be added to the default output
@@ -91,8 +93,8 @@
 #' "datasetKey", "institutionCode", "publishingOrgKey", "taxonomicStatus",
 #' "taxonRank" and "degreeOfEstablishment". 
 #' @param time_period Numerical vector. Observations will be downloaded
-#' according to the chosen year range. Default is c(1000,3000).
-#' Observations with year = NA are kept by default.
+#' according to the chosen year range. Default is \code{c(1000,3000)}.
+#' Observations with \code{NA} are kept by default.
 #' @param identic_xy Logical. Should records with identical xy be kept?
 #' Default is \code{FALSE}.
 #' @param wConverted_xy Logical. Should incorrectly converted lon/lat be
@@ -104,11 +106,11 @@
 #' \code{CoordinateCleaner} R package.
 #' @param ntries Numeric. In case of internal errors (GBIF server or
 #' \code{rgbif} R package), how many download attempts should
-#' \code{get_gbif()} request? Default is '10' with a 2 seconds interval
+#' \code{get_gbif()} request? Default is \code{10} with a 2 seconds interval
 #' between tries. If the attempts failed, an empty data.frame is return by
 #' default.
-#' @param error_skip Logical. Should the search process continues if ntries
-#' failed ?
+#' @param error_skip Logical. Should the search process continues if
+#' \code{ntries} failed ?
 #' @param occ_samp Numeric. Determine how many GBIF occurrences will be
 #' sampled per geographic tiles of the fragmented study area. Default is the
 #' maximum number of GBIF observations found in a tile (i.e. ~10'000 records).
@@ -127,17 +129,17 @@
 #' @param ... Additonnal parameters for the function \code{cd_round()} of
 #' the \code{CoordinateCleaner} R package.
 #' @details The \code{grain} parameter is used for two distinct gbif records
-#' filtering. (1) Records filtering according to gbif
-#' 'coordinateUncertaintyInMeters': every records uncertainty > grain/2
-#' are removed. Note that records with no information on coordinate
-#' uncertainties are kept by default. (2) Records filtering according
-#' to the number of longitude/latitude decimals:
-#' if 110km < grain <= 11km, lon/lat with >= 1 decimal are kept,
-#' if 11km < grain <= 1100m, lon/lat with >= 2 decimals kept,
-#' if 1100m < grain <= 110m, lon/lat with >= 3 decimals are kept,
-#' if 110m < grain <= 11m, lon/lat with >= 4 decimals are kept,
-#' if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
-#' @return Object of class getGBIF (data.frame type) with requested GBIF
+#' filtering. (1) Records filtering according to gbif 
+#' 'coordinateUncertaintyInMeters': every records uncertainty
+#' \code{> grain / 2} are removed. Note that records with no information
+#' on coordinate uncertainties are kept by default. (2) Records filtering
+#' according to the number of longitude/latitude decimals:\cr
+#' --if 110km < \code{grain} <= 11km, lon / lat with >= 1 decimal are kept\cr
+#' --if 11km < \code{grain} <= 1100m, lon / lat with >= 2 decimals kept\cr
+#' --if 1100m < \code{grain} <= 110m, lon / lat with >= 3 decimals are kept\cr
+#' --if 110m < \code{grain} <= 11m, lon / lat with >= 4 decimals are kept\cr
+#' --if 11m < \code{grain} <= 1.1m, lon / lat with >= 5 decimals are kept etc...
+#' @return Object of class \code{getGBIF} (data.frame type) with requested GBIF
 #' information. Although crucial preliminary checks of species records are done
 #' by the function, additional post exploration with the
 #' \code{CoordinateCleaner} R package is still highly recommended.

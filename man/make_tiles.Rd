@@ -7,30 +7,32 @@
 make_tiles(geo, ntiles, sext = TRUE)
 }
 \arguments{
-\item{geo}{Object of class Extent, SpatExtent, SpatialPolygon,
-SpatialPolygonDataframe, or SpaVector (WGS84 or planar) to define the
-study's area extent. Default is NULL i.e. the whole globe.}
+\item{geo}{Object of class \code{Extent}, \code{SpatExtent},
+\code{SpatialPolygon}, \code{SpatialPolygonDataframe} or \code{SpaVector}
+(WGS84 or planar) to define the study's area extent.
+Default is \code{NULL} i.e. the whole globe.}
 
 \item{ntiles}{Numeric. In how many tiles/fragments should geo be
 divided approximately?}
 
 \item{sext}{Logical. Should a list of SpatExtent also be returned
-for each generated POLYGON()?}
+for each generated \code{POLYGON()}?}
 }
 \value{
-A list of geometry arguments POLYGON() of length \code{ntiles}
-(and of SpatExtent if \code{sext = TRUE}).
+A list of geometry arguments POLYGON() of length \code{ntiles},
+and of \code{SpatExtent} if \code{sext = TRUE}).
 }
 \description{
 Divides a given spatial extent or geometry into a specified number of tiles.
-Each tile is returned as a POLYGON() geometry. The original extent can be:
-(1) converted into a single POLYGON(), or (2) subdivided into approximately
-\code{ntiles} regular fragments, each returned as a POLYGON() and,
-optionally, as a SpatExtent. Based on a specific extent, one or several
-tiles are generated. Tiles can be smaller raster extents or geometry
-arguments POLYGON(). The original extent is therefore either converted
-into a POLYGON() argument, or divided into \code{ntiles} of regular fragments
-which are converted into POLYGON() arguments and smaller SpatExtent.
+Each tile is returned as a \code{POLYGON()} geometry. The original extent
+can be: (1) converted into a single \code{POLYGON()}, or (2) subdivided
+into approximately \code{ntiles} regular fragments, each returned as a
+\code{POLYGON()} and, optionally, as a \code{SpatExtent}. Based on a
+specific extent, one or several tiles are generated. Tiles can be smaller
+raster extents or geometry arguments \code{POLYGON()}. The original extent
+is therefore either converted into a \code{POLYGON()} argument, or divided
+into \code{ntiles} of regular fragments which are converted into
+\code{POLYGON()} arguments and smaller SpatExtent.
 }
 \examples{
 # Load the European Alps Extent

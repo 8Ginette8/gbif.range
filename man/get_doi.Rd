@@ -15,7 +15,7 @@ get_doi(
 )
 }
 \arguments{
-\item{gbifs}{Object of class getGBIF or a list of several.}
+\item{gbifs}{Object of class \code{getGBIF} or a list of several.}
 
 \item{title}{Character. Chosen title for the GBIF dataset.}
 

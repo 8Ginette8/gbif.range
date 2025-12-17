@@ -77,13 +77,13 @@ get_save_dir <- function(save_dir = NULL) {
 #' Downloads data files from a provided list of links and saves them
 #' to a specified directory.
 #'
-#' @param bioreg_name "all" or the filename of the desired bioregion to be
+#' @param bioreg_name Character. "all" or the filename of the desired bioregion to be
 #' downloaded. See \code{bioreg_list} for available options. This contains a list
 #' of data file information with elements containing `link`, `filename`,
 #' and `description`.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
-#' @return NULL. Downloads the files to the specified directory.
+#' @return \code{NULL}. Downloads the files to the specified directory.
 #' @examples
 #' \dontrun{
 #' # download all bioregions available in bioreg_list
@@ -184,7 +184,7 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
 #' downloaded if necessary. See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
-#' @return NULL. Checks and downloads the files to the specified directory
+#' @return \code{NULL}. Checks and downloads the files to the specified directory
 #' if necessary.
 #' @examples
 #' \dontrun{

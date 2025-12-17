@@ -15,13 +15,14 @@
 #' process a sub-sample of species observations to speed up polygon creation or
 #' avoid potential RAM issues.
 #' 
-#' @param occ_coord Object of class getGBIF (see \code{get_gbif()}) or a
-#' data.frame containing two columns named "decimalLongitude" and
-#' "decimalLatitude".
-#' @param bioreg  Object of class SpatialPolygonsDataFrame, SpatVector or
-#' sf containing different ecoregions and of CRS WGS84. Define the range
-#' extent and ecoregions. Note that this parameter may be fed with an external,
-#' generated (see \code{make_ecoregion()}) or downloaded ecoregion shapefile.
+#' @param occ_coord Object of class \code{getGBIF} (see \code{get_gbif()})
+#' or a data.frame containing two columns named 'decimalLongitude' and
+#' 'decimalLatitude'.
+#' @param bioreg  Object of class \code{SpatialPolygonsDataFrame},
+#' \code{SpatVector} or \code{sf} containing different ecoregions and of
+#' \code{CRS WGS84}. Define the range extent and ecoregions. Note that this
+#' parameter may be fed with an external, generated
+#' (see \code{make_ecoregion()}) or downloaded ecoregion shapefile.
 #' Four shapefiles can be downloaded with the library (see \code{read_bioreg()}
 #' and others): 'eco_terra' (for terrestrial species; Nature
 #' conservancy version adapted from Olson & al. 2001), 'eco_marine' and
@@ -39,8 +40,8 @@
 #' classification. If the nearest minimal distance to the next point is larger
 #' than this threshold, it will be considered as an outlier.
 #' @param clust_pts_outlier Numeric. Maximum number of points which are closer
-#' to each other than the degrees_outlier, but should still be considered as
-#' outliers.
+#' to each other than the \code{degrees_outlier}, but should still be considered
+#' as outliers.
 #' @param buffer_width_point Numeric. Buffer (in degrees) which will be applied
 #' around single observations.
 #' @param buff_incrmt_pt_line Numeric. How much should the buffer be increased
@@ -56,7 +57,7 @@
 #' degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 #' important to note that the highest achievable resolution of the output will
 #' depend on its \code{bioreg} precision, e.g., a species range output can reach
-#' the same resolution of the rasters used to create a \code{make_ecoregion}
+#' the same resolution of the rasters used to create a \code{make_ecoregion()}
 #' object.
 #' @param verbose Logical. Should progession be printed?
 #' @details Ecoregions cover relatively large areas of land or water, and
@@ -69,17 +70,17 @@
 #' Each ecoregion shapefile has one or more categories, which describe more or
 #' less precisely the ecoregion world distribution (from the more to the less
 #' detailed):
-#' 
 #' (1) eco_terra has three different levels: "ECO_NAME", "WWF_MHTNAM" and
-#' "WWF_REALM2".
-#' (2) eco_fresh has only one: "ECOREGION".
+#' "WWF_REALM2".\cr
+#' (2) eco_fresh has only one: "ECOREGION".\cr
 #' (3) eco_marine and eco_hd_marine (very coastal-precise version) contains
 #' three distinct levels: "ECOREGION", "PROVINCE" and "REALM".
 #' 
-#' @return An object of class getRange with two fields:
+#' @return An object of class \code{getRange} with two fields:
 #' \code{init.args} (parameters and data employed) and
-#' \code{rangeOutput} (object of class SpatVector or SpatRaster depending
-#' on what the user set as \code{raster} parameter').
+#' \code{rangeOutput} (object of class \code{SpatVector} or
+#' \code{SpatRaster} depending on what the user set as \code{raster}
+#' parameter).
 #' @references
 #' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger,
 #' Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese,

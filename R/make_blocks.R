@@ -9,17 +9,17 @@
 #' strata vector is created based on the 'Clustering Large Applications'
 #' method (\code{clara()} from the \code{cluster} R package). Also,
 #' instead of a data.frame the argument 'npoints' can be provided, which
-#' create groups by random sampling. An opitimization algorithm
-#' (\code{gridSearch} from the \code{NMOF} R package) optimizes for
-#' equal stratum sizes.
+#' create groups by random sampling. An opitimization algorithm optimizes
+#' for equal stratum sizes: (\code{gridSearch} from the \code{NMOF} R package) 
 #'
 #' @param nfolds Numeric. Number of approximately equal-sized classes (folds)
 #' to separate groups in block-cross validation.
-#' @param df Object of class data.frame with n columns containing critera
-#' for cluster building. Not necessary if parameter \code{npoints} is supplied.
+#' @param df Object of class \code{data.frame} with \emph{n} columns
+#' containing critera for cluster building. Not necessary if parameter
+#' \code{npoints} is supplied.
 #' @param nblocks Numeric. Number of clusters (blocks) based on the number
 #´ of folds that should be built. Minimum is the same number as \code{nfolds}.
-#' Maximum is nrow(\code{df})/10.
+#' Maximum is \code{nrow(df) / 10}.
 #' @param pres Binary vector. Optional argument. If \code{df} is supplied, this
 #' argument can be used to save processing time. 1 stands for the points
 #' on which CLARA is appplied, and 0 stands for the points on which K-nearest
@@ -27,7 +27,7 @@
 #' which points should random sampling be made? 
 #' @param npoints Optional argument if \code{df} is not supplied. For how many
 #' points should random sampling be made?
-#' @return Object of class vector of length nrow(\code{df}) or \code{npoints},
+#' @return Object of class vector of length \code{nrow(df)} or \code{npoints},
 #' with integers defining different folds.
 #' @references
 #' Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O.,

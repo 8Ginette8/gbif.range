@@ -14,25 +14,25 @@
 #' applications (Pinkert et al., 2023).
 #' @param root_dir Character. Working directory to load and save target files.
 #' @param valData_dir Character. Directory to spatial validation data (must have
-#' same name as data in ecoRM_dir)
+#' same name as data in ecoRM_dir).
 #' @param ecoRM_dir  Character. Directory to range maps (generated with
 #' \code{get_range()}).
-#' @param valData_type Character. Type of valData --> either "SHP" or "TIFF".
+#' @param valData_type Character. Type of valData: either "SHP" or "TIFF".
 #' @param verbose Logical (optional). Report details while running.
 #' @param print_map Logical (optional). If \code{verbose = TRUE}, should a map
 #' of result be printed? Default is \code{TRUE}.
-#' @param mask Object of class SpatRast (optional). To mask the study the
-#' focal study region. Default is \code{FALSE}.
+#' @param mask Object of class \code{SpatRaster} (optional). To mask the
+#' study the focal study region. Default is \code{FALSE}.
 #' @param res_fact Integer. Factor for coarsening the original resolution (i.e.,
 #' that of the species range map)
 #' @return A data.frame of evaluation for all species and a list of range
-#' overlay maps. 
+#' overlay maps.\cr 
 #' --Precision (ppv) =
-#' number true presences (TP) / [TP + number false presences (FP)]; 
+#' number true presences (TP) / [TP + number false presences (FP)]\cr 
 #' --Sensitivity =
-#' number true presences (TP) / [TP + number false absences (FA)]; 
+#' number true presences (TP) / [TP + number false absences (FA)]\cr
 #' --Specificity =
-#' number true absences (TA) / [TA + number false presences (FP)]; 
+#' number true absences (TA) / [TA + number false presences (FP)]\cr
 #' --TSS =
 #' Sensitivity + Specificity - 1
 #' @references

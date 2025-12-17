@@ -9,7 +9,7 @@
 #' function iteratively re-generates the range map n times, each time using
 #' a defined percentage of the observations for training, while evaluating
 #' the quality of the range map using the remaining ones (by default,
-#' nfolds = 5 -> calibration = 80%, evaluation = 20%). Two cross-validation
+#' nfolds = 5, i.e., calibration = 80%, evaluation = 20%). Two cross-validation
 #' methods are available: random and spatial block cross-validation.
 #' In random cross-validation, a random subset of the observations is chosen
 #' for training in each fold, with the generated map evaluated on the remaining
@@ -22,8 +22,8 @@
 #' background points is first generated over the study area extent and used
 #' as pseudo-absences proxy.
 #' 
-#' @param range_object Object of class getRange (see \code{get_range})
-#' containing the range map and associated parameters.
+#' @param range_object Object of class \code{getRange}
+#' (see \code{get_range()}) containing the range map and associated parameters.
 #' @param cv Character. Should the range map be evaluated with random
 #' ("random-cv") or spatial block cross validation ("block-cv").
 #' @param nfolds Numeric. Number of chosen folds for cross-validation.
@@ -31,13 +31,13 @@
 #' the number of blocks per fold.
 #' @param backpoints Numeric (optional). Number of regular background points
 #' that should be sampled. Defaut is 10,000.
-#' @return A data.frame with \code{nfolds} rows and 8 evaluation columns: 
+#' @return A data.frame with \code{nfolds} rows and 8 evaluation columns:\cr 
 #' -- Precision (ppv) =
-#' number true presences (TP) / [TP + number false presences (FP)]; 
+#' number true presences (TP) / [TP + number false presences (FP)]\cr 
 #' -- Sensitivity =
-#' number true presences (TP) / [TP + number false absences (FA)]; 
+#' number true presences (TP) / [TP + number false absences (FA)]\cr
 #' -- Specificity =
-#' number true absences (TA) / [TA + number false presences (FP)]; 
+#' number true absences (TA) / [TA + number false presences (FP)]\cr
 #' -- TSS =
 #' Sensitivity + Specificity - 1
 #' @references

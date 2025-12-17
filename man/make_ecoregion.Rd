@@ -14,18 +14,19 @@ make_ecoregion(
 )
 }
 \arguments{
-\item{env}{Object of class SpatRaster, RasterBrick or RasterStack of desired
-resolution, crs and extent defining the study area. Used to generate a map of
-clusters summarizing the environmental space of the study area.}
+\item{env}{Object of class \code{SpatRaster}, \code{RasterBrick} or
+\code{RasterStack} of desired resolution, crs and extent defining the study
+area. Used to generate a map of clusters summarizing the environmental space
+of the study area.}
 
-\item{nclass}{Numeric, How many number of environmental classes
+\item{nclass}{Numeric. How many number of environmental classes
 should have the output?}
 
 \item{path}{Character. Folder path where the output should be saved.
 Default is none.}
 
 \item{name}{Character. If \code{path} is used, should include the name of the
-output file (without file extension).}
+output file without file extension.}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default
 is \code{FALSE}.}
@@ -34,7 +35,7 @@ is \code{FALSE}.}
 \code{clutser} R package.}
 }
 \value{
-A TIFF or SHP file.
+A \code{.tif} or \code{.shp} file.
 }
 \description{
 This function may be used if the in-house ecoregion shapefiles ('eco.terra',
@@ -44,8 +45,8 @@ needed. Based on several environmental layers (e.g. climate, soil and land
 cover), this function can generate a map of environmental regions containing
 \emph{n} categories/classes. The classes are calculated with the
 'Clustering Large Applications' method (\code{clara()} from the cluster R
-\code{package}), which recognize patterns and relationships existing in spatial
-data, and classify it into clusters.
+\code{package}), which recognize patterns and relationships existing in
+spatial data, and classify it into clusters.
 }
 \examples{
 \dontrun{
