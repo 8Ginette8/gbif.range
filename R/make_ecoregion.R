@@ -10,7 +10,7 @@
 #' cover), this function can generate a map of environmental regions containing
 #' \emph{n} categories/classes. The classes are calculated with the
 #' 'Clustering Large Applications' method (\code{clara()} from the cluster R
-#' package), which recognize patterns and relationships existing in spatial
+#' \code{package}), which recognize patterns and relationships existing in spatial
 #' data, and classify it into clusters.
 #'
 #' @param env Object of class SpatRaster, RasterBrick or RasterStack of desired
@@ -23,9 +23,9 @@
 #' @param name Character. If \code{path} is used, should include the name of the
 #' output file (without file extension).
 #' @param raster Logical. Whether the output should be a raster layer. Default
-#' is FALSE.
+#' is \code{FALSE}.
 #' @param ... Additonnal parameters for the function \code{clara()} of the
-#' clutser R package.
+#' \code{clutser} R package.
 #' @return A TIFF or SHP file.
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &

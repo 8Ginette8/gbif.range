@@ -64,9 +64,10 @@ applied around distribution polygons (for each ecoregion).}
 convex hull be saved? (text file will be deleted again). Default value
 is \code{tempdir()}.}
 
-\item{raster}{Logical. Should the output be a unified raster? Default is TRUE}
+\item{raster}{Logical. Should the output be a unified raster?
+Default is \code{TRUE}}
 
-\item{res}{Numeric. If raster = TRUE, resolution of the output in
+\item{res}{Numeric. If \code{raster = TRUE}, resolution of the output in
 degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 important to note that the highest achievable resolution of the output will
 depend on its \code{bioreg} precision, e.g., a species range output can reach

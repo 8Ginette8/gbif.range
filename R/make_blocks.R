@@ -7,10 +7,11 @@
 #' data.frame has one column, strata vector is created based on clusters
 #' separated by quantiles. If the data.frame has two or more columns,
 #' strata vector is created based on the 'Clustering Large Applications'
-#' method (\code{clara()} from the cluster R package). Also, instead of a
-#' data.frame the argument 'npoints' can be provided, which create groups
-#' by random sampling. An opitimization algorithm (\code{gridSearch}
-#' from the NMOF R package) optimizes for equal stratum sizes.
+#' method (\code{clara()} from the \code{cluster} R package). Also,
+#' instead of a data.frame the argument 'npoints' can be provided, which
+#' create groups by random sampling. An opitimization algorithm
+#' (\code{gridSearch} from the \code{NMOF} R package) optimizes for
+#' equal stratum sizes.
 #'
 #' @param nfolds Numeric. Number of approximately equal-sized classes (folds)
 #' to separate groups in block-cross validation.

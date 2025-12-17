@@ -28,10 +28,10 @@ Default is none.}
 output file (without file extension).}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default
-is FALSE.}
+is \code{FALSE}.}
 
 \item{...}{Additonnal parameters for the function \code{clara()} of the
-clutser R package.}
+\code{clutser} R package.}
 }
 \value{
 A TIFF or SHP file.
@@ -44,7 +44,7 @@ needed. Based on several environmental layers (e.g. climate, soil and land
 cover), this function can generate a map of environmental regions containing
 \emph{n} categories/classes. The classes are calculated with the
 'Clustering Large Applications' method (\code{clara()} from the cluster R
-package), which recognize patterns and relationships existing in spatial
+\code{package}), which recognize patterns and relationships existing in spatial
 data, and classify it into clusters.
 }
 \examples{

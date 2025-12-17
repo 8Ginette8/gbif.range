@@ -19,7 +19,7 @@ for each generated POLYGON()?}
 }
 \value{
 A list of geometry arguments POLYGON() of length \code{ntiles}
-(and of SpatExtent if \code{sext} = TRUE).
+(and of SpatExtent if \code{sext = TRUE}).
 }
 \description{
 Divides a given spatial extent or geometry into a specified number of tiles.

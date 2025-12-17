@@ -50,8 +50,9 @@
 #' @param dir_temp Character. Where should the temporary text file for the
 #' convex hull be saved? (text file will be deleted again). Default value
 #' is \code{tempdir()}.
-#' @param raster Logical. Should the output be a unified raster? Default is TRUE
-#' @param res Numeric. If raster = TRUE, resolution of the output in
+#' @param raster Logical. Should the output be a unified raster?
+#' Default is \code{TRUE}
+#' @param res Numeric. If \code{raster = TRUE}, resolution of the output in
 #' degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 #' important to note that the highest achievable resolution of the output will
 #' depend on its \code{bioreg} precision, e.g., a species range output can reach

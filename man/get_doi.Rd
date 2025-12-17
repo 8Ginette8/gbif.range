@@ -28,17 +28,18 @@ get_doi(
 \item{pwd}{Character. User's GBIF password.}
 
 \item{...}{Additonnal parameters for \code{derived_dataset()} called
-from the rgbif R package.}
+from the \code{rgbif} R package.}
 }
 \value{
 One citable GBIF DOI and associated user's information.
 }
 \description{
-A small user friendly wrapper of \code{derived_dataset()} (rgbif R
-package), compatible with one or several \code{get_gbif()} outputs.
+A small user friendly wrapper of \code{derived_dataset()}
+(\code{rgbif} R package), compatible with one or several
+\code{get_gbif()} outputs.
 }
 \details{
-See \code{derived_dataset()} from the rgbif R package.
+See \code{derived_dataset()} from the \code{rgbif} R package.
 }
 \examples{
 # Download worldwide the observations of Panthera tigris
@@ -74,6 +75,6 @@ Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 global biodiversity information facility API. 10.5281/zenodo.6023735
 }
 \seealso{
-The rgbif package for additional and more general approaches
+The \code{rgbif package} for additional and more general approaches
 to get GBIF DOI.
 }

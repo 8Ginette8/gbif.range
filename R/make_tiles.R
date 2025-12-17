@@ -21,7 +21,7 @@
 #' @param sext Logical. Should a list of SpatExtent also be returned
 #' for each generated POLYGON()?
 #' @return A list of geometry arguments POLYGON() of length \code{ntiles}
-#' (and of SpatExtent if \code{sext} = TRUE).
+#' (and of SpatExtent if \code{sext = TRUE}).
 #' @references 
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
 #' Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate,
