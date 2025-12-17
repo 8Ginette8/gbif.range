@@ -7,7 +7,7 @@
 #' rgbif R package, compatible with one or several get_gbif() outputs.
 #' 
 #' 
-#' @param gbifs data.frame or list. A getGBIF object or a list of several.
+#' @param gbifs Object of class getGBIF or a list of several.
 #' @param title Title for your derived dataset.
 #' @param description Description of the dataset.
 #' @param source_url  Link to where the dataset is stored.

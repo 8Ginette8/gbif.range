@@ -13,9 +13,9 @@
 #' observations from grid pixels with fewer than a user-defined
 #' threshold of records.
 #'
-#' @param gbifs A getGBIF output including one or several species. Note
-#' that if GBIF absences are kept in the output(s), the function should be
-#' used distinctively for observations and absences.
+#' @param gbifs Object of class getGBIF including one or several species.
+#' Note that if GBIF absences are kept in the output(s), the function should
+#' be used distinctively for observations and absences.
 #' @param grid Object of class SpatRaster, RasterLayer, RasterBrick, or
 #' RasterStack of desired resolution and extent (WGS84).
 #' @param threshold Optional integer specifying the minimum number of

@@ -22,8 +22,8 @@
 #' background points is first generated over the study area extent and used
 #' as pseudo-absences proxy.
 #' 
-#' @param range_object A 'getRange' object (function get_range) containing the
-#' range map and associated parameters.
+#' @param range_object Object of class getRange (function get_range) containing
+#' the range map and associated parameters.
 #' @param cv Character. Should the range map be evaluated with random
 #' ('random-cv') or spatial block
 #' cross validation ('block-cv').

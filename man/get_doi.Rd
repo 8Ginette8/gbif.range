@@ -15,7 +15,7 @@ get_doi(
 )
 }
 \arguments{
-\item{gbifs}{data.frame or list. A getGBIF object or a list of several.}
+\item{gbifs}{Object of class getGBIF or a list of several.}
 
 \item{title}{Title for your derived dataset.}
 

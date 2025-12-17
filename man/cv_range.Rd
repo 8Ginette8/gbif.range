@@ -13,8 +13,8 @@ cv_range(
 )
 }
 \arguments{
-\item{range_object}{A 'getRange' object (function get_range) containing the
-range map and associated parameters.}
+\item{range_object}{Object of class getRange (function get_range) containing
+the range map and associated parameters.}
 
 \item{cv}{Character. Should the range map be evaluated with random
 ('random-cv') or spatial block

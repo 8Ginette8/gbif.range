@@ -20,7 +20,7 @@ get_range(
 )
 }
 \arguments{
-\item{occ_coord}{a 'getGBIF' object (get_gbif function) or a data.frame
+\item{occ_coord}{Object of class getGBIF (get_gbif function) or a data.frame
 containing two columns named "decimalLongitude" and "decimalLatitude".}
 
 \item{bioreg}{Define the range extent and ecoregions.
@@ -75,9 +75,8 @@ the same resolution of the rasters used to create a 'make_ecoregion' object.}
 \item{verbose}{Logical. Should progession be printed?}
 }
 \value{
-A getRange object with two fields: 'init.args' (parameters and data
-employed) and 'rangeOutput' ('SpatVector' or 'SpatRaster' depending on what
-the user set as 'raster').
+An object of class getRange with two fields: 'init.args'
+SpatRaster' depending on what the user set as 'raster').
 }
 \description{
 This function estimates species ranges from occurrence data (GBIF or

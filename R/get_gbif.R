@@ -130,10 +130,10 @@
 #' if 1100m < grain <= 110m, lon/lat with >= 3 decimals are kept;
 #' if 110m < grain <= 11m, lon/lat with >= 4 decimals are kept;
 #' if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
-#' @return A getGBIF object (data.frame) with requested GBIF information.
-#' Although the function works accurately, error outputs might still occur
-#' depending on the 'sp_name' used. Therefore, default information detailed
-#' in 'add_infos' is stored so that sanity checks may still be applied
+#' @return Object of class getGBIF (data.frame type) with requested GBIF
+#' information. Although the function works accurately, error outputs might
+#' still occur depending on the 'sp_name' used. Therefore, default information
+#' detailed in 'add_infos' is stored so that sanity checks may still be applied
 #' afterwards. Although crucial preliminary checks of species records are done
 #' by the function, additional post exploration with the CoordinateCleaner R
 #' package is still highly recommended.

@@ -14,7 +14,7 @@
 #' process a sub-sample of species observations to speed up polygon creation or
 #' avoid potential RAM issues.
 #' 
-#' @param occ_coord a 'getGBIF' object (get_gbif function) or a data.frame
+#' @param occ_coord Object of class getGBIF (get_gbif function) or a data.frame
 #' containing two columns named "decimalLongitude" and "decimalLatitude".
 #' @param bioreg  Define the range extent and ecoregions.
 #' 'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containing
@@ -73,9 +73,9 @@
 #' - eco_marine and eco_hd_marine (very coastal-precise version) contains
 #' three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
 #' 
-#' @return A getRange object with two fields: 'init.args' (parameters and data
-#' employed) and 'rangeOutput' ('SpatVector' or 'SpatRaster' depending on what
-#' the user set as 'raster').
+#' @return An object of class getRange with two fields: 'init.args'
+# (parameters and data employed) and 'rangeOutput' ('SpatVector' or
+#' SpatRaster' depending on what the user set as 'raster').
 #' @references
 #' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger,
 #' Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese,
