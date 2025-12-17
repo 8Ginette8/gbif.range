@@ -17,27 +17,28 @@ get_doi(
 \arguments{
 \item{gbifs}{Object of class getGBIF or a list of several.}
 
-\item{title}{Title for your derived dataset.}
+\item{title}{Character. Chosen title for the GBIF dataset.}
 
-\item{description}{Description of the dataset.}
+\item{description}{Character. Description of the GBIF dataset.}
 
-\item{source_url}{Link to where the dataset is stored.}
+\item{source_url}{Character. Link to where the dataset is stored.}
 
-\item{user}{Your GBIF username.}
+\item{user}{Character. User's GBIF username.}
 
-\item{pwd}{Your GBIF password.}
+\item{pwd}{Character. User's GBIF password.}
 
-\item{...}{Additonnal parameters for derived_dataset() in rgbif.}
+\item{...}{Additonnal parameters for \code{derived_dataset()} called
+from the rgbif R package.}
 }
 \value{
-One citable DOI and its information.
+One citable GBIF DOI and associated user's information.
 }
 \description{
-A small user friendly wrapper of the derived_dataset() function of the
-rgbif R package, compatible with one or several get_gbif() outputs.
+A small user friendly wrapper of \code{derived_dataset()} (rgbif R
+package), compatible with one or several \code{get_gbif()} outputs.
 }
 \details{
-see derived_dataset() function from the rgbif R package.
+See \code{derived_dataset()} from the rgbif R package.
 }
 \examples{
 # Download worldwide the observations of Panthera tigris

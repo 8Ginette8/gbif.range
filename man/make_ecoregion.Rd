@@ -24,27 +24,28 @@ should have the output?}
 \item{path}{Character. Folder path where the output should be saved.
 Default is none.}
 
-\item{name}{Character. If 'path' is used, should include the name of the
-output
-file (without file extension).}
+\item{name}{Character. If *path* is used, should include the name of the
+output file (without file extension).}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default
 is FALSE.}
 
-\item{...}{Additonnal parameters for the function clara() of the clutser R}
+\item{...}{Additonnal parameters for the function \code{clara()} of the
+clutser R package.}
 }
 \value{
 A TIFF or SHP file.
 }
 \description{
-This function may be used if the in-house ecoregion shapefiles are
-too coarse for a given geographic region (e.g., for local studies) or
-a shapefile of finer environmental details is needed. Based on several
-environmental layers (e.g. climate, soil and land cover), this function
-can generate a map of environmental regions containing n categories/classes.
-The classes are calculated with the 'clustering large applications'
-method (CLARA), which recognize patterns and relationships existing in
-spatial data, and classify it in clusters.
+This function may be used if the in-house ecoregion shapefiles ('eco.terra',
+eco.fresh', 'eco.marine') are too coarse for a given geographic region
+(e.g., for local studies) or a shapefile of finer environmental details is
+needed. Based on several environmental layers (e.g. climate, soil and land
+cover), this function can generate a map of environmental regions containing
+*n* categories/classes. The classes are calculated with the 'Clustering
+Large Applications' method (\code{clara()} from the cluster R package),
+which recognize patterns and relationships existing in spatial data, and
+classify it into clusters.
 }
 \examples{
 \dontrun{

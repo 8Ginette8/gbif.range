@@ -8,7 +8,7 @@ check_and_get_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 }
 \arguments{
 \item{bioreg_name}{filename of the desired bioregion to be checked and
-downloaded if necessary. See `bioreg_list` for available options.}
+downloaded if necessary. See \code{bioreg_list} for available options.}
 
 \item{save_dir}{The directory to save the downloaded files. Defaults to
 "inst/extdata/downloads" within the package structure.}

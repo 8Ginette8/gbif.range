@@ -13,23 +13,22 @@ cv_range(
 )
 }
 \arguments{
-\item{range_object}{Object of class getRange (function get_range) containing
-the range map and associated parameters.}
+\item{range_object}{Object of class getRange (see \code{get_range})
+containing the range map and associated parameters.}
 
 \item{cv}{Character. Should the range map be evaluated with random
-('random-cv') or spatial block
-cross validation ('block-cv').}
+("random-cv") or spatial block cross validation ("block-cv").}
 
 \item{nfolds}{Numeric. Number of chosen folds for cross-validation.}
 
-\item{nblocks}{Numeric. Only applies if 'block-cv' is employed. Defined
+\item{nblocks}{Numeric. Only applies if "block-cv" is employed. Defined
 the number of blocks per fold.}
 
 \item{backpoints}{Numeric (optional). Number of regular background points
 that should be sampled. Defaut is 10,000.}
 }
 \value{
-A data.frame with 'nfolds' rows and 8 evaluation columns: 
+A data.frame with *nfolds* rows and 8 evaluation columns: 
 -- Precision (ppv) =
 number true presences (TP) / [TP + number false presences (FP)]; 
 -- Sensitivity =
@@ -41,14 +40,14 @@ Sensitivity + Specificity - 1
 }
 \description{
 Assesses the accuracy of a species range map by applying cross-validation
-using the observationsand function arguments of a get_range() object
-(including its extent). By using these initial parameters, the function
-iteratively re-generates the range map n times, each time using a defined
-percentage of the extent observations for training, while evaluating the
-quality of the range map using the remaining records (by default,
+using the observations and function arguments of a \code{get_range()}
+object (including its extent). By using these same arguments, the
+function iteratively re-generates the range map n times, each time using
+a defined percentage of the observations for training, while evaluating
+the quality of the range map using the remaining ones (by default,
 nfolds = 5 -> calibration = 80%, evaluation = 20%). Two cross-validation
-methods are available: random and spatial block cross-validation. In
-random cross-validation, a random subset of the observations is chosen
+methods are available: random and spatial block cross-validation.
+In random cross-validation, a random subset of the observations is chosen
 for training in each fold, with the generated map evaluated on the remaining
 data. In spatial block cross-validation, the observations are spatially
 divided into blocks based on their coordinates, and each fold uses a
@@ -60,6 +59,7 @@ background points is first generated over the study area extent and used
 as pseudo-absences proxy.
 }
 \examples{
+\dontrun{
 ###########################################
 ### Example plot
 ###########################################
@@ -85,7 +85,6 @@ pt.test <- cv_range(
 );pt.test
 
 
-\dontrun{
 ###########################################
 ### Package manuscript plot (Fig 2, ecv)
 ###########################################
@@ -336,6 +335,7 @@ text(90.4,45.4,
 )
 dev.off()
 
+}
 }
 \references{
 Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera‐

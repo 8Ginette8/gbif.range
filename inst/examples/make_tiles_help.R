@@ -6,4 +6,4 @@ shp.path <- paste0(
 shp.lonlat <- terra::vect(shp.path)
  
 # Apply the function to divide the extent in ~20 fragments
-mt <- make_tiles(geo = shp.lonlat, Ntiles = 20, sext = TRUE)
+mt <- make_tiles(geo = shp.lonlat, ntiles = 20, sext = TRUE)

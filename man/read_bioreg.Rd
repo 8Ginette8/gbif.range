@@ -8,7 +8,7 @@ read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 }
 \arguments{
 \item{bioreg_name}{filename of the desired bioregion to be loaded.
-See `bioreg_list` for available options.}
+See \code{bioreg_list} for available options.}
 
 \item{save_dir}{The directory to save the downloaded files. Defaults to
 "inst/extdata/downloads" within the package structure.}

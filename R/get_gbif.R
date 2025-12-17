@@ -5,7 +5,7 @@
 #'
 #' Implement an user-friendly workflow to download and clean gbif taxa
 #' observations. The function uses the rgbif R package but (1) implements the
-#' same search result found if www.gbif.org is employed i.e., based on the
+#' same search result when www.gbif.org is employed, i.e., based on the
 #' input taxa name, all species records related to its accepted name and
 #' synonyms are extracted. The function also (2) bypasses the rgbif hard limit
 #' on the number of records (100'000 max). For this purpose, a dynamic moving
@@ -19,73 +19,74 @@
 #' study's extent, removal of duplicates, removal of absences, basis of records
 #' selection, removal of invalid/uncertain xy coordinates (WGS84), time period
 #' selection and removal of raster centroids. By default, the argument
-#' hasGeospatialIssue in occ_search() (implemented rgbif function) is set to
+#' *hasGeospatialIssue* in \code{occ_search()} (rgbif R function) is set to
 #' FALSE.
 #' 
 #' @param sp_name Character. Species name from which the user wants to retrieve
 #' all existing GBIF names with associated taxonomy and IUCN status.
 #' @param search Logical. If TRUE (default), the function will strictly look
-#' for the most relevant result, based on a list of names given by rgbif (only
+#' for the most relevant result across the names given by rgbif (only
 #' species, subspecies and variety allowed here), and give an error if name
 #' matching was impeded by synonym duplicates. If FALSE, the function will
-#' simply pick the first most relevant name from the list (higher taxa level
-#' than species allowed here). Also, unlike search=TRUE, fuzzy search
-#' (~approximative name match) is here allowed, and the 'rank', phylum',
-#' class', order' and 'family' parameters are optionally used only if no
-#' convincing name match is found.
+#' simply pick the first most relevant name (taxa rank higher than species
+#' are allowed here). Also, unlike search = TRUE, fuzzy search (~approximative
+#' name match) is here allowed, and the 'rank', phylum', 'class', order' and
+#' 'family' parameters are optionally used only if no convincing name match
+#' is found. FALSE is particularly useful if the given species name already
+#' include the author.
 #' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
 #' (default), the order of priority is (1) species, (2) subspecies and (3)
-#' variety unless "subsp." or "var." is found in 'sp_name'.
+#' variety unless "subsp." or "var." is found in the *sp_name* parameter.
 #' @param phylum Character. Optional. What is the species' Phylum? Adds a
 #' criteria to deal with alternative name matches and select the right synonym.
 #' Available options are the GBIF Phylums
-#' (listed per Kingdom --> https://www.gbif.org/species/search).
-#' If search = FALSE, used only if no direct match is found.
+#' (listed per Kingdom/Phylum --> https://www.gbif.org/species/search).
+#' If search = FALSE, only used if no direct match is found.
 #' @param class Character. Optional. What is the species' Class? Same as above
 #' but at the finer class level. Available options are the GBIF Classes
-#' (same url). If search = FALSE, used only if no direct match is found.
+#' (same url). If search = FALSE, only used if no direct match is found.
 #' @param order Character. Optional. What is the species' Order? Same as above
 #' but at the finer order level. Available options are the GBIF Orders (same
-#' url). If search = FALSE, used only if no direct match is found.
+#' url). If search = FALSE, only used if no direct match is found.
 #' @param family Character. Optional. What is the species' Family? Same as above
 #' but at the finer family level. Available options are the GBIF Families (same
 #' url). If search = FALSE, used only if no direct match is found.
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold
-#' of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
+#' of match between *sp_name* and the GBIF backbone taxonomy. Default is 90.
 #' @param geo Object of class Extent, SpatExtent, SpatialPolygon,
 #' SpatialPolygonDataframe, SpatVector or sf (WGS84) to define the study's
 #' area extent. Default is NULL, i.e., the whole globe.
-#' @param grain Numeric. Specify in kilometers the study resolution. Default is
-#' 100. Used to filter gbif records according to their (1) spatial uncertainties
-#' and (2) number of coordinate decimals. Records with no information on
-#' coordinate uncertainties (column coordinateUncertaintyInMeters') are be kept
-#' by default. See details.
+#' @param grain Numeric. Specifies in kilometers the study resolution. Default
+#' is 100. Used to filter gbif records according to their (1) spatial
+#' uncertainties and (2) number of coordinate decimals. Records with no
+#' info on coordinate uncertainties (column 'coordinateUncertaintyInMeters')
+#' are kept by default. See details.
 #' @param duplicates Logical. Should duplicated records be kept?
 #' Default is FALSE.
 #' @param absences Logical. Should absence records be kept? Default is FALSE.
 #' @param no_xy Logical. Only records with coordinates are downloaded.
 #' Default is FALSE. If TRUE, records with no coordinates are also downloaded.
 #' @param basis Character. Which basis of records should be selected?
-#' Available (old and new) are 'OBSERVATION', 'HUMAN_OBSERVATION',
-#' MACHINE_OBSERVATION', MATERIAL_CITATION', MATERIAL_SAMPLE',
-#' PRESERVED_SPECIMEN', 'FOSSIL_SPECIMEN', LIVING_SPECIMEN', 'LITERATURE',
-#' UNKNOWN' and 'OCCURRENCE'. Default setting removes specimens and
+#' Available (old and new) are "OBSERVATION", "HUMAN_OBSERVATION",
+#' "MACHINE_OBSERVATION", "MATERIAL_CITATION", "MATERIAL_SAMPLE",
+#' "PRESERVED_SPECIMEN", "FOSSIL_SPECIMEN", "LIVING_SPECIMEN", "LITERATURE",
+#' "UNKNOWN" and "OCCURRENCE". Default setting removes specimens and
 #' unknown observations. Description may be found here:
-#' https://docs.gbif.org/course-data-use/en/basis-of-record.html, 
+#' https://docs.gbif.org/course-data-use/en/basis-of-record.html. 
 #' @param establishment Character. Is the individual native, captive or else?
 #' Defaut is native, casual, released, reproducing, established, colonising
-#' and absence of information. See
+#' and absence of information. See descriptions here 
 #' https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment
 #' for other managed establishments: managed, captive, cultivated, released,
 #' unestablished and failing
 #' @param add_infos Character. Infos that may be added to the default output
 #' information. List of IDs may be found at:
-#' https://www.gbif.org/developer/occurrence. Default IDs contain 'taxonKey',
-#' 'scientificName', 'acceptedTaxonKey', acceptedScientificName',
-#' 'individualCount', 'decimalLatitude', 'decimalLongitude', basisOfRecord',
-#' 'coordinateUncertaintyInMeters', 'countryCode', 'country', 'year',
-#' 'datasetKey', 'institutionCode', 'publishingOrgKey', 'taxonomicStatus',
-#' 'taxonRank' and 'degreeOfEstablishment'. 
+#' https://www.gbif.org/developer/occurrence. Default IDs contain "taxonKey",
+#' "scientificName", "acceptedTaxonKey", "acceptedScientificName",
+#' "individualCount", "decimalLatitude", "decimalLongitude", "basisOfRecord",
+#' "coordinateUncertaintyInMeters", "countryCode", "country", "year",
+#' "datasetKey", "institutionCode", "publishingOrgKey", "taxonomicStatus",
+#' "taxonRank" and "degreeOfEstablishment". 
 #' @param time_period Numerical vector. Observations will be downloaded
 #' according to the chosen year range. Default is c(1000,3000).
 #' Observations with year = NA are kept by default.
@@ -93,12 +94,13 @@
 #' Default is FALSE.
 #' @param wConverted_xy Logical. Should incorrectly converted lon/lat be
 #' kept? Default is TRUE. Otherwise, implements an approximate version of
-#' cd_ddmm() from the 'CoordinateCleaner' R package. See the package for more
-#' advanced options.
+#' \code{cd_ddmm()} from the CoordinateCleaner R package. See this package
+#' for more advanced options.
 #' @param centroids Logical. Should species records from raster centroids be
-#' kept? Default is TRUE. Uses cd_round() from 'CoordinateCleaner' R package.
-#' @param ntries Numeric. In case of failure from GBIF server or within the
-#' rgbif package, how many download attempts should the function request?
+#' kept? Default is TRUE. Uses \code{cd_round()} from the CoordinateCleaner
+#' R package.
+#' @param ntries Numeric. In case of internal errors (GBIF server or rgbif
+#' R package), how many download attempts should \code{get_gbif()} request?
 #' Default is '10' with a 2 seconds interval between tries. If the attempts
 #' failed, an empty data.frame is return by default.
 #' @param error_skip Logical. Should the search process continues if ntries
@@ -106,35 +108,32 @@
 #' @param occ_samp Numeric. Determine how many GBIF occurrences will be
 #' sampled per geographic tiles of the fragmented study area. Default is the
 #' maximum number of GBIF observations found in a tile (i.e. ~10'000 records).
-#' A lower number may be set (<10'000) if the user only wants a sample of the
-#' species GBIF observations, hence increasing the download process and the
-#' generation of its range map if get_range() is employed afterwards.
-#' @param should_use_occ_download Logical. If TRUE, the function will use the
-#' rgbif::occ_download() instead of rgbif::occ_search(). This requires GBIF
-#' credentials! Defaults to FALSE.
+#' A lower number may be set (< 10'000) if the user only wants a sample of the
+#' species GBIF observations, hence increasing the download process.
+#' @param should_use_occ_download Logical. If TRUE, \code{get_gbif()} will
+#' use the \code{rgbif::occ_download()} instead of \code{rgbif::occ_search()}.
+#' This requires GBIF credentials! Defaults to FALSE.
 #' @param occ_download_user Character. GBIF username.
 #' Required if should_use_occ_download = TRUE.
 #' @param occ_download_pwd Character. GBIF password.
 #' Required if should_use_occ_download = TRUE.
 #' @param occ_download_email Character. GBIF email.
 #' Required if should_use_occ_download = TRUE.
-#' @param ... Additonnal parameters for the function cd_round() of
-#' CoordinateCleaner.
-#' @details Argument `grain` used for two distinct gbif records filtering.
-#' (1) Records filtering according to gbif 'coordinateUncertaintyInMeters';
-#' every records uncertainty > grain/2 are removed. Note: Records with no
-#' information on coordinate uncertainties are kept by default.
-#' (2) Records filtering according to the number of longitude/latitude
-#' decimals; if 110km < grain <= 11km, lon/lat with >= 1 decimal are kept,
-#' if 11km < grain <= 1100m, lon/lat with >= 2 decimals kept;
-#' if 1100m < grain <= 110m, lon/lat with >= 3 decimals are kept;
-#' if 110m < grain <= 11m, lon/lat with >= 4 decimals are kept;
+#' @param ... Additonnal parameters for the function \code{cd_round()} of
+#' the CoordinateCleaner R package.
+#' @details The *grain* parameter is used for two distinct gbif records
+#' filtering. (1) Records filtering according to gbif
+#' 'coordinateUncertaintyInMeters': every records uncertainty > grain/2
+#' are removed. Note that records with no information on coordinate
+#' uncertainties are kept by default. (2) Records filtering according
+#' to the number of longitude/latitude decimals:
+#' if 110km < grain <= 11km, lon/lat with >= 1 decimal are kept,
+#' if 11km < grain <= 1100m, lon/lat with >= 2 decimals kept,
+#' if 1100m < grain <= 110m, lon/lat with >= 3 decimals are kept,
+#' if 110m < grain <= 11m, lon/lat with >= 4 decimals are kept,
 #' if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
 #' @return Object of class getGBIF (data.frame type) with requested GBIF
-#' information. Although the function works accurately, error outputs might
-#' still occur depending on the 'sp_name' used. Therefore, default information
-#' detailed in 'add_infos' is stored so that sanity checks may still be applied
-#' afterwards. Although crucial preliminary checks of species records are done
+#' information. Although crucial preliminary checks of species records are done
 #' by the function, additional post exploration with the CoordinateCleaner R
 #' package is still highly recommended.
 #' @references
@@ -472,7 +471,7 @@ get_gbif <- function(sp_name = NULL,
 	## 1) If species records > 10'000, search for the optimum tiles
 	if (!should_use_occ_download && gbif.records > 10000) {
 		# Start with 10 tiles
-		tile.100 <- make_tiles(geo, Ntiles = 10, sext = TRUE)
+		tile.100 <- make_tiles(geo, ntiles = 10, sext = TRUE)
 		geo.tiles <- tile.100[[1]]
 		geo.meta <- lapply(tile.100[[2]], function(x) x[])
 
@@ -516,7 +515,7 @@ get_gbif <- function(sp_name = NULL,
 
 					# Convert to extent and create 5 new micro tiles
 					new.ext <- terra::ext(new.geo[[y]])
-					micro.100 <- make_tiles(new.ext, Ntiles = 5, sext = TRUE)
+					micro.100 <- make_tiles(new.ext, ntiles = 5, sext = TRUE)
 
 					# If micro.100 is NULL return NULL (in case of an incorrect extent)
 					if (is.null(micro.100)) {

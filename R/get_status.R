@@ -1,57 +1,56 @@
 ### ==================================================================
 ### get_status
 ### ==================================================================
-#' Retrieve from GBIF the IUCN and taxonomy status of a specific Taxa
+#' Retrieve from GBIF the IUCN and taxonomy status of a specific taxa
 #'
-#' Generates, based on a given species name, its IUCN red list status and
+#' Generates, based on a given species name, the IUCN red list status and
 #' a list of all scientific names (accepted, synonyms) found in the GBIF
-#' backbone taxonomy and used to download the data in get_gbif(). Children
-#' and related doubtful names not used to download the data may also be
-#' extracted.
+#' backbone taxonomy and used to download the data with \code{get_gbif()}.
+#' Children and related doubtful names not used to download the data may
+#' also be extracted.
 #'
 #' @param sp_name Character. Species name from which the user wants to
 #' retrieve all existing GBIF names with associated taxonomy and IUCN status.
-#' @param search Logical. If TRUE, the function will strictly look for the
-#' most relevant result, based on a list of names given by rgbif (only species,
-#' subspecies and variety allowed here), and give an error if name matching was
-#' impeded by synonym duplicates. If FALSE, the function will simply pick the
-#' first most relevant name from the list (higher taxa level than species
-#' allowed here). Also, unlike search=TRUE, fuzzy search (~approximative name
-#' match) is here allowed, and the 'rank', phylum', 'class', order' and
+#' @param search Logical. If TRUE (default), the function will strictly look
+#' for the most relevant result across the names given by rgbif (only
+#' species, subspecies and variety allowed here), and give an error if name
+#' matching was impeded by synonym duplicates. If FALSE, the function will
+#' simply pick the first most relevant name (taxa rank higher than species
+#' are allowed here). Also, unlike search = TRUE, fuzzy search (~approximative
+#' name match) is here allowed, and the 'rank', phylum', 'class', order' and
 #' 'family' parameters are optionally used only if no convincing name match
 #' is found. FALSE is particularly useful if the given species name already
 #' include the author.
 #' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
 #' (default), the order of priority is (1) species, (2) subspecies and (3)
-#' variety unless "subsp." or "var." is found in 'sp_name'.
+#' variety unless "subsp." or "var." is found in the *sp_name* parameter.
 #' @param phylum Character. Optional. What is the species' Phylum? Adds a
 #' criteria to deal with alternative name matches and select the right synonym.
-#' Available options are the GBIF Phylums (listed per Kingdom -->
-#' https://www.gbif.org/species/1). If search = FALSE, used only if no
-#' direct match is found.
+#' Available options are the GBIF Phylums
+#' (listed per Kingdom/Phylum --> https://www.gbif.org/species/search).
+#' If search = FALSE, only used if no direct match is found.
 #' @param class Character. Optional. What is the species' Class? Same as above
 #' but at the finer class level. Available options are the GBIF Classes
-#' (same url). If search = FALSE, used only if no direct match is found.
-#' @param order Character. Optional. What is the species' Order? Same as
-#' above but at the finer order level. Available options are the GBIF Orders
-#' (same url). If search = FALSE, used only if no direct match is found.
-#' @param family Character. Optional. What is the species' Family? Same as
-#' above but at the finer family level. Available options are the GBIF Families
-#' (same url). If search = FALSE, used only if no direct match is found.
-#' @param conf_match Numeric. From 0 to 100. Determine the confidence threshold
-#' of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.
+#' (same url). If search = FALSE, only used if no direct match is found.
+#' @param order Character. Optional. What is the species' Order? Same as above
+#' but at the finer order level. Available options are the GBIF Orders (same
+#' url). If search = FALSE, only used if no direct match is found.
+#' @param family Character. Optional. What is the species' Family? Same as above
+#' but at the finer family level. Available options are the GBIF Families (same
+#' url). If search = FALSE, used only if no direct match is found.
+#' @param conf_match Numeric from 0 to 100. Determine the confidence threshold
+#' of match between *sp_name* and the GBIF backbone taxonomy. Default is 90.
 #' @param all Logical. Default is FALSE. Should all species names be retrieved
 #' or only the accepted name and its synonyms?
 #' 
 #' @return Data.frame with nine columns: (0) Simplified name,
 #' (1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
 #' (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-#' (9) sp_nameMatch informing how well the input sp_name has matched with
-#' the found synonyms.
+#' (9) sp_nameMatch informing which scientific name has matched with *sp_name*.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 #' global biodiversity information facility API. 10.5281/zenodo.6023735
-#' @seealso The rgbif package for additional and more general approaches on
+#' @seealso The rgbif R package for additional and more general approaches on
 #' how to retrieve scientific names from the GBIF backbone taxonomy.
 #' @example inst/examples/get_status_help.R
 #' @importFrom rgbif name_backbone name_usage

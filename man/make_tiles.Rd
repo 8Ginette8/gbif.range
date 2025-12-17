@@ -2,37 +2,35 @@
 % Please edit documentation in R/make_tiles.R
 \name{make_tiles}
 \alias{make_tiles}
-\title{Generate Spatial Tiles from a Raster Extent or Geometry}
+\title{Generate Spatial tiles from a raster extent or geometry}
 \usage{
-make_tiles(geo, Ntiles, sext = TRUE)
+make_tiles(geo, ntiles, sext = TRUE)
 }
 \arguments{
 \item{geo}{Object of class Extent, SpatExtent, SpatialPolygon,
 SpatialPolygonDataframe, or SpaVector (WGS84 or planar) to define the
 study's area extent. Default is NULL i.e. the whole globe.}
 
-\item{Ntiles}{Numeric. In how many tiles/fragments should geo be
+\item{ntiles}{Numeric. In how many tiles/fragments should geo be
 divided approximately?}
 
 \item{sext}{Logical. Should a list of SpatExtent also be returned
 for each generated POLYGON()?}
 }
 \value{
-A list of geometry arguments POLYGON() of length Ntiles
-(and of SpatExtent
-if sext=TRUE).
+A list of geometry arguments POLYGON() of length *ntiles*
+(and of SpatExtent if *sext* = TRUE).
 }
 \description{
 Divides a given spatial extent or geometry into a specified number of tiles.
 Each tile is returned as a POLYGON() geometry. The original extent can be:
 (1) converted into a single POLYGON(), or (2) subdivided into approximately
-\code{Ntiles} regular fragments, each returned as a POLYGON() and,
-optionally, as a \code{SpatExtent}.
-Based on a specific extent, one or several tiles are generated.
-Tiles can be smaller raster extents or geometry arguments POLYGON().
-The original extent is therefore either converted into a POLYGON()
-argument, or divided into Ntiles of regular fragments which are
-converted into POLYGON() arguments and smaller SpatExtent.
+*ntiles* regular fragments, each returned as a POLYGON() and,
+optionally, as a SpatExtent. Based on a specific extent, one or several
+tiles are generated. Tiles can be smaller raster extents or geometry
+arguments POLYGON(). The original extent is therefore either converted
+into a POLYGON() argument, or divided into *ntiles* of regular fragments
+which are converted into POLYGON() arguments and smaller SpatExtent.
 }
 \examples{
 # Load the European Alps Extent
@@ -43,7 +41,7 @@ shp.path <- paste0(
 shp.lonlat <- terra::vect(shp.path)
  
 # Apply the function to divide the extent in ~20 fragments
-mt <- make_tiles(geo = shp.lonlat, Ntiles = 20, sext = TRUE)
+mt <- make_tiles(geo = shp.lonlat, ntiles = 20, sext = TRUE)
 }
 \references{
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,

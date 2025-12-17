@@ -18,21 +18,21 @@ evaluate_range(
 \arguments{
 \item{root_dir}{Character. Working directory to load and save target files.}
 
-\item{valData_dir}{Character. Directory to validation spatial data (must have
+\item{valData_dir}{Character. Directory to spatial validation data (must have
 same name as data in ecoRM_dir)}
 
 \item{ecoRM_dir}{Character. Directory to range maps (generated with
-get_range).}
+\code{get_range()}).}
 
-\item{valData_type}{Character. Type of valData - either "SHP" or "TIFF".}
+\item{valData_type}{Character. Type of valData --> either "SHP" or "TIFF".}
 
 \item{verbose}{Logical (optional). Report details while running.}
 
-\item{print_map}{Logical (optional). If verbose=TRUE should a overlap map be
-printed. Default is TRUE.}
+\item{print_map}{Logical (optional). If verbose = TRUE, should a map of
+result be printed? Default is TRUE.}
 
-\item{mask}{rast object (optional). To mask the study the focal study region.
-Default is TRUE.}
+\item{mask}{Object of class SpatRast (optional). To mask the study the
+focal study region. Default is FALSE.}
 
 \item{res_fact}{Integer. Factor for coarsening the original resolution (i.e.,
 that of the species range map)}
@@ -55,9 +55,9 @@ based on validation data, such as predictions of species distributions (SDMs)
 or IUCN expert range maps. See Pinkert et al. (2023) for metrics and
 comparisons of various types of range data, including expert range maps, SDMs
 and ecoregional range maps. Optional functionalities include the masking of
-the focal study region (see 'mask') and aggregations of the input maps to
-different resolutions, given the importance of these factors for specific
-applications (Pinkert et al., 2023).
+the focal study region (see *mask* parameter) and aggregations of the input
+maps to different resolutions, given the importance of these factors for
+specific applications (Pinkert et al., 2023).
 }
 \examples{
 \dontrun{

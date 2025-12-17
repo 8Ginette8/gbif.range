@@ -42,49 +42,50 @@ get_gbif(
 all existing GBIF names with associated taxonomy and IUCN status.}
 
 \item{search}{Logical. If TRUE (default), the function will strictly look
-for the most relevant result, based on a list of names given by rgbif (only
+for the most relevant result across the names given by rgbif (only
 species, subspecies and variety allowed here), and give an error if name
 matching was impeded by synonym duplicates. If FALSE, the function will
-simply pick the first most relevant name from the list (higher taxa level
-than species allowed here). Also, unlike search=TRUE, fuzzy search
-(~approximative name match) is here allowed, and the 'rank', phylum',
-class', order' and 'family' parameters are optionally used only if no
-convincing name match is found.}
+simply pick the first most relevant name (taxa rank higher than species
+are allowed here). Also, unlike search = TRUE, fuzzy search (~approximative
+name match) is here allowed, and the 'rank', phylum', 'class', order' and
+'family' parameters are optionally used only if no convincing name match
+is found. FALSE is particularly useful if the given species name already
+include the author.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
 (default), the order of priority is (1) species, (2) subspecies and (3)
-variety unless "subsp." or "var." is found in 'sp_name'.}
+variety unless "subsp." or "var." is found in the *sp_name* parameter.}
 
 \item{phylum}{Character. Optional. What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
 Available options are the GBIF Phylums
-(listed per Kingdom --> https://www.gbif.org/species/search).
-If search = FALSE, used only if no direct match is found.}
+(listed per Kingdom/Phylum --> https://www.gbif.org/species/search).
+If search = FALSE, only used if no direct match is found.}
 
 \item{class}{Character. Optional. What is the species' Class? Same as above
 but at the finer class level. Available options are the GBIF Classes
-(same url). If search = FALSE, used only if no direct match is found.}
+(same url). If search = FALSE, only used if no direct match is found.}
 
 \item{order}{Character. Optional. What is the species' Order? Same as above
 but at the finer order level. Available options are the GBIF Orders (same
-url). If search = FALSE, used only if no direct match is found.}
+url). If search = FALSE, only used if no direct match is found.}
 
 \item{family}{Character. Optional. What is the species' Family? Same as above
 but at the finer family level. Available options are the GBIF Families (same
 url). If search = FALSE, used only if no direct match is found.}
 
 \item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold
-of match of 'sp_name' with the GBIF backbone taxonomy. Default is 90.}
+of match between *sp_name* and the GBIF backbone taxonomy. Default is 90.}
 
 \item{geo}{Object of class Extent, SpatExtent, SpatialPolygon,
 SpatialPolygonDataframe, SpatVector or sf (WGS84) to define the study's
 area extent. Default is NULL, i.e., the whole globe.}
 
-\item{grain}{Numeric. Specify in kilometers the study resolution. Default is
-100. Used to filter gbif records according to their (1) spatial uncertainties
-and (2) number of coordinate decimals. Records with no information on
-coordinate uncertainties (column coordinateUncertaintyInMeters') are be kept
-by default. See details.}
+\item{grain}{Numeric. Specifies in kilometers the study resolution. Default
+is 100. Used to filter gbif records according to their (1) spatial
+uncertainties and (2) number of coordinate decimals. Records with no
+info on coordinate uncertainties (column 'coordinateUncertaintyInMeters')
+are kept by default. See details.}
 
 \item{duplicates}{Logical. Should duplicated records be kept?
 Default is FALSE.}
@@ -95,28 +96,28 @@ Default is FALSE.}
 Default is FALSE. If TRUE, records with no coordinates are also downloaded.}
 
 \item{basis}{Character. Which basis of records should be selected?
-Available (old and new) are 'OBSERVATION', 'HUMAN_OBSERVATION',
-MACHINE_OBSERVATION', MATERIAL_CITATION', MATERIAL_SAMPLE',
-PRESERVED_SPECIMEN', 'FOSSIL_SPECIMEN', LIVING_SPECIMEN', 'LITERATURE',
-UNKNOWN' and 'OCCURRENCE'. Default setting removes specimens and
+Available (old and new) are "OBSERVATION", "HUMAN_OBSERVATION",
+"MACHINE_OBSERVATION", "MATERIAL_CITATION", "MATERIAL_SAMPLE",
+"PRESERVED_SPECIMEN", "FOSSIL_SPECIMEN", "LIVING_SPECIMEN", "LITERATURE",
+"UNKNOWN" and "OCCURRENCE". Default setting removes specimens and
 unknown observations. Description may be found here:
-https://docs.gbif.org/course-data-use/en/basis-of-record.html,}
+https://docs.gbif.org/course-data-use/en/basis-of-record.html.}
 
 \item{establishment}{Character. Is the individual native, captive or else?
 Defaut is native, casual, released, reproducing, established, colonising
-and absence of information. See
+and absence of information. See descriptions here 
 https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment
 for other managed establishments: managed, captive, cultivated, released,
 unestablished and failing}
 
 \item{add_infos}{Character. Infos that may be added to the default output
 information. List of IDs may be found at:
-https://www.gbif.org/developer/occurrence. Default IDs contain 'taxonKey',
-'scientificName', 'acceptedTaxonKey', acceptedScientificName',
-'individualCount', 'decimalLatitude', 'decimalLongitude', basisOfRecord',
-'coordinateUncertaintyInMeters', 'countryCode', 'country', 'year',
-'datasetKey', 'institutionCode', 'publishingOrgKey', 'taxonomicStatus',
-'taxonRank' and 'degreeOfEstablishment'.}
+https://www.gbif.org/developer/occurrence. Default IDs contain "taxonKey",
+"scientificName", "acceptedTaxonKey", "acceptedScientificName",
+"individualCount", "decimalLatitude", "decimalLongitude", "basisOfRecord",
+"coordinateUncertaintyInMeters", "countryCode", "country", "year",
+"datasetKey", "institutionCode", "publishingOrgKey", "taxonomicStatus",
+"taxonRank" and "degreeOfEstablishment".}
 
 \item{time_period}{Numerical vector. Observations will be downloaded
 according to the chosen year range. Default is c(1000,3000).
@@ -127,14 +128,15 @@ Default is FALSE.}
 
 \item{wConverted_xy}{Logical. Should incorrectly converted lon/lat be
 kept? Default is TRUE. Otherwise, implements an approximate version of
-cd_ddmm() from the 'CoordinateCleaner' R package. See the package for more
-advanced options.}
+\code{cd_ddmm()} from the CoordinateCleaner R package. See this package
+for more advanced options.}
 
 \item{centroids}{Logical. Should species records from raster centroids be
-kept? Default is TRUE. Uses cd_round() from 'CoordinateCleaner' R package.}
+kept? Default is TRUE. Uses \code{cd_round()} from the CoordinateCleaner
+R package.}
 
-\item{ntries}{Numeric. In case of failure from GBIF server or within the
-rgbif package, how many download attempts should the function request?
+\item{ntries}{Numeric. In case of internal errors (GBIF server or rgbif
+R package), how many download attempts should \code{get_gbif()} request?
 Default is '10' with a 2 seconds interval between tries. If the attempts
 failed, an empty data.frame is return by default.}
 
@@ -144,13 +146,12 @@ failed ?}
 \item{occ_samp}{Numeric. Determine how many GBIF occurrences will be
 sampled per geographic tiles of the fragmented study area. Default is the
 maximum number of GBIF observations found in a tile (i.e. ~10'000 records).
-A lower number may be set (<10'000) if the user only wants a sample of the
-species GBIF observations, hence increasing the download process and the
-generation of its range map if get_range() is employed afterwards.}
+A lower number may be set (< 10'000) if the user only wants a sample of the
+species GBIF observations, hence increasing the download process.}
 
-\item{should_use_occ_download}{Logical. If TRUE, the function will use the
-rgbif::occ_download() instead of rgbif::occ_search(). This requires GBIF
-credentials! Defaults to FALSE.}
+\item{should_use_occ_download}{Logical. If TRUE, \code{get_gbif()} will
+use the \code{rgbif::occ_download()} instead of \code{rgbif::occ_search()}.
+This requires GBIF credentials! Defaults to FALSE.}
 
 \item{occ_download_user}{Character. GBIF username.
 Required if should_use_occ_download = TRUE.}
@@ -161,22 +162,19 @@ Required if should_use_occ_download = TRUE.}
 \item{occ_download_email}{Character. GBIF email.
 Required if should_use_occ_download = TRUE.}
 
-\item{...}{Additonnal parameters for the function cd_round() of
-CoordinateCleaner.}
+\item{...}{Additonnal parameters for the function \code{cd_round()} of
+the CoordinateCleaner R package.}
 }
 \value{
 Object of class getGBIF (data.frame type) with requested GBIF
-information. Although the function works accurately, error outputs might
-still occur depending on the 'sp_name' used. Therefore, default information
-detailed in 'add_infos' is stored so that sanity checks may still be applied
-afterwards. Although crucial preliminary checks of species records are done
+information. Although crucial preliminary checks of species records are done
 by the function, additional post exploration with the CoordinateCleaner R
 package is still highly recommended.
 }
 \description{
 Implement an user-friendly workflow to download and clean gbif taxa
 observations. The function uses the rgbif R package but (1) implements the
-same search result found if www.gbif.org is employed i.e., based on the
+same search result when www.gbif.org is employed, i.e., based on the
 input taxa name, all species records related to its accepted name and
 synonyms are extracted. The function also (2) bypasses the rgbif hard limit
 on the number of records (100'000 max). For this purpose, a dynamic moving
@@ -190,19 +188,20 @@ package. Filtering options may be chosen and involve several choices:
 study's extent, removal of duplicates, removal of absences, basis of records
 selection, removal of invalid/uncertain xy coordinates (WGS84), time period
 selection and removal of raster centroids. By default, the argument
-hasGeospatialIssue in occ_search() (implemented rgbif function) is set to
+*hasGeospatialIssue* in \code{occ_search()} (rgbif R function) is set to
 FALSE.
 }
 \details{
-Argument `grain` used for two distinct gbif records filtering.
-(1) Records filtering according to gbif 'coordinateUncertaintyInMeters';
-every records uncertainty > grain/2 are removed. Note: Records with no
-information on coordinate uncertainties are kept by default.
-(2) Records filtering according to the number of longitude/latitude
-decimals; if 110km < grain <= 11km, lon/lat with >= 1 decimal are kept,
-if 11km < grain <= 1100m, lon/lat with >= 2 decimals kept;
-if 1100m < grain <= 110m, lon/lat with >= 3 decimals are kept;
-if 110m < grain <= 11m, lon/lat with >= 4 decimals are kept;
+The *grain* parameter is used for two distinct gbif records
+filtering. (1) Records filtering according to gbif
+'coordinateUncertaintyInMeters': every records uncertainty > grain/2
+are removed. Note that records with no information on coordinate
+uncertainties are kept by default. (2) Records filtering according
+to the number of longitude/latitude decimals:
+if 110km < grain <= 11km, lon/lat with >= 1 decimal are kept,
+if 11km < grain <= 1100m, lon/lat with >= 2 decimals kept,
+if 1100m < grain <= 110m, lon/lat with >= 3 decimals are kept,
+if 110m < grain <= 11m, lon/lat with >= 4 decimals are kept,
 if 11m < grain <= 1.1m, lon/lat with >= 5 decimals are kept etc...
 }
 \examples{

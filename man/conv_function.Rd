@@ -7,15 +7,15 @@
 conv_function(sp_coord, bwp, bipl, bwpo, temp_dir, g = NULL)
 }
 \arguments{
-\item{sp_coord}{Spatial coordinates (type "matrix" or "data.frame).}
+\item{sp_coord}{Object of class matrix of data.frame. Spatial coordinates.}
 
-\item{bwp}{Buffer width parameter (type numeric).}
+\item{bwp}{Numeric. Buffer width parameter.}
 
-\item{bipl}{Number of observation points (type numeric).}
+\item{bipl}{Numeric. Number of observation points.}
 
-\item{bwpo}{Buffer width parameter for the convex hull (type numeric).}
+\item{bwpo}{Numeric. Buffer width parameter for the convex hull.}
 
-\item{temp_dir}{Temporary directory name (type character).}
+\item{temp_dir}{Character. Temporary directory name.}
 
 \item{g}{Optional parameter.}
 }

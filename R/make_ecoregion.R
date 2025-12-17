@@ -3,14 +3,15 @@
 ### =========================================================================
 #' Make an ecoregion map based on input environmental variables
 #'
-#' This function may be used if the in-house ecoregion shapefiles are
-#' too coarse for a given geographic region (e.g., for local studies) or
-#' a shapefile of finer environmental details is needed. Based on several
-#' environmental layers (e.g. climate, soil and land cover), this function
-#' can generate a map of environmental regions containing n categories/classes.
-#' The classes are calculated with the 'clustering large applications'
-#' method (CLARA), which recognize patterns and relationships existing in
-#' spatial data, and classify it in clusters.
+#' This function may be used if the in-house ecoregion shapefiles ('eco.terra',
+#' eco.fresh', 'eco.marine') are too coarse for a given geographic region
+#' (e.g., for local studies) or a shapefile of finer environmental details is
+#' needed. Based on several environmental layers (e.g. climate, soil and land
+#' cover), this function can generate a map of environmental regions containing
+#' *n* categories/classes. The classes are calculated with the 'Clustering
+#' Large Applications' method (\code{clara()} from the cluster R package),
+#' which recognize patterns and relationships existing in spatial data, and
+#' classify it into clusters.
 #'
 #' @param env Object of class SpatRaster, RasterBrick or RasterStack of desired
 #' resolution, crs and extent defining the study area. Used to generate a map of
@@ -19,13 +20,12 @@
 #' should have the output?
 #' @param path Character. Folder path where the output should be saved.
 #' Default is none.
-#' @param name Character. If 'path' is used, should include the name of the
-#' output
-#' file (without file extension).
+#' @param name Character. If *path* is used, should include the name of the
+#' output file (without file extension).
 #' @param raster Logical. Whether the output should be a raster layer. Default
 #' is FALSE.
-#' @param ... Additonnal parameters for the function clara() of the clutser R
-# package.
+#' @param ... Additonnal parameters for the function \code{clara()} of the
+#' clutser R package.
 #' @return A TIFF or SHP file.
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &

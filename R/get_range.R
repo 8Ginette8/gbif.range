@@ -1,39 +1,40 @@
 ### ==================================================================
 ### get_range
 ### ==================================================================
-#' Create a species range map based on get_gbif() output
+#' Create a species range map based on \code{get_gbif()} object
 #'
 #' This function estimates species ranges from occurrence data (GBIF or
-#' otherwise) and ecoregions (see 'make_ecoregion'). It first removes outliers
-#' from the observation dataset, then creates a convex hull polygon with a
-#' user-specified buffer around all observations within each ecoregion. If
-#' there is only one observation in an ecoregion, the function creates a buffer
-#' around that point. If all points in an ecoregion lie on a line, the function
-#' also creates a buffer around them, but the buffer size increases with the
-#' number of points in the line. If there are too many records, get_range can
+#' else) and ecoregions (see \code{make_ecoregion()} or \code{bioreg}).
+#' It first removes outliers from the observation dataset, then creates
+#' a convex hull polygon with a user-specified buffer around all observations
+#' within each ecoregion. If there is only one observation in an
+#' ecoregion, the function creates a buffer around that point. If all
+#' points in an ecoregion lie on a line, the function also creates a
+#' buffer around them, but the buffer size increases with the number of
+#' points in the line. If there are too many records, \code{get_range()} can
 #' process a sub-sample of species observations to speed up polygon creation or
 #' avoid potential RAM issues.
 #' 
-#' @param occ_coord Object of class getGBIF (get_gbif function) or a data.frame
-#' containing two columns named "decimalLongitude" and "decimalLatitude".
-#' @param bioreg  Define the range extent and ecoregions.
-#' 'SpatialPolygonsDataFrame', 'SpatVector' or 'sf' object containing
-#' different ecoregions (convex hulls will be classified on a bioreg basis)
-#' and of CRS WGS84. Note that this parameter may be fed with an external,
-#' generated (function make_ecoregion) or in-house ecoregion shapefile.
-#' Four shapefiles can be downloaded with the library (see functions
-#' read_bioreg() and others): 'eco_terra' (for terrestrial species; Nature
-#' conservancy version adapted from Olson & al. 2001), eco_marine' and
-#' eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and
-#' eco_fresh' (for freshwater species; Abell & al. 2008). For marine species,
-#' eco_terra' may also be used if the user wants to represent the terrestrial
+#' @param occ_coord Object of class getGBIF (see \code{get_gbif()}) or a
+#' data.frame containing two columns named "decimalLongitude" and
+#' "decimalLatitude".
+#' @param bioreg  Object of class SpatialPolygonsDataFrame, SpatVector or
+#' sf containing different ecoregions and of CRS WGS84. Define the range
+#' extent and ecoregions. Note that this parameter may be fed with an external,
+#' generated (see \code{make_ecoregion()}) or downloaded ecoregion shapefile.
+#' Four shapefiles can be downloaded with the library (see \code{read_bioreg()}
+#' and others): 'eco_terra' (for terrestrial species; Nature
+#' conservancy version adapted from Olson & al. 2001), 'eco_marine' and
+#' 'eco_hd_marine' (for marine species; Spalding & al. 2007, 2012) and
+#' 'eco_fresh' (for freshwater species; Abell & al. 2008). For marine species,
+#' 'eco_terra' may also be used if the user wants to represent the terrestrial
 #' range of species that also partially settle on mainland. For fresh water
 #' species, same may be done if the user considers that terrestrial ecoregions
 #' should be more representative of the species ecology.
 #' @param bioreg_name Character. One ecoregion level/category name from the
-#' 'bioreg' polygon must be supplied. E.g., very detailed level of 'eco_terra'
-#' is 'ECO_NAME'. Note that default applies if a make_ecoregion() polygon is
-#' provided as 'bioreg'.
+#' *bioreg* parameter polygon must be supplied, e.g., very detailed level of
+#' 'eco_terra' is "ECO_NAME". Note that default applies if a
+#' \code{make_ecoregion()} polygon is provided as a *bioreg* parameter.
 #' @param degrees_outlier Numeric. Distance threshold (degrees) for outlier
 #' classification. If the nearest minimal distance to the next point is larger
 #' than this threshold, it will be considered as an outlier.
@@ -50,11 +51,12 @@
 #' convex hull be saved? (text file will be deleted again). Default value
 #' is \code{tempdir()}.
 #' @param raster Logical. Should the output be a unified raster? Default is TRUE
-#' @param res Numeric. If raster = TRUE, which resolution of the output in
+#' @param res Numeric. If raster = TRUE, resolution of the output in
 #' degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 #' important to note that the highest achievable resolution of the output will
-#' depend on its 'bioreg' precision, e.g., a species range output can reach
-#' the same resolution of the rasters used to create a 'make_ecoregion' object.
+#' depend on its *bioreg* precision, e.g., a species range output can reach
+#' the same resolution of the rasters used to create a \code{make_ecoregion}
+#' object.
 #' @param verbose Logical. Should progession be printed?
 #' @details Ecoregions cover relatively large areas of land or water, and
 #' contain characteristic, geographically distinct assemblages of natural
@@ -67,15 +69,16 @@
 #' less precisely the ecoregion world distribution (from the more to the less
 #' detailed):
 #' 
-#' - eco_terra has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and
-#' 'WWF_REALM2'.
-#' - eco_fresh has only one: 'ECOREGION'.
+#' - eco_terra has three different levels: "ECO_NAME", "WWF_MHTNAM" and
+#' "WWF_REALM2".
+#' - eco_fresh has only one: "ECOREGION".
 #' - eco_marine and eco_hd_marine (very coastal-precise version) contains
-#' three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
+#' three distinct levels: "ECOREGION", "PROVINCE" and "REALM".
 #' 
-#' @return An object of class getRange with two fields: 'init.args'
-# (parameters and data employed) and 'rangeOutput' ('SpatVector' or
-#' SpatRaster' depending on what the user set as 'raster').
+#' @return An object of class getRange with two fields: \code{init.args}
+# (parameters and data employed) and \code{rangeOutput} (object of class
+#' SpatVector or SpatRaster depending on what the user set as a *raster*
+#' parameter').
 #' @references
 #' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger,
 #' Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese,

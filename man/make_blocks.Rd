@@ -16,35 +16,34 @@ make_blocks(
 \item{nfolds}{Numeric. Number of approximately equal-sized classes (folds)
 to separate groups in block-cross validation.}
 
-\item{df}{Object of class 'data.frame' with n columns containing critera
-for cluster building. Not necessary if argument npoints is supplied.}
+\item{df}{Object of class data.frame with n columns containing critera
+for cluster building. Not necessary if parameter *npoints* is supplied.}
 
-\item{nblocks}{Number of clusters (blocks) based on the number of folds
-that should be built. Minimum is the same number as 'nFolds'. Maximum is
-nrow(df)/10.}
+\item{nblocks}{Numeric. Number of clusters (blocks) based on the number
+Maximum is nrow(*df*)/10.}
 
-\item{npoints}{Optional argument if 'df' is not supplied. For how many
+\item{npoints}{Optional argument if *df* is not supplied. For how many
 points should random sampling be made?}
 
-\item{pres}{Binary vector. Optional argument. If 'df' is supplied, this
-argument can be used to save processing time. '1' stands for the points
-on which CLARA is appplied, and '0' stands for the points on which K-nearest
-neighbors is applied relative to the '1'. If 'df' is not supplied, for which
+\item{pres}{Binary vector. Optional argument. If *df* is supplied, this
+argument can be used to save processing time. 1 stands for the points
+on which CLARA is appplied, and 0 stands for the points on which K-nearest
+neighbors is applied relative to the 1. If *df* is not supplied, for which
 points should random sampling be made?}
 }
 \value{
-Object of class 'vector' of length nrow(df) or 'npoints',
+Object of class vector of length nrow(*df*) or *npoints*,
 with integers defining different folds.
 }
 \description{
 Creates a stratum vector based on a data.frame with n columns. If the
 data.frame has one column, strata vector is created based on clusters
 separated by quantiles. If the data.frame has two or more columns,
-strata vector is created based on 'Clustering Large Applications'
-(function 'clara' from package cluster). Also, instead of a data.frame
-the argument 'npoints' can be provided, which create groups by random
-sampling. An opitimization algorithm (function 'gridSearch' from package
-NMOF) optimizes for equal stratum sizes.
+strata vector is created based on the 'Clustering Large Applications'
+method (\code{clara()} from the cluster R package). Also, instead of a
+data.frame the argument 'npoints' can be provided, which create groups
+by random sampling. An opitimization algorithm (\code{gridSearch}
+from the NMOF R package) optimizes for equal stratum sizes.
 }
 \examples{
 \dontrun{

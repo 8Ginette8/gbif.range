@@ -14,24 +14,23 @@ be used distinctively for observations and absences.}
 \item{grid}{Object of class SpatRaster, RasterLayer, RasterBrick, or
 RasterStack of desired resolution and extent (WGS84).}
 
-\item{threshold}{Optional integer specifying the minimum number of
-observations per grid pixel to retain. Default is `NULL`, meaning no
+\item{threshold}{Integer (optional). Specifies the minimum number of
+observations per grid pixel to retain. Default is NULL, meaning no
 threshold filtering.}
 }
 \value{
-Data frame with columns 'Species', 'x', and 'y' comprising
+Data frame with columns "Species", "x", and "y" comprising
 the new set of observations filtered at grid resolution.
 }
 \description{
-The `obs_filter()` function processes a getGBIF object (which can include
-data for one or multiple species) and filters the observations based on
-a specified grid resolution. It can retain one observation per grid pixel
-and/or remove observations from grid pixels that contain fewer than a
-specified number of records (e.g., fewer than 3 observations per pixel).
-This function helps users refine the spatial density of GBIF datasets
-by retaining one observation per grid pixel and/or removing
-observations from grid pixels with fewer than a user-defined
-threshold of records.
+Processes a getGBIF object (which can include data for one or multiple
+species) and filters the observations based on a specified grid resolution.
+It can retain one observation per grid pixel and/or remove observations
+from grid pixels that contain fewer than a specified number of records
+(e.g., fewer than 3 observations per pixel). This function helps users
+refine the spatial density of GBIF datasets by retaining one observation
+per grid pixel and/or removing observations from grid pixels with fewer
+than a user-defined threshold of records.
 }
 \examples{
 # Load data

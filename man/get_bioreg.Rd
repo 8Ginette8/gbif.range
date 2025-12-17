@@ -8,7 +8,7 @@ get_bioreg(bioreg_name = "all", save_dir = NULL)
 }
 \arguments{
 \item{bioreg_name}{"all" or the filename of the desired bioregion to be
-downloaded. See `bioreg_list` for available options. This contains a list
+downloaded. See \code{bioreg_list} for available options. This contains a list
 of data file information with elements containing `link`, `filename`,
 and `description`.}
 

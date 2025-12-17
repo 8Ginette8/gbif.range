@@ -3,19 +3,19 @@
 ### =========================================================================
 #' Get a custom DOI for a GBIF filtered dataset
 #'
-#' A small user friendly wrapper of the derived_dataset() function of the
-#' rgbif R package, compatible with one or several get_gbif() outputs.
-#' 
+#' A small user friendly wrapper of \code{derived_dataset()} (rgbif R
+#' package), compatible with one or several \code{get_gbif()} outputs.
 #' 
 #' @param gbifs Object of class getGBIF or a list of several.
-#' @param title Title for your derived dataset.
-#' @param description Description of the dataset.
-#' @param source_url  Link to where the dataset is stored.
-#' @param user Your GBIF username.
-#' @param pwd Your GBIF password.
-#' @param ... Additonnal parameters for derived_dataset() in rgbif.
-#' @details see derived_dataset() function from the rgbif R package.
-#' @return One citable DOI and its information.
+#' @param title Character. Chosen title for the GBIF dataset.
+#' @param description Character. Description of the GBIF dataset.
+#' @param source_url  Character. Link to where the dataset is stored.
+#' @param user Character. User's GBIF username.
+#' @param pwd Character. User's GBIF password.
+#' @param ... Additonnal parameters for \code{derived_dataset()} called
+#' from the rgbif R package.
+#' @details See \code{derived_dataset()} from the rgbif R package.
+#' @return One citable GBIF DOI and associated user's information.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 #' global biodiversity information facility API. 10.5281/zenodo.6023735

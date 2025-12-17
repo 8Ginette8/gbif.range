@@ -78,7 +78,7 @@ get_save_dir <- function(save_dir = NULL) {
 #' to a specified directory.
 #'
 #' @param bioreg_name "all" or the filename of the desired bioregion to be
-#' downloaded. See `bioreg_list` for available options. This contains a list
+#' downloaded. See \code{bioreg_list} for available options. This contains a list
 #' of data file information with elements containing `link`, `filename`,
 #' and `description`.
 #' @param save_dir The directory to save the downloaded files. Defaults to
@@ -181,7 +181,7 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
 #' If not, calls get_bioreg to download the data.
 #'
 #' @param bioreg_name filename of the desired bioregion to be checked and
-#' downloaded if necessary. See `bioreg_list` for available options.
+#' downloaded if necessary. See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
 #' @return NULL. Checks and downloads the files to the specified directory
@@ -216,7 +216,7 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' 
 #' Loads a shapefile based on the provided bioregion name and the bioreg_list.
 #' @param bioreg_name filename of the desired bioregion to be loaded.
-#' See `bioreg_list` for available options.
+#' See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
 #' @return A terra::vect object representing the shapefile.

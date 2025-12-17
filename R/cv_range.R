@@ -4,14 +4,14 @@
 #' Evaluate the accuracy of a range map using cross-validation
 #' 
 #' Assesses the accuracy of a species range map by applying cross-validation
-#' using the observationsand function arguments of a get_range() object
-#' (including its extent). By using these initial parameters, the function
-#' iteratively re-generates the range map n times, each time using a defined
-#' percentage of the extent observations for training, while evaluating the
-#' quality of the range map using the remaining records (by default,
+#' using the observations and function arguments of a \code{get_range()}
+#' object (including its extent). By using these same arguments, the
+#' function iteratively re-generates the range map n times, each time using
+#' a defined percentage of the observations for training, while evaluating
+#' the quality of the range map using the remaining ones (by default,
 #' nfolds = 5 -> calibration = 80%, evaluation = 20%). Two cross-validation
-#' methods are available: random and spatial block cross-validation. In
-#' random cross-validation, a random subset of the observations is chosen
+#' methods are available: random and spatial block cross-validation.
+#' In random cross-validation, a random subset of the observations is chosen
 #' for training in each fold, with the generated map evaluated on the remaining
 #' data. In spatial block cross-validation, the observations are spatially
 #' divided into blocks based on their coordinates, and each fold uses a
@@ -22,17 +22,16 @@
 #' background points is first generated over the study area extent and used
 #' as pseudo-absences proxy.
 #' 
-#' @param range_object Object of class getRange (function get_range) containing
-#' the range map and associated parameters.
+#' @param range_object Object of class getRange (see \code{get_range})
+#' containing the range map and associated parameters.
 #' @param cv Character. Should the range map be evaluated with random
-#' ('random-cv') or spatial block
-#' cross validation ('block-cv').
+#' ("random-cv") or spatial block cross validation ("block-cv").
 #' @param nfolds Numeric. Number of chosen folds for cross-validation.
-#' @param nblocks Numeric. Only applies if 'block-cv' is employed. Defined
+#' @param nblocks Numeric. Only applies if "block-cv" is employed. Defined
 #' the number of blocks per fold.
 #' @param backpoints Numeric (optional). Number of regular background points
 #' that should be sampled. Defaut is 10,000.
-#' @return A data.frame with 'nfolds' rows and 8 evaluation columns: 
+#' @return A data.frame with *nfolds* rows and 8 evaluation columns: 
 #' -- Precision (ppv) =
 #' number true presences (TP) / [TP + number false presences (FP)]; 
 #' -- Sensitivity =
