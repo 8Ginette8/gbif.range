@@ -73,7 +73,7 @@
 #' 
 #' (3) 'eco_marine' and 'eco_hd_marine' is for marine species. It contains
 #' three distinct levels: "ECOREGION", "PROVINCE" and "REALM".
-
+#'
 #' For marine species, 'eco_terra' may also be used if the user wants to
 #' represent the terrestrial range of species that also partially settle
 #' on mainland. For fresh water species, same may be done if the user

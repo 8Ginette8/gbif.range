@@ -14,13 +14,14 @@ make_blocks(
 }
 \arguments{
 \item{nfolds}{Numeric. Number of approximately equal-sized classes (folds)
-to separate groups in block-cross validation.}
+to separate groups for block-cross validation.}
 
 \item{df}{Object of class \code{data.frame} with \emph{n} columns
 containing critera for cluster building. Not necessary if parameter
 \code{npoints} is supplied.}
 
 \item{nblocks}{Numeric. Number of clusters (blocks) based on the number
+of folds that should be built. Minimum is the same number as \code{nfolds}.
 Maximum is \code{nrow(df) / 10}.}
 
 \item{npoints}{Optional argument if \code{df} is not supplied. For how many
@@ -46,7 +47,7 @@ the output vector is created based on the 'Clustering Large Applications'
 method [\code{clara()} from the \code{cluster} R package]. Also,
 instead of a \code{data.frame} the argument \code{npoints} can be provided,
 which create groups by random sampling. An opitimization algorithm optimizes
-for equal stratum sizes: (\code{gridSearch} from the \code{NMOF} R package)
+for equal stratum sizes (\code{gridSearch} from the \code{NMOF} R package)
 }
 \examples{
 \dontrun{

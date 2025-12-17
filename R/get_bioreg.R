@@ -180,7 +180,7 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
 #' Checks if a directory exists and contains at least one .shp file.
 #' If not, calls get_bioreg to download the data.
 #'
-#' @param bioreg_name filename of the desired bioregion to be checked and
+#' @param bioreg_name Filename of the desired bioregion to be checked and
 #' downloaded if necessary. See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
@@ -214,22 +214,23 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 
 #' Load Bioreg Data Files
 #' 
-#' Loads a shapefile based on the provided bioregion name and the bioreg_list.
-#' @param bioreg_name filename of the desired bioregion to be loaded.
+#' Loads a shapefile based on the provided bioregion name and the
+#' \code{bioreg_list}.
+#' @param bioreg_name Filename of the desired bioregion to be loaded.
 #' See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
 #' @details Four shapefiles can be downloaded with the library:
 #'
 #' (1) 'eco_terra' (for terrestrial species, Nature conservancy version adapted
-#' from Olson & al. 2001).\cn
+#' from Olson & al. 2001)
 #' 
-#' (2) 'eco_marine' (for marine species, Spalding & al. 2007, 2012).\cn
+#' (2) 'eco_marine' (for marine species, Spalding & al. 2007, 2012).
 #' 
-#' (3) 'eco_hd_marine' (higher resolution).\cn
+#' (3) 'eco_hd_marine' (higher resolution).
 #' 
 #' (4) 'eco_fresh' (for freshwater species, Abell & al. 2008).
-#' @return A terra::vect object representing the shapefile.
+#' @return \code{SpatVector} object representing the ecoregion shapefile.
 #' @references
 #' Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
 #' Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,

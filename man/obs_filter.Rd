@@ -29,12 +29,13 @@ multiple species) and filters the observations based on a specified grid
 resolution.
 }
 \details{
-It can retain one observation per grid pixel and/or remove
-observations from grid pixels that contain fewer than a specified number
-of records (e.g., fewer than 3 observations per pixel). This function
-helps users refine the spatial density of GBIF datasets by retaining
-one observation per grid pixel and/or removing observations from grid
-pixels with fewer than a user-defined threshold of records.
+The function can retain one observation per grid pixel
+and/or remove observations from grid pixels that contain fewer than
+a specified number of records (e.g., fewer than 3 observations per
+pixel). This function helps users refine the spatial density of GBIF
+datasets by retaining one observation per grid pixel and/or removing
+observations from grid pixels with fewer than a user-defined threshold
+of records.
 }
 \examples{
 # Load data

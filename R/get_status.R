@@ -12,30 +12,30 @@
 #' @param sp_name Character. Species name from which the user wants to
 #' retrieve all existing GBIF names with associated taxonomy and IUCN status.
 #' @param search Logical. If \code{TRUE} (default), the function will strictly
-#' look for the most relevant result across the names given by rgbif (only
-#' species, subspecies and variety allowed here), and give an error if name
-#' matching was impeded by synonym duplicates. If \code{FALSE}, the function
-#' will simply pick the first most relevant name (taxa rank higher than species
-#' are allowed here). Also, unlike \code{search = TRUE}, fuzzy search
-#' (~approximative name match) is here allowed, and the \code{rank},
+#' look for the most relevant result across the names given by \code{rgbif}
+#' (only species, subspecies and variety allowed here), and give an error if
+#' name matching is impeded by synonym duplicates. If \code{FALSE}, the
+#' function will simply pick the first most relevant name (taxa rank higher
+#' than species are allowed here). Also, unlike \code{search = TRUE}, fuzzy
+#' search (~approximative name matching) is here allowed, and the \code{rank},
 #' \code{phylum}, \code{class}, \code{order} and \code{family} parameters are
-#' optionally used only if no convincing name match is found. \code{FALSE} is
+#' optionally used only if no convincing match is found. \code{FALSE} is
 #' particularly useful if the given species name already includes the author.
 #' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
 #' (default), the order of priority is (1) species, (2) subspecies and (3)
 #' variety unless "subsp." or "var." is found in the \code{sp_name} parameter.
-#' @param phylum Character. Optional. What is the species' Phylum? Adds a
+#' @param phylum Character (optional). What is the species' Phylum? Adds a
 #' criteria to deal with alternative name matches and select the right synonym.
 #' Available options are the GBIF Phylums
 #' (listed per Kingdom/Phylum: https://www.gbif.org/species/search).
 #' If \code{search = FALSE}, only used if no direct match is found.
-#' @param class Character. Optional. What is the species' Class? Same as above
+#' @param class Character (optional). What is the species' Class? Same as above
 #' but at the finer class level. Available options are the GBIF Classes
 #' (same url). If \code{search = FALSE}, only used if no direct match is found.
-#' @param order Character. Optional. What is the species' Order? Same as above
+#' @param order Character (optional). What is the species' Order? Same as above
 #' but at the finer order level. Available options are the GBIF Orders (same
 #' url). If \code{search = FALSE}, only used if no direct match is found.
-#' @param family Character. Optional. What is the species' Family? Same as above
+#' @param family Character (optional). What is the species' Family? Same as above
 #' but at the finer family level. Available options are the GBIF Families (same
 #' url). If \code{search = FALSE}, used only if no direct match is found.
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold

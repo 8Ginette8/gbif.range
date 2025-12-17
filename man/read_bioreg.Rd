@@ -7,27 +7,28 @@
 read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
 }
 \arguments{
-\item{bioreg_name}{filename of the desired bioregion to be loaded.
+\item{bioreg_name}{Filename of the desired bioregion to be loaded.
 See \code{bioreg_list} for available options.}
 
 \item{save_dir}{The directory to save the downloaded files. Defaults to
 "inst/extdata/downloads" within the package structure.}
 }
 \value{
-A terra::vect object representing the shapefile.
+\code{SpatVector} object representing the ecoregion shapefile.
 }
 \description{
-Loads a shapefile based on the provided bioregion name and the bioreg_list.
+Loads a shapefile based on the provided bioregion name and the
+\code{bioreg_list}.
 }
 \details{
 Four shapefiles can be downloaded with the library:
 
 (1) 'eco_terra' (for terrestrial species, Nature conservancy version adapted
-from Olson & al. 2001).\cn
+from Olson & al. 2001)
 
-(2) 'eco_marine' (for marine species, Spalding & al. 2007, 2012).\cn
+(2) 'eco_marine' (for marine species, Spalding & al. 2007, 2012).
 
-(3) 'eco_hd_marine' (higher resolution).\cn
+(3) 'eco_hd_marine' (higher resolution).
 
 (4) 'eco_fresh' (for freshwater species, Abell & al. 2008).
 }

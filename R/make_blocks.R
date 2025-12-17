@@ -6,12 +6,12 @@
 #' Creates a stratum vector based on a data.frame with \emph{n} columns. 
 #'
 #' @param nfolds Numeric. Number of approximately equal-sized classes (folds)
-#' to separate groups in block-cross validation.
+#' to separate groups for block-cross validation.
 #' @param df Object of class \code{data.frame} with \emph{n} columns
 #' containing critera for cluster building. Not necessary if parameter
 #' \code{npoints} is supplied.
 #' @param nblocks Numeric. Number of clusters (blocks) based on the number
-#´ of folds that should be built. Minimum is the same number as \code{nfolds}.
+#' of folds that should be built. Minimum is the same number as \code{nfolds}.
 #' Maximum is \code{nrow(df) / 10}.
 #' @param pres Binary vector. Optional argument. If \code{df} is supplied, this
 #' argument can be used to save processing time. 1 stands for the points
@@ -26,7 +26,7 @@
 #' method [\code{clara()} from the \code{cluster} R package]. Also,
 #' instead of a \code{data.frame} the argument \code{npoints} can be provided,
 #' which create groups by random sampling. An opitimization algorithm optimizes
-#' for equal stratum sizes: (\code{gridSearch} from the \code{NMOF} R package)
+#' for equal stratum sizes (\code{gridSearch} from the \code{NMOF} R package)
 #' @return Object of class vector of length \code{nrow(df)} or \code{npoints},
 #' with integers defining different folds.
 #' @references

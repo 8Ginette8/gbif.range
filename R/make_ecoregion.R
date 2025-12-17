@@ -3,8 +3,8 @@
 ### =========================================================================
 #' Make an ecoregion map based on input environmental variables
 #'
-#' Based on chosen environmental layers, this function can generate a map
-#' of ecoregions of \emph{n} categories/classes.
+#' Based on chosen environmental layers, this function can generate an
+#' ecoregion map of \emph{n} categories/classes.
 #'
 #' @param env Object of class \code{SpatRaster}, \code{RasterBrick} or
 #' \code{RasterStack} of desired resolution, crs and extent defining the study

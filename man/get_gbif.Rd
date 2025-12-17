@@ -42,35 +42,35 @@ get_gbif(
 all existing GBIF names with associated taxonomy and IUCN status.}
 
 \item{search}{Logical. If \code{TRUE} (default), the function will strictly
-look for the most relevant result across the names given by rgbif (only
-species, subspecies and variety allowed here), and give an error if name
-matching was impeded by synonym duplicates. If \code{FALSE}, the function
-will simply pick the first most relevant name (taxa rank higher than species
-are allowed here). Also, unlike \code{search = TRUE}, fuzzy search
-(~approximative name match) is here allowed, and the \code{rank},
+look for the most relevant result across the names given by \code{rgbif}
+(only species, subspecies and variety allowed here), and give an error if
+name matching is impeded by synonym duplicates. If \code{FALSE}, the
+function will simply pick the first most relevant name (taxa rank higher
+than species are allowed here). Also, unlike \code{search = TRUE}, fuzzy
+search (~approximative name matching) is here allowed, and the \code{rank},
 \code{phylum}, \code{class}, \code{order} and \code{family} parameters are
-optionally used only if no convincing name match is found. \code{FALSE} is
+optionally used only if no convincing match is found. \code{FALSE} is
 particularly useful if the given species name already includes the author.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
 (default), the order of priority is (1) species, (2) subspecies and (3)
 variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 
-\item{phylum}{Character. Optional. What is the species' Phylum? Adds a
+\item{phylum}{Character (optional). What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
 Available options are the GBIF Phylums
 (listed per Kingdom/Phylum: https://www.gbif.org/species/search).
 If \code{search = FALSE}, only used if no direct match is found.}
 
-\item{class}{Character. Optional. What is the species' Class? Same as above
+\item{class}{Character (optional). What is the species' Class? Same as above
 but at the finer class level. Available options are the GBIF Classes
 (same url). If \code{search = FALSE}, only used if no direct match is found.}
 
-\item{order}{Character. Optional. What is the species' Order? Same as above
+\item{order}{Character (optional). What is the species' Order? Same as above
 but at the finer order level. Available options are the GBIF Orders (same
 url). If \code{search = FALSE}, only used if no direct match is found.}
 
-\item{family}{Character. Optional. What is the species' Family? Same as above
+\item{family}{Character (optional). What is the species' Family? Same as above
 but at the finer family level. Available options are the GBIF Families (same
 url). If \code{search = FALSE}, used only if no direct match is found.}
 
@@ -109,19 +109,20 @@ https://docs.gbif.org/course-data-use/en/basis-of-record.html.}
 
 \item{establishment}{Character. Is the individual native, captive or else?
 Defaut is native, casual, released, reproducing, established, colonising
-and absence of information. See descriptions (
-https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment)
-for other managed establishments: managed, captive, cultivated, released,
-unestablished and failing}
+and absence of information. See descriptions for other managed
+establishments: managed, captive, cultivated, released,
+unestablished and failing
+(https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment)}
 
 \item{add_infos}{Character. Infos that may be added to the default output
-information. List of IDs may be found at:
-https://www.gbif.org/developer/occurrence. Default IDs contain "taxonKey",
+information. Default IDs contain "taxonKey",
 "scientificName", "acceptedTaxonKey", "acceptedScientificName",
 "individualCount", "decimalLatitude", "decimalLongitude", "basisOfRecord",
 "coordinateUncertaintyInMeters", "countryCode", "country", "year",
 "datasetKey", "institutionCode", "publishingOrgKey", "taxonomicStatus",
-"taxonRank" and "degreeOfEstablishment".}
+"taxonRank" and "degreeOfEstablishment".
+List of IDs may be found at:
+https://www.gbif.org/developer/occurrence.}
 
 \item{time_period}{Numerical vector. Observations will be downloaded
 according to the chosen year range. Default is \code{c(1000,3000)}.
@@ -180,8 +181,8 @@ by the function, additional post exploration with the
 Implement an user-friendly workflow to download and clean gbif taxa
 observations. The function (1) implements the same search result as
 www.gbif.org, (2) bypasses \code{rgbif} hard limit for number of
-records (100'000 max), and (3) automatically applies a post-
-filtering of observations based on the chosen resolution of the study and
+records (100'000 max), and (3) automatically applies a post-filtering
+of observations based on the chosen resolution of the study and
 by partly employing the \code{CoordinateCleaner} R package.
 }
 \details{
@@ -196,7 +197,7 @@ This window automatically fragments the specified study area in succesive
 tiles of different sizes, until all tiles include < 10'000 observations
 (instead of 100'000 for extraction speed efficiency).
 
-(3) automatically applies a post- filtering of observations based on the
+(3) Automatically applies a post- filtering of observations based on the
 chosen resolution of the study and by partly employing the
 \code{CoordinateCleaner} R package. Filtering options may be chosen and
 involve several choices: study's extent, removal of duplicates, removal
@@ -213,7 +214,7 @@ records with no information on coordinate uncertainties are kept by
 default.
 
 (2) Records filtering according to the number of longitude/latitude
-decimals:
+decimals:\cr
 - if 110km < \code{grain} <= 11km, lon / lat with >= 1 decimal are kept\cr
 - if 11km < \code{grain} <= 1100m, lon / lat with >= 2 decimals kept\cr
 - if 1100m < \code{grain} <= 110m, lon / lat with >= 3 decimals are kept\cr

@@ -38,8 +38,8 @@ is \code{FALSE}.}
 \code{tif} or \code{shp} file.
 }
 \description{
-Based on chosen environmental layers, this function can generate a map
-of ecoregions of \emph{n} categories/classes.
+Based on chosen environmental layers, this function can generate an
+ecoregion map of \emph{n} categories/classes.
 }
 \details{
 Useful if the in-house ecoregion shapefiles ('eco.terra',
