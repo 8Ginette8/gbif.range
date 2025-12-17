@@ -47,20 +47,25 @@ obsam <- get_gbif("Ailuropoda melanoleuca")
 
 \dontrun{
 # Retrieve DOI for only one get_gbif() output
-get_doi(gbifs = obspt,
-        title = "GBIF_test1",
-        description = "A small example 1",
-        source_url = "https://example.com/",
-        user = "",
-        pwd = "") # Use your own GBIF credentials here
+get_doi(
+       gbifs = obspt,
+       title = "GBIF_test1",
+       description = "A small example 1",
+       source_url = "https://example.com/",
+       user = "",
+       pwd = ""
+) # Use your own GBIF credentials here
 
 # Retrieve DOIs for several get_gbif() outputs
-get_doi(gbifd = list(obspt,obsam),
+get_doi(
+       gbifd = list(obspt,obsam),
        title = "GBIF_test2",
        description = "A small example 2",
        source_url = "https://example.com/",
        user = "",
-       pwd = "") # Use your own GBIF credentials here
+       pwd = ""
+) # Use your own GBIF credentials here
+
 }
 }
 \references{

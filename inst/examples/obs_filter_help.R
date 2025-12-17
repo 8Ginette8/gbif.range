@@ -1,17 +1,24 @@
 # Load data
-shp.path <- paste0(system.file(package = "gbif.range"),
-				   "/extdata/shp_lonlat.shp")
+shp.path <- paste0(
+	system.file(package = "gbif.range"),
+	"/extdata/shp_lonlat.shp"
+)
 shp.lonlat <- terra::vect(shp.path)
-rst.path <- paste0(system.file(package = "gbif.range"),
-				   "/extdata/rst_enl.tif")
+rst.path <- paste0(
+	system.file(package = "gbif.range"),
+	"/extdata/rst_enl.tif"
+)
 rst <- terra::rast(rst.path)
 
 # Downloading in the European Alps the observations of two plant species
-obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
-					  geo = shp.lonlat)
-obs.saxi <- get_gbif(sp_name = "Saxifraga cernua",
-					 geo = shp.lonlat)
-
+obs.arcto <- get_gbif(
+	sp_name = "Arctostaphylos alpinus",
+	geo = shp.lonlat
+)
+obs.saxi <- get_gbif(
+	sp_name = "Saxifraga cernua",
+	geo = shp.lonlat
+)
 
 # Tes plot
 terra::plot(shp.lonlat)
@@ -32,9 +39,7 @@ graphics::points(
 both.sp <- rbind(obs.arcto,obs.saxi)
 
 # Run function
-obs.filt <- obs_filter(gbifs = both.sp,
-					   grid = rst,
-					   threshold = 4)
+obs.filt <- obs_filter(gbifs = both.sp, grid = rst, threshold = 4)
 
 # Check new points
 terra::plot(shp.lonlat)

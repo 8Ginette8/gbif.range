@@ -110,44 +110,56 @@ detailed):
 three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
 }
 \examples{
+\dontrun{
 ###########################################
 ### Example plot
 ###########################################
 
 # Load available ecoregions
-eco.terra <- read_bioreg(bioreg_name = "eco_terra",
-                         save_dir = NULL)
+eco.terra <- read_bioreg(
+    bioreg_name = "eco_terra",
+    save_dir = NULL
+)
 
 # First download the worldwide observations of Panthera tigris from GBIF
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Make range from occurance points
-range.tiger <- get_range(occ_coord = obs.pt,
-                         bioreg = eco.terra,
-                         bioreg_name = "ECO_NAME")
+range.tiger <- get_range(
+    occ_coord = obs.pt,
+    bioreg = eco.terra,
+    bioreg_name = "ECO_NAME"
+)
 
 # Plot
     # Plot political world boundaries
-countries <- rnaturalearth::ne_countries(type = "countries",
-                                         returnclass = "sv")
-terra::plot(terra::crop(countries, terra::ext(range.tiger$rangeOutput)),
-            col = "#bcbddc")
+countries <- rnaturalearth::ne_countries(
+    type = "countries",
+    returnclass = "sv"
+)
+terra::plot(
+    terra::crop(countries, terra::ext(range.tiger$rangeOutput)),
+    col = "#bcbddc"
+)
 
     # Plot range 
-terra::plot(range.tiger$rangeOutput,
-            axes = FALSE,
-            box = FALSE,
-            legend = FALSE,
-            col = "chartreuse4",
-            add = TRUE)
+terra::plot(
+    range.tiger$rangeOutput,
+    axes = FALSE,
+    box = FALSE,
+    legend = FALSE,
+    col = "chartreuse4",
+    add = TRUE
+)
 
     # Plot the occurence points
-graphics::points(obs.pt[, c("decimalLongitude","decimalLatitude")],
-                 pch = 20,
-                 col = "#99340470",
-                 cex = 1.5)
+graphics::points(
+    obs.pt[, c("decimalLongitude","decimalLatitude")],
+    pch = 20,
+    col = "#99340470",
+    cex = 1.5
+)
 
-\dontrun{
 ###########################################
 ### Package manuscript plot (Fig 1a)
 ###########################################
@@ -179,7 +191,7 @@ col.palette <- colorRampPalette(
 colcol <- col.palette(length(eco.local))
 set.seed(3)
 eco.local$color <- sample(
-    paste0(colcol,""),
+    paste0(colcol, ""),
     length(eco.local),
     replace = FALSE
 )
@@ -191,17 +203,17 @@ pt.col <- terra::extract(
 )
 pt.plot = obs.pt[!is.na(pt.col$color),
                     c("decimalLongitude","decimalLatitude")]
-pt.col2 = pt.col[!is.na(pt.col$color),"color"]
+pt.col2 = pt.col[!is.na(pt.col$color), "color"]
 # install.packages("colorspace")
-pt.col3 = colorspace::darken(pt.col2,amount=0.6)
+pt.col3 = colorspace::darken(pt.col2, amount=0.6)
 
 # Out points
 out.plot <- terra::extract(
     range.tiger$rangeOutput,
-    as.data.frame(obs.pt[,c("decimalLongitude","decimalLatitude")])
+    as.data.frame(obs.pt[, c("decimalLongitude","decimalLatitude")])
 )
 op.na <- is.na(out.plot$layer)
-out.plot <- obs.pt[op.na,c("decimalLongitude","decimalLatitude")]
+out.plot <- obs.pt[op.na, c("decimalLongitude","decimalLatitude")]
 
 # Plot
 png(
@@ -215,12 +227,7 @@ png(
     res = 100,
     pointsize = 110
 )
-par(
-    mfrow = c(1,1),
-    mar = c(5,5,5,20),
-    lwd = 10,
-    cex = 0.5
-)
+par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 10, cex = 0.5)
 terra::plot(
     eco.local,
     col = eco.local$color,
