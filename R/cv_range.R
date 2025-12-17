@@ -5,22 +5,7 @@
 #' 
 #' Assesses the accuracy of a species range map by applying cross-validation
 #' using the observations and function arguments of a \code{get_range()}
-#' object (including its extent). By using these same arguments, the
-#' function iteratively re-generates the range map n times, each time using
-#' a defined percentage of the observations for training, while evaluating
-#' the quality of the range map using the remaining ones (by default,
-#' nfolds = 5, i.e., calibration = 80%, evaluation = 20%). Two cross-validation
-#' methods are available: random and spatial block cross-validation.
-#' In random cross-validation, a random subset of the observations is chosen
-#' for training in each fold, with the generated map evaluated on the remaining
-#' data. In spatial block cross-validation, the observations are spatially
-#' divided into blocks based on their coordinates, and each fold uses a
-#' different set of blocks for training and testing, ensuring that spatial
-#' dependencies are properly considered. Available evaluation metrics are
-#' Precision, Sensitivity, Specificity and TSS. It is important to note that
-#' since no absences are available for evaluation, a uniform random layer of
-#' background points is first generated over the study area extent and used
-#' as pseudo-absences proxy.
+#' object (including its extent).
 #' 
 #' @param range_object Object of class \code{getRange}
 #' (see \code{get_range()}) containing the range map and associated parameters.
@@ -31,14 +16,36 @@
 #' the number of blocks per fold.
 #' @param backpoints Numeric (optional). Number of regular background points
 #' that should be sampled. Defaut is 10,000.
+#' @details By using \code{get_range()} arguments, the function iteratively
+#' re-generates the range map n times, each time using a defined percentage
+#' of the observations for training, while evaluating
+#' the quality of the range map using the remaining ones (by default,
+#' nfolds = 5, i.e., calibration = \code{80\%}, evaluation = \code{20\%}).
+#'
+#' Two cross-validation methods are available: (1) random and (2) spatial block
+#' cross-validation:
+#' 
+#' (1) In random cross-validation, a random subset of the observations is chosen
+#' for training in each fold, with the generated map evaluated on the remaining
+#' data.
+#'
+#' (2) In spatial block cross-validation, the observations are spatially
+#' divided into blocks based on their coordinates, and each fold uses a
+#' different set of blocks for training and testing, ensuring that spatial
+#' dependencies are properly considered.
+#'
+#' Available evaluation metrics are Precision, Sensitivity, Specificity and TSS.
+#' It is important to note that since no absences are available for evaluation,
+#' a uniform random layer of background points is first generated over the study
+#' area extent and used as pseudo-absences proxy.
 #' @return A data.frame with \code{nfolds} rows and 8 evaluation columns:\cr 
-#' -- Precision (ppv) =
+#' - Precision (ppv) =
 #' number true presences (TP) / [TP + number false presences (FP)]\cr 
-#' -- Sensitivity =
+#' - Sensitivity =
 #' number true presences (TP) / [TP + number false absences (FA)]\cr
-#' -- Specificity =
+#' - Specificity =
 #' number true absences (TA) / [TA + number false presences (FP)]\cr
-#' -- TSS =
+#' - TSS =
 #' Sensitivity + Specificity - 1
 #' @references
 #' Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera‐

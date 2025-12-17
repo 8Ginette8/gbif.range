@@ -5,12 +5,7 @@
 #'
 #' Processes a \code{getGBIF} object (which can include data for one or
 #' multiple species) and filters the observations based on a specified grid
-#' resolution. It can retain one observation per grid pixel and/or remove
-#' observations from grid pixels that contain fewer than a specified number
-#' of records (e.g., fewer than 3 observations per pixel). This function
-#' helps users refine the spatial density of GBIF datasets by retaining
-#' one observation per grid pixel and/or removing observations from grid
-#' pixels with fewer than a user-defined threshold of records.
+#' resolution.
 #'
 #' @param gbifs Object of class \code{getGBIF} including one or several
 #' species. Note that if GBIF absences are kept in the output(s), the
@@ -21,6 +16,12 @@
 #' @param threshold Integer (optional). Specifies the minimum number of
 #' observations per grid pixel to retain. Default is \code{NULL},
 #' meaning no threshold filtering.
+#' @details It can retain one observation per grid pixel and/or remove
+#' observations from grid pixels that contain fewer than a specified number
+#' of records (e.g., fewer than 3 observations per pixel). This function
+#' helps users refine the spatial density of GBIF datasets by retaining
+#' one observation per grid pixel and/or removing observations from grid
+#' pixels with fewer than a user-defined threshold of records.
 #' @return Data frame with columns 'Species', 'x', and 'y' comprising
 #' the new set of observations filtered at grid resolution.
 #' @example inst/examples/obs_filter_help.R

@@ -43,7 +43,6 @@
 #' Default is 90.
 #' @param all Logical. Default is \code{FALSE}. Should all species names be
 #' retrieved or only the accepted name and its synonyms?
-#' 
 #' @return Data.frame with nine columns: (0) Simplified name,
 #' (1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
 #' (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and

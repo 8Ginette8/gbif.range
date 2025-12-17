@@ -24,15 +24,21 @@ and of \code{SpatExtent} if \code{sext = TRUE}).
 }
 \description{
 Divides a given spatial extent or geometry into a specified number of tiles.
-Each tile is returned as a \code{POLYGON()} geometry. The original extent
-can be: (1) converted into a single \code{POLYGON()}, or (2) subdivided
-into approximately \code{ntiles} regular fragments, each returned as a
-\code{POLYGON()} and, optionally, as a \code{SpatExtent}. Based on a
-specific extent, one or several tiles are generated. Tiles can be smaller
-raster extents or geometry arguments \code{POLYGON()}. The original extent
-is therefore either converted into a \code{POLYGON()} argument, or divided
-into \code{ntiles} of regular fragments which are converted into
-\code{POLYGON()} arguments and smaller SpatExtent.
+Each tile is returned as a \code{POLYGON()} geometry.
+}
+\details{
+The original extent can be:
+
+(1) Converted into a single \code{POLYGON()}.
+
+(2) Subdivided into approximately \code{ntiles} regular fragments, each
+returned as a \code{POLYGON()} and, optionally, as a \code{SpatExtent}.
+
+Based on a specific extent, one or several tiles are generated.
+Tiles can be smaller raster extents or geometry arguments \code{POLYGON()}.
+The original extent is therefore either converted into a \code{POLYGON()}
+argument, or divided into \code{ntiles} of regular fragments which are
+converted into \code{POLYGON()} arguments and smaller SpatExtent.
 }
 \examples{
 # Load the European Alps Extent

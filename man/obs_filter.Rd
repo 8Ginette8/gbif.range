@@ -26,7 +26,10 @@ the new set of observations filtered at grid resolution.
 \description{
 Processes a \code{getGBIF} object (which can include data for one or
 multiple species) and filters the observations based on a specified grid
-resolution. It can retain one observation per grid pixel and/or remove
+resolution.
+}
+\details{
+It can retain one observation per grid pixel and/or remove
 observations from grid pixels that contain fewer than a specified number
 of records (e.g., fewer than 3 observations per pixel). This function
 helps users refine the spatial density of GBIF datasets by retaining

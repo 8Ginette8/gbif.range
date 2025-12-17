@@ -5,13 +5,7 @@
 #' 
 #' Evaluates the precision (ppv), sensitivity, specificity and TSS of range
 #' maps based on validation data, such as predictions of species
-#' distributions (SDMs) or IUCN expert range maps. See Pinkert et al. (2023)
-#' for metrics and comparisons of various types of range data, including
-#' expert range maps, SDMs and ecoregional range maps. Optional
-#' functionalities include the masking of the focal study region (see
-#' \code{mask} parameter) and aggregations of the input maps to different
-#' resolutions, given the importance of these factors for specific
-#' applications (Pinkert et al., 2023).
+#' distributions (SDMs) or IUCN expert range maps.
 #' @param root_dir Character. Working directory to load and save target files.
 #' @param valData_dir Character. Directory to spatial validation data (must have
 #' same name as data in ecoRM_dir).
@@ -25,16 +19,22 @@
 #' study the focal study region. Default is \code{FALSE}.
 #' @param res_fact Integer. Factor for coarsening the original resolution (i.e.,
 #' that of the species range map)
+#' @details See Pinkert et al. (2023)
+#' for metrics and comparisons of various types of range data, including
+#' expert range maps, SDMs and ecoregional range maps. Optional
+#' functionalities include the masking of the focal study region (see
+#' \code{mask} parameter) and aggregations of the input maps to different
+#' resolutions, given the importance of these factors for specific
+#' applications (Pinkert et al., 2023).
 #' @return A data.frame of evaluation for all species and a list of range
-#' overlay maps.\cr 
-#' --Precision (ppv) =
+#' overlay maps.\cr
+#' - Precision (ppv) =
 #' number true presences (TP) / [TP + number false presences (FP)]\cr 
-#' --Sensitivity =
+#' - Sensitivity =
 #' number true presences (TP) / [TP + number false absences (FA)]\cr
-#' --Specificity =
+#' - Specificity =
 #' number true absences (TA) / [TA + number false presences (FP)]\cr
-#' --TSS =
-#' Sensitivity + Specificity - 1
+#' - TSS = Sensitivity + Specificity - 1
 #' @references
 #' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
 #' ecoregional range maps for boosting taxonomic coverage in ecology and 

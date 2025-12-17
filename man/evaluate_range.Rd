@@ -39,20 +39,22 @@ that of the species range map)}
 }
 \value{
 A data.frame of evaluation for all species and a list of range
-overlay maps.\cr 
---Precision (ppv) =
+overlay maps.\cr
+- Precision (ppv) =
 number true presences (TP) / [TP + number false presences (FP)]\cr 
---Sensitivity =
+- Sensitivity =
 number true presences (TP) / [TP + number false absences (FA)]\cr
---Specificity =
+- Specificity =
 number true absences (TA) / [TA + number false presences (FP)]\cr
---TSS =
-Sensitivity + Specificity - 1
+- TSS = Sensitivity + Specificity - 1
 }
 \description{
 Evaluates the precision (ppv), sensitivity, specificity and TSS of range
 maps based on validation data, such as predictions of species
-distributions (SDMs) or IUCN expert range maps. See Pinkert et al. (2023)
+distributions (SDMs) or IUCN expert range maps.
+}
+\details{
+See Pinkert et al. (2023)
 for metrics and comparisons of various types of range data, including
 expert range maps, SDMs and ecoregional range maps. Optional
 functionalities include the masking of the focal study region (see

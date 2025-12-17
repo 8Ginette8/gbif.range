@@ -178,37 +178,47 @@ by the function, additional post exploration with the
 }
 \description{
 Implement an user-friendly workflow to download and clean gbif taxa
-observations. The function uses the \code{rgbif} R package but (1)
-implements the same search result when www.gbif.org is employed, i.e.,
-based on the input taxa name, all species records related to its accepted
-name and synonyms are extracted. The function also (2) bypasses the
-\code{rgbif} hard limit for number of records (100'000 max). For this
-purpose, a dynamic moving window is created and used across the geographic
-extent defined by the user. This window automatically fragments the
-specified study area in succesive tiles of different sizes, until all
-tiles include < 10'000 observations (instead of 100'000 for extraction
-speed efficiency). The function also (3) automatically applies a post-
+observations. The function (1) implements the same search result as
+www.gbif.org, (2) bypasses \code{rgbif} hard limit for number of
+records (100'000 max), and (3) automatically applies a post-
 filtering of observations based on the chosen resolution of the study and
-by partly employing the \code{CoordinateCleaner} R package. Filtering
-options may be chosen and involve several choices: study's extent,
-removal of duplicates, removal of absences, basis of records selection,
-removal of invalid/uncertain xy coordinates (WGS84), time period selection
-and removal of raster centroids. By default, the argument
-\code{hasGeospatialIssue} in \code{occ_search()} (\code{rgbif} R function)
-is set to \code{FALSE}.
+by partly employing the \code{CoordinateCleaner} R package.
 }
 \details{
-The \code{grain} parameter is used for two distinct gbif records
-filtering. (1) Records filtering according to gbif 
-'coordinateUncertaintyInMeters': every records uncertainty
-\code{> grain / 2} are removed. Note that records with no information
-on coordinate uncertainties are kept by default. (2) Records filtering
-according to the number of longitude/latitude decimals:\cr
---if 110km < \code{grain} <= 11km, lon / lat with >= 1 decimal are kept\cr
---if 11km < \code{grain} <= 1100m, lon / lat with >= 2 decimals kept\cr
---if 1100m < \code{grain} <= 110m, lon / lat with >= 3 decimals are kept\cr
---if 110m < \code{grain} <= 11m, lon / lat with >= 4 decimals are kept\cr
---if 11m < \code{grain} <= 1.1m, lon / lat with >= 5 decimals are kept etc...
+(1) Implements the same search result when
+www.gbif.org is employed, i.e., based on the input taxa name, all species
+records related to its accepted name and synonyms are extracted.
+
+(2) Bypasses the \code{rgbif} hard limit for number of
+records (100'000 max). For this purpose, a dynamic moving window is
+created and used across the geographic extent defined by the user.
+This window automatically fragments the specified study area in succesive
+tiles of different sizes, until all tiles include < 10'000 observations
+(instead of 100'000 for extraction speed efficiency).
+
+(3) automatically applies a post- filtering of observations based on the
+chosen resolution of the study and by partly employing the
+\code{CoordinateCleaner} R package. Filtering options may be chosen and
+involve several choices: study's extent, removal of duplicates, removal
+of absences, basis of records selection, removal of invalid/uncertain
+xy coordinates (WGS84), time period selection and removal of raster
+centroids. By default, the argument \code{hasGeospatialIssue} in
+\code{occ_search()} (\code{rgbif} R function) is set to \code{FALSE}.
+
+The \code{grain} parameter applies:
+
+(1) Records filtering according to gbif 'coordinateUncertaintyInMeters':
+every records uncertainty \code{> grain / 2} are removed. Note that
+records with no information on coordinate uncertainties are kept by
+default.
+
+(2) Records filtering according to the number of longitude/latitude
+decimals:
+- if 110km < \code{grain} <= 11km, lon / lat with >= 1 decimal are kept\cr
+- if 11km < \code{grain} <= 1100m, lon / lat with >= 2 decimals kept\cr
+- if 1100m < \code{grain} <= 110m, lon / lat with >= 3 decimals are kept\cr
+- if 110m < \code{grain} <= 11m, lon / lat with >= 4 decimals are kept\cr
+- if 11m < \code{grain} <= 1.1m, lon / lat with >= 5 decimals are kept etc...
 }
 \examples{
 # Downloading worldwide the observations of Panthera tigris

@@ -25,8 +25,8 @@ should have the output?}
 \item{path}{Character. Folder path where the output should be saved.
 Default is none.}
 
-\item{name}{Character. If \code{path} is used, should include the name of the
-output file without file extension.}
+\item{name}{Character. If \code{path} is used, should include the name of
+the output file without file extension.}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default
 is \code{FALSE}.}
@@ -38,15 +38,17 @@ is \code{FALSE}.}
 A \code{.tif} or \code{.shp} file.
 }
 \description{
-This function may be used if the in-house ecoregion shapefiles ('eco.terra',
+Based on chosen environmental layers, this function can generate a map
+of ecoregions of \emph{n} categories/classes.
+}
+\details{
+Useful if the in-house ecoregion shapefiles ('eco.terra',
 eco.fresh', 'eco.marine') are too coarse for a given geographic region
 (e.g., for local studies) or a shapefile of finer environmental details is
-needed. Based on several environmental layers (e.g. climate, soil and land
-cover), this function can generate a map of environmental regions containing
-\emph{n} categories/classes. The classes are calculated with the
-'Clustering Large Applications' method (\code{clara()} from the cluster R
-\code{package}), which recognize patterns and relationships existing in
-spatial data, and classify it into clusters.
+needed. The classes are calculated with the 'Clustering Large Applications'
+method (\code{clara()} from the cluster R \code{package}), which recognize
+patterns and relationships existing in spatial data, and classify it into
+clusters.
 }
 \examples{
 \dontrun{

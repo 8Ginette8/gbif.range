@@ -3,15 +3,8 @@
 ### =========================================================================
 #' Make an ecoregion map based on input environmental variables
 #'
-#' This function may be used if the in-house ecoregion shapefiles ('eco.terra',
-#' eco.fresh', 'eco.marine') are too coarse for a given geographic region
-#' (e.g., for local studies) or a shapefile of finer environmental details is
-#' needed. Based on several environmental layers (e.g. climate, soil and land
-#' cover), this function can generate a map of environmental regions containing
-#' \emph{n} categories/classes. The classes are calculated with the
-#' 'Clustering Large Applications' method (\code{clara()} from the cluster R
-#' \code{package}), which recognize patterns and relationships existing in
-#' spatial data, and classify it into clusters.
+#' Based on chosen environmental layers, this function can generate a map
+#' of ecoregions of \emph{n} categories/classes.
 #'
 #' @param env Object of class \code{SpatRaster}, \code{RasterBrick} or
 #' \code{RasterStack} of desired resolution, crs and extent defining the study
@@ -21,12 +14,19 @@
 #' should have the output?
 #' @param path Character. Folder path where the output should be saved.
 #' Default is none.
-#' @param name Character. If \code{path} is used, should include the name of the
-#' output file without file extension.
+#' @param name Character. If \code{path} is used, should include the name of
+#' the output file without file extension.
 #' @param raster Logical. Whether the output should be a raster layer. Default
 #' is \code{FALSE}.
 #' @param ... Additonnal parameters for the function \code{clara()} of the
 #' \code{clutser} R package.
+#' @details Useful if the in-house ecoregion shapefiles ('eco.terra',
+#' eco.fresh', 'eco.marine') are too coarse for a given geographic region
+#' (e.g., for local studies) or a shapefile of finer environmental details is
+#' needed. The classes are calculated with the 'Clustering Large Applications'
+#' method (\code{clara()} from the cluster R \code{package}), which recognize
+#' patterns and relationships existing in spatial data, and classify it into
+#' clusters.
 #' @return A \code{.tif} or \code{.shp} file.
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &

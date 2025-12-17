@@ -37,12 +37,14 @@ Object of class vector of length \code{nrow(df)} or \code{npoints},
 with integers defining different folds.
 }
 \description{
-Creates a stratum vector based on a data.frame with n columns. If the
-data.frame has one column, strata vector is created based on clusters
-separated by quantiles. If the data.frame has two or more columns,
-strata vector is created based on the 'Clustering Large Applications'
+Creates a stratum vector based on a data.frame with n columns.
+}
+\details{
+If \code{df} has one column, the output vector is created based on
+clusters separated by quantiles. If \code{df} has two or more columns,
+the output vector is created based on the 'Clustering Large Applications'
 method (\code{clara()} from the \code{cluster} R package). Also,
-instead of a data.frame the argument 'npoints' can be provided, which
+instead of a \code{data.frame} the argument 'npoints' can be provided, which
 create groups by random sampling. An opitimization algorithm optimizes
 for equal stratum sizes: (\code{gridSearch} from the \code{NMOF} R package)
 }

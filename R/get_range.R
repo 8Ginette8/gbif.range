@@ -5,15 +5,6 @@
 #'
 #' This function estimates species ranges from occurrence data (GBIF or
 #' else) and ecoregions (see \code{make_ecoregion()} or \code{bioreg_list}).
-#' It first removes outliers from the observation dataset, then creates
-#' a convex hull polygon with a user-specified buffer around all observations
-#' within each ecoregion. If there is only one observation in an
-#' ecoregion, the function creates a buffer around that point. If all
-#' points in an ecoregion lie on a line, the function also creates a
-#' buffer around them, but the buffer size increases with the number of
-#' points in the line. If there are too many records, \code{get_range()} can
-#' process a sub-sample of species observations to speed up polygon creation or
-#' avoid potential RAM issues.
 #' 
 #' @param occ_coord Object of class \code{getGBIF} (see \code{get_gbif()})
 #' or a data.frame containing two columns named 'decimalLongitude' and
@@ -60,7 +51,17 @@
 #' the same resolution of the rasters used to create a \code{make_ecoregion()}
 #' object.
 #' @param verbose Logical. Should progession be printed?
-#' @details Ecoregions cover relatively large areas of land or water, and
+#' @details The function first removes outliers from the observation dataset,
+#' then creates a convex hull polygon with a user-specified buffer around all
+#' observations within each ecoregion. If there is only one observation in an
+#' ecoregion, the function creates a buffer around that point. If all
+#' points in an ecoregion lie on a line, the function also creates a
+#' buffer around them, but the buffer size increases with the number of
+#' points in the line. If there are too many records, \code{get_range()} can
+#' process a sub-sample of species observations to speed up polygon creation or
+#' avoid potential RAM issues.
+#' 
+#' Ecoregions cover relatively large areas of land or water, and
 #' contain characteristic, geographically distinct assemblages of natural
 #' communities sharing a large majority of species, dynamics, and environmental
 #' conditions. The biodiversity of flora, fauna and ecosystems that characterise
@@ -70,12 +71,14 @@
 #' Each ecoregion shapefile has one or more categories, which describe more or
 #' less precisely the ecoregion world distribution (from the more to the less
 #' detailed):
+#'
 #' (1) eco_terra has three different levels: "ECO_NAME", "WWF_MHTNAM" and
-#' "WWF_REALM2".\cr
-#' (2) eco_fresh has only one: "ECOREGION".\cr
+#' "WWF_REALM2".
+#'
+#' (2) eco_fresh has only one: "ECOREGION".
+#' 
 #' (3) eco_marine and eco_hd_marine (very coastal-precise version) contains
 #' three distinct levels: "ECOREGION", "PROVINCE" and "REALM".
-#' 
 #' @return An object of class \code{getRange} with two fields:
 #' \code{init.args} (parameters and data employed) and
 #' \code{rangeOutput} (object of class \code{SpatVector} or
