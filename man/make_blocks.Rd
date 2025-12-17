@@ -17,22 +17,22 @@ make_blocks(
 to separate groups in block-cross validation.}
 
 \item{df}{Object of class data.frame with n columns containing critera
-for cluster building. Not necessary if parameter *npoints* is supplied.}
+for cluster building. Not necessary if parameter \code{npoints} is supplied.}
 
 \item{nblocks}{Numeric. Number of clusters (blocks) based on the number
-Maximum is nrow(*df*)/10.}
+Maximum is nrow(\code{df})/10.}
 
-\item{npoints}{Optional argument if *df* is not supplied. For how many
+\item{npoints}{Optional argument if \code{df} is not supplied. For how many
 points should random sampling be made?}
 
-\item{pres}{Binary vector. Optional argument. If *df* is supplied, this
+\item{pres}{Binary vector. Optional argument. If \code{df} is supplied, this
 argument can be used to save processing time. 1 stands for the points
 on which CLARA is appplied, and 0 stands for the points on which K-nearest
-neighbors is applied relative to the 1. If *df* is not supplied, for which
-points should random sampling be made?}
+neighbors is applied relative to the 1. If \code{df} is not supplied, for
+which points should random sampling be made?}
 }
 \value{
-Object of class vector of length nrow(*df*) or *npoints*,
+Object of class vector of length nrow(\code{df}) or \code{npoints},
 with integers defining different folds.
 }
 \description{

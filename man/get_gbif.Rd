@@ -54,7 +54,7 @@ include the author.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
 (default), the order of priority is (1) species, (2) subspecies and (3)
-variety unless "subsp." or "var." is found in the *sp_name* parameter.}
+variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 
 \item{phylum}{Character. Optional. What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
@@ -75,7 +75,7 @@ but at the finer family level. Available options are the GBIF Families (same
 url). If search = FALSE, used only if no direct match is found.}
 
 \item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold
-of match between *sp_name* and the GBIF backbone taxonomy. Default is 90.}
+of match between \code{sp_name} and the GBIF backbone taxonomy. Default is 90.}
 
 \item{geo}{Object of class Extent, SpatExtent, SpatialPolygon,
 SpatialPolygonDataframe, SpatVector or sf (WGS84) to define the study's
@@ -188,11 +188,11 @@ package. Filtering options may be chosen and involve several choices:
 study's extent, removal of duplicates, removal of absences, basis of records
 selection, removal of invalid/uncertain xy coordinates (WGS84), time period
 selection and removal of raster centroids. By default, the argument
-*hasGeospatialIssue* in \code{occ_search()} (rgbif R function) is set to
+\code{hasGeospatialIssue} in \code{occ_search()} (rgbif R function) is set to
 FALSE.
 }
 \details{
-The *grain* parameter is used for two distinct gbif records
+The \code{grain} parameter is used for two distinct gbif records
 filtering. (1) Records filtering according to gbif
 'coordinateUncertaintyInMeters': every records uncertainty > grain/2
 are removed. Note that records with no information on coordinate

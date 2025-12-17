@@ -6,11 +6,11 @@
 #' Divides a given spatial extent or geometry into a specified number of tiles.
 #' Each tile is returned as a POLYGON() geometry. The original extent can be:
 #' (1) converted into a single POLYGON(), or (2) subdivided into approximately
-#' *ntiles* regular fragments, each returned as a POLYGON() and,
+#' \code{ntiles} regular fragments, each returned as a POLYGON() and,
 #' optionally, as a SpatExtent. Based on a specific extent, one or several
 #' tiles are generated. Tiles can be smaller raster extents or geometry
 #' arguments POLYGON(). The original extent is therefore either converted
-#' into a POLYGON() argument, or divided into *ntiles* of regular fragments
+#' into a POLYGON() argument, or divided into \code{ntiles} of regular fragments
 #' which are converted into POLYGON() arguments and smaller SpatExtent.
 #'
 #' @param geo Object of class Extent, SpatExtent, SpatialPolygon,
@@ -20,8 +20,8 @@
 #' divided approximately?
 #' @param sext Logical. Should a list of SpatExtent also be returned
 #' for each generated POLYGON()?
-#' @return A list of geometry arguments POLYGON() of length *ntiles*
-#' (and of SpatExtent if *sext* = TRUE).
+#' @return A list of geometry arguments POLYGON() of length \code{ntiles}
+#' (and of SpatExtent if \code{sext} = TRUE).
 #' @references 
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
 #' Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate,

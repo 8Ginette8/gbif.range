@@ -24,7 +24,7 @@ should have the output?}
 \item{path}{Character. Folder path where the output should be saved.
 Default is none.}
 
-\item{name}{Character. If *path* is used, should include the name of the
+\item{name}{Character. If \code{path} is used, should include the name of the
 output file (without file extension).}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default
@@ -42,10 +42,10 @@ eco.fresh', 'eco.marine') are too coarse for a given geographic region
 (e.g., for local studies) or a shapefile of finer environmental details is
 needed. Based on several environmental layers (e.g. climate, soil and land
 cover), this function can generate a map of environmental regions containing
-*n* categories/classes. The classes are calculated with the 'Clustering
-Large Applications' method (\code{clara()} from the cluster R package),
-which recognize patterns and relationships existing in spatial data, and
-classify it into clusters.
+\emph{n} categories/classes. The classes are calculated with the
+'Clustering Large Applications' method (\code{clara()} from the cluster R
+package), which recognize patterns and relationships existing in spatial
+data, and classify it into clusters.
 }
 \examples{
 \dontrun{

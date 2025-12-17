@@ -8,10 +8,10 @@
 #' (e.g., for local studies) or a shapefile of finer environmental details is
 #' needed. Based on several environmental layers (e.g. climate, soil and land
 #' cover), this function can generate a map of environmental regions containing
-#' *n* categories/classes. The classes are calculated with the 'Clustering
-#' Large Applications' method (\code{clara()} from the cluster R package),
-#' which recognize patterns and relationships existing in spatial data, and
-#' classify it into clusters.
+#' \emph{n} categories/classes. The classes are calculated with the
+#' 'Clustering Large Applications' method (\code{clara()} from the cluster R
+#' package), which recognize patterns and relationships existing in spatial
+#' data, and classify it into clusters.
 #'
 #' @param env Object of class SpatRaster, RasterBrick or RasterStack of desired
 #' resolution, crs and extent defining the study area. Used to generate a map of
@@ -20,7 +20,7 @@
 #' should have the output?
 #' @param path Character. Folder path where the output should be saved.
 #' Default is none.
-#' @param name Character. If *path* is used, should include the name of the
+#' @param name Character. If \code{path} is used, should include the name of the
 #' output file (without file extension).
 #' @param raster Logical. Whether the output should be a raster layer. Default
 #' is FALSE.

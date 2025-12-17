@@ -8,7 +8,7 @@
 #' or IUCN expert range maps. See Pinkert et al. (2023) for metrics and
 #' comparisons of various types of range data, including expert range maps, SDMs
 #' and ecoregional range maps. Optional functionalities include the masking of
-#' the focal study region (see *mask* parameter) and aggregations of the input
+#' the focal study region (see \code{mask} parameter) and aggregations of the input
 #' maps to different resolutions, given the importance of these factors for
 #' specific applications (Pinkert et al., 2023).
 #' @param root_dir Character. Working directory to load and save target files.

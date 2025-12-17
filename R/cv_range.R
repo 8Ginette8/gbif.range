@@ -31,7 +31,7 @@
 #' the number of blocks per fold.
 #' @param backpoints Numeric (optional). Number of regular background points
 #' that should be sampled. Defaut is 10,000.
-#' @return A data.frame with *nfolds* rows and 8 evaluation columns: 
+#' @return A data.frame with \code{nfolds} rows and 8 evaluation columns: 
 #' -- Precision (ppv) =
 #' number true presences (TP) / [TP + number false presences (FP)]; 
 #' -- Sensitivity =

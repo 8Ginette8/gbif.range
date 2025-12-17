@@ -33,7 +33,7 @@ include the author.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If NULL
 (default), the order of priority is (1) species, (2) subspecies and (3)
-variety unless "subsp." or "var." is found in the *sp_name* parameter.}
+variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 
 \item{phylum}{Character. Optional. What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
@@ -54,7 +54,8 @@ but at the finer family level. Available options are the GBIF Families (same
 url). If search = FALSE, used only if no direct match is found.}
 
 \item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold
-of match between *sp_name* and the GBIF backbone taxonomy. Default is 90.}
+of match between \code{sp_name} and the GBIF backbone taxonomy.
+Default is 90.}
 
 \item{all}{Logical. Default is FALSE. Should all species names be retrieved
 or only the accepted name and its synonyms?}
@@ -63,7 +64,8 @@ or only the accepted name and its synonyms?}
 Data.frame with nine columns: (0) Simplified name,
 (1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
 (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-(9) sp_nameMatch informing which scientific name has matched with *sp_name*.
+(9) sp_nameMatch informing which scientific name has matched with
+\code{sp_name}.
 }
 \description{
 Generates, based on a given species name, the IUCN red list status and

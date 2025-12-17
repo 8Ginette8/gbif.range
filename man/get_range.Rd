@@ -39,9 +39,9 @@ species, same may be done if the user considers that terrestrial ecoregions
 should be more representative of the species ecology.}
 
 \item{bioreg_name}{Character. One ecoregion level/category name from the
-*bioreg* parameter polygon must be supplied, e.g., very detailed level of
+\code{bioreg} parameter polygon must be supplied, e.g., very detailed level of
 'eco_terra' is "ECO_NAME". Note that default applies if a
-\code{make_ecoregion()} polygon is provided as a *bioreg* parameter.}
+\code{make_ecoregion()} polygon is provided as a \code{bioreg} parameter.}
 
 \item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier
 classification. If the nearest minimal distance to the next point is larger
@@ -69,7 +69,7 @@ is \code{tempdir()}.}
 \item{res}{Numeric. If raster = TRUE, resolution of the output in
 degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 important to note that the highest achievable resolution of the output will
-depend on its *bioreg* precision, e.g., a species range output can reach
+depend on its \code{bioreg} precision, e.g., a species range output can reach
 the same resolution of the rasters used to create a \code{make_ecoregion}
 object.}
 
@@ -77,12 +77,12 @@ object.}
 }
 \value{
 An object of class getRange with two fields: \code{init.args}
-SpatVector or SpatRaster depending on what the user set as a *raster*
+SpatVector or SpatRaster depending on what the user set as \code{raster}
 parameter').
 }
 \description{
 This function estimates species ranges from occurrence data (GBIF or
-else) and ecoregions (see \code{make_ecoregion()} or \code{bioreg}).
+else) and ecoregions (see \code{make_ecoregion()} or \code{bioreg_list}).
 It first removes outliers from the observation dataset, then creates
 a convex hull polygon with a user-specified buffer around all observations
 within each ecoregion. If there is only one observation in an
