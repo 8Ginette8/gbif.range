@@ -77,9 +77,10 @@ object.}
 \item{verbose}{Logical. Should progession be printed?}
 }
 \value{
-An object of class getRange with two fields: \code{init.args}
-SpatVector or SpatRaster depending on what the user set as \code{raster}
-parameter').
+An object of class getRange with two fields:
+\code{init.args} (parameters and data employed) and
+\code{rangeOutput} (object of class SpatVector or SpatRaster depending
+on what the user set as \code{raster} parameter').
 }
 \description{
 This function estimates species ranges from occurrence data (GBIF or
@@ -106,10 +107,10 @@ Each ecoregion shapefile has one or more categories, which describe more or
 less precisely the ecoregion world distribution (from the more to the less
 detailed):
 
-- eco_terra has three different levels: "ECO_NAME", "WWF_MHTNAM" and
+(1) eco_terra has three different levels: "ECO_NAME", "WWF_MHTNAM" and
 "WWF_REALM2".
-- eco_fresh has only one: "ECOREGION".
-- eco_marine and eco_hd_marine (very coastal-precise version) contains
+(2) eco_fresh has only one: "ECOREGION".
+(3) eco_marine and eco_hd_marine (very coastal-precise version) contains
 three distinct levels: "ECOREGION", "PROVINCE" and "REALM".
 }
 \examples{
