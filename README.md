@@ -17,7 +17,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
 ## Main functions
 
-  - *get_gbif()*: improves the accessibility of the *rgbif* R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>) in
+  - *\code{get_gbif()}*: improves the accessibility of the *rgbif* R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>) in
   retrieving GBIF observations of a given species (accepted and synonym names). It uses a dynamic moving   windows if the given geographic extent
   contains > 100,000 observations and implements 13 post-processing options to flag and clean erroneous records based on custom functions and the
   *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>).
