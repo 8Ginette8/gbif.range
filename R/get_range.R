@@ -281,7 +281,7 @@ get_range <- function (occ_coord = NULL,
   occ.coord.mod <- occ_coord[!cond, ]
 
   # Stop if too many outliers in data set
-  if(nrow(occ.coord.mod) == 0){
+  if (nrow(occ.coord.mod) == 0){
     stop('Too few occurrences within outlier threshold!')
   } 
 
@@ -305,7 +305,7 @@ get_range <- function (occ_coord = NULL,
   
   # Loop over bioregions
   SP.dist <- list()
-  for(g in seq_along(uniq)) {
+  for (g in seq_along(uniq)) {
     
     # Print
     if (verbose){

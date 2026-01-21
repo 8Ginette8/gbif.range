@@ -4,6 +4,7 @@
 #' Class to store get_range outuput
 #'
 #' @keywords internal
+#' @export
 getRange <- setRefClass("getRange",
                         fields = list(
                           init.args = "ANY",
@@ -17,6 +18,7 @@ getRange <- setRefClass("getRange",
 #' Class to store get_gbif outuput
 #'
 #' @keywords internal
+#' @export
 getGBIF <- function(df) {
     if (!is.data.frame(df)) {
         stop("Input must be a data.frame")

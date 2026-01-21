@@ -3,6 +3,7 @@
 #' @param x Argument value
 #' @param name Argument name for error reporting
 #' @keywords internal
+#' @export
 check_null_na <- function(x, name) {
   if (is.null(x) || (length(x) == 1 && is.na(x))) {
     stop(
@@ -18,6 +19,7 @@ check_null_na <- function(x, name) {
 #' @param x Argument value
 #' @param name Argument name for error reporting
 #' @keywords internal
+#' @export
 check_logical <- function(x, name) {
   check_null_na(x, name)
   if (!is.logical(x) || length(x) != 1) {
@@ -34,6 +36,7 @@ check_logical <- function(x, name) {
 #' @param x Argument value
 #' @param name Argument name for error reporting
 #' @keywords internal
+#' @export
 check_numeric <- function(x, name) {
   check_null_na(x, name)
   if (!is.numeric(x) || length(x) != 1) {
@@ -50,6 +53,7 @@ check_numeric <- function(x, name) {
 #' @param x Argument value
 #' @param name Argument name for error reporting
 #' @keywords internal
+#' @export
 check_character_vector <- function(x, name) {
   check_null_na(x, name)
   if (!is.character(x) || length(x) == 0 || any(is.na(x))) {
@@ -67,6 +71,7 @@ check_character_vector <- function(x, name) {
 #' @param name Argument name for error reporting
 #' @param len Expected length of numeric vector
 #' @keywords internal
+#' @export
 check_numeric_range <- function(x, name, len) {
   check_null_na(x, name)
   if (!is.numeric(x) || length(x) != len || any(is.na(x))) {
