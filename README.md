@@ -17,38 +17,38 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
 ## Main functions
 
-  - *get_gbif()*: improves the accessibility of the *rgbif* R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>) in
-  retrieving GBIF observations of a given species (accepted and synonym names). It uses a dynamic moving   windows if the given geographic extent
+  - `get_gbif()`: improves the accessibility of the `rgbif` R package (<a href="https://cran.r-project.org/web/packages/rgbif/index.html">CRAN</a>) in
+  retrieving GBIF observations of a given species (accepted and synonym names). It uses a dynamic moving windows if the given geographic extent
   contains > 100,000 observations and implements 13 post-processing options to flag and clean erroneous records based on custom functions and the
-  *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>).
+  `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>).
 
-  - *get_range()*: estimates species ranges based on occurrence data (a *get_gbif* output or a set of coordinates) and
+  - `get_range()`: estimates species ranges based on occurrence data (a `getGBIF` output or a set of coordinates) and
   <a href="https://en.wikipedia.org/wiki/Ecoregion">ecoregion</a> polygons.
 
-  - *read_bioreg()*: download and read available ecoregion files from different available URL sources. See also associated calls *bioreg_list*, *get_bioreg()* and *check_and_get_bioreg()*.
+  - `read_bioreg()`: download and read available ecoregion files from different available URL sources. See also associated calls `bioreg_list`, `get_bioreg()` and `check_and_get_bioreg()`.
     
-  - *get_status()*: generates, based on a given species name, its IUCN red list status and a list of all scientific names
+  - `get_status()`: generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy. Children and related doubtful names not used to download the data may also be extracted.
 
-  - *obs_filter()*: *obs_filter()* accepts as input a *get_gbif()* output (one or several species) and filter the observations according
+  - `obs_filter()`: `obs_filter()` accepts as input a `getGBIF` output (one or several species) and filter the observations according
   to a specific given grid resolution. It can retain one observation per grid pixel and/or remove observations from grid pixels that contain fewer than a specified number of records.
 
-  - *make_tiles()*: may be used to generate a set of *SpatialExtent* and geometry arguments POLYGON() based on a given
-  geographic extent. This function is meant to help users who want to use the *rgbif* R package and its parameter
-  *geometry* that uses a POLYGON() argument.
+  - `make_tiles()`: may be used to generate a set of `SpatialExtent` and geometry arguments `POLYGON()` based on a given
+  geographic extent. This function is meant to help users who want to use the `rgbif` R package and its parameter
+  `geometry` that uses a `POLYGON()` argument.
 
-  - *get_doi()*: a small wrapper of *derived_dataset()* in *rgbif* that simplifies the obtention of a general DOI
+  - `get_doi()`: a small wrapper of `derived_dataset()` in `rgbif` that simplifies the obtention of a general DOI
   for a set of several gbif species datasets.
 
-  - *make_ecoregion()*: a function to create custom ecoregions based on environmental layers.
+  - `make_ecoregion()`: a function to create custom ecoregions based on environmental layers.
 
-  - *evaluate_range()*: evaluation function to validate the species ranges with distribution information provided by the user.
+  - `evaluate_range()`: evaluation function to validate the species ranges with distribution information provided by the user.
 
-  - *cv_range()*: cross-validation function to evaluate a *get_range()* output based on its occurrence data.
+  - `cv_range()`: cross-validation function to evaluate a `getRange` output based on its occurrence data.
 
 ## Installation
 
-You can install the development version from GitHub with (make sure the R package *remotes* is up to date):
+You can install the development version from GitHub with (make sure the R package `remotes` is up to date):
 
 ``` r
 remotes::install_github("8Ginette8/gbif.range")
@@ -74,7 +74,7 @@ points(obs.pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 ![image](https://github.com/user-attachments/assets/2eef058d-3a0f-4b63-b053-7b1e4a94f3a2)
 
 
-Note that the function did not manage to get rid of observations of most likely non-informed captive individuals (e.g., in Europe, U.S. and South Africa); see the *CoordinateCleaner* R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in *get_gbif()*):
+Note that the function did not manage to get rid of observations of most likely non-informed captive individuals (e.g., in Europe, U.S. and South Africa); see the `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in `get_gbif()`):
 
 ``` r
 get_status("Panthera tigris", all = FALSE)
@@ -104,11 +104,11 @@ terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, 
 ![image](https://github.com/user-attachments/assets/97f6d768-4858-42ca-89f4-9d66e2394171)
 
 
-Here, default parameters were employed, however, *clust_pts_outlier* (in degrees, ~440 km here) could have been increased to remove larger isolated clusters of observations, and *degrees_outlier* (~550 km here) to account for more appart observations in the range process. Here, default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
+Here, default parameters were employed, however, `clust_pts_outlier` (in degrees, ~440 km here) could have been increased to remove larger isolated clusters of observations, and `degrees_outlier` (~550 km here) to account for more appart observations in the range process. Here, default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in *get_range()* as input, note that ecoregion shapefiles may be dowloaded using the package: *eco.earth* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
+Although whatever shapefile may be set in `get_range()` as input, note that ecoregion shapefiles may be dowloaded using the package: *eco.earth* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
 - *eco_terra* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco_fresh* has only one: 'ECOREGION'.
 - *eco_marine* and *eco_hd_marine* (very coastal-precise version) contains three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
@@ -121,7 +121,7 @@ bioreg_list
 
 ### Custom ecoregions
 
-Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, *make_ecoregion()* can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
+Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
@@ -145,9 +145,9 @@ range.arcto <- get_range(occ_coord = obs.arcto,
                         res = 0.05)
 ```
 
-Unlike at larger-scales, we have here decreased the *get_gbif()* *grain* parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. *degrees_outlier* and *clust_pts_outlier* were here also kept defaults (~550 and 440 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
+Unlike at larger-scales, we have here decreased the `get_gbif()` `grain` parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. `degrees_outlier` and `clust_pts_outlier` were here also kept defaults (~550 and 440 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
 
-It is also important to note that the resolution parameter (*res*) can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the *bioreg* object (e.g., a range output can reach the same resolution of the rasters used to create a *make_ecoregion* object).
+It is also important to note that the resolution parameter (`res`) can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the `bioreg` object (e.g., a range output can reach the same resolution of the rasters used to create a `make_ecoregion` object).
 
 ``` r
 # Plot
@@ -165,7 +165,7 @@ points(obs.arcto[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9
 
 Let's reapply the same process as for Panthera tigris, but with the marine species *Delphinus delphis* (> 100'000 observations).
 
-⚠️Notes that the download takes here longer unless the parameter *occ_samp* is used. Altough giving **less precise observational distribution**, *occ_samp* allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
+⚠️Notes that the download takes here longer unless the parameter `occ_samp` is used. Altough giving **less precise observational distribution**, `occ_samp` allows to extract a **subsample of *n* GBIF observations** per created tiles over the study area:
 
 ``` r
 # Here the example is a sample of 1000 observations per geographic tile
@@ -197,7 +197,7 @@ points(obs.dd[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 
 ![image](https://github.com/user-attachments/assets/52d63434-f64b-4076-b8bc-d3c03c899137)
 
-Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, *occ_samp* must be in this case increased or removed.
+Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, `occ_samp` must be in this case increased or removed.
 
 ## Citation
 
