@@ -46,14 +46,14 @@
 #' object.
 #' @param verbose Logical. Should progession be printed?
 #' @details The function first removes outliers from the observation dataset,
-#' then creates a convex hull polygon with a user-specified buffer around all
-#' observations within each ecoregion. If there is only one observation in an
-#' ecoregion, the function creates a buffer around that point. If all
-#' points in an ecoregion lie on a line, the function also creates a
-#' buffer around them, but the buffer size increases with the number of
-#' points in the line. If there are too many records, \code{get_range()} can
-#' process a sub-sample of species observations to speed up polygon creation or
-#' avoid potential RAM issues.
+#' detects observations overlapping with ecoregions, then creates a convex hull
+#' polygon with a user-specified buffer for each detected clusters of observations
+#' per ecoregion (i.e., \code{n} convex hulls are drawn per ecoregion). If there is only
+#' one observation in a cluster, the function creates a buffer around that point.
+#' If all points of ca cluster lie on a line, the function also creates a buffer
+#' around them, but the buffer size increases with the number of points in the line.
+#' If there are too many records, \code{get_range()} can process a sub-sample of
+#' species observations to speed up polygon creation or avoid potential RAM issues.
 #' 
 #' Ecoregions cover relatively large areas of land or water, and
 #' contain characteristic, geographically distinct assemblages of natural
