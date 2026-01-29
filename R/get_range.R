@@ -27,11 +27,11 @@
 #' @param clust_pts_outlier Numeric. k-NN order for outlier detection. Points 
 #' must have \geq \code{k} nearest neighbours within \code{degrees_outlier} 
 #' distance to be retained (default: 4).
-#' @param buffer_width_point Numeric. Buffer (in degrees) which will be applied
+#' @param buff_width_point Numeric. Buffer (in degrees) which will be applied
 #' around single observations.
-#' @param buff_incrmt_pt_line Numeric. How much should the buffer be increased
+#' @param buff_incrmt_pts_line Numeric. How much should the buffer be increased
 #' for each point on a line.
-#' @param buffer_width_polygon Numeric. Buffer (in degrees) which will be
+#' @param buff_width_polygon Numeric. Buffer (in degrees) which will be
 #' applied around distribution polygons (for each ecoregion).
 #' @param dir_temp Character. Where should the temporary text file for the
 #' convex hull be saved? (text file will be deleted again). Default value
@@ -66,11 +66,11 @@
 #' **Step 3 - Convex hull**: For each cluster within an ecoregion, 
 #' \code{conv_function()} generates a buffered convex hull. Special cases
 #' include: (1) single points receive circular buffers
-#' (\code{buffer_width_point}, default: 4 degrees); (2) collinear points
+#' (\code{buff_width_point}, default: 4 degrees); (2) collinear points
 #' (suggesting transects) receive incrementally widening buffers along
-#' the line (\code{buff_incrmt_pt_line}, default: 0.5 degrees per additional
+#' the line (\code{buff_incrmt_pts_line}, default: 0.5 degrees per additional
 #' point); and (3) standard clusters receive polygon expansion
-#' (\code{buffer_width_polygon}, default: 4 degrees).
+#' (\code{buff_width_polygon}, default: 4 degrees).
 #'
 #' **Step 4 - Ecological intersection**: Each cluster-derived polygon is 
 #' intersected with its parent ecoregion boundary (after zero-width buffering 
@@ -181,9 +181,9 @@ get_range <- function (occ_coord = NULL,
                        bioreg_name = NULL, 
                        degrees_outlier = 5,
                        clust_pts_outlier = 4,
-                       buffer_width_point = 4, 
-                       buff_incrmt_pt_line = 0.5, 
-                       buffer_width_polygon = 4,
+                       buff_width_point = 4, 
+                       buff_incrmt_pts_line = 0.5, 
+                       buff_width_polygon = 4,
                        dir_temp = tempdir(),
                        raster = TRUE,
                        res = 0.1,
@@ -196,9 +196,9 @@ get_range <- function (occ_coord = NULL,
 
   check_numeric(degrees_outlier, "degrees_outlier")
   check_numeric(clust_pts_outlier, "clust_pts_outlier")
-  check_numeric(buffer_width_point, "buffer_width_point")
-  check_numeric(buff_incrmt_pt_line, "buff_incrmt_pt_line")
-  check_numeric(buffer_width_polygon, "buffer_width_polygon")
+  check_numeric(buff_width_point, "buff_width_point")
+  check_numeric(buff_incrmt_pts_line, "buff_incrmt_pts_line")
+  check_numeric(buff_width_polygon, "buff_width_polygon")
   check_logical(raster, "raster")
   check_numeric(res, "res")
   check_logical(verbose, "verbose")
@@ -400,9 +400,9 @@ get_range <- function (occ_coord = NULL,
       # Generate polygon
       my.shpe <- conv_function(
         sp_coord = a.temp,
-        bwp = buffer_width_point,
-        bipl = buff_incrmt_pt_line,
-        bwpo = buffer_width_polygon,
+        bwp = buff_width_point,
+        bipl = buff_incrmt_pts_line,
+        bwpo = buff_width_polygon,
         temp_dir = dir_temp,
         g = g
       )
@@ -454,9 +454,9 @@ get_range <- function (occ_coord = NULL,
                            bioreg_name = bioreg_name, 
                            degrees_outlier = degrees_outlier,
                            clust_pts_outlier = clust_pts_outlier,
-                           buffer_width_point = buffer_width_point,
-                           buff_incrmt_pt_line = buff_incrmt_pt_line,
-                           buffer_width_polygon = buffer_width_polygon,
+                           buff_width_point = buff_width_point,
+                           buff_incrmt_pts_line = buff_incrmt_pts_line,
+                           buff_width_polygon = buff_width_polygon,
                            dir_temp = dir_temp,
                            raster = TRUE,
                            res = res)

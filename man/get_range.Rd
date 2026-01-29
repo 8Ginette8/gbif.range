@@ -10,9 +10,9 @@ get_range(
   bioreg_name = NULL,
   degrees_outlier = 5,
   clust_pts_outlier = 4,
-  buffer_width_point = 4,
-  buff_incrmt_pt_line = 0.5,
-  buffer_width_polygon = 4,
+  buff_width_point = 4,
+  buff_incrmt_pts_line = 0.5,
+  buff_width_polygon = 4,
   dir_temp = tempdir(),
   raster = TRUE,
   res = 0.1,
@@ -46,13 +46,13 @@ classified as outliers (default: 5 degrees).}
 must have \geq \code{k} nearest neighbours within \code{degrees_outlier} 
 distance to be retained (default: 4).}
 
-\item{buffer_width_point}{Numeric. Buffer (in degrees) which will be applied
+\item{buff_width_point}{Numeric. Buffer (in degrees) which will be applied
 around single observations.}
 
-\item{buff_incrmt_pt_line}{Numeric. How much should the buffer be increased
+\item{buff_incrmt_pts_line}{Numeric. How much should the buffer be increased
 for each point on a line.}
 
-\item{buffer_width_polygon}{Numeric. Buffer (in degrees) which will be
+\item{buff_width_polygon}{Numeric. Buffer (in degrees) which will be
 applied around distribution polygons (for each ecoregion).}
 
 \item{dir_temp}{Character. Where should the temporary text file for the
@@ -103,11 +103,11 @@ is assigned via basic k-means; collinear points receive minimal jittering.
 **Step 3 - Convex hull**: For each cluster within an ecoregion, 
 \code{conv_function()} generates a buffered convex hull. Special cases
 include: (1) single points receive circular buffers
-(\code{buffer_width_point}, default: 4 degrees); (2) collinear points
+(\code{buff_width_point}, default: 4 degrees); (2) collinear points
 (suggesting transects) receive incrementally widening buffers along
-the line (\code{buff_incrmt_pt_line}, default: 0.5 degrees per additional
+the line (\code{buff_incrmt_pts_line}, default: 0.5 degrees per additional
 point); and (3) standard clusters receive polygon expansion
-(\code{buffer_width_polygon}, default: 4 degrees).
+(\code{buff_width_polygon}, default: 4 degrees).
 
 **Step 4 - Ecological intersection**: Each cluster-derived polygon is 
 intersected with its parent ecoregion boundary (after zero-width buffering 
