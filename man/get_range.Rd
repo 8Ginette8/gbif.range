@@ -34,17 +34,17 @@ with the library: 'eco_terra', 'eco_marine', 'eco_hd_marine'
 and 'eco_fresh' (see \code{bioreg_list} and details below).}
 
 \item{bioreg_name}{Character. One ecoregion level/category name from the
-\code{bioreg} parameter polygon must be supplied, e.g., very detailed level of
-'eco_terra' is "ECO_NAME". Note that default applies if a
+\code{bioreg} parameter polygon must be supplied, e.g., very detailed level
+of eco_terra' is "ECO_NAME". Note that default applies if a
 \code{make_ecoregion()} polygon is provided as a \code{bioreg} parameter.}
 
-\item{degrees_outlier}{Numeric. Distance threshold (degrees) for outlier
-classification. If the nearest minimal distance to the next point is larger
-than this threshold, it will be considered as an outlier.}
+\item{degrees_outlier}{Numeric. Distance threshold (degrees). Points whose 
+`\code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
+classified as outliers (default: 5°).}
 
-\item{clust_pts_outlier}{Numeric. Maximum number of points which are closer
-to each other than the \code{degrees_outlier}, but should still be considered
-as outliers.}
+\item{clust_pts_outlier}{Numeric. k-NN order for outlier detection. Points 
+must have ≥\code{k} nearest neighbors within \code{degrees_outlier} distance
+to be retained (default: 4).}
 
 \item{buffer_width_point}{Numeric. Buffer (in degrees) which will be applied
 around single observations.}
@@ -83,26 +83,47 @@ This function estimates species ranges from occurrence data (GBIF or
 else) and ecoregions [see \code{make_ecoregion()} or \code{bioreg_list}].
 }
 \details{
-The function first removes outliers from the observation dataset,
-detects observations overlapping with ecoregions, then creates a convex hull
-polygon with a user-specified buffer for each detected clusters of observations
-per ecoregion (i.e., \code{n} convex hulls are drawn per ecoregion). If there is only
-one observation in a cluster, the function creates a buffer around that point.
-If all points of ca cluster lie on a line, the function also creates a buffer
-around them, but the buffer size increases with the number of points in the line.
-If there are too many records, \code{get_range()} can process a sub-sample of
-species observations to speed up polygon creation or avoid potential RAM issues.
+The function implements a four-step species range mapping process: 
 
-Ecoregions cover relatively large areas of land or water, and
-contain characteristic, geographically distinct assemblages of natural
-communities sharing a large majority of species, dynamics, and environmental
-conditions. The biodiversity of flora, fauna and ecosystems that characterise
-an ecoregion tends to be distinct from that of other ecoregions
-(https://en.wikipedia.org/wiki/Ecoregion).
+**Step 1 - Outlier filtering and ecoregion assignement**: Outliers
+are removed from occurrence records using k-nearest neighbor (k-NN)
+distances. Points whose distance to their \code{clust_pts_outlier}-th
+nearest neighbor exceeds the  \code{degrees_outlier} threshold (default:
+5°) are excluded, retaining only well-supported clusters (default: ≥4
+points within 5°). Then, non-outlier points are spatially intersected 
+with ecoregions (\code{bioreg}, specified via \code{bioreg_name}) to
+identify occupied bioregions.
 
-Each ecoregion shapefile has one or more categories, which describe more or
-less precisely the ecoregion world distribution (from the more to the less
-detailed):
+**Step 2 - Clustering**: Within each occupied ecoregion, points are
+clustered using Gaussian mixture modeling (\code{mclust::Mclust}) to
+determine the optimal number of clusters, followed by k-means clustering 
+(\code{ClusterR::KMeans_rcpp}). For <3 points, a single cluster is assigned 
+via basic k-means; collinear points receive minimal jittering.
+
+**Step 3 - Convex hull**: For each cluster within an ecoregion, 
+\code{conv_function()} generates a buffered convex hull. Special cases
+include: (1) single points receive circular buffers
+(\code{buffer_width_point}, default: 4°); (2) collinear points
+(suggesting transects) receive incrementally widening buffers along
+the line (\code{buff_incrmt_pt_line}, default: 0.5° per additional
+point); and (3) standard clusters receive polygon expansion
+(\code{buffer_width_polygon}, default: 4°).
+
+**Step 4 - Ecological intersection**: Each cluster-derived polygon is 
+intersected with its parent ecoregion boundary (after zero-width buffering 
+to ensure topological validity). Per-ecoregion cluster polygons are merged, 
+then combined across all occupied ecoregions to produce the final species 
+range (\code{SpatVector} or \code{SpatRaster} at \code{res = 0.1°} if 
+\code{raster = TRUE}).
+'
+If there are too many records, \code{get_range()} can process a sub-sample
+of species observations to speed up polygon creation or avoid potential RAM
+issues.
+
+Ecoregions represent large, geographically distinct areas containing 
+characteristic assemblages of species, dynamics, and environmental conditions 
+(https://en.wikipedia.org/wiki/Ecoregion). Download-ready ecoregion datasets 
+include:
 
 (1) 'eco_terra' is for terrestrial species. Has three different levels:
 "ECO_NAME", "WWF_MHTNAM" and "WWF_REALM2".
