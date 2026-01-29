@@ -52,10 +52,10 @@
 #' are removed from occurrence records using k-nearest neighbour (k-NN)
 #' distances. Points whose distance to their \code{clust_pts_outlier}-th
 #' nearest neighbour exceeds the  \code{degrees_outlier} threshold (default:
-#' 5°) are excluded, retaining only well-supported clusters (default:
-#' \geq4 points within 5°). Then, non-outlier points are spatially intersected 
-#' with ecoregions (\code{bioreg}, specified via \code{bioreg_name}) to
-#' identify occupied bioregions.
+#' 5 degrees) are excluded, retaining only well-supported clusters (default:
+#' \geq4 points within 5 degrees). Then, non-outlier points are spatially
+#' intersected with ecoregions (\code{bioreg}, specified via \code{bioreg_name})
+#' to identify occupied bioregions.
 #' 
 #' **Step 2 - Clustering**: Within each occupied ecoregion, points are
 #' clustered using Gaussian mixture modeling (\code{mclust::Mclust}) to
@@ -66,17 +66,17 @@
 #' **Step 3 - Convex hull**: For each cluster within an ecoregion, 
 #' \code{conv_function()} generates a buffered convex hull. Special cases
 #' include: (1) single points receive circular buffers
-#' (\code{buffer_width_point}, default: 4°); (2) collinear points
+#' (\code{buffer_width_point}, default: 4 degrees); (2) collinear points
 #' (suggesting transects) receive incrementally widening buffers along
-#' the line (\code{buff_incrmt_pt_line}, default: 0.5° per additional
+#' the line (\code{buff_incrmt_pt_line}, default: 0.5 degrees per additional
 #' point); and (3) standard clusters receive polygon expansion
-#' (\code{buffer_width_polygon}, default: 4°).
+#' (\code{buffer_width_polygon}, default: 4 degrees).
 #'
 #' **Step 4 - Ecological intersection**: Each cluster-derived polygon is 
 #' intersected with its parent ecoregion boundary (after zero-width buffering 
 #' to ensure topological validity). Per-ecoregion cluster polygons are merged, 
 #' then combined across all occupied ecoregions to produce the final species 
-#' range (\code{SpatVector} or \code{SpatRaster} at \code{res = 0.1°} if 
+#' range (\code{SpatVector} or \code{SpatRaster} at \code{res = 0.1 degrees} if 
 #' \code{raster = TRUE}).
 #''
 #' If there are too many records, \code{get_range()} can process a sub-sample
