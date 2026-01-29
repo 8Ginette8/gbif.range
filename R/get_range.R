@@ -19,14 +19,14 @@
 #' and 'eco_fresh' (see \code{bioreg_list} and details below).
 #' @param bioreg_name Character. One ecoregion level/category name from the
 #' \code{bioreg} parameter polygon must be supplied, e.g., very detailed level
-#' of eco_terra' is "ECO_NAME". Note that default applies if a
+#' of 'eco_terra' is "ECO_NAME". Note that default applies if a
 #' \code{make_ecoregion()} polygon is provided as a \code{bioreg} parameter.
 #' @param degrees_outlier Numeric. Distance threshold (degrees). Points whose 
-#' `\code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
-#' classified as outliers (default: 5°).
+#' \code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
+#' classified as outliers (default: 5 degrees).
 #' @param clust_pts_outlier Numeric. k-NN order for outlier detection. Points 
-#' must have \\geq\code{k} nearest neighbors within \code{degrees_outlier} distance
-#' to be retained (default: 4).
+#' must have \geq \code{k} nearest neighbours within \code{degrees_outlier} 
+#' distance to be retained (default: 4).
 #' @param buffer_width_point Numeric. Buffer (in degrees) which will be applied
 #' around single observations.
 #' @param buff_incrmt_pt_line Numeric. How much should the buffer be increased
@@ -49,19 +49,19 @@
 #' The function implements a four-step species range mapping process: 
 #' 
 #' **Step 1 - Outlier filtering and ecoregion assignement**: Outliers
-#' are removed from occurrence records using k-nearest neighbor (k-NN)
+#' are removed from occurrence records using k-nearest neighbour (k-NN)
 #' distances. Points whose distance to their \code{clust_pts_outlier}-th
-#' nearest neighbor exceeds the  \code{degrees_outlier} threshold (default:
-#' 5°) are excluded, retaining only well-supported clusters (default: \\geq4
-#' points within 5°). Then, non-outlier points are spatially intersected 
+#' nearest neighbour exceeds the  \code{degrees_outlier} threshold (default:
+#' 5°) are excluded, retaining only well-supported clusters (default:
+#' \geq4 points within 5°). Then, non-outlier points are spatially intersected 
 #' with ecoregions (\code{bioreg}, specified via \code{bioreg_name}) to
 #' identify occupied bioregions.
 #' 
 #' **Step 2 - Clustering**: Within each occupied ecoregion, points are
 #' clustered using Gaussian mixture modeling (\code{mclust::Mclust}) to
 #' determine the optimal number of clusters, followed by k-means clustering 
-#' (\code{ClusterR::KMeans_rcpp}). For <3 points, a single cluster is assigned 
-#' via basic k-means; collinear points receive minimal jittering.
+#' (\code{ClusterR::KMeans_rcpp}). For fewer than 3 points, a single cluster
+#' is assigned via basic k-means; collinear points receive minimal jittering.
 #' 
 #' **Step 3 - Convex hull**: For each cluster within an ecoregion, 
 #' \code{conv_function()} generates a buffered convex hull. Special cases
