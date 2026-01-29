@@ -96,7 +96,7 @@ pt.test <- cv_range(
 
 
 ###########################################
-### Package manuscript plot (Fig 2, ecv)
+### Package manuscript plot (Fig 2a-b)
 ###########################################
 
 # Root and package
@@ -195,7 +195,8 @@ ar.test <- cv_range(
     nblocks = 2
 )
 
-    # First extract the world at the arcto extent and divide presences/absences/outliers
+    # First extract the world at the arcto extent and divide
+    # presences/absences/outliers
 world.local <- terra::crop(spdf.world, ext.temp)
 world.local.ar <- terra::aggregate(world.local)
 pres <- all.xy[all.xy$Pres\%in\%1, ]
@@ -300,7 +301,8 @@ all.xy[all.xy$Pres\%in\%1,"col"] <- colorspace::darken(
 )
 
 # Plot
-    # First extract the world at the tiger extent and divide presences/absences/outliers
+    # First extract the world at the tiger extent and divide
+    # presences/absences/outliers
 world.local <- terra::crop(spdf.world, ext.temp)
 world.local.ti <- terra::aggregate(world.local)
 pres <- all.xy[all.xy$Pres\%in\%1, ]

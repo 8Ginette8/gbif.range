@@ -170,7 +170,7 @@ legend(
 )
 
 ###########################################
-### Package manuscript plot (Fig 2, eind)
+### Package manuscript plot (Fig 2c-d)
 ###########################################
 
 # Root and package
