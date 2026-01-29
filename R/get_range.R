@@ -25,7 +25,7 @@
 #' `\code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
 #' classified as outliers (default: 5°).
 #' @param clust_pts_outlier Numeric. k-NN order for outlier detection. Points 
-#' must have ≥\code{k} nearest neighbors within \code{degrees_outlier} distance
+#' must have \\geq\code{k} nearest neighbors within \code{degrees_outlier} distance
 #' to be retained (default: 4).
 #' @param buffer_width_point Numeric. Buffer (in degrees) which will be applied
 #' around single observations.
@@ -52,7 +52,7 @@
 #' are removed from occurrence records using k-nearest neighbor (k-NN)
 #' distances. Points whose distance to their \code{clust_pts_outlier}-th
 #' nearest neighbor exceeds the  \code{degrees_outlier} threshold (default:
-#' 5°) are excluded, retaining only well-supported clusters (default: ≥4
+#' 5°) are excluded, retaining only well-supported clusters (default: \\geq4
 #' points within 5°). Then, non-outlier points are spatially intersected 
 #' with ecoregions (\code{bioreg}, specified via \code{bioreg_name}) to
 #' identify occupied bioregions.
