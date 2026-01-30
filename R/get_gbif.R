@@ -49,7 +49,7 @@
 #' @param grain Numeric. Default is 100. Specifies in kilometers the study
 #' resolution. Used to filter gbif records according to their (1) spatial
 #' uncertainties and (2) number of coordinate decimals. Records with
-#' resolution uncertainties eqn{\ge}{>=} \code{grain} km are removed, and
+#' resolution uncertainties \eqn{\ge}{>=} \code{grain} km are removed, and
 #' records with no info on coordinate uncertainties (column
 #' coordinateUncertaintyInMeters') are kept by default. But see details.
 #' @param duplicates Logical. Should duplicated records be kept?
