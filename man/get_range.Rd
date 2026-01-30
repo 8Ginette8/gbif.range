@@ -122,7 +122,7 @@ issues.
 
 Ecoregions represent large, geographically distinct areas containing 
 characteristic assemblages of species, dynamics, and environmental conditions 
-\href{https://en.wikipedia.org/wiki/Ecoregion}{ecoregion Wikipedia page}.
+(\href{https://en.wikipedia.org/wiki/Ecoregion}{Ecoregion Wikipedia page}).
 Download-ready ecoregion datasets 
 include:
 
