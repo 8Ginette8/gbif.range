@@ -25,8 +25,8 @@
 #' \code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
 #' classified as outliers (default: 5 degrees).
 #' @param clust_pts_outlier Numeric. k-NN order for outlier detection. Points 
-#' must have \geq \code{k} nearest neighbours within \code{degrees_outlier} 
-#' distance to be retained (default: 4).
+#' must have \eqn{\ge}{>=} \code{k} nearest neighbours within
+#' \code{degrees_outlier} distance to be retained (default: 4).
 #' @param buff_width_point Numeric. Buffer (in degrees) which will be applied
 #' around single observations.
 #' @param buff_incrmt_pts_line Numeric. How much should the buffer be increased
@@ -44,18 +44,18 @@
 #' depend on its \code{bioreg} precision, e.g., a species range output can reach
 #' the same resolution of the rasters used to create a \code{make_ecoregion()}
 #' object.
-#' @param verbose Logical. Should progession be printed?
+#' @param verbose Logical. Should progression be printed?
 #' @details
 #' The function implements a four-step species range mapping process: 
 #' 
-#' **Step 1 - Outlier filtering and ecoregion assignement**: Outliers
+#' **Step 1 - Outlier filtering and ecoregion assignment**: Outliers
 #' are removed from occurrence records using k-nearest neighbour (k-NN)
 #' distances. Points whose distance to their \code{clust_pts_outlier}-th
 #' nearest neighbour exceeds the  \code{degrees_outlier} threshold (default:
 #' 5 degrees) are excluded, retaining only well-supported clusters (default:
-#' \geq4 points within 5 degrees). Then, non-outlier points are spatially
-#' intersected with ecoregions (\code{bioreg}, specified via \code{bioreg_name})
-#' to identify occupied bioregions.
+#' \eqn{\geq 4}{>= 4} points within 5 degrees). Then, non-outlier points are
+#' spatially intersected with ecoregions (\code{bioreg}, specified via
+#' \code{bioreg_name}) to identify occupied bioregions.
 #' 
 #' **Step 2 - Clustering**: Within each occupied ecoregion, points are
 #' clustered using Gaussian mixture modeling (\code{mclust::Mclust}) to
@@ -98,7 +98,7 @@
 #'
 #' For marine species, 'eco_terra' may also be used if the user wants to
 #' represent the terrestrial range of species that also partially settle
-#' on mainland. For fresh water species, same may be done if the user
+#' on mainland. For freshwater species, same may be done if the user
 #' considers that terrestrial ecoregions should be more representative of
 #' the species ecology.
 #' @return An object of class \code{getRange} with two fields:
@@ -220,8 +220,13 @@ get_range <- function (occ_coord = NULL,
     bioreg_name <- "EcoRegion"
   } 
   if (methods::is(bioreg_name, "NULL")) {
-    stop("Name of the desired ecoregion level/category
-      ('bioreg_name' parameter) is missing, please provide one...")
+    stop(
+      paste(
+        "Name of the desired ecoregion level/category,
+        ('bioreg_name' parameter)",
+        "is missing, please provide one..."
+      )
+)
   } 
 
   # occ_coord
@@ -229,7 +234,7 @@ get_range <- function (occ_coord = NULL,
     stop("'occ_coord' is not a data.frame...")
   } 
   if (!any(names(occ_coord) %in% "decimalLongitude")) {
-    stop("Longitute/Latitude columns wrongly defined...")
+    stop("Longitude/Latitude columns wrongly defined...")
   }
   
   # get sp.name, and stop if not unique
@@ -264,7 +269,7 @@ get_range <- function (occ_coord = NULL,
   # Check if there sufficient species & if not, make an entry in the
   # log-file and end the function
   if (nrow(occ_coord) <= clust_pts_outlier +1){
-    stop("Too few occurences!")
+    stop("Too few occurrences!")
   } 
   
   if (verbose){
@@ -334,7 +339,7 @@ get_range <- function (occ_coord = NULL,
       cat('bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
     }
 
-    # NAs or not
+    # Handle NAsy
     q1 <- as.data.frame(bioreg)[, bioreg_name] == uniq[g]
     q1[is.na(q1)] <- FALSE
 
