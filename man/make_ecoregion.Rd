@@ -110,7 +110,7 @@ graphics::points(
 )
 
 ###########################################
-### Package manuscript plot (Fig 1, arcto)
+### Package manuscript plot (Fig 1a, left)
 ###########################################
 
 # Root and package

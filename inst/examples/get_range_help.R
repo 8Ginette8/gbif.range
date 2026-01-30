@@ -49,7 +49,7 @@ graphics::points(
 )
 
 ###########################################
-### Package manuscript plot (Fig 1a)
+### Package manuscript plot (Fig 1a, right)
 ###########################################
 
 # Root and package
