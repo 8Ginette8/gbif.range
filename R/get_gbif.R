@@ -46,15 +46,15 @@
 #' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
 #' or \code{sf} (WGS84) to define the study's area extent. Default is
 #' \code{NULL}, i.e., the whole globe.
-#' @param grain Numeric. Specifies in kilometers the study resolution. Default
-#' is 100. Used to filter gbif records according to their (1) spatial
-#' uncertainties and (2) number of coordinate decimals. Records with no
-#' info on coordinate uncertainties (column 'coordinateUncertaintyInMeters')
-#' are kept by default. See details.
+#' @param grain Numeric. Specifies in kilometers the study resolution.
+#' Used to filter gbif records according to their (1) spatial
+#' uncertainties and (2) number of coordinate decimals. Records with precision
+#' \eqn{\ge}{<=} 100 km and no info on coordinate uncertainties
+#' (column 'coordinateUncertaintyInMeters') are kept by default. See details.
 #' @param duplicates Logical. Should duplicated records be kept?
 #' Default is \code{FALSE}.
 #' @param absences Logical. Should absence records be kept?
-#' Default is \code{FALSE}.
+#' Default is \code{FALSE}
 #' @param no_xy Logical. Only records with coordinates are downloaded.
 #' Default is \code{FALSE}. If \code{TRUE}, records with no coordinates are
 #' also downloaded.
@@ -145,11 +145,16 @@
 #'
 #' (2) Records filtering according to the number of longitude/latitude
 #' decimals:\cr
-#' - if 110km < \code{grain} <= 11km, lon / lat with >= 1 decimal are kept\cr
-#' - if 11km < \code{grain} <= 1100m, lon / lat with >= 2 decimals kept\cr
-#' - if 1100m < \code{grain} <= 110m, lon / lat with >= 3 decimals are kept\cr
-#' - if 110m < \code{grain} <= 11m, lon / lat with >= 4 decimals are kept\cr
-#' - if 11m < \code{grain} <= 1.1m, lon / lat with >= 5 decimals are kept etc...
+#' - if 110km < \code{grain} \eqn{\ge}{<=} 11km,
+#' lon / lat with \eqn{\ge}{>=} 1 decimal are kept\cr
+#' - if 11km < \code{grain} \eqn{\ge}{<=} 1100m,
+#' lon / lat with \eqn{\ge}{>=} 2 decimals kept\cr
+#' - if 1100m < \code{grain} \eqn{\ge}{<=} 110m,
+#' lon / lat with \eqn{\ge}{>=} 3 decimals are kept\cr
+#' - if 110m < \code{grain} \eqn{\ge}{<=} 11m,
+#' lon / lat with \eqn{\ge}{>=} 4 decimals are kept\cr
+#' - if 11m < \code{grain} \eqn{\ge}{<=} 1.1m,
+#' lon / lat with \eqn{\ge}{>=} 5 decimals are kept etc...
 #' @return Object of class \code{getGBIF} (data.frame type) with requested GBIF
 #' information. Although crucial preliminary checks of species records are done
 #' by the function, additional post exploration with the

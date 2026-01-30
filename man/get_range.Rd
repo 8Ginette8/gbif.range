@@ -90,7 +90,7 @@ are removed from occurrence records using k-nearest neighbour (k-NN)
 distances. Points whose distance to their \code{clust_pts_outlier}-th
 nearest neighbour exceeds the  \code{degrees_outlier} threshold (default:
 5 degrees) are excluded, retaining only well-supported clusters (default:
-\eqn{\geq 4}{>= 4} points within 5 degrees). Then, non-outlier points are
+\eqn{\ge}{>=} 4 points within 5 degrees). Then, non-outlier points are
 spatially intersected with ecoregions (\code{bioreg}, specified via
 \code{bioreg_name}) to identify occupied bioregions.
 
@@ -122,7 +122,8 @@ issues.
 
 Ecoregions represent large, geographically distinct areas containing 
 characteristic assemblages of species, dynamics, and environmental conditions 
-(https://en.wikipedia.org/wiki/Ecoregion). Download-ready ecoregion datasets 
+\href{https://en.wikipedia.org/wiki/Ecoregion}{ecoregion Wikipedia page}.
+Download-ready ecoregion datasets 
 include:
 
 (1) 'eco_terra' is for terrestrial species. Has three different levels:
