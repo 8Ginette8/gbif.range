@@ -46,11 +46,12 @@
 #' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
 #' or \code{sf} (WGS84) to define the study's area extent. Default is
 #' \code{NULL}, i.e., the whole globe.
-#' @param grain Numeric. Specifies in kilometers the study resolution.
-#' Used to filter gbif records according to their (1) spatial
-#' uncertainties and (2) number of coordinate decimals. Records with precision
-#' \eqn{\ge}{<=} 100 km and no info on coordinate uncertainties
-#' (column 'coordinateUncertaintyInMeters') are kept by default. See details.
+#' @param grain Numeric. Default is 100. Specifies in kilometers the study
+#' resolution. Used to filter gbif records according to their (1) spatial
+#' uncertainties and (2) number of coordinate decimals. Records with
+#' resolution uncertainties eqn{\ge}{>=} \code{grain} km are removed, and
+#' records with no info on coordinate uncertainties (column
+#' coordinateUncertaintyInMeters') are kept by default. But see details.
 #' @param duplicates Logical. Should duplicated records be kept?
 #' Default is \code{FALSE}.
 #' @param absences Logical. Should absence records be kept?
@@ -145,15 +146,15 @@
 #'
 #' (2) Records filtering according to the number of longitude/latitude
 #' decimals:\cr
-#' - if 110km < \code{grain} \eqn{\ge}{<=} 11km,
+#' - if 110km > \code{grain} \eqn{\ge}{>=} 11km,
 #' lon / lat with \eqn{\ge}{>=} 1 decimal are kept\cr
-#' - if 11km < \code{grain} \eqn{\ge}{<=} 1100m,
+#' - if 11km > \code{grain} \eqn{\ge}{>=} 1100m,
 #' lon / lat with \eqn{\ge}{>=} 2 decimals kept\cr
-#' - if 1100m < \code{grain} \eqn{\ge}{<=} 110m,
+#' - if 1100m > \code{grain} \eqn{\ge}{>=} 110m,
 #' lon / lat with \eqn{\ge}{>=} 3 decimals are kept\cr
-#' - if 110m < \code{grain} \eqn{\ge}{<=} 11m,
+#' - if 110m > \code{grain} \eqn{\ge}{>=} 11m,
 #' lon / lat with \eqn{\ge}{>=} 4 decimals are kept\cr
-#' - if 11m < \code{grain} \eqn{\ge}{<=} 1.1m,
+#' - if 11m > \code{grain} \eqn{\ge}{>=} 1.1m,
 #' lon / lat with \eqn{\ge}{>=} 5 decimals are kept etc...
 #' @return Object of class \code{getGBIF} (data.frame type) with requested GBIF
 #' information. Although crucial preliminary checks of species records are done
