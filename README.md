@@ -121,7 +121,7 @@ bioreg_list
 
 ### Custom ecoregions
 
-Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area.
+Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed data (e.g. climate, biodiversity) of desired resolution and extent defining the study area.
 
 Example of 10 ecoregions based on CHELSA bioclimatic layers at 5 × 5 km resolution (Karger et al. 2017), i.e., mean annual air temperature (bio1) and annual precipitation amount (bio12) 1981–2010:
 
