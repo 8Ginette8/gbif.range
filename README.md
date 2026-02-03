@@ -132,7 +132,7 @@ terra::plot(eco.eg, col = rainbow(10))
 ```
 <img width="450" height="auto" alt="image" src="https://github.com/user-attachments/assets/3e26fe66-fbdd-4854-a24e-125a02d3928e" />
 
-Let's further demonstrate how a custom ecoregion can be employed in combination with the package's main functions:
+Let's further demonstrate how a custom map of ecoregions can be employed in combination with the package's main functions:
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
