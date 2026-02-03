@@ -124,6 +124,15 @@ bioreg_list
 Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
 
 ``` r
+bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
+eco.eg <- make_ecoregion(env = bio, nclass = 10)
+terra::plot(eco.eg, col = rainbow(10))
+```
+<img width="557" height="394" alt="image" src="https://github.com/user-attachments/assets/3e26fe66-fbdd-4854-a24e-125a02d3928e" />
+
+Let's further demonstrate how a custom ecoregion can be employed in combination with the package's main functions:
+
+``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
 shp.lonlat <- terra::vect(paste0(system.file(package = "gbif.range"), "/extdata/shp_lonlat.shp"))
 obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
