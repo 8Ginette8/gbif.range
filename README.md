@@ -121,7 +121,18 @@ bioreg_list
 
 ### Custom ecoregions
 
-Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed environment (e.g. climate) of desired resolution and extent defining the study area; example:
+Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed data (e.g. climate, biodiversity) of desired resolution and extent defining the study area.
+
+Example of 10 ecoregions based on CHELSA bioclimatic layers at 5 × 5 km resolution (Karger et al. 2017), i.e., mean annual air temperature (bio1) and annual precipitation amount (bio12) 1981–2010:
+
+``` r
+bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
+eco.eg <- make_ecoregion(env = bio, nclass = 10)
+terra::plot(eco.eg, col = rainbow(10))
+```
+<img width="450" height="auto" alt="image" src="https://github.com/user-attachments/assets/3e26fe66-fbdd-4854-a24e-125a02d3928e" />
+
+Let's further demonstrate how a custom map of ecoregions can be employed in combination with the package's main functions:
 
 ``` r
 # Let's download the observations of Arctostaphylos alpinus in the European Alps:
@@ -207,6 +218,8 @@ doi: <a href="https://doi.org/10.22541/au.175130858.83083354/v1">10.22541/au.175
 ## References 
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. doi: <a href="https://doi.org/10.5281/zenodo.6023735">10.5281/zenodo.6023735</a>
+
+Karger, D.N., Conrad, O., Böhner, J., Kawohl, T., Kreft, H., Soria-Auza, R.W., Zimmermann, N.E., Linder, H.P., , Kessler, M. (2017). Climatologies at high resolution for the earth’s land surface areas. Sci Data 4, 170122. doi: <a href=https://doi.org/10.1038/sdata.2017.122</a>
 
 Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 10(5), 744-751. doi: <a href="https://doi.org/10.1111/2041-210X.13152">10.1111/2041-210X.13152</a>
 
