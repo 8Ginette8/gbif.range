@@ -16,6 +16,9 @@
 #' Default is none.
 #' @param name Character. If \code{path} is used, should include the name of
 #' the output file without file extension.
+#' @param format Character. "\code{sf}" or "\code{SpatVector}" class.
+#' Defaut is the \code{SpatVector} class from the \code{terra}
+#' package.
 #' @param raster Logical. Whether the output should be a raster layer. Default
 #' is \code{FALSE}.
 #' @param ... Additonnal parameters for the function \code{clara()} of the
@@ -59,6 +62,7 @@ make_ecoregion <- function(env = NULL,
                           nclass = NULL,
                           path = "",
                           name = "",
+                          format = "SpatVector",
                           raster = FALSE,
                           ...)
 {
@@ -127,7 +131,7 @@ make_ecoregion <- function(env = NULL,
         datatype = "INT4S",
         gdal = c("COMPRESS=DEFLATE", "PREDICTOR=2")
       )
-    
+
     } else {
 
       # Change raster into a shapefile
@@ -137,22 +141,39 @@ make_ecoregion <- function(env = NULL,
       cat("Generating polygons...","\n")
       names(topoly) <- "CLARA"
       topoly$EcoRegion <- as.character(seq_len(nrow(data.frame(topoly))))
+      topoly <- sf::st_as_sf(topoly) 
 
       # Testing if polygons are valid and correct if not
-      topoly <- terra::vect(sf::st_make_valid(sf::st_as_sf(topoly)))
-      topoly <- terra::buffer(topoly, width = 0) 
-
-      if (!raster&path == "") {
-        return(topoly)
+      topoly_sf <- sf::st_make_valid(topoly_sf)
+      topoly_sf <- sf::st_buffer(topoly_sf, 0)
       
+      if (format == "sf") {
+        # Return sf object
+        if (!raster & path == "") {
+          return(topoly_sf)
+        } else {
+          sf::st_write(
+            obj = topoly_sf,
+            dsn = file.path(path, paste0(name, ".shp")),
+            layer = name,
+            driver = "ESRI Shapefile",
+            delete_layer = TRUE
+            )
+          }
       } else {
-        terra::writeVector(
-          x = topoly,
-          filename = paste0(path, "/", name, ".shp"),
-          overwrite = TRUE,
-          filetype = "ESRI Shapefile",
-          layer = name
-        )
+        # Convert back to terra SpatVector
+        topoly_terra <- terra::vect(topoly_sf)
+        if (!raster & path == "") {
+          return(topoly_terra)
+        } else {
+          terra::writeVector(
+            x = topoly_terra,
+            filename = file.path(path, paste0(name, ".shp")),
+            overwrite = TRUE,
+            filetype = "ESRI Shapefile",
+            layer = name
+          )
+        }
       }
     }
 }

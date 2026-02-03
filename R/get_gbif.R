@@ -36,9 +36,9 @@
 #' @param order Character (optional). What is the species' Order? Same as above
 #' but at the finer order level. Available options are the GBIF Orders (same
 #' url). If \code{search = FALSE}, only used if no direct match is found.
-#' @param family Character (optional). What is the species' Family? Same as above
-#' but at the finer family level. Available options are the GBIF Families (same
-#' url). If \code{search = FALSE}, used only if no direct match is found.
+#' @param family Character (optional). What is the species' Family? Same as
+#' above but at the finer family level. Available options are the GBIF Families
+#' (same url). If \code{search = FALSE}, used only if no direct match is found.
 #' @param conf_match Numeric from 0 to 100. Determine the confidence threshold
 #' of match between \code{sp_name} and the GBIF backbone taxonomy.
 #' Default is 90.
@@ -277,7 +277,7 @@ get_gbif <- function(sp_name = NULL,
 
 	# For study area
 	if (!is.null(geo)) {
-		if (class(geo)[1] %in% "sf") {geo <- vect(geo)}
+		if (class(geo)[1] %in% "sf") {geo <- terra::vect(geo)}
 		if (!(class(geo) %in% "SpatExtent")) {geo <- terra::ext(geo)}
 
 	} else {
@@ -636,9 +636,21 @@ get_gbif <- function(sp_name = NULL,
 		gbif.search <- if (should_use_occ_download) {
 			
 			## Try to use parameter creds if provided, otherwise use env variables
-			user <- if(is.null(occ_download_user)) Sys.getenv("GBIF_USER") else occ_download_user
-			pwd <- if(is.null(occ_download_pwd)) Sys.getenv("GBIF_PWD") else occ_download_pwd
-			email <- if(is.null(occ_download_email)) Sys.getenv("GBIF_EMAIL") else occ_download_email
+			user <- if (is.null(occ_download_user)) {
+				Sys.getenv("GBIF_USER")
+			} else {
+				occ_download_user
+			}
+			pwd <- if (is.null(occ_download_pwd)) {
+				Sys.getenv("GBIF_PWD")
+			} else {
+				occ_download_pwd
+			}
+			email <- if (is.null(occ_download_email)) {
+				Sys.getenv("GBIF_EMAIL")
+			} else {
+				occ_download_email
+			}
 
 			if (any(c(user, pwd, email) %in% "")) {
 				stop(paste(

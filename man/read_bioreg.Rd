@@ -4,7 +4,7 @@
 \alias{read_bioreg}
 \title{Load Bioreg Data Files}
 \usage{
-read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+read_bioreg(bioreg_name = "eco_terra", save_dir = NULL, format = "SpatVector")
 }
 \arguments{
 \item{bioreg_name}{Filename of the desired bioregion to be loaded.
@@ -12,6 +12,10 @@ See \code{bioreg_list} for available options.}
 
 \item{save_dir}{The directory to save the downloaded files. Defaults to
 "inst/extdata/downloads" within the package structure.}
+
+\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class.
+Defaut is the \code{SpatVector} class from the \code{terra}
+package.}
 }
 \value{
 \code{SpatVector} object representing the ecoregion shapefile.

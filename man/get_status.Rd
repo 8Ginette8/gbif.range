@@ -49,9 +49,10 @@ but at the finer class level. Available options are the GBIF Classes
 but at the finer order level. Available options are the GBIF Orders (same
 url). If \code{search = FALSE}, only used if no direct match is found.}
 
-\item{family}{Character (optional). What is the species' Family? Same as above
-but at the finer family level. Available options are the GBIF Families (same
-url). If \code{search = FALSE}, used only if no direct match is found.}
+\item{family}{Character (optional). What is the species' Family? Same as
+above but at the finer family level. Available options are the GBIF
+Families (same url). If \code{search = FALSE}, used only if no direct
+match is found.}
 
 \item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold
 of match between \code{sp_name} and the GBIF backbone taxonomy.

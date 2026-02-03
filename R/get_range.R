@@ -84,7 +84,8 @@
 #' issues.
 #' 
 #' Ecoregions represent large, geographically distinct areas containing 
-#' characteristic assemblages of species, dynamics, and environmental conditions 
+#' characteristic assemblages of species, dynamics, and environmental
+#' conditions
 #' (\href{https://en.wikipedia.org/wiki/Ecoregion}{Ecoregion Wikipedia page}).
 #' Download-ready ecoregion datasets 
 #' include:
@@ -212,7 +213,7 @@ get_range <- function (occ_coord = NULL,
   if (!class(bioreg)[1] %in% spatial.class) {
      stop("Wrong 'bioreg' class (not a spatial object)...")
   }
-  if (class(bioreg)[1] %in% spatial.class[c(1,2)]) {
+  if (class(bioreg)[1] %in% spatial.class[1:3]) {
     bioreg <- terra::vect(bioreg)
   }
 

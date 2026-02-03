@@ -9,6 +9,7 @@ make_ecoregion(
   nclass = NULL,
   path = "",
   name = "",
+  format = "SpatVector",
   raster = FALSE,
   ...
 )
@@ -27,6 +28,10 @@ Default is none.}
 
 \item{name}{Character. If \code{path} is used, should include the name of
 the output file without file extension.}
+
+\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class.
+Defaut is the \code{SpatVector} class from the \code{terra}
+package.}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default
 is \code{FALSE}.}

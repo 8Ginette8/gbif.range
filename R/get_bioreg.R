@@ -77,10 +77,10 @@ get_save_dir <- function(save_dir = NULL) {
 #' Downloads data files from a provided list of links and saves them
 #' to a specified directory.
 #'
-#' @param bioreg_name Character. "all" or the filename of the desired bioregion to be
-#' downloaded. See \code{bioreg_list} for available options. This contains a list
-#' of data file information with elements containing `link`, `filename`,
-#' and `description`.
+#' @param bioreg_name Character. "all" or the filename of the desired bioregion
+#' to be downloaded. See \code{bioreg_list} for available options. This
+#' contains a list of data file information with elements containing `link`,
+#' `filename`, and `description`.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
 #' @return \code{NULL}. Downloads the files to the specified directory.
@@ -184,8 +184,8 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
 #' downloaded if necessary. See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
-#' @return \code{NULL}. Checks and downloads the files to the specified directory
-#' if necessary.
+#' @return \code{NULL}. Checks and downloads the files to the specified
+#' directory if necessary.
 #' @examples
 #' \dontrun{
 #' check_and_get_bioreg("eco_terra")
@@ -220,6 +220,9 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
+#' @param format Character. "\code{sf}" or "\code{SpatVector}" class.
+#' Defaut is the \code{SpatVector} class from the \code{terra}
+#' package.
 #' @details Four shapefiles can be downloaded with the library:
 #'
 #' (1) 'eco_terra' (for terrestrial species, Nature conservancy version adapted
@@ -278,18 +281,23 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' shp_eco_terra <- read_bioreg("eco_terra")
 #' plot(shp_eco_terra)
 #' }
-read_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
-  save_dir <- get_save_dir(save_dir)
+read_bioreg <- function(bioreg_name = "eco_terra",
+  save_dir = NULL, format = "SpatVector") {
+    save_dir <- get_save_dir(save_dir)
   
-  # check and if non existing get bioreg
-  check_and_get_bioreg(bioreg_name, save_dir)
-  # Load the shapefile
-  shp_path <- list.files(
-    file.path(save_dir, bioreg_name),
-    pattern = "\\.shp$",
-    full.names = TRUE
-  )
-  shp <- terra::vect(shp_path)
+    # check and if non existing get bioreg
+    check_and_get_bioreg(bioreg_name, save_dir)
+    # Load the shapefile
+    shp_path <- list.files(
+     file.path(save_dir, bioreg_name),
+     pattern = "\\.shp$",
+     full.names = TRUE
+    )
+    shp <- terra::vect(shp_path)
   
-  return(shp)
+    if (format == "sf") {
+     shp <- sf::st_as_sf(shp)
+    }
+    
+    return(shp)
 }

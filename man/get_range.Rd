@@ -121,7 +121,8 @@ of species observations to speed up polygon creation or avoid potential RAM
 issues.
 
 Ecoregions represent large, geographically distinct areas containing 
-characteristic assemblages of species, dynamics, and environmental conditions 
+characteristic assemblages of species, dynamics, and environmental
+conditions
 (\href{https://en.wikipedia.org/wiki/Ecoregion}{Ecoregion Wikipedia page}).
 Download-ready ecoregion datasets 
 include:
