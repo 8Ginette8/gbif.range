@@ -451,6 +451,10 @@ get_range <- function (occ_coord = NULL,
     sp.range.u <- terra::aggregate(shp.species)
     ras <- terra::rasterize(sp.range.u, ras.res)
     shp.species <- terra::crop(ras, sp.range.u)
+    names(shp.species) <- occ_coord$input_search[1]
+
+  } else if (format == "sf") {
+    shp.species <- sf::st_as_sf(shp.species)
   }
   
   # Final print
@@ -472,9 +476,6 @@ get_range <- function (occ_coord = NULL,
                            raster = TRUE,
                            res = res)
   result$rangeOutput <- shp.species
-  if (format == "sf") {
-    result$rangeOutput <- sf::st_as_sf(result$rangeOutput)
-  }
 
   return(result)
 }

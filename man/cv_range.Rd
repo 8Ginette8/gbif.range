@@ -89,12 +89,13 @@ range.tiger <- get_range(
     occ_coord = obs.pt,
     bioreg = eco.terra,
     bioreg_name = "ECO_NAME",
+    raster = FALSE,
     format = "sf"
 )
 
 pt.test <- cv_range(
     range_object = range.tiger,
-    cv = 'block-cv',
+    cv = "block-cv",
     nfolds = 5,
     nblocks = 2
 );pt.test
