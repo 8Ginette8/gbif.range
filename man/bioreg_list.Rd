@@ -3,7 +3,7 @@
 \docType{data}
 \name{bioreg_list}
 \alias{bioreg_list}
-\title{Bioreg Data Files}
+\title{Bioreg data Files}
 \format{
 A list with each element containing:
 \describe{

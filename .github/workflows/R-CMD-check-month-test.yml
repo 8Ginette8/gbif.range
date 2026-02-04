@@ -8,6 +8,7 @@ on:
 
 jobs:
   check-and-version:
+    # This prevents the bot from triggering its own workflow in a loop
     if: "!contains(github.event.head_commit.message, 'chore: update version')"
     runs-on: ubuntu-latest
     permissions:
@@ -45,34 +46,28 @@ jobs:
         if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
         run: |
           Rscript -e '
-            # 1. Get last tag safely
+            # 1. Identify last valid tag safely
             all_tags <- system("git tag", intern=TRUE)
-            tag <- if(length(all_tags) > 0) system("git describe --tags --abbrev=0", intern=TRUE) else "v0.0.0"
+            valid_tags <- all_tags[grepl("^v[0-9]", all_tags)]
+            tag <- if(length(valid_tags) > 0) tail(sort(valid_tags), 1) else ""
             
             # 2. Calculate impact
-            diff <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
-            impact <- if(length(diff) > 0) sum(as.numeric(unlist(regmatches(diff, gregexpr("[0-9]+", diff))))[-1], na.rm=TRUE) else 0
+            impact <- 0
+            if (tag != "" && tag != "v") {
+              diff_out <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
+              if (length(diff_out) > 0) {
+                impact <- sum(as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))[-1], na.rm=TRUE)
+              }
+            }
             
-            # 3. Logic
+            # 3. Read and Update DESCRIPTION
             desc <- read.dcf("DESCRIPTION")
-            curr_v <- numeric_version(desc[,"Version"])
+            curr_v <- numeric_version(desc[1,"Version"])
             files <- system(paste0("git diff --name-only ", tag, "..HEAD"), intern=TRUE)
             
-            if (impact > 5000) { v <- paste(curr_v$major + 1, 0, 0, sep=".")
-            } else if (impact > 300 || any(grepl("NAMESPACE", files))) { v <- paste(curr_v$major, curr_v$minor + 1, 0, sep=".")
-            } else { v <- paste(curr_v$major, curr_v$minor, curr_v$patch + 1, sep=".") }
-            
-            # 4. Write back
-            desc[,"Version"] <- v
-            write.dcf(desc, "DESCRIPTION")
-            writeLines(v, "ver.txt")
-            message(paste("Calculated version:", v))
-          '
-          # Use the temp file to set the variable
-          NEW_V=$(cat ver.txt)
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add DESCRIPTION
-          git commit -m "chore: update version to $NEW_V [skip ci]"
-          git tag v$NEW_V
-          git push origin main --tags
+            # 4. Versioning Logic (Major > 5000, Minor > 300 or NAMESPACE change)
+            if (impact > 5000) { 
+              new_v <- paste(curr_v$major + 1, 0, 0, sep=".")
+            } else if (impact > 300 || any(grepl("NAMESPACE", files))) { 
+              new_v <- paste(curr_v$major, curr_v$minor + 1, 0, sep=".")
+            } else {

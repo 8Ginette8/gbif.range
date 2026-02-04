@@ -59,7 +59,7 @@ variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 \item{phylum}{Character (optional). What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
 Available options are the GBIF Phylums
-(listed per Kingdom/Phylum: https://www.gbif.org/species/search).
+((\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum})).
 If \code{search = FALSE}, only used if no direct match is found.}
 
 \item{class}{Character (optional). What is the species' Class? Same as above
@@ -97,23 +97,23 @@ Default is \code{FALSE}.}
 Default is \code{FALSE}}
 
 \item{no_xy}{Logical. Only records with coordinates are downloaded.
-Default is \code{FALSE}. If \code{TRUE}, records with no coordinates are
-also downloaded.}
+Default is \code{FALSE}. If \code{TRUE}, only records with no
+coordinates are downloaded.}
 
 \item{basis}{Character. Which basis of records should be selected?
 Available (old and new) are "OBSERVATION", "HUMAN_OBSERVATION",
 "MACHINE_OBSERVATION", "MATERIAL_CITATION", "MATERIAL_SAMPLE",
 "PRESERVED_SPECIMEN", "FOSSIL_SPECIMEN", "LIVING_SPECIMEN", "LITERATURE",
 "UNKNOWN" and "OCCURRENCE". Default setting removes specimens and
-unknown observations. Description may be found here:
-https://docs.gbif.org/course-data-use/en/basis-of-record.html.}
+unknown observations. Description may be found
+(\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here}).}
 
 \item{establishment}{Character. Is the individual native, captive or else?
 Defaut is native, casual, released, reproducing, established, colonising
 and absence of information. See descriptions for other managed
 establishments: managed, captive, cultivated, released,
 unestablished and failing
-(https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment)}
+((\href{https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment}{url})).}
 
 \item{add_infos}{Character. Infos that may be added to the default output
 information. Default IDs contain "taxonKey",
@@ -122,8 +122,8 @@ information. Default IDs contain "taxonKey",
 "coordinateUncertaintyInMeters", "countryCode", "country", "year",
 "datasetKey", "institutionCode", "publishingOrgKey", "taxonomicStatus",
 "taxonRank" and "degreeOfEstablishment".
-List of IDs may be found at:
-https://www.gbif.org/developer/occurrence.}
+List of IDs may be found
+(\href{https://www.gbif.org/developer/occurrence}{here}).}
 
 \item{time_period}{Numerical vector. Observations will be downloaded
 according to the chosen year range. Default is \code{c(1000,3000)}.
@@ -188,8 +188,9 @@ by partly employing the \code{CoordinateCleaner} R package.
 }
 \details{
 (1) Implements the same search result when
-www.gbif.org is employed, i.e., based on the input taxa name, all species
-records related to its accepted name and synonyms are extracted.
+(\href{https://www.gbif.org}{GBIF}) is employed, i.e., based on the
+input taxa name, all species records related to its accepted name
+and synonyms are extracted.
 
 (2) Bypasses the \code{rgbif} hard limit for number of
 records (100'000 max). For this purpose, a dynamic moving window is

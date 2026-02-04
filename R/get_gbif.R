@@ -57,8 +57,8 @@
 #' @param absences Logical. Should absence records be kept?
 #' Default is \code{FALSE}
 #' @param no_xy Logical. Only records with coordinates are downloaded.
-#' Default is \code{FALSE}. If \code{TRUE}, records with no coordinates are
-#' also downloaded.
+#' Default is \code{FALSE}. If \code{TRUE}, only records with no
+#' coordinates are downloaded.
 #' @param basis Character. Which basis of records should be selected?
 #' Available (old and new) are "OBSERVATION", "HUMAN_OBSERVATION",
 #' "MACHINE_OBSERVATION", "MATERIAL_CITATION", "MATERIAL_SAMPLE",
@@ -238,9 +238,6 @@ get_gbif <- function(sp_name = NULL,
   check_logical(error_skip, "error_skip")
   check_numeric(occ_samp, "occ_samp")
   check_logical(should_use_occ_download, "should_use_occ_download")
-  check_character_vector(occ_download_user, "occ_download_user")
-  check_character_vector(occ_download_pwd, "occ_download_pwd")
-  check_character_vector(occ_download_email, "occ_download_email")
 
   # Basis of records
   allb <- c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
@@ -286,7 +283,6 @@ get_gbif <- function(sp_name = NULL,
 
 	} else {
 		geo <- terra::ext(-180, 180, -90, 90)
-	
 	}
 
 
