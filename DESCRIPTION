@@ -1,5 +1,5 @@
 Package: gbif.range
-Version: 1.0
+Version: 1.0.0
 Title: A toolbox to generate species range maps based on ecoregions and a user-friendly GBIF wrapper
 Depends: R (>= 4.0.0)
 Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry, cluster, rnaturalearth, mclust, methods, utils, zip, class, NMOF
