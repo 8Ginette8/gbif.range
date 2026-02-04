@@ -1,14 +1,10 @@
 ### =========================================================================
-### get_gbif
+### get_gbif_count
 ### =========================================================================
-#' Massively download and filter GBIF observations for sound spatial analyses
+#' Retrieve GBIF observations count to select study case
 #'
-#' Implement an user-friendly workflow to download and clean gbif taxa
-#' observations. The function (1) implements the same search result as
-#' www.gbif.org, (2) bypasses \code{rgbif} hard limit for number of
-#' records (100'000 max), and (3) automatically applies a post-filtering
-#' of observations based on the chosen resolution of the study and
-#' by partly employing the \code{CoordinateCleaner} R package.
+#' Follows the same code implementation as \code{get_gbif} for retrieving
+#' the number of occurrences per species without downloading the data.
 #' 
 #' @param sp_name Character. Species name from which the user wants to retrieve
 #' all existing GBIF names with associated taxonomy and IUCN status.
@@ -28,7 +24,7 @@
 #' @param phylum Character (optional). What is the species' Phylum? Adds a
 #' criteria to deal with alternative name matches and select the right synonym.
 #' Available options are the GBIF Phylums
-#' ((\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum})).
+#' (listed per Kingdom/Phylum: https://www.gbif.org/species/search).
 #' If \code{search = FALSE}, only used if no direct match is found.
 #' @param class Character (optional). What is the species' Class? Same as above
 #' but at the finer class level. Available options are the GBIF Classes
@@ -46,32 +42,9 @@
 #' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
 #' or \code{sf} (WGS84) to define the study's area extent. Default is
 #' \code{NULL}, i.e., the whole globe.
-#' @param grain Numeric. Default is 100. Specifies in kilometers the study
-#' resolution. Used to filter gbif records according to their (1) spatial
-#' uncertainties and (2) number of coordinate decimals. Records with
-#' resolution uncertainties \eqn{\ge}{>=} \code{grain} km are removed, and
-#' records with no info on coordinate uncertainties (column
-#' coordinateUncertaintyInMeters') are kept by default. But see details.
-#' @param duplicates Logical. Should duplicated records be kept?
-#' Default is \code{FALSE}.
-#' @param absences Logical. Should absence records be kept?
-#' Default is \code{FALSE}
 #' @param no_xy Logical. Only records with coordinates are downloaded.
 #' Default is \code{FALSE}. If \code{TRUE}, records with no coordinates are
 #' also downloaded.
-#' @param basis Character. Which basis of records should be selected?
-#' Available (old and new) are "OBSERVATION", "HUMAN_OBSERVATION",
-#' "MACHINE_OBSERVATION", "MATERIAL_CITATION", "MATERIAL_SAMPLE",
-#' "PRESERVED_SPECIMEN", "FOSSIL_SPECIMEN", "LIVING_SPECIMEN", "LITERATURE",
-#' "UNKNOWN" and "OCCURRENCE". Default setting removes specimens and
-#' unknown observations. Description may be found
-#' (\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here}). 
-#' @param establishment Character. Is the individual native, captive or else?
-#' Defaut is native, casual, released, reproducing, established, colonising
-#' and absence of information. See descriptions for other managed
-#' establishments: managed, captive, cultivated, released,
-#' unestablished and failing
-#' ((\href{https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment}{url})).
 #' @param add_infos Character. Infos that may be added to the default output
 #' information. Default IDs contain "taxonKey",
 #' "scientificName", "acceptedTaxonKey", "acceptedScientificName",
@@ -79,8 +52,8 @@
 #' "coordinateUncertaintyInMeters", "countryCode", "country", "year",
 #' "datasetKey", "institutionCode", "publishingOrgKey", "taxonomicStatus",
 #' "taxonRank" and "degreeOfEstablishment".
-#' List of IDs may be found
-#' (\href{https://www.gbif.org/developer/occurrence}{here}).
+#' List of IDs may be found at:
+#' https://www.gbif.org/developer/occurrence.
 #' @param time_period Numerical vector. Observations will be downloaded
 #' according to the chosen year range. Default is \code{c(1000,3000)}.
 #' Observations with \code{NA} are kept by default.
@@ -117,70 +90,16 @@
 #' Required if \code{should_use_occ_download = TRUE}.
 #' @param ... Additonnal parameters for the function \code{cd_round()} of
 #' the \code{CoordinateCleaner} R package.
-#' @details (1) Implements the same search result when
-#' (\href{https://www.gbif.org}{GBIF}) is employed, i.e., based on the
-#' input taxa name, all species records related to its accepted name
-#' and synonyms are extracted.
-#' 
-#' (2) Bypasses the \code{rgbif} hard limit for number of
-#' records (100'000 max). For this purpose, a dynamic moving window is
-#' created and used across the geographic extent defined by the user.
-#' This window automatically fragments the specified study area in succesive
-#' tiles of different sizes, until all tiles include < 10'000 observations
-#' (instead of 100'000 for extraction speed efficiency).
-#'
-#' (3) Automatically applies a post- filtering of observations based on the
-#' chosen resolution of the study and by partly employing the
-#' \code{CoordinateCleaner} R package. Filtering options may be chosen and
-#' involve several choices: study's extent, removal of duplicates, removal
-#' of absences, basis of records selection, removal of invalid/uncertain
-#' xy coordinates (WGS84), time period selection and removal of raster
-#' centroids. By default, the argument \code{hasGeospatialIssue} in
-#' \code{occ_search()} (\code{rgbif} R function) is set to \code{FALSE}.
-#' 
-#' The \code{grain} parameter applies:
-#'
-#' (1) Records filtering according to gbif 'coordinateUncertaintyInMeters':
-#' every records uncertainty \code{> grain / 2} are removed. Note that
-#' records with no information on coordinate uncertainties are kept by
-#' default.
-#'
-#' (2) Records filtering according to the number of longitude/latitude
-#' decimals:\cr
-#' - if 110km > \code{grain} \eqn{\ge}{>=} 11km,
-#' lon / lat with \eqn{\ge}{>=} 1 decimal are kept\cr
-#' - if 11km > \code{grain} \eqn{\ge}{>=} 1100m,
-#' lon / lat with \eqn{\ge}{>=} 2 decimals kept\cr
-#' - if 1100m > \code{grain} \eqn{\ge}{>=} 110m,
-#' lon / lat with \eqn{\ge}{>=} 3 decimals are kept\cr
-#' - if 110m > \code{grain} \eqn{\ge}{>=} 11m,
-#' lon / lat with \eqn{\ge}{>=} 4 decimals are kept\cr
-#' - if 11m > \code{grain} \eqn{\ge}{>=} 1.1m,
-#' lon / lat with \eqn{\ge}{>=} 5 decimals are kept etc...
-#' @return Object of class \code{getGBIF} (data.frame type) with requested GBIF
-#' information. Although crucial preliminary checks of species records are done
-#' by the function, additional post exploration with the
-#' \code{CoordinateCleaner} R package is still highly recommended.
+#' @details Implements the same search result when
+#' www.gbif.org is employed, i.e., based on the input taxa name, all species
+#' records related to its accepted name and synonyms are extracted.
+#' @return A simple print of the number of observations found.
 #' @references
-#' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger,
-#' D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and
-#' land cover on plant species distribution in the European Alps. Ecological
-#' monographs, 91(2), e01433. 10.1002/ecm.1433
-#'
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 #' global biodiversity information facility API. 10.5281/zenodo.6023735
-#'
-#' Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C.,
-#' Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized
-#' cleaning of occurrence records from biological collection databases.
-#' Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152
-#'
-#' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
-#' (2022). Terra - CRAN
-#' @seealso The (1) \code{rgbif} and (2) \code{CoordinateCelaner} packages for
-#' additional and more general approaches on (1) downloading GBIF observations
-#' and (2) post-filtering those.
-#' @example inst/examples/get_gbif_help.R
+
+
+#' @example inst/examples/get_gbif_count_help.R
 #' @importFrom terra ext vect
 #' @importFrom rgbif name_backbone occ_search
 #' @importFrom CoordinateCleaner cd_ddmm cd_round
@@ -194,14 +113,7 @@ get_gbif <- function(sp_name = NULL,
 					family = NULL,
 					conf_match = 80,
 					geo = NULL,
-					grain = 100,
-					duplicates = FALSE,
-					absences = FALSE,
 					no_xy = FALSE,
-					basis =  c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
-						'OCCURRENCE', 'MATERIAL_CITATION', 'MATERIAL_SAMPLE','LITERATURE'),
-					establishment = c('native','casual','released','reproducing',
-						'established','colonising','invasive','widespreadInvasive'),
 					add_infos = NULL,
 					time_period = c(1000,3000),
 					identic_xy = FALSE,
@@ -225,11 +137,7 @@ get_gbif <- function(sp_name = NULL,
 	check_character_vector(sp_name, "sp_name")
   check_logical(search, "search")
   check_numeric(conf_match, "conf_match")
-  check_numeric(grain, "grain")
-  check_logical(duplicates, "duplicates")
-  check_logical(absences, "absences")
   check_logical(no_xy, "no_xy")
-  check_character_vector(establishment, "establishment")
   check_numeric_range(time_period, "time_period", 2)
   check_logical(identic_xy, "identic_xy")
   check_logical(wConverted_xy, "wConverted_xy")
@@ -238,25 +146,6 @@ get_gbif <- function(sp_name = NULL,
   check_logical(error_skip, "error_skip")
   check_numeric(occ_samp, "occ_samp")
   check_logical(should_use_occ_download, "should_use_occ_download")
-  check_character_vector(occ_download_user, "occ_download_user")
-  check_character_vector(occ_download_pwd, "occ_download_pwd")
-  check_character_vector(occ_download_email, "occ_download_email")
-
-  # Basis of records
-  allb <- c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
-  	'MATERIAL_CITATION', 'MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN',
-  	'FOSSIL_SPECIMEN', 'LIVING_SPECIMEN', 'LITERATURE', 'UNKNOWN', 'OCCURRENCE')
-  if (!all(basis %in% allb) || is.null(basis)){
-  	stop("Wrong given 'basis', see function help --> ?get_gbif()")
-  }
-
-  # Establishment
-  alle <- c('native', 'casual', 'released', 'reproducing', 'established',
-  	'colonising', 'invasive', 'widespreadInvasive', 'managed', 'captive',
-  	'cultivated', 'released', 'unestablished', 'failing')
-  if (!all(establishment %in% alle) || is.null(establishment)){
-  	stop("Wrong given 'establishment', see function help --> ?get_gbif()")
-  }
 
   # Add_infos
   if (all(!is.null(add_infos))) {
@@ -294,40 +183,6 @@ get_gbif <- function(sp_name = NULL,
 	### Parameter config
 	######################################################
 
-
-	# For precision and 'cd_ddm'
-		#	
-	grain <- grain * 1000
-		#
-	deci.preci <- list(
-		seq(0,10,1), rev(0.000011 * 10^(0:10))
-	)
-		#
-	deci.chosen <- deci.preci[[1]][which(grain >= deci.preci[[2]])[1]]
-		#
-	diff.records <- list(
-		c(0,5000,100000 * 10^(0:9)),rev(0.00000000001 * 10^(0:11))
-	)
-		#
-	xy.span <- 10 * 10^(-(deci.chosen - 1))
-
-	# For fields
-	gbif.info <- c('taxonKey', 'scientificName', 'acceptedTaxonKey',
-		'acceptedScientificName', 'individualCount', 'occurrenceStatus',
-		'establishmentMeans', 'degreeOfEstablishment', 'decimalLatitude',
-		'decimalLongitude', 'basisOfRecord', 'coordinateUncertaintyInMeters',
-		'countryCode', 'country', 'year', 'datasetKey', 'institutionCode',
-		'publishingOrgKey', 'taxonomicStatus', 'taxonRank', add_infos)
-	gbif.info <- gbif.info[order(gbif.info)]
-
-		# Create an empty ouptut
-	e.output <- getGBIF(
-		data.frame(matrix(
-			ncol = length(gbif.info),
-			nrow = 0,
-			dimnames = list(NULL, gbif.info))
-		)
-	)
 
 	# Set geo.ref
 	geo.ref <- paste0(
@@ -772,113 +627,6 @@ get_gbif <- function(sp_name = NULL,
 	#################### Records filtering ######################
 	#############################################################
 
-
-	#### 1) Grain filtering
-	cat("\n","---> Grain filtering...","\n",sep="")
-		
-		# GBIF uncertainty
-	id.certain <- gbif.compile$coordinateUncertaintyInMeters <= grain / 2
-	id.certain[is.na(id.certain)] <- TRUE
-	gbif.correct <- gbif.compile[id.certain, ]
-
-		# GBIF lon/lat decimals
-	if (grain < 1.1e5) {
-
-		# Remove latitude or/and longitude with no decimals
-		lonlat.format <- data.frame(
-			decimalLatitude = as.character(gbif.correct$decimalLatitude),
-			decimalLongitude = as.character(gbif.correct$decimalLongitude)
-		)
-		id.deci <- grepl("\\.",lonlat.format[,1]) + grepl("\\.",lonlat.format[,2])
-		lonlat.deci <- lonlat.format[id.deci %in% 2,]
-		gbif.correct <- gbif.correct[id.deci %in% 2,]
-
-		# Keep coordinates compatible with the input 'grain'
-		declat <- gsub(".*\\.", "", lonlat.deci[, 1])
-		declon <- gsub(".*\\.", "", lonlat.deci[, 2])
-		id.grain <- nchar(declon) >= deci.chosen & nchar(declat) >= deci.chosen
-		gbif.correct <- gbif.correct[id.grain, ]
-
-	} else {
-		id.grain <- NULL
-	}
-
-		# Removal summary
-	if (any(names(table(c(id.certain,id.grain))) %in% FALSE)){
-		removed <- table(c(id.certain,id.grain))[1]
-		cat("Records removed:",removed,"\n")
-
-	} else {
-		cat("Records removed:",0,"\n")
-	}
-
-	#### 2) Removing xy duplicates
-	if (!duplicates){
-
-		cat("---> Removal of duplicated records...","\n")
-		
-		id.dup <- !duplicated(gbif.correct[, c("decimalLongitude","decimalLatitude")])
-		gbif.correct <- gbif.correct[id.dup, ]
-
-		# Removal summary
-		if (any(names(table(id.dup)) %in% FALSE)){
-			removed <- table(id.dup)[1]
-			cat("Records removed:",removed,"\n")
-
-		} else {
-			cat("Records removed:",0,"\n")
-		}
-	}
-
-	#### 3) Removing absences
-	if (!absences){
-
-		cat("---> Removal of absence records...","\n")
-		
-		id.abs <- !(gbif.correct$individualCount %in% 0 |
-										gbif.correct$occurrenceStatus %in% "ABSENT")
-		gbif.correct <- gbif.correct[id.abs, ]
-
-		# Removal summary
-		if (any(names(table(id.abs)) %in% FALSE)){
-			removed <- table(id.abs)[1]
-			cat("Records removed:",removed,"\n")
-
-		} else {
-			cat("Records removed:",0,"\n")
-		}
-	}
-
-	#### 4) Select basis of records
-	cat("---> Basis of records selection...","\n")
-
-	id.basis <- gbif.correct$basisOfRecord %in% basis
-	gbif.correct <- gbif.correct[id.basis, ]
-
-		# Removal summary
-	if (any(names(table(id.basis)) %in% FALSE)){
-		removed <- table(id.basis)[1]
-		cat("Records removed:",removed,"\n")
-
-	} else {
-		cat("Records removed:",0,"\n")
-	}
-
-	#### 4.5) Select establishment of records
-	cat("---> Establishment of records selection...","\n")
-
-	id.esta <- gbif.correct$degreeOfEstablishment %in% establishment |
-									is.na(gbif.correct$degreeOfEstablishment)
-	gbif.correct <- gbif.correct[id.esta, ]
-
-		# Removal summary
-	if (any(names(table(id.esta)) %in% FALSE)){
-		removed <- table(id.esta)[1]
-		cat("Records removed:",removed,"\n")
-
-	} else {
-		cat("Records removed:",0,"\n")
-	}
 
 	#### 5) Select records according to year range
 	cat("---> Time period selection...","\n")
