@@ -1,0 +1,74 @@
+name: R-Package-Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-and-version:
+    if: "!contains(github.event.head_commit.message, 'chore: update version')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev texlive-latex-extra texinfo ghostscript
+
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/R
+          key: renv-${{ runner.os }}-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: ${{ runner.os }}-renv-
+
+      - name: Install R packages
+        run: |
+          Rscript -e '
+            pkgs <- c("devtools", "remotes", "terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods", "utils", "zip", "class", "NMOF")
+            missing <- setdiff(pkgs, rownames(installed.packages()))
+            if (length(missing) > 0) install.packages(missing, repos = "https://cloud.r-project.org")
+          '
+
+      - name: Check package
+        run: |
+          R CMD build . --no-manual
+          R CMD check *.tar.gz --no-manual --as-cran
+
+      - name: Auto Version and Tag
+        if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
+        run: |
+          Rscript -e '
+            tag <- system("git describe --tags --abbrev=0", intern=TRUE)
+            diff <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
+            impact <- sum(as.numeric(unlist(regmatches(diff, gregexpr("[0-9]+", diff))))[-1], na.rm=TRUE)
+            desc <- read.dcf("DESCRIPTION"); curr_v <- numeric_version(desc[,"Version"])
+            files <- system(paste0("git diff --name-only ", tag, "..HEAD"), intern=TRUE)
+            if (impact > 5000) { v <- paste(curr_v$major + 1, 0, 0, sep=".")
+            } else if (impact > 300 || any(grepl("NAMESPACE", files))) { v <- paste(curr_v$major, curr_v$minor + 1, 0, sep=".")
+            } else { v <- paste(curr_v$major, curr_v$minor, curr_v$patch + 1, sep=".") }
+            desc[,"Version"] <- v; write.dcf(desc, "DESCRIPTION")
+            cat(paste0("NEW_V=", v, "\n"), file=Sys.getenv("GITHUB_ENV"), append=TRUE)
+          '
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add DESCRIPTION
+          git commit -m "chore: update version to $NEW_V [skip ci]"
+          git tag v$NEW_V
+          git push origin main --tags
