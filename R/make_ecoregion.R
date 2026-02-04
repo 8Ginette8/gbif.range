@@ -141,14 +141,14 @@ make_ecoregion <- function(env = NULL,
       cat("Generating polygons...","\n")
       names(topoly) <- "CLARA"
       topoly$EcoRegion <- as.character(seq_len(nrow(data.frame(topoly))))
-      topoly <- sf::st_as_sf(topoly) 
 
       # Testing if polygons are valid and correct if not
-      topoly <- sf::st_make_valid(topoly)
-      topoly <- sf::st_buffer(topoly, 0)
+      topoly <- terra::makeValid(topoly)
+      topoly <- terra::buffer(topoly, width = 0) 
       
       if (format == "sf") {
         # Return sf object
+        topoly <- sf::st_as_sf(topoly)
         if (!raster & path == "") {
           return(topoly)
         } else {
@@ -161,8 +161,6 @@ make_ecoregion <- function(env = NULL,
             )
           }
       } else {
-        # Convert back to terra SpatVector
-        topoly <- terra::vect(topoly)
         if (!raster & path == "") {
           return(topoly)
         } else {
