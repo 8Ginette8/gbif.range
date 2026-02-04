@@ -75,7 +75,11 @@ area extent and used as pseudo-absences proxy.
 ###########################################
 
 # Load available ecoregions
-eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_bioreg(
+    bioreg_name = "eco_terra",
+    save_dir = NULL,
+    format = "sf"
+)
 
 # First download the worldwide observations of Panthera tigris from GBIF
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
@@ -84,7 +88,8 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 range.tiger <- get_range(
     occ_coord = obs.pt,
     bioreg = eco.terra,
-    bioreg_name = "ECO_NAME"
+    bioreg_name = "ECO_NAME",
+    format = "sf"
 )
 
 pt.test <- cv_range(

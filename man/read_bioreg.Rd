@@ -13,8 +13,8 @@ See \code{bioreg_list} for available options.}
 \item{save_dir}{The directory to save the downloaded files. Defaults to
 "inst/extdata/downloads" within the package structure.}
 
-\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class.
-Defaut is the \code{SpatVector} class from the \code{terra}
+\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
+layer output. Defaut is the \code{SpatVector} class from the \code{terra}
 package.}
 }
 \value{

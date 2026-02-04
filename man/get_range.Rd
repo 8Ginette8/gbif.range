@@ -70,6 +70,10 @@ the same resolution of the rasters used to create a \code{make_ecoregion()}
 object.}
 
 \item{verbose}{Logical. Should progression be printed?}
+
+\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
+layer output. Defaut is the \code{SpatVector} class from the \code{terra}
+package.}
 }
 \value{
 An object of class \code{getRange} with two fields:

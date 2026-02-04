@@ -220,8 +220,8 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' See \code{bioreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
-#' @param format Character. "\code{sf}" or "\code{SpatVector}" class.
-#' Defaut is the \code{SpatVector} class from the \code{terra}
+#' @param format Character. "\code{sf}" or "\code{SpatVector}" class for
+#' layer output. Defaut is the \code{SpatVector} class from the \code{terra}
 #' package.
 #' @details Four shapefiles can be downloaded with the library:
 #'

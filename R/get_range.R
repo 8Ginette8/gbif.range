@@ -38,6 +38,9 @@
 #' is \code{tempdir()}.
 #' @param raster Logical. Should the output be a unified raster?
 #' Default is \code{TRUE}
+#' @param format Character. "\code{sf}" or "\code{SpatVector}" class for
+#' layer output. Defaut is the \code{SpatVector} class from the \code{terra}
+#' package.
 #' @param res Numeric. If \code{raster = TRUE}, resolution of the output in
 #' degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 #' important to note that the highest achievable resolution of the output will
@@ -468,6 +471,9 @@ get_range <- function (occ_coord = NULL,
                            raster = TRUE,
                            res = res)
   result$rangeOutput <- shp.species
+  if (format == "sf") {
+    result$rangeOutput <- sf::st_as_sf(result$rangeOutput)
+  }
 
   return(result)
 }
