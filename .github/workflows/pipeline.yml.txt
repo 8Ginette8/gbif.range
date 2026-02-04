@@ -1,0 +1,73 @@
+name: R-Package-Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  R-CMD-check-ubuntu:
+    if: "!contains(github.event.head_commit.message, 'chore: update version')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+          sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texinfo ghostscript
+
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/R
+          key: renv-${{ runner.os }}-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Install R packages
+        run: |
+          Rscript -e '
+            pkgs <- c("devtools", "remotes", "terra", "sf", "rgbif", "CoordinateCleaner", "ClusterR", "FNN", "geometry", "cluster", "rnaturalearth", "mclust", "methods", "utils", "zip", "class", "NMOF")
+            missing <- setdiff(pkgs, rownames(installed.packages()))
+            if (length(missing) > 0) install.packages(missing, repos = "https://cloud.r-project.org")
+          '
+
+      - name: Check package
+        run: |
+          R CMD build . --no-manual
+          R CMD check *.tar.gz --no-manual --as-cran
+
+  version-and-tag:
+    needs: R-CMD-check-ubuntu
+    if: "github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'chore: update version')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Calculate and Update Version
+        id: calc_version
+        run: |
+          Rscript -e '
+            tag <- system("git describe --tags --abbrev=0", intern=TRUE)
+            diff <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
+            impact <- sum(as.numeric(unlist(regmatches(diff, gregexpr("[0-9]+", diff))))[-1], na.rm=TRUE)
+            desc <- read.dcf("DESCRIPTION"); curr_v <- numeric_version(desc[,"Version"])
+            files <- system(paste0("git diff --name-only ", tag, "..HEAD"), intern=TRUE)
+            if (impact > 5000) { v <- paste(curr_v$major + 1, 0, 0, sep=".")
+            } else if (impact > 300 || any(grepl("NAMESPACE", files))) { v <- paste(curr_v$major, curr_v$minor + 1, 0, sep=".")
+            } else { v <- paste
