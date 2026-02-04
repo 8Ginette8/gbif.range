@@ -144,16 +144,16 @@ make_ecoregion <- function(env = NULL,
       topoly <- sf::st_as_sf(topoly) 
 
       # Testing if polygons are valid and correct if not
-      topoly_sf <- sf::st_make_valid(topoly_sf)
-      topoly_sf <- sf::st_buffer(topoly_sf, 0)
+      topoly <- sf::st_make_valid(topoly)
+      topoly <- sf::st_buffer(topoly, 0)
       
       if (format == "sf") {
         # Return sf object
         if (!raster & path == "") {
-          return(topoly_sf)
+          return(topoly)
         } else {
           sf::st_write(
-            obj = topoly_sf,
+            obj = topoly,
             dsn = file.path(path, paste0(name, ".shp")),
             layer = name,
             driver = "ESRI Shapefile",
@@ -162,12 +162,12 @@ make_ecoregion <- function(env = NULL,
           }
       } else {
         # Convert back to terra SpatVector
-        topoly_terra <- terra::vect(topoly_sf)
+        topoly <- terra::vect(topoly)
         if (!raster & path == "") {
-          return(topoly_terra)
+          return(topoly)
         } else {
           terra::writeVector(
-            x = topoly_terra,
+            x = topoly,
             filename = file.path(path, paste0(name, ".shp")),
             overwrite = TRUE,
             filetype = "ESRI Shapefile",
