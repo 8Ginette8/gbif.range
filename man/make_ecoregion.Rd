@@ -135,6 +135,7 @@ if (!requireNamespace("colorspace", quietly = TRUE)) {
 }
 
 # Assign colors to ecoregions
+my.eco = terra::vect(my.eco)
 eco.alps <- terra::crop(my.eco, terra::ext(shp.lonlat))
 eco.alps2 <- terra::intersect(eco.alps, alps.shp)
 col.palette <- colorRampPalette(c("#a6cee3", "#1f78b4",

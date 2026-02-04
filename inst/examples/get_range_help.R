@@ -100,7 +100,7 @@ out.plot <- terra::extract(
     range.tiger$rangeOutput,
     as.data.frame(obs.pt[, c("decimalLongitude","decimalLatitude")])
 )
-op.na <- is.na(out.plot$layer)
+op.na <- is.na(out.plot[,2])
 out.plot <- obs.pt[op.na, c("decimalLongitude","decimalLatitude")]
 
 # Plot

@@ -89,7 +89,7 @@ range.tiger <- get_range(
     occ_coord = obs.pt,
     bioreg = eco.terra,
     bioreg_name = "ECO_NAME",
-    raster = FALSE,
+    ras = FALSE,
     format = "sf"
 )
 
@@ -196,7 +196,7 @@ all.xy[all.xy$Pres\%in\%1, "col"] <- colorspace::darken(
     # Evaluate
 ar.test <- cv_range(
     range_object = range.arcto,
-    cv = 'block-cv',
+    cv = "block-cv",
     nfolds = 5,
     nblocks = 2
 )
@@ -211,7 +211,7 @@ id.in <- terra::extract(
     range.arcto$rangeOutput,
     as.data.frame(pres[,1:2])
 )
-pres <- pres[!is.na(id.in$layer), ]
+pres <- pres[!is.na(id.in[,2]), ]
 
     # Continue plotting
 png(
@@ -317,7 +317,7 @@ id.in <- terra::extract(
     range.tiger$rangeOutput,
     as.data.frame(pres[,1:2])
 )
-pres <- pres[!is.na(id.in$layer),]
+pres <- pres[!is.na(id.in[,2]),]
 
     # Continue plotting
 png(

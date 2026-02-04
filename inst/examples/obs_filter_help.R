@@ -20,7 +20,7 @@ obs.saxi <- get_gbif(
 	geo = shp.lonlat
 )
 
-# Tes plot
+# Test plot
 terra::plot(shp.lonlat)
 graphics::points(
 	obs.arcto[, c("decimalLongitude","decimalLatitude")],
