@@ -1,4 +1,4 @@
-#' Bioreg Data Files
+#' Bioreg data Files
 #'
 #' A list of data files including download links, filenames, and descriptions.
 #'
