@@ -171,6 +171,7 @@ cv_range <- function(range_object = NULL,
       res = range_object$init.args$res,
       verbose = FALSE
     )
+    names(range.cv$rangeOutput) = "layer"
 
     # Create data to calculate TP,FA,TA & FP
     Pred <- terra::extract(
