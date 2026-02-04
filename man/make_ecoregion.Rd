@@ -75,7 +75,10 @@ shp.lonlat <- terra::vect(shp.path)
 rst <- terra::crop(rst, shp.lonlat)
 
 # Apply the function by infering 50 classes of environments
-my.eco <- make_ecoregion(env = rst, nclass = 200)
+my.eco <- make_ecoregion(env = rst,
+	nclass = 200,
+	format = "sf"
+)
 
 # Downloading in the European Alps the observations of one plant species
 obs.arcto <- get_gbif(

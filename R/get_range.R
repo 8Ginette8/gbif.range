@@ -191,6 +191,7 @@ get_range <- function (occ_coord = NULL,
                        buff_width_polygon = 4,
                        dir_temp = tempdir(),
                        raster = TRUE,
+                       format = "SpatVector",
                        res = 0.1,
                        verbose = TRUE){
 

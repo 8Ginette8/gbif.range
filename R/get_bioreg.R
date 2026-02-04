@@ -282,11 +282,14 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' plot(shp_eco_terra)
 #' }
 read_bioreg <- function(bioreg_name = "eco_terra",
-  save_dir = NULL, format = "SpatVector") {
+                        save_dir = NULL,
+                        format = "SpatVector"){
+    # First function
     save_dir <- get_save_dir(save_dir)
   
     # check and if non existing get bioreg
     check_and_get_bioreg(bioreg_name, save_dir)
+
     # Load the shapefile
     shp_path <- list.files(
      file.path(save_dir, bioreg_name),
@@ -294,7 +297,8 @@ read_bioreg <- function(bioreg_name = "eco_terra",
      full.names = TRUE
     )
     shp <- terra::vect(shp_path)
-  
+
+    # SHP case
     if (format == "sf") {
      shp <- sf::st_as_sf(shp)
     }

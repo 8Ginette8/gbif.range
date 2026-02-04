@@ -15,6 +15,7 @@ get_range(
   buff_width_polygon = 4,
   dir_temp = tempdir(),
   raster = TRUE,
+  format = "SpatVector",
   res = 0.1,
   verbose = TRUE
 )
@@ -62,6 +63,10 @@ is \code{tempdir()}.}
 \item{raster}{Logical. Should the output be a unified raster?
 Default is \code{TRUE}}
 
+\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
+layer output. Defaut is the \code{SpatVector} class from the \code{terra}
+package.}
+
 \item{res}{Numeric. If \code{raster = TRUE}, resolution of the output in
 degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 important to note that the highest achievable resolution of the output will
@@ -70,10 +75,6 @@ the same resolution of the rasters used to create a \code{make_ecoregion()}
 object.}
 
 \item{verbose}{Logical. Should progression be printed?}
-
-\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
-layer output. Defaut is the \code{SpatVector} class from the \code{terra}
-package.}
 }
 \value{
 An object of class \code{getRange} with two fields:
