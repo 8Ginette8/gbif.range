@@ -71,7 +71,6 @@ get_save_dir <- function(save_dir = NULL) {
 }
 
 
-
 #' Download Bioreg Data Files
 #'
 #' Downloads data files from a provided list of links and saves them
@@ -175,6 +174,7 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
   }
 }
 
+
 #' Check and Download Bioreg Data Files
 #'
 #' Checks if a directory exists and contains at least one .shp file.
@@ -211,6 +211,7 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
     get_bioreg(bioreg_name, save_dir)
   }
 }
+
 
 #' Load Bioreg Data Files
 #' 

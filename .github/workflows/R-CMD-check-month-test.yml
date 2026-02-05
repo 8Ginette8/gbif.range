@@ -1,12 +1,15 @@
-name: R-Package-Auto-Version
+name: R-Package-CI
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
+
   auto-version:
-    if: "!contains(github.event.head_commit.message, 'chore: update version')"
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: release')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -20,21 +23,19 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Auto bump version, changelog, tag, and release
+      - name: Auto bump version, changelog, and tag
         run: |
           git fetch --tags --force
 
           Rscript -e '
-            # ---- 1. Latest tag ----
             tags <- system("git tag --sort=-v:refname", intern=TRUE)
             tag <- if (length(tags)) tags[1] else "v0.0.0"
 
-            # ---- 2. Diff impact (ignore docs) ----
             diff_files <- system(paste0("git diff --name-only ", tag, "..HEAD"), intern=TRUE)
             code_files <- diff_files[grepl("^R/|^src/|^inst/", diff_files)]
 
             if (length(code_files) == 0) {
-              cat("No code changes detected. Skipping version bump.\n")
+              cat("NO_CHANGE\n")
               quit(status = 0)
             }
 
@@ -45,16 +46,13 @@ jobs:
               if (length(nums) > 1) impact <- sum(nums[-1], na.rm=TRUE)
             }
 
-            # ---- 3. Total code lines ----
             files <- list.files(c("R","src","inst"), pattern="\\.[Rr]$|\\.c$|\\.cpp$", recursive=TRUE, full.names=TRUE)
             total <- sum(sapply(files, function(f) length(readLines(f, warn=FALSE))))
             pct <- if (total > 0) (impact / total) * 100 else 0
 
-            # ---- 4. Parse version ----
             v <- as.numeric(strsplit(sub("^v","", tag), "\\.")[[1]])
             maj <- v[1]; min <- v[2]; pat <- v[3]
 
-            # ---- 5. Bump logic ----
             if (pct > 40) {
               maj <- maj + 1; min <- 0; pat <- 0
             } else if (pct > 5) {
@@ -65,19 +63,17 @@ jobs:
 
             new_v <- paste(maj, min, pat, sep=".")
 
-            # ---- 6. Update DESCRIPTION ----
             d <- readLines("DESCRIPTION")
             cur_v <- sub("^Version:\\s*", "", d[grep("^Version:", d)])
 
             if (new_v == cur_v) {
-              cat("Version already current:", new_v, "\n")
+              cat("NO_CHANGE\n")
               quit(status = 0)
             }
 
             d[grep("^Version:", d)] <- paste0("Version: ", new_v)
             writeLines(d, "DESCRIPTION")
 
-            # ---- 7. Update NEWS.md ----
             changes <- system(paste0("git log --oneline ", tag, "..HEAD"), intern=TRUE)
             entry <- c(
               paste0("## ", new_v),
@@ -95,10 +91,14 @@ jobs:
             }
 
             writeLines(new_v, "ver.txt")
-
             cat(sprintf("Baseline: %s | Impact: %d | Percent: %.2f%% | New: %s\n",
                         tag, impact, pct, new_v))
           '
+
+          if [ ! -f ver.txt ]; then
+            echo "No version bump needed."
+            exit 0
+          fi
 
           NEW_V=$(cat ver.txt)
 
@@ -111,3 +111,39 @@ jobs:
           git tag v$NEW_V
           git push origin main
           git push origin v$NEW_V
+
+  R-CMD-check-ubuntu:
+    needs: auto-version
+    if: |
+      github.event_name == 'pull_request' ||
+      !contains(github.event.head_commit.message, 'chore: release')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+
+      - name: Install R deps (cached)
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - name: R CMD check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning")
+        shell: Rscript {0}
+
+      - name: Upload check results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: R-CMD-check-results
+          path: "*.Rcheck"
