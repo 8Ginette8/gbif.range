@@ -1,4 +1,4 @@
-name: R-Package-Pipeline
+name: R-Package-Auto-Version
 
 on:
   push:
@@ -12,17 +12,22 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: r-lib/actions/setup-r@v2
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
-      - name: Auto bump version
+      - name: Auto bump version and tag
         run: |
           git fetch --tags --force
+
+          # Exit if no code changes since last commit (prevents empty bumps)
+          git diff --quiet HEAD~1 || true
 
           Rscript -e '
             # ---- 1. Latest tag ----
@@ -68,6 +73,7 @@ jobs:
           '
 
           NEW_V=$(cat ver.txt)
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -75,4 +81,5 @@ jobs:
           git commit -m "chore: update version to $NEW_V [skip ci]"
 
           git tag v$NEW_V
-          git push origin main --follow-tags
+          git push origin main
+          git push origin v$NEW_V
