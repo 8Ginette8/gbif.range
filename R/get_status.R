@@ -86,6 +86,7 @@ get_status <- function(sp_name = NULL,
   ### Get the status
   ######################################################
 
+
   # Empty output
   e.output <- data.frame(canonicalName = NA,
                        rank = NA,
