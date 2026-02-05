@@ -1,7 +1,7 @@
 ### ==================================================================
 ### conv_function (meta)
 ### ==================================================================
-#' Create polygon objects in different bioregions.
+#' Create polygon objects in different ecoregions.
 #' 
 #' Not to be called directly by the user.
 #' @param sp_coord Object of class matrix of data.frame. Spatial coordinates.
@@ -27,7 +27,7 @@ conv_function <- function (sp_coord,
   bwp.bipl.m <- (bwp + (nrow(x)-1) * bipl) * 111111
   bwpo.m <- bwpo * 111111
 
-  # Number of observations points in each bioregion, if <3 create point buffer
+  # Number of observations points in each ecoregion, if <3 create point buffer
   if (nrow(data.frame(x)) < 3) { 
     rtn <- terra::buffer(
       x = terra::aggregate(sp_coord),
@@ -51,7 +51,7 @@ conv_function <- function (sp_coord,
     if (all(abs(is.line) == 0)) { 
       
       # Print
-      cat('\n','bioreg=',g,nrow(x),
+      cat('\n','ecoreg=',g,nrow(x),
         'points laying on one line. Using buffer width of ',
         bwp.bipl.m/1000,'km','\n')
 

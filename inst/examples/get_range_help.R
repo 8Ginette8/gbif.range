@@ -4,8 +4,8 @@
 ###########################################
 
 # Load available ecoregions
-eco.terra <- read_bioreg(
-    bioreg_name = "eco_terra",
+eco.terra <- read_ecoreg(
+    ecoreg_name = "eco_terra",
     save_dir = NULL
 )
 
@@ -15,8 +15,8 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 # Make range from occurance points
 range.tiger <- get_range(
     occ_coord = obs.pt,
-    bioreg = eco.terra,
-    bioreg_name = "ECO_NAME"
+    ecoreg = eco.terra,
+    ecoreg_name = "ECO_NAME"
 )
 
 # Plot

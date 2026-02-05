@@ -159,8 +159,8 @@ cv_range <- function(range_object = NULL,
     # Run get_range
     range.cv <- get_range(
       occ_coord = xy.fit[xy.fit$Pres %in% 1,],
-      bioreg = range_object$init.args$bioreg,
-      bioreg_name = range_object$init.args$bioreg_name,
+      ecoreg = range_object$init.args$ecoreg,
+      ecoreg_name = range_object$init.args$ecoreg_name,
       degrees_outlier = range_object$init.args$degrees_outlier,
       clust_pts_outlier = range_object$init.args$clust_pts_outlier,
       buff_width_point = range_object$init.args$buff_width_point,

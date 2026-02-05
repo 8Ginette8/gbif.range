@@ -4,23 +4,23 @@
 #' Create a species range map based on \code{get_gbif()} object
 #'
 #' This function estimates species ranges from occurrence data (GBIF or
-#' else) and ecoregions [see \code{make_ecoregion()} or \code{bioreg_list}].
+#' else) and ecoregions [see \code{make_ecoreg()} or \code{ecoreg_list}].
 #' 
 #' @param occ_coord Object of class \code{getGBIF} [see \code{get_gbif()}]
 #' or a \code{data.frame} containing two columns named 'decimalLongitude'
 #' and 'decimalLatitude'.
-#' @param bioreg  Object of class \code{SpatialPolygonsDataFrame},
+#' @param ecoreg  Object of class \code{SpatialPolygonsDataFrame},
 #' \code{SpatVector} or \code{sf} containing different ecoregions (WGS84).
 #' Define the range extent and ecoregions. Note that this
 #' parameter may be fed with an external, generated
-#' [see \code{make_ecoregion()}] or downloaded ecoregion shapefile
-#' [see \code{read_bioreg()}]. Four ecoregions can be downloaded
+#' [see \code{make_ecoreg()}] or downloaded ecoregion shapefile
+#' [see \code{read_ecoreg()}]. Four ecoregions can be downloaded
 #' with the library: 'eco_terra', 'eco_marine', 'eco_hd_marine'
-#' and 'eco_fresh' (see \code{bioreg_list} and details below).
-#' @param bioreg_name Character. One ecoregion level/category name from the
-#' \code{bioreg} parameter polygon must be supplied, e.g., very detailed level
+#' and 'eco_fresh' (see \code{ecoreg_list} and details below).
+#' @param ecoreg_name Character. One ecoregion level/category name from the
+#' \code{ecoreg} parameter polygon must be supplied, e.g., very detailed level
 #' of 'eco_terra' is "ECO_NAME". Note that default applies if a
-#' \code{make_ecoregion()} polygon is provided as a \code{bioreg} parameter.
+#' \code{make_ecoreg()} polygon is provided as a \code{ecoreg} parameter.
 #' @param degrees_outlier Numeric. Distance threshold (degrees). Points whose 
 #' \code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
 #' classified as outliers (default: 5 degrees).
@@ -44,8 +44,8 @@
 #' @param res Numeric. If \code{raster = TRUE}, resolution of the output in
 #' degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 #' important to note that the highest achievable resolution of the output will
-#' depend on its \code{bioreg} precision, e.g., a species range output can reach
-#' the same resolution of the rasters used to create a \code{make_ecoregion()}
+#' depend on its \code{ecoreg} precision, e.g., a species range output can reach
+#' the same resolution of the rasters used to create a \code{make_ecoreg()}
 #' object.
 #' @param verbose Logical. Should progression be printed?
 #' @details
@@ -57,8 +57,8 @@
 #' nearest neighbour exceeds the  \code{degrees_outlier} threshold (default:
 #' 5 degrees) are excluded, retaining only well-supported clusters (default:
 #' \eqn{\ge}{>=} 4 points within 5 degrees). Then, non-outlier points are
-#' spatially intersected with ecoregions (\code{bioreg}, specified via
-#' \code{bioreg_name}) to identify occupied bioregions.
+#' spatially intersected with ecoregions (\code{ecoreg}, specified via
+#' \code{ecoreg_name}) to identify occupied ecoregions.
 #' 
 #' **Step 2 - Clustering**: Within each occupied ecoregion, points are
 #' clustered using Gaussian mixture modeling (\code{mclust::Mclust}) to
@@ -182,8 +182,8 @@
 #' @importFrom ClusterR KMeans_rcpp
 #' @export
 get_range <- function (occ_coord = NULL, 
-                       bioreg = NULL, 
-                       bioreg_name = NULL, 
+                       ecoreg = NULL, 
+                       ecoreg_name = NULL, 
                        degrees_outlier = 5,
                        clust_pts_outlier = 4,
                        buff_width_point = 4, 
@@ -213,23 +213,23 @@ get_range <- function (occ_coord = NULL,
   spatial.class <- c("SpatialPolygonsDataFrame",
     "SpatialPolygons","sf", "SpatVector")
 
-  # Bioreg and convert to sf
-  if (!class(bioreg)[1] %in% spatial.class) {
-     stop("Wrong 'bioreg' class (not a spatial object)...")
+  # Ecoreg and convert to sf
+  if (!class(ecoreg)[1] %in% spatial.class) {
+     stop("Wrong 'ecoreg' class (not a spatial object)...")
   }
-  if (class(bioreg)[1] %in% spatial.class[1:3]) {
-    bioreg <- terra::vect(bioreg)
+  if (class(ecoreg)[1] %in% spatial.class[1:3]) {
+    ecoreg <- terra::vect(ecoreg)
   }
 
-  # Bioreg name
-  if (names(bioreg)[1] %in% "CLARA") {
-    bioreg_name <- "EcoRegion"
+  # Ecoreg name
+  if (names(ecoreg)[1] %in% "CLARA") {
+    ecoreg_name <- "EcoRegion"
   } 
-  if (methods::is(bioreg_name, "NULL")) {
+  if (methods::is(ecoreg_name, "NULL")) {
     stop(
       paste(
         "Name of the desired ecoregion level/category,
-        ('bioreg_name' parameter)",
+        ('ecoreg_name' parameter)",
         "is missing, please provide one..."
       )
 )
@@ -326,36 +326,36 @@ get_range <- function (occ_coord = NULL,
 
   # Set number of ecoregions
   ovo.coord.mod <- terra::intersect(
-    x = bioreg,
+    x = ecoreg,
     y = occ.coord.mod
   )
-  uniq <- levels(factor(ovo.coord.mod[[bioreg_name]][[1]]))
+  uniq <- levels(factor(ovo.coord.mod[[ecoreg_name]][[1]]))
 
   # Handling NA error
   if (length(ovo.coord.mod) == 0) {
-    stop("No overlap of ecoregion info, please use another 'bioreg_name'")
+    stop("No overlap of ecoregion info, please use another 'ecoreg_name'")
   }
   
-  # Loop over bioregions
+  # Loop over ecoregions
   SP.dist <- list()
   for (g in seq_along(uniq)) {
     
     # Print
     if (verbose){
-      cat('bioregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
+      cat('ecoregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
     }
 
     # Handle NAsy
-    q1 <- as.data.frame(bioreg)[, bioreg_name] == uniq[g]
+    q1 <- as.data.frame(ecoreg)[, ecoreg_name] == uniq[g]
     q1[is.na(q1)] <- FALSE
 
     # Continue
     tmp <- terra::simplifyGeom(
-      x = bioreg[q1, ],
+      x = ecoreg[q1, ],
       tolerance = 0.001,
       preserveTopology = TRUE
     )
-    a <- ovo.coord.mod[ovo.coord.mod[[bioreg_name]][[1]] == uniq[g]]
+    a <- ovo.coord.mod[ovo.coord.mod[[ecoreg_name]][[1]] == uniq[g]]
     
     if (length(a) < 3) {
       k <- 1
@@ -440,7 +440,7 @@ get_range <- function (occ_coord = NULL,
   }
   
   if (length(lala) == 0) {
-    stop('No occurrences within Bioregions. Empty raster produced...')
+    stop('No occurrences within ecoregions. Empty raster produced...')
   }
   shp.species <- do.call("rbind", lala)
 
@@ -465,8 +465,8 @@ get_range <- function (occ_coord = NULL,
   # Out
   result <- getRange$new()
   result$init.args <- list(occ_coord = occ.coord.k,
-                           bioreg = bioreg,
-                           bioreg_name = bioreg_name, 
+                           ecoreg = ecoreg,
+                           ecoreg_name = ecoreg_name, 
                            degrees_outlier = degrees_outlier,
                            clust_pts_outlier = clust_pts_outlier,
                            buff_width_point = buff_width_point,

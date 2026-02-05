@@ -17,7 +17,7 @@ shp.lonlat <- terra::vect(shp.path)
 rst <- terra::crop(rst, shp.lonlat)
 
 # Apply the function by infering 50 classes of environments
-my.eco <- make_ecoregion(env = rst,
+my.eco <- make_ecoreg(env = rst,
 	nclass = 200,
 	format = "sf"
 )
@@ -32,8 +32,8 @@ obs.arcto <- get_gbif(
 # Create the range map based on our custom ecoregion at 5 x 5 km resolution
 range.arcto <- get_range(
 	occ_coord = obs.arcto,
-	bioreg = my.eco,
-	bioreg_name = "EcoRegion",
+	ecoreg = my.eco,
+	ecoreg_name = "EcoRegion",
 	res = 0.05
 )
 

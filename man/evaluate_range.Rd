@@ -202,11 +202,11 @@ obs.arcto <- get_gbif(
 rst <- terra::rast(
   paste0(system.file(package = "gbif.range"),"/extdata/rst.tif")
 )
-my.eco <- make_ecoregion(rst, 200)
+my.eco <- make_ecoreg(rst, 200)
 range.arcto <- get_range(
     occ_coord = obs.arcto,
-    bioreg = my.eco,
-    bioreg_name = "EcoRegion",
+    ecoreg = my.eco,
+    ecoreg_name = "EcoRegion",
     res = 0.05
 )
 ext.temp <- terra::ext(range.arcto$rangeOutput)
@@ -277,11 +277,11 @@ dev.off()
 
 # Preliminary
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
-eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
 range.tiger <- get_range(
     occ_coord = obs.pt,
-    bioreg = eco.terra,
-    bioreg_name = "ECO_NAME"
+    ecoreg = eco.terra,
+    ecoreg_name = "ECO_NAME"
 )
 ext.temp <- terra::ext(range.tiger$rangeOutput)
 ext.temp <- c(ext.temp[1]-0.2, ext.temp[2]+0.2,

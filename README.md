@@ -24,7 +24,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   - `get_range()`: estimates species ranges based on occurrence data (a `getGBIF` output or a set of coordinates) and
   <a href="https://en.wikipedia.org/wiki/Ecoregion">ecoregion</a> polygons.
 
-  - `read_bioreg()`: download and read available ecoregion files from different available URL sources. See also associated calls `bioreg_list`, `get_bioreg()` and `check_and_get_bioreg()`.
+  - `read_ecoreg()`: download and read available ecoregion files from different available URL sources. See also associated calls `ecoreg_list`, `get_ecoreg()` and `check_and_get_ecoreg()`.
     
   - `get_status()`: generates, based on a given species name, its IUCN red list status and a list of all scientific names
   (accepted, synonyms) found in the GBIF backbone taxonomy. Children and related doubtful names not used to download the data may also be extracted.
@@ -39,7 +39,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   - `get_doi()`: a small wrapper of `derived_dataset()` in `rgbif` that simplifies the obtention of a general DOI
   for a set of several gbif species datasets.
 
-  - `make_ecoregion()`: a function to create custom ecoregions based on environmental layers.
+  - `make_ecoreg()`: a function to create custom ecoregions based on environmental layers.
 
   - `evaluate_range()`: evaluation function to validate the species ranges with distribution information provided by the user.
 
@@ -83,12 +83,12 @@ Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) a
 
 ``` r
 # Download ecoregion and read
-eco.terra <- read_bioreg(bioreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
 
 # Range
 range.tiger <- get_range(occ_coord = obs.pt,
-                        bioreg = eco.terra,
-                        bioreg_name = "ECO_NAME",
+                        ecoreg = eco.terra,
+                        ecoreg_name = "ECO_NAME",
                         degrees_outlier = 5,
                         clust_pts_outlier = 4)
 ```
@@ -115,18 +115,18 @@ Although whatever shapefile may be set in `get_range()` as input, note that ecor
 Available ecoregion files that can be downloaded with the package:
 ``` r
 # List
-bioreg_list
+ecoreg_list
 ```
 
 ### Custom ecoregions
 
-Additionally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed data (e.g. climate, biodiversity) of desired resolution and extent defining the study area.
+Additionally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoreg()` can be used based on spatially-informed data (e.g. climate, biodiversity) of desired resolution and extent defining the study area.
 
 Example of 10 ecoregions based on CHELSA bioclimatic layers at 5 × 5 km resolution (Karger et al. 2017), i.e., mean annual air temperature (bio1) and annual precipitation amount (bio12) 1981–2010:
 
 ``` r
 bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
-eco.eg <- make_ecoregion(env = bio, nclass = 10)
+eco.eg <- make_ecoreg(env = bio, nclass = 10)
 terra::plot(eco.eg, col = rainbow(10))
 ```
 <img width="450" height="auto" alt="image" src="https://github.com/user-attachments/assets/3e26fe66-fbdd-4854-a24e-125a02d3928e" />
@@ -142,14 +142,14 @@ obs.arcto <- get_gbif(sp_name = "Arctostaphylos alpinus",
 
 # Create an ecoregion layer of 200 classes, based on two environmental spatial layers:
 rst <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
-my.eco <- make_ecoregion(env = rst,
+my.eco <- make_ecoreg(env = rst,
                         nclass = 200)
 
 # Create the range map based on our custom ecoregion
-# (always set 'EcoRegion' as a name when using a make_ecoregion() output):
+# (always set 'EcoRegion' as a name when using a make_ecoreg() output):
 range.arcto <- get_range(occ_coord = obs.arcto,
-                        bioreg = my.eco,
-                        bioreg_name = "EcoRegion",
+                        ecoreg = my.eco,
+                        ecoreg_name = "EcoRegion",
                         degrees_outlier = 5,
                         clust_pts_outlier = 4,
                         res = 0.05)
@@ -157,7 +157,7 @@ range.arcto <- get_range(occ_coord = obs.arcto,
 
 Unlike at larger-scales, we have here decreased the `get_gbif()` `grain` parameter from 100km to 1km, as keeping observations with a precision of 100km would have been too coarse to infer the approximate range distribution of the species relative to the study extent. `degrees_outlier` and `clust_pts_outlier` were here also kept defaults (~550 and 440 km, respectively), so relative to the study extent, almost no clustered or too distance observations were considered outliers.
 
-It is also important to note that the resolution parameter (`res`) can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the `bioreg` object (e.g., a range output can reach the same resolution of the rasters used to create a `make_ecoregion` object).
+It is also important to note that the resolution parameter (`res`) can be changed to adjust how fine the spatial output should be. This highest possible resolution will only depend on the precision of the `ecoreg` object (e.g., a range output can reach the same resolution of the rasters used to create a `make_ecoreg` object).
 
 ``` r
 # Plot
@@ -189,7 +189,7 @@ Let's now generate three range maps of *Delphinus delphis* using the *eco.marine
 
 ``` r
 # Download ecoregion and read
-eco.marine <- read_bioreg(bioreg_name = "eco_marine", save_dir = NULL)
+eco.marine <- read_ecoreg(ecoreg_name = "eco_marine", save_dir = NULL)
 
 # Range from different levels
 range.dd1 <- get_range(obs.dd, eco.marine, "ECOREGION")

@@ -6,8 +6,8 @@
 \usage{
 get_range(
   occ_coord = NULL,
-  bioreg = NULL,
-  bioreg_name = NULL,
+  ecoreg = NULL,
+  ecoreg_name = NULL,
   degrees_outlier = 5,
   clust_pts_outlier = 4,
   buff_width_point = 4,
@@ -25,19 +25,19 @@ get_range(
 or a \code{data.frame} containing two columns named 'decimalLongitude'
 and 'decimalLatitude'.}
 
-\item{bioreg}{Object of class \code{SpatialPolygonsDataFrame},
+\item{ecoreg}{Object of class \code{SpatialPolygonsDataFrame},
 \code{SpatVector} or \code{sf} containing different ecoregions (WGS84).
 Define the range extent and ecoregions. Note that this
 parameter may be fed with an external, generated
-[see \code{make_ecoregion()}] or downloaded ecoregion shapefile
-[see \code{read_bioreg()}]. Four ecoregions can be downloaded
+[see \code{make_ecoreg()}] or downloaded ecoregion shapefile
+[see \code{read_ecoreg()}]. Four ecoregions can be downloaded
 with the library: 'eco_terra', 'eco_marine', 'eco_hd_marine'
-and 'eco_fresh' (see \code{bioreg_list} and details below).}
+and 'eco_fresh' (see \code{ecoreg_list} and details below).}
 
-\item{bioreg_name}{Character. One ecoregion level/category name from the
-\code{bioreg} parameter polygon must be supplied, e.g., very detailed level
+\item{ecoreg_name}{Character. One ecoregion level/category name from the
+\code{ecoreg} parameter polygon must be supplied, e.g., very detailed level
 of 'eco_terra' is "ECO_NAME". Note that default applies if a
-\code{make_ecoregion()} polygon is provided as a \code{bioreg} parameter.}
+\code{make_ecoreg()} polygon is provided as a \code{ecoreg} parameter.}
 
 \item{degrees_outlier}{Numeric. Distance threshold (degrees). Points whose 
 \code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
@@ -70,8 +70,8 @@ package.}
 \item{res}{Numeric. If \code{raster = TRUE}, resolution of the output in
 degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
 important to note that the highest achievable resolution of the output will
-depend on its \code{bioreg} precision, e.g., a species range output can reach
-the same resolution of the rasters used to create a \code{make_ecoregion()}
+depend on its \code{ecoreg} precision, e.g., a species range output can reach
+the same resolution of the rasters used to create a \code{make_ecoreg()}
 object.}
 
 \item{verbose}{Logical. Should progression be printed?}
@@ -85,7 +85,7 @@ parameter).
 }
 \description{
 This function estimates species ranges from occurrence data (GBIF or
-else) and ecoregions [see \code{make_ecoregion()} or \code{bioreg_list}].
+else) and ecoregions [see \code{make_ecoreg()} or \code{ecoreg_list}].
 }
 \details{
 The function implements a four-step species range mapping process: 
@@ -96,8 +96,8 @@ distances. Points whose distance to their \code{clust_pts_outlier}-th
 nearest neighbour exceeds the  \code{degrees_outlier} threshold (default:
 5 degrees) are excluded, retaining only well-supported clusters (default:
 \eqn{\ge}{>=} 4 points within 5 degrees). Then, non-outlier points are
-spatially intersected with ecoregions (\code{bioreg}, specified via
-\code{bioreg_name}) to identify occupied bioregions.
+spatially intersected with ecoregions (\code{ecoreg}, specified via
+\code{ecoreg_name}) to identify occupied ecoregions.
 
 **Step 2 - Clustering**: Within each occupied ecoregion, points are
 clustered using Gaussian mixture modeling (\code{mclust::Mclust}) to
@@ -153,8 +153,8 @@ the species ecology.
 ###########################################
 
 # Load available ecoregions
-eco.terra <- read_bioreg(
-    bioreg_name = "eco_terra",
+eco.terra <- read_ecoreg(
+    ecoreg_name = "eco_terra",
     save_dir = NULL
 )
 
@@ -164,8 +164,8 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 # Make range from occurance points
 range.tiger <- get_range(
     occ_coord = obs.pt,
-    bioreg = eco.terra,
-    bioreg_name = "ECO_NAME"
+    ecoreg = eco.terra,
+    ecoreg_name = "ECO_NAME"
 )
 
 # Plot

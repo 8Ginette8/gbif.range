@@ -75,8 +75,8 @@ area extent and used as pseudo-absences proxy.
 ###########################################
 
 # Load available ecoregions
-eco.terra <- read_bioreg(
-    bioreg_name = "eco_terra",
+eco.terra <- read_ecoreg(
+    ecoreg_name = "eco_terra",
     save_dir = NULL,
     format = "sf"
 )
@@ -87,8 +87,8 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 # Make range from occurance points
 range.tiger <- get_range(
     occ_coord = obs.pt,
-    bioreg = eco.terra,
-    bioreg_name = "ECO_NAME",
+    ecoreg = eco.terra,
+    ecoreg_name = "ECO_NAME",
     ras = FALSE,
     format = "sf"
 )
@@ -139,11 +139,11 @@ rst <- terra::rast(
         "/extdata/rst.tif"
     )
 )
-my.eco <- make_ecoregion(rst, 200)
+my.eco <- make_ecoreg(rst, 200)
 range.arcto <- get_range(
     occ_coord = obs.arcto,
-    bioreg = my.eco,
-    bioreg_name = "EcoRegion",
+    ecoreg = my.eco,
+    ecoreg_name = "EcoRegion",
     res = 0.05
 )
 ext.temp <- terra::ext(range.arcto$rangeOutput)

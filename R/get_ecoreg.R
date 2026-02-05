@@ -1,4 +1,4 @@
-#' Bioreg data Files
+#' Ecoreg data Files
 #'
 #' A list of data files including download links, filenames, and descriptions.
 #'
@@ -10,10 +10,10 @@
 #' }
 #' @examples
 #' \dontrun{
-#' bioreg_list
+#' ecoreg_list
 #' }
 #' @export
-bioreg_list <- list(
+ecoreg_list <- list(
   list(
     filename = "eco_terra",
     link = paste0(
@@ -71,13 +71,13 @@ get_save_dir <- function(save_dir = NULL) {
 }
 
 
-#' Download Bioreg Data Files
+#' Download Ecoreg Data Files
 #'
 #' Downloads data files from a provided list of links and saves them
 #' to a specified directory.
 #'
-#' @param bioreg_name Character. "all" or the filename of the desired bioregion
-#' to be downloaded. See \code{bioreg_list} for available options. This
+#' @param ecoreg_name Character. "all" or the filename of the desired ecoregion
+#' to be downloaded. See \code{ecoreg_list} for available options. This
 #' contains a list of data file information with elements containing `link`,
 #' `filename`, and `description`.
 #' @param save_dir The directory to save the downloaded files. Defaults to
@@ -85,11 +85,11 @@ get_save_dir <- function(save_dir = NULL) {
 #' @return \code{NULL}. Downloads the files to the specified directory.
 #' @examples
 #' \dontrun{
-#' # download all bioregions available in bioreg_list
-#' get_bioreg()
+#' # download all ecoregions available in ecoreg_list
+#' get_ecoreg()
 #' }
 #' @export
-get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
+get_ecoreg <- function(ecoreg_name = "all", save_dir = NULL) {
   save_dir <- get_save_dir(save_dir)
   
   # Ensure the directory exists
@@ -97,16 +97,16 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
     dir.create(save_dir, recursive = TRUE)
   }
   
-  # Check if bioreg_name exists in bioreg_list
-  data_list <- bioreg_list
+  # Check if ecoreg_name exists in ecoreg_list
+  data_list <- ecoreg_list
   
-  if (bioreg_name != "all") {
-    # If bioreg_name does not exist, error
+  if (ecoreg_name != "all") {
+    # If ecoreg_name does not exist, error
     va1 <- vapply(data_list, function(x) x$filename, character(1))
-    if (!bioreg_name %in% va1) {
+    if (!ecoreg_name %in% va1) {
       stop(
         paste(
-          "Bioregion", bioreg_name, "not found. \n Available bioregions are:",
+          "Ecoregion", ecoreg_name, "not found. \n Available ecoregions are:",
           paste(
             vapply(
               data_list,
@@ -118,16 +118,16 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
       )
     }
     va2 <- vapply(data_list, function(x) x$filename, character(1))
-    data_list <- data_list[va2 == bioreg_name]
+    data_list <- data_list[va2 == ecoreg_name]
     message(
-      "Preparing to download bioregion ",
-      bioreg_name,
+      "Preparing to download ecoregion ",
+      ecoreg_name,
       " \n data file to: ",
       save_dir
     )
   } else {
     message(
-      "Preparing to download all listed bioregions: ",
+      "Preparing to download all listed ecoregions: ",
       paste(
         vapply(
           data_list,
@@ -175,27 +175,27 @@ get_bioreg <- function(bioreg_name = "all", save_dir = NULL) {
 }
 
 
-#' Check and Download Bioreg Data Files
+#' Check and Download Ecoreg Data Files
 #'
 #' Checks if a directory exists and contains at least one .shp file.
-#' If not, calls get_bioreg to download the data.
+#' If not, calls get_ecoreg to download the data.
 #'
-#' @param bioreg_name Filename of the desired bioregion to be checked and
-#' downloaded if necessary. See \code{bioreg_list} for available options.
+#' @param ecoreg_name Filename of the desired ecoregion to be checked and
+#' downloaded if necessary. See \code{ecoreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
 #' @return \code{NULL}. Checks and downloads the files to the specified
 #' directory if necessary.
 #' @examples
 #' \dontrun{
-#' check_and_get_bioreg("eco_terra")
+#' check_and_get_ecoreg("eco_terra")
 #' }
 #' @export
-check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
+check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
   save_dir <- get_save_dir(save_dir)
   
   # Determine the directory to check
-  check_dir <- file.path(save_dir, bioreg_name)
+  check_dir <- file.path(save_dir, ecoreg_name)
   
   # Check if directory exists and contains at least one .shp file
   if (
@@ -203,22 +203,22 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
       length(list.files(check_dir, pattern = "\\.shp$", full.names = TRUE)) > 0)
   ) {
     message(
-      bioreg_name,
+      ecoreg_name,
       " directory does not exist or contains no .shp files. 
-            \n [", file.path(check_dir, bioreg_name),
+            \n [", file.path(check_dir, ecoreg_name),
       "] will be created and data will be downloaded.
             \n Downloading data...")
-    get_bioreg(bioreg_name, save_dir)
+    get_ecoreg(ecoreg_name, save_dir)
   }
 }
 
 
-#' Load Bioreg Data Files
+#' Load ecoreg Data Files
 #' 
-#' Loads a shapefile based on the provided bioregion name and the
-#' \code{bioreg_list}.
-#' @param bioreg_name Filename of the desired bioregion to be loaded.
-#' See \code{bioreg_list} for available options.
+#' Loads a shapefile based on the provided ecoregion name and the
+#' \code{ecoreg_list}.
+#' @param ecoreg_name Filename of the desired ecoregion to be loaded.
+#' See \code{ecoreg_list} for available options.
 #' @param save_dir The directory to save the downloaded files. Defaults to
 #' "inst/extdata/downloads" within the package structure.
 #' @param format Character. "\code{sf}" or "\code{SpatVector}" class for
@@ -279,21 +279,21 @@ check_and_get_bioreg <- function(bioreg_name = "eco_terra", save_dir = NULL) {
 #' @export
 #' @examples
 #' \dontrun{
-#' shp_eco_terra <- read_bioreg("eco_terra")
+#' shp_eco_terra <- read_ecoreg("eco_terra")
 #' plot(shp_eco_terra)
 #' }
-read_bioreg <- function(bioreg_name = "eco_terra",
+read_ecoreg <- function(ecoreg_name = "eco_terra",
                         save_dir = NULL,
                         format = "SpatVector"){
     # First function
     save_dir <- get_save_dir(save_dir)
   
-    # check and if non existing get bioreg
-    check_and_get_bioreg(bioreg_name, save_dir)
+    # check and if non existing get ecoreg
+    check_and_get_ecoreg(ecoreg_name, save_dir)
 
     # Load the shapefile
     shp_path <- list.files(
-     file.path(save_dir, bioreg_name),
+     file.path(save_dir, ecoreg_name),
      pattern = "\\.shp$",
      full.names = TRUE
     )
