@@ -1,42 +1,42 @@
 Package: gbif.range
-Version: 0.5.0
+Version: .0.0
 Title: A Toolbox to Generate Species Range Maps Based on Ecoregions and
-        a User-friendly GBIF Wrapper
+ a User-friendly GBIF Wrapper
 Depends: R (>= 4.0.0)
 Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry,
-        cluster, rnaturalearth, mclust, methods, utils, zip, class,
-        NMOF
+ cluster, rnaturalearth, mclust, methods, utils, zip, class,
+ NMOF
 Description: Provides a workflow to generate species range
-        maps from scratch based on ecoregions and a user-friendly GBIF
-        wrapper. It includes functions to create taxa range maps using
-        ecoregions and to interact with the Global Biodiversity
-        Information Facility (GBIF) database (retrieving species
-        records, backbone taxonomy and IUCN conservation status). The
-        package facilitates the process of accessing GBIF data and
-        integrating it with ecoregion information for species
-        distribution analysis.
+ maps from scratch based on ecoregions and a user-friendly GBIF
+ wrapper. It includes functions to create taxa range maps using
+ ecoregions and to interact with the Global Biodiversity
+ Information Facility (GBIF) database (retrieving species
+ records, backbone taxonomy and IUCN conservation status). The
+ package facilitates the process of accessing GBIF data and
+ integrating it with ecoregion information for species
+ distribution analysis.
 License: GPL (>= 3) | file LICENCE
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
 Authors@R: c( person("Yohann", "Chauvier", role = c("cre","aut"), email
-        = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
-        person("Oskar", "Hagen", role = c("aut"), email =
-        "oskar@hagen.bio", comment = "0000-0002-7931-6571"),
-        person("Stefan", "Pinkert", role = c("aut"), comment =
-        "0000-0002-8348-2337"), person("Camille", "Albouy", role =
-        "aut", comment = "0000-0003-1629-2389"), person("Patrice",
-        "Descombes", role = "aut", comment = "0000-0002-3760-9907"),
-        person("Fabian", "Fopp", role = "aut", comment =
-        "0000-0003-0648-8484"), person("Michael P.", "Nobis", role =
-        "aut", comment = "0000-0003-3285-1590"), person("Philipp",
-        "Brun", role = "aut", comment = "0000-0002-2750-9793"),
-        person("Lisha", "Lyu", role = "aut", comment =
-        "0000-0001-7855-8109"), person("Katalin", "Csillery", role =
-        "aut", comment = "0000-0003-0039-9296"), person("Loïc",
-        "Pellissier", role = "aut", comment = "0000-0002-2289-8259"))
+ = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
+ person("Oskar", "Hagen", role = c("aut"), email =
+ "oskar@hagen.bio", comment = "0000-0002-7931-6571"),
+ person("Stefan", "Pinkert", role = c("aut"), comment =
+ "0000-0002-8348-2337"), person("Camille", "Albouy", role =
+ "aut", comment = "0000-0003-1629-2389"), person("Patrice",
+ "Descombes", role = "aut", comment = "0000-0002-3760-9907"),
+ person("Fabian", "Fopp", role = "aut", comment =
+ "0000-0003-0648-8484"), person("Michael P.", "Nobis", role =
+ "aut", comment = "0000-0003-3285-1590"), person("Philipp",
+ "Brun", role = "aut", comment = "0000-0002-2750-9793"),
+ person("Lisha", "Lyu", role = "aut", comment =
+ "0000-0001-7855-8109"), person("Katalin", "Csillery", role =
+ "aut", comment = "0000-0003-0039-9296"), person("Loïc",
+ "Pellissier", role = "aut", comment = "0000-0002-2289-8259"))
 Collate: 'make_tiles.R' 'get_gbif.R' 'get_status.R' 'get_doi.R'
-        'obs_filter.R' 'get_range.R' 'conv_function.R' 'get_gbif_count.R'
-        'make_ecoregion.R' 'get_bioreg.R' 'evaluate_range.R'
-        'make_blocks.R' 'optme.R' 'cv_range.R' 'classes.R' 'helpers.R'
+ 'obs_filter.R' 'get_range.R' 'conv_function.R' 'get_gbif_count.R'
+ 'make_ecoregion.R' 'get_bioreg.R' 'evaluate_range.R'
+ 'make_blocks.R' 'optme.R' 'cv_range.R' 'classes.R' 'helpers.R'
