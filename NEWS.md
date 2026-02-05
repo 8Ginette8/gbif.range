@@ -1,3 +1,9 @@
+## 1.2.2
+(2026-02-05)
+
+- ebf48a2 Merge branch 'main' of https://github.com/8Ginette8/gbif.range
+- efef4e1 Update get_doi.R
+
 ## 1.2.1
 (2026-02-05)
 
