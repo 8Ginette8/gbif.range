@@ -28,54 +28,57 @@ jobs:
         if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
         run: |
           Rscript -e '
-            # 1. Identify the baseline tag
+            # 1. Get Baseline Tag
             all_tags <- system("git tag", intern=TRUE)
             valid_tags <- all_tags[grepl("^v[0-9]", all_tags)]
             tag <- if(length(valid_tags) > 0) tail(sort(valid_tags), 1) else ""
             
-            # 2. Calculate line change impact
+            # 2. Calculate Impact
             impact <- 0
             if (tag != "") {
               diff_out <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
               if (length(diff_out) > 0) {
                 nums <- as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))
-                impact <- sum(nums[-1], na.rm=TRUE)
+                if(length(nums) > 1) impact <- sum(nums[-1], na.rm=TRUE)
               }
             }
             
-            # 3. Read DESCRIPTION safely
-            desc <- read.dcf("DESCRIPTION")
-            raw_v <- if("Version" %in% colnames(desc)) desc[1,"Version"] else "0.5.0"
-            curr_v <- numeric_version(raw_v)
+            # 3. Read DESCRIPTION with safer parsing
+            d <- read.dcf("DESCRIPTION")
+            v_str <- as.character(d[1,"Version"])
             
-            # 4. Versioning Logic
-            maj <- curr_v$major
-            min <- curr_v$minor
-            pat <- curr_v$patch
+            # 4. Manual Split to avoid "invalid version" errors
+            v_parts <- as.numeric(unlist(strsplit(v_str, "\\.")))
+            if(length(v_parts) < 3) v_parts <- c(0, 5, 0) # Emergency fallback
             
-            if (impact > 5000) { 
+            maj <- v_parts[1]
+            min <- v_parts[2]
+            pat <- v_parts[3]
+            
+            # 5. The Bump Logic
+            if (impact > 5000) {
               maj <- maj + 1; min <- 0; pat <- 0
-            } else if (impact > 300) { 
+            } else if (impact > 300) {
               min <- min + 1; pat <- 0
-            } else { 
-              pat <- pat + 1 
+            } else {
+              pat <- pat + 1
             }
             
             new_v <- paste(maj, min, pat, sep=".")
             
-            # Final check to prevent v0.0
-            if(new_v == "0.0.0" || new_v == "0.0") new_v <- "1.0.0"
-            
-            # 5. Save results
-            desc[1,"Version"] <- new_v
-            write.dcf(desc, "DESCRIPTION", keep.white = colnames(desc))
+            # 6. Final verification - No empty strings allowed
+            if (is.na(maj) || new_v == ".0.0") new_v <- "1.0.0"
+
+            # 7. Write and Log
+            d[1,"Version"] <- new_v
+            write.dcf(d, "DESCRIPTION", keep.white = colnames(d))
             writeLines(as.character(new_v), "ver.txt")
-            message(paste("--- LOG REPORT ---"))
-            message(paste("Base Tag:", tag))
-            message(paste("Lines Changed:", impact))
-            message(paste("New Version Target:", new_v))
+            
+            cat(paste0("\n--- BUILD REPORT ---\n"))
+            cat(paste0("Old Version: ", v_str, "\n"))
+            cat(paste0("Impact: ", impact, " lines\n"))
+            cat(paste0("New Version: ", new_v, "\n"))
           '
-          # 6. Push changes back to GitHub
           NEW_V=$(cat ver.txt)
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
