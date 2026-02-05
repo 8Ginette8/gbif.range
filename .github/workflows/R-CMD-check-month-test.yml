@@ -28,46 +28,49 @@ jobs:
         if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
         run: |
           Rscript -e '
-            all_tags <- system("git tag", intern=TRUE)
-            valid_tags <- all_tags[grepl("^v[0-9]", all_tags)]
-            tag <- if(length(valid_tags) > 0) tail(sort(valid_tags), 1) else ""
-            
+            # 1. Get Baseline and Impact
+            tags <- system("git tag --sort=-v:refname", intern=TRUE)
+            tag <- if(length(tags) > 0) tags[1] else "v1.1.0"
+            diff_out <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
             impact <- 0
-            if (tag != "") {
-              diff_out <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
-              if (length(diff_out) > 0) {
-                nums <- as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))
-                if(length(nums) > 1) impact <- sum(nums[-1], na.rm=TRUE)
-              }
+            if(length(diff_out) > 0) {
+              nums <- as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))
+              if(length(nums) > 1) impact <- sum(nums[-1], na.rm=TRUE)
             }
+
+            # 2. Calculate Total Lines in R/ directory
+            # We focus on the R/ folder because that is the "heart" of your package
+            all_r_files <- list.files("R", pattern = "\\.[Rr]$|\\.[Rr]md$", full.names = TRUE, recursive = TRUE)
+            total_lines <- sum(sapply(all_r_files, function(f) length(readLines(f))))
             
+            # 3. Calculate Percentage Change
+            # Avoid division by zero if package is empty
+            perc <- if(total_lines > 0) (impact / total_lines) * 100 else 0
+            
+            # 4. Read DESCRIPTION
             lines <- readLines("DESCRIPTION")
-            v_line <- lines[grep("^Version:", lines)]
-            v_str <- gsub("Version:\\s*", "", v_line)
-            
+            v_idx <- grep("^Version:", lines)
+            v_str <- gsub("Version:\\s*", "", lines[v_idx])
             v_parts <- as.numeric(unlist(strsplit(v_str, "\\.")))
             maj <- v_parts[1]; min <- v_parts[2]; pat <- v_parts[3]
-            
-            # The logic that avoids the "unexpected else" error:
-            if (impact > 5000) {
+
+            # 5. Percentage-Based Logic
+            # Major: > 40% change (Massive rewrite)
+            # Minor: > 5% change (Significant new feature/change)
+            # Patch: < 5% change (Maintenance)
+            if (perc > 40) {
               maj <- maj + 1; min <- 0; pat <- 0
-            } else if (impact > 300) {
+            } else if (perc > 5) {
               min <- min + 1; pat <- 0
             } else {
               pat <- pat + 1
             }
-            
+
             new_v <- paste(maj, min, pat, sep=".")
-            lines[grep("^Version:", lines)] <- paste0("Version: ", new_v)
+            lines[v_idx] <- paste0("Version: ", new_v)
             writeLines(lines, "DESCRIPTION")
-            writeLines(as.character(new_v), "ver.txt")
+            writeLines(new_v, "ver.txt")
             
-            cat(paste0("Baseline: ", tag, " | Impact: ", impact, " | New: ", new_v, "\n"))
+            cat(sprintf("Total LOC: %d | Impact: %d | Change: %.2f%%\n", total_lines, impact, perc))
+            cat(sprintf("Result: %s -> %s\n", v_str, new_v))
           '
-          NEW_V=$(cat ver.txt)
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add DESCRIPTION
-          git commit -m "chore: update version to $NEW_V [skip ci]"
-          git tag v$NEW_V
-          git push origin main --tags
