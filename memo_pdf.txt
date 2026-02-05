@@ -1,9 +1,0 @@
-# To update changes
-devtools::document()
-
-# To update documentation
-system("R CMD Rd2pdf . --title=gbif.range --output=./gbif.range_1.0.pdf --force --no-clean --internals")
-devtools::build_manual()
-
-# To install package locally from main directory
-install.packages("../gbif.range_r_package",repos=NULL,type="source")
