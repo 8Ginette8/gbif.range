@@ -1,5 +1,5 @@
 Package: gbif.range
-Version: 0.5.0
+Version: 1.0.0
 Title: A Toolbox to Generate Species Range Maps Based on Ecoregions and
  a User-friendly GBIF Wrapper
 Depends: R (>= 4.0.0)
