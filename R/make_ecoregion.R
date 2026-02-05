@@ -17,7 +17,7 @@
 #' @param name Character. If \code{path} is used, should include the name of
 #' the output file without file extension.
 #' @param format Character. "\code{sf}" or "\code{SpatVector}" class for
-#' layer output. Defaut is the \code{SpatVector} class from the \code{terra}
+#' layer output. Default is the \code{SpatVector} class from the \code{terra}
 #' package.
 #' @param raster Logical. Whether the output should be a raster layer. Default
 #' is \code{FALSE}.

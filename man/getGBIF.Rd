@@ -2,11 +2,11 @@
 % Please edit documentation in R/classes.R
 \name{getGBIF}
 \alias{getGBIF}
-\title{Class to store get_gbif outuput}
+\title{Class to store get_gbif output}
 \usage{
 getGBIF(df)
 }
 \description{
-Class to store get_gbif outuput
+Class to store get_gbif output
 }
 \keyword{internal}

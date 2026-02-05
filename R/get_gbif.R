@@ -67,7 +67,7 @@
 #' unknown observations. Description may be found
 #' (\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here}). 
 #' @param establishment Character. Is the individual native, captive or else?
-#' Defaut is native, casual, released, reproducing, established, colonising
+#' Default is native, casual, released, reproducing, established, colonizing
 #' and absence of information. See descriptions for other managed
 #' establishments: managed, captive, cultivated, released,
 #' unestablished and failing
@@ -125,7 +125,7 @@
 #' (2) Bypasses the \code{rgbif} hard limit for number of
 #' records (100'000 max). For this purpose, a dynamic moving window is
 #' created and used across the geographic extent defined by the user.
-#' This window automatically fragments the specified study area in succesive
+#' This window automatically fragments the specified study area in successive
 #' tiles of different sizes, until all tiles include < 10'000 observations
 #' (instead of 100'000 for extraction speed efficiency).
 #'

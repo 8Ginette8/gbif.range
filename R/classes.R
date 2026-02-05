@@ -1,7 +1,7 @@
 ### =========================================================================
 ### Set get_range class
 ### =========================================================================
-#' Class to store get_range outuput
+#' Class to store get_range output
 #'
 #' @keywords internal
 getRange <- setRefClass("getRange",
@@ -14,7 +14,7 @@ getRange <- setRefClass("getRange",
 ### =========================================================================
 ### Set get_gbif class
 ### =========================================================================
-#' Class to store get_gbif outuput
+#' Class to store get_gbif output
 #'
 #' @keywords internal
 getGBIF <- function(df) {

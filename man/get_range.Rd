@@ -64,7 +64,7 @@ is \code{tempdir()}.}
 Default is \code{TRUE}}
 
 \item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
-layer output. Defaut is the \code{SpatVector} class from the \code{terra}
+layer output. Default is the \code{SpatVector} class from the \code{terra}
 package.}
 
 \item{res}{Numeric. If \code{raster = TRUE}, resolution of the output in
@@ -302,7 +302,7 @@ Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,
 Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F.,
 Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao,
 P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map
-of life on Earth. Bioscience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+of life on Earth. BioScience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
 
 The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
 Biogeographical Realms and The Nature Conservancy Terrestrial Assessment

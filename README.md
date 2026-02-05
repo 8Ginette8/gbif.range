@@ -73,7 +73,7 @@ points(obs.pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 ![image](https://github.com/user-attachments/assets/2eef058d-3a0f-4b63-b053-7b1e4a94f3a2)
 
 
-Note that the function did not manage to get rid of observations of most likely non-informed captive individuals (e.g., in Europe, U.S. and South Africa); see the `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additonal children and related doubtful names may also be extracted (not used in `get_gbif()`):
+Note that the function did not manage to get rid of observations of most likely non-informed captive individuals (e.g., in Europe, U.S. and South Africa); see the `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additional children and related doubtful names may also be extracted (not used in `get_gbif()`):
 
 ``` r
 get_status("Panthera tigris", all = FALSE)
@@ -103,11 +103,11 @@ terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, 
 ![image](https://github.com/user-attachments/assets/97f6d768-4858-42ca-89f4-9d66e2394171)
 
 
-Here, default parameters were employed, however, `clust_pts_outlier` (in degrees, ~440 km here) could have been increased to remove larger isolated clusters of observations, and `degrees_outlier` (~550 km here) to account for more appart observations in the range process. Here, default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
+Here, default parameters were employed, however, `clust_pts_outlier` (in degrees, ~440 km here) could have been increased to remove larger isolated clusters of observations, and `degrees_outlier` (~550 km here) to account for more apart observations in the range process. Here, default parameters still allowed to remove obvious tiger observation anomalies in Europe, U.S. and South Africa.
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in `get_range()` as input, note that ecoregion shapefiles may be dowloaded using the package: *eco.earth* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
+Although whatever shapefile may be set in `get_range()` as input, note that ecoregion shapefiles may be downloaded using the package: *eco.earth* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
 - *eco_terra* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco_fresh* has only one: 'ECOREGION'.
 - *eco_marine* and *eco_hd_marine* (very coastal-precise version) contains three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
@@ -120,7 +120,7 @@ bioreg_list
 
 ### Custom ecoregions
 
-Additonally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed data (e.g. climate, biodiversity) of desired resolution and extent defining the study area.
+Additionally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoregion()` can be used based on spatially-informed data (e.g. climate, biodiversity) of desired resolution and extent defining the study area.
 
 Example of 10 ecoregions based on CHELSA bioclimatic layers at 5 × 5 km resolution (Karger et al. 2017), i.e., mean annual air temperature (bio1) and annual precipitation amount (bio12) 1981–2010:
 
@@ -207,7 +207,7 @@ points(obs.dd[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 
 ![image](https://github.com/user-attachments/assets/52d63434-f64b-4076-b8bc-d3c03c899137)
 
-Althought our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations woud have been extracted. Therefore, `occ_samp` must be in this case increased or removed.
+Although our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations would have been extracted. Therefore, `occ_samp` must be in this case increased or removed.
 
 ## Citation
 
@@ -224,7 +224,7 @@ Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, 
 
 Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7." (2022). Link to package: <a href="https://cran.r-project.org/web/packages/terra/index.html">terra - CRAN</a>
 
-Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map of life on Earth. Bioscience 51(11):933-938.  doi: <a href="https://doi.org/10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2">10.1641/0006-3568(2001)051</a>
+Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map of life on Earth. BioScience 51(11):933-938.  doi: <a href="https://doi.org/10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2">10.1641/0006-3568(2001)051</a>
 
 The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types, Biogeographical Realms and The Nature Conservancy Terrestrial Assessment Units. GIS layers developed by The Nature Conservancy with multiple partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge (UK): The Nature Conservancy. Data URL: https://geospatial.tnc.org/datasets/b1636d640ede4d6ca8f5e369f2dc368b/about
 

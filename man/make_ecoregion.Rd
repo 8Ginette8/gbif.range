@@ -30,7 +30,7 @@ Default is none.}
 the output file without file extension.}
 
 \item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
-layer output. Defaut is the \code{SpatVector} class from the \code{terra}
+layer output. Default is the \code{SpatVector} class from the \code{terra}
 package.}
 
 \item{raster}{Logical. Whether the output should be a raster layer. Default

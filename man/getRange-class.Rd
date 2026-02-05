@@ -4,9 +4,9 @@
 \name{getRange-class}
 \alias{getRange-class}
 \alias{getRange}
-\title{Class to store get_range outuput}
+\title{Class to store get_range output}
 \description{
-Class to store get_range outuput
+Class to store get_range output
 }
 
 \keyword{internal}

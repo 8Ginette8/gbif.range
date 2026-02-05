@@ -8,14 +8,14 @@
 #' @param nfolds Numeric. Number of approximately equal-sized classes (folds)
 #' to separate groups for block-cross validation.
 #' @param df Object of class \code{data.frame} with \emph{n} columns
-#' containing critera for cluster building. Not necessary if parameter
+#' containing criteria for cluster building. Not necessary if parameter
 #' \code{npoints} is supplied.
 #' @param nblocks Numeric. Number of clusters (blocks) based on the number
 #' of folds that should be built. Minimum is the same number as \code{nfolds}.
 #' Maximum is \code{nrow(df) / 10}.
 #' @param pres Binary vector. Optional argument. If \code{df} is supplied, this
 #' argument can be used to save processing time. 1 stands for the points
-#' on which CLARA is appplied, and 0 stands for the points on which K-nearest
+#' on which CLARA is applied, and 0 stands for the points on which K-nearest
 #' neighbors is applied relative to the 1. If \code{df} is not supplied, for
 #' which points should random sampling be made? 
 #' @param npoints Optional argument if \code{df} is not supplied. For how many

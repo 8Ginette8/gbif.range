@@ -15,7 +15,7 @@
 #' @param nblocks Numeric. Only applies if "block-cv" is employed. Defined
 #' the number of blocks per fold.
 #' @param backpoints Numeric (optional). Number of regular background points
-#' that should be sampled. Defaut is 10,000.
+#' that should be sampled. Default is 10,000.
 #' @details By using \code{get_range()} arguments, the function iteratively
 #' re-generates the range map n times, each time using a defined percentage
 #' of the observations for training, while evaluating

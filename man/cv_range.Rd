@@ -25,7 +25,7 @@ cv_range(
 the number of blocks per fold.}
 
 \item{backpoints}{Numeric (optional). Number of regular background points
-that should be sampled. Defaut is 10,000.}
+that should be sampled. Default is 10,000.}
 }
 \value{
 A data.frame with \code{nfolds} rows and 8 evaluation columns:\cr 
