@@ -3,85 +3,76 @@ name: R-Package-Pipeline
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
-  check-and-version:
-    # Prevents the pipeline from running on its own version-update commits
+  auto-version:
     if: "!contains(github.event.head_commit.message, 'chore: update version')"
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Crucial: Downloads tags so R can see v0.5.0
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
-      - name: Auto Version
+      - name: Auto bump version
         run: |
-          # Ensure we have all tags locally in the runner
           git fetch --tags --force
-          
+
           Rscript -e '
-            # 1. Get Latest Tag from the actual Git history
+            # ---- 1. Latest tag ----
             tags <- system("git tag --sort=-v:refname", intern=TRUE)
-            tag <- if(length(tags) > 0) tags[1] else "v1.1.0"
-            
-            # 2. Calculate Impact (Ignoring whitespace)
-            diff_cmd <- paste0("git diff -w --shortstat ", tag, "..HEAD")
-            diff_out <- system(diff_cmd, intern=TRUE)
+            tag <- if (length(tags)) tags[1] else "v0.0.0"
+
+            # ---- 2. Diff impact ----
+            diff_out <- system(paste0("git diff -w --shortstat ", tag, "..HEAD"), intern=TRUE)
             impact <- 0
-            if(length(diff_out) > 0) {
+            if (length(diff_out)) {
               nums <- as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))
-              if(length(nums) > 1) impact <- sum(nums[-1], na.rm=TRUE)
+              if (length(nums) > 1) impact <- sum(nums[-1], na.rm=TRUE)
             }
 
-            # 3. Total Lines
-            all_r_files <- list.files("R", pattern = "\\.[Rr]$|\\.[Rr]md$", full.names = TRUE, recursive = TRUE)
-            total_lines <- sum(sapply(all_r_files, function(f) length(readLines(f, warn = FALSE))))
-            perc <- if(total_lines > 0) (impact / total_lines) * 100 else 0
-            
-            # 4. Current Version from Tag
-            v_str <- gsub("^v", "", tag)
-            v_parts <- as.numeric(unlist(strsplit(v_str, "\\.")))
-            maj <- v_parts[1]; min <- v_parts[2]; pat <- v_parts[3]
+            # ---- 3. Total code lines ----
+            files <- list.files("R", pattern="\\.[Rr]$|\\.[Rr]md$", recursive=TRUE, full.names=TRUE)
+            total <- sum(sapply(files, function(f) length(readLines(f, warn=FALSE))))
+            pct <- if (total > 0) (impact / total) * 100 else 0
 
-            # 5. The Logic
-            if (perc > 40) {
+            # ---- 4. Parse version ----
+            v <- as.numeric(strsplit(sub("^v","", tag), "\\.")[[1]])
+            maj <- v[1]; min <- v[2]; pat <- v[3]
+
+            # ---- 5. Bump logic ----
+            if (pct > 40) {
               maj <- maj + 1; min <- 0; pat <- 0
-            } else if (perc > 5) {
+            } else if (pct > 5) {
               min <- min + 1; pat <- 0
             } else {
               pat <- pat + 1
             }
 
             new_v <- paste(maj, min, pat, sep=".")
-            
-            # Safety: If logic produces a version that already exists, increment patch
-            if (new_v == v_str) { pat <- pat + 1; new_v <- paste(maj, min, pat, sep=".") }
 
-            # 6. Write
-            lines <- readLines("DESCRIPTION")
-            v_idx <- grep("^Version:", lines)
-            lines[v_idx] <- paste0("Version: ", new_v)
-            writeLines(lines, "DESCRIPTION")
+            # ---- 6. Write ----
+            d <- readLines("DESCRIPTION")
+            d[grep("^Version:", d)] <- paste0("Version: ", new_v)
+            writeLines(d, "DESCRIPTION")
             writeLines(new_v, "ver.txt")
-            
-            cat(sprintf("Baseline: %s | Impact: %d | New: %s\n", tag, impact, new_v))
+
+            cat(sprintf("Baseline: %s | Impact: %d | Percent: %.2f%% | New: %s\n",
+                        tag, impact, pct, new_v))
           '
-          # 7. Push with a "Pull" first to clear the pipe
+
           NEW_V=$(cat ver.txt)
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git pull origin main --rebase  # Essential to prevent conflicts
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git add DESCRIPTION
           git commit -m "chore: update version to $NEW_V [skip ci]"
+
           git tag v$NEW_V
-          git push origin main --tags
+          git push origin main --follow-tags
