@@ -25,51 +25,59 @@ jobs:
           git fetch --tags --force
 
           Rscript -e '
+            # ---- 1. Latest tag ----
             tags <- system("git tag --sort=-v:refname", intern=TRUE)
             tag <- if (length(tags)) tags[1] else "v0.0.0"
 
+            # ---- 2. Changed files (ignore docs/tests/vignettes) ----
             diff_files <- system(paste0("git diff --name-only ", tag, "..HEAD"), intern=TRUE)
-            code_files <- diff_files[grepl("^R/|^src/|^inst/", diff_files)]
+            code_files <- diff_files[grepl("^(R|src|inst)/", diff_files) &
+                                     !grepl("tests|man|vignettes", diff_files)]
 
             if (length(code_files) == 0) {
               cat("NO_CHANGE\n")
               quit(status = 0)
             }
 
-            diff_out <- system(paste0("git diff -w --shortstat ", tag, "..HEAD"), intern=TRUE)
+            # ---- 3. Diff impact ----
+            diff_out <- system(paste0("git diff -w --shortstat ", tag, "..HEAD -- ", paste(code_files, collapse=" ")), intern=TRUE)
             impact <- 0
             if (length(diff_out)) {
               nums <- as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))
               if (length(nums) > 1) impact <- sum(nums[-1], na.rm=TRUE)
             }
 
-            files <- list.files(c("R","src","inst"), pattern="\\.[Rr]$|\\.c$|\\.cpp$", recursive=TRUE, full.names=TRUE)
+            # ---- 4. Total LOC ----
+            files <- list.files(c("R","src","inst"), recursive=TRUE, full.names=TRUE)
+            files <- files[grepl("\\.(R|c|cpp)$", files)]
             total <- sum(sapply(files, function(f) length(readLines(f, warn=FALSE))))
             pct <- if (total > 0) (impact / total) * 100 else 0
 
+            # ---- 5. Parse version ----
             v <- as.numeric(strsplit(sub("^v","", tag), "\\.")[[1]])
             maj <- v[1]; min <- v[2]; pat <- v[3]
 
-            if (pct > 40) {
+            # ---- 6. Bump rules (stable + safe) ----
+            if (pct >= 30) {
               maj <- maj + 1; min <- 0; pat <- 0
-            } else if (pct > 5) {
+            } else if (pct >= 8) {
               min <- min + 1; pat <- 0
-            } else {
+            } else if (pct >= 0.3) {
               pat <- pat + 1
+            } else {
+              cat("Change too small to version bump.\n")
+              quit(status = 0)
             }
 
             new_v <- paste(maj, min, pat, sep=".")
 
+            # ---- 7. Update DESCRIPTION ----
             d <- readLines("DESCRIPTION")
             cur_v <- sub("^Version:\\s*", "", d[grep("^Version:", d)])
-
-            if (new_v == cur_v) {
-              cat("NO_CHANGE\n")
-              quit(status = 0)
-            }
-
+            if (new_v == cur_v) quit(status = 0)
             d[grep("^Version:", d)] <- paste0("Version: ", new_v)
             writeLines(d, "DESCRIPTION")
+
             writeLines(new_v, "ver.txt")
 
             cat(sprintf("Baseline: %s | Impact: %d | Percent: %.2f%% | New: %s\n",
