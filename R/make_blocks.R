@@ -50,6 +50,7 @@ make_blocks <- function(nfolds = 5,
   ### Check input data
   ###########################################
 
+
   # N points
   if (nrow(df) == 0 & is.na(npoints)){
     stop("Please supply number of points if no data.frame is supplied")
