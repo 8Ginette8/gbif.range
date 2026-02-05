@@ -28,12 +28,10 @@ jobs:
         if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
         run: |
           Rscript -e '
-            # 1. Get Baseline Tag
             all_tags <- system("git tag", intern=TRUE)
             valid_tags <- all_tags[grepl("^v[0-9]", all_tags)]
             tag <- if(length(valid_tags) > 0) tail(sort(valid_tags), 1) else ""
             
-            # 2. Calculate Impact
             impact <- 0
             if (tag != "") {
               diff_out <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
@@ -43,41 +41,24 @@ jobs:
               }
             }
             
-            # 3. Read DESCRIPTION with safer parsing
-            d <- read.dcf("DESCRIPTION")
-            v_str <- as.character(d[1,"Version"])
+            lines <- readLines("DESCRIPTION")
+            v_line <- lines[grep("^Version:", lines)]
+            v_str <- gsub("Version:\\s*", "", v_line)
             
-            # 4. Manual Split to avoid "invalid version" errors
+            # Robust split and bump
             v_parts <- as.numeric(unlist(strsplit(v_str, "\\.")))
-            if(length(v_parts) < 3) v_parts <- c(0, 5, 0) # Emergency fallback
+            maj <- v_parts[1]; min <- v_parts[2]; pat <- v_parts[3]
             
-            maj <- v_parts[1]
-            min <- v_parts[2]
-            pat <- v_parts[3]
-            
-            # 5. The Bump Logic
-            if (impact > 5000) {
-              maj <- maj + 1; min <- 0; pat <- 0
-            } else if (impact > 300) {
-              min <- min + 1; pat <- 0
-            } else {
-              pat <- pat + 1
-            }
+            if (impact > 5000) { maj <- maj + 1; min <- 0; pat <- 0 }
+            else if (impact > 300) { min <- min + 1; pat <- 0 }
+            else { pat <- pat + 1 }
             
             new_v <- paste(maj, min, pat, sep=".")
-            
-            # 6. Final verification - No empty strings allowed
-            if (is.na(maj) || new_v == ".0.0") new_v <- "1.0.0"
-
-            # 7. Write and Log
-            d[1,"Version"] <- new_v
-            write.dcf(d, "DESCRIPTION", keep.white = colnames(d))
+            lines[grep("^Version:", lines)] <- paste0("Version: ", new_v)
+            writeLines(lines, "DESCRIPTION")
             writeLines(as.character(new_v), "ver.txt")
             
-            cat(paste0("\n--- BUILD REPORT ---\n"))
-            cat(paste0("Old Version: ", v_str, "\n"))
-            cat(paste0("Impact: ", impact, " lines\n"))
-            cat(paste0("New Version: ", new_v, "\n"))
+            cat(paste0("Baseline: ", tag, " | Impact: ", impact, " | New: ", new_v, "\n"))
           '
           NEW_V=$(cat ver.txt)
           git config --local user.name "github-actions[bot]"
