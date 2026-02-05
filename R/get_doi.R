@@ -44,6 +44,12 @@ get_doi <- function(gbifs = NULL,
   	stop("Given 'gbifs' must be a getGBIF object.")
   }
 
+  # Other checks
+  check_character_vector(title, "title")
+  check_character_vector(description, "description")
+  check_character_vector(source_url, "source_url")
+  check_character_vector(user, "user")
+  check_character_vector(pwd, "pwd")
 
 
   ######################################################
