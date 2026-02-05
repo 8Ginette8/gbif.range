@@ -9,8 +9,8 @@ on:
 jobs:
 
   auto-version:
-    if: github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: release')
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: release')
     permissions:
       contents: write
 
@@ -23,7 +23,7 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Auto bump version, changelog, and tag
+      - name: Auto bump version + tag
         run: |
           git fetch --tags --force
 
@@ -74,23 +74,8 @@ jobs:
             d[grep("^Version:", d)] <- paste0("Version: ", new_v)
             writeLines(d, "DESCRIPTION")
 
-            changes <- system(paste0("git log --oneline ", tag, "..HEAD"), intern=TRUE)
-            entry <- c(
-              paste0("## ", new_v),
-              paste0("(", Sys.Date(), ")"),
-              "",
-              paste0("- ", changes),
-              ""
-            )
-
-            if (file.exists("NEWS.md")) {
-              old <- readLines("NEWS.md")
-              writeLines(c(entry, old), "NEWS.md")
-            } else {
-              writeLines(c("# Changelog", "", entry), "NEWS.md")
-            }
-
             writeLines(new_v, "ver.txt")
+
             cat(sprintf("Baseline: %s | Impact: %d | Percent: %.2f%% | New: %s\n",
                         tag, impact, pct, new_v))
           '
@@ -105,19 +90,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add DESCRIPTION NEWS.md
+          git add DESCRIPTION
           git commit -m "chore: release v$NEW_V [skip ci]"
-
           git tag v$NEW_V
           git push origin main
           git push origin v$NEW_V
 
   R-CMD-check-ubuntu:
     needs: auto-version
-    if: |
-      github.event_name == 'pull_request' ||
-      !contains(github.event.head_commit.message, 'chore: release')
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'chore: release')
 
     steps:
       - uses: actions/checkout@v4
@@ -126,12 +108,12 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install system dependencies
+      - name: Install system deps
         run: |
           sudo apt-get update
           sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
 
-      - name: Install R dependencies (cached)
+      - name: Install R deps (cached)
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
@@ -140,10 +122,3 @@ jobs:
       - name: R CMD check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning")
         shell: Rscript {0}
-
-      - name: Upload check results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: R-CMD-check-results
-          path: "*.Rcheck"
