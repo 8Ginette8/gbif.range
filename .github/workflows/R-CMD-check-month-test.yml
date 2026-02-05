@@ -1,71 +1,54 @@
-name: R-Package-Pipeline
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  check-and-version:
-    if: "!contains(github.event.head_commit.message, 'chore: update version')"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-
-      - name: Auto Version and Tag
+- name: Auto Version and Tag
         if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
         run: |
           Rscript -e '
-            # 1. Find the latest valid tag (e.g., v0.5.0)
+            # 1. Find tags
             all_tags <- system("git tag", intern=TRUE)
             valid_tags <- all_tags[grepl("^v[0-9]", all_tags)]
+            
+            # Use v0.5.0 as default if no tags found
             tag <- if(length(valid_tags) > 0) tail(sort(valid_tags), 1) else ""
             
-            # 2. Calculate line change impact since that tag
+            # 2. Calculate impact
             impact <- 0
             if (tag != "") {
-              diff_cmd <- paste0("git diff --shortstat ", tag, "..HEAD")
-              diff_out <- system(diff_cmd, intern=TRUE)
+              diff_out <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
               if (length(diff_out) > 0) {
-                # Extract numbers from string like "3 files changed, 8241 insertions(+)"
-                impact <- sum(as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))[-1], na.rm=TRUE)
+                nums <- as.numeric(unlist(regmatches(diff_out, gregexpr("[0-9]+", diff_out))))
+                impact <- sum(nums[-1], na.rm=TRUE)
               }
             }
             
-            # 3. Read current DESCRIPTION
+            # 3. Read DESCRIPTION
             desc <- read.dcf("DESCRIPTION")
-            curr_v <- numeric_version(desc[1,"Version"])
+            # Fallback to 0.5.0 if Version is missing/weird
+            raw_v <- if("Version" %in% colnames(desc)) desc[1,"Version"] else "0.5.0"
+            curr_v <- numeric_version(raw_v)
             
-            # 4. Versioning Logic
-            # Major bump if > 5000 lines (e.g., 0.5.0 -> 1.0.0)
-            # Minor bump if > 300 lines (e.g., 0.5.0 -> 0.6.0)
-            # Patch bump otherwise (e.g., 0.5.0 -> 0.5.1)
+            # 4. Versioning Logic with Safety
+            maj <- curr_v$major
+            min <- curr_v$minor
+            pat <- curr_v$patch
+            
             if (impact > 5000) { 
-              new_v <- paste(curr_v$major + 1, 0, 0, sep=".")
+              maj <- maj + 1; min <- 0; pat <- 0
             } else if (impact > 300) { 
-              new_v <- paste(curr_v$major, curr_v$minor + 1, 0, sep=".")
+              min <- min + 1; pat <- 0
             } else { 
-              new_v <- paste(curr_v$major, curr_v$minor, curr_v$patch + 1, sep=".") 
+              pat <- pat + 1 
             }
             
-            # 5. Write results
+            new_v <- paste(maj, min, pat, sep=".")
+            
+            # FINAL SAFETY: Ensure we don't have 0.0
+            if(new_v == "0.0.0" || new_v == "0.0") new_v <- "1.0.0"
+            
+            # 5. Write
             desc[1,"Version"] <- new_v
             write.dcf(desc, "DESCRIPTION", keep.white = colnames(desc))
             writeLines(as.character(new_v), "ver.txt")
-            message(paste("Impact detected:", impact, "lines. New version:", new_v))
+            message(paste("Impact:", impact, "| New Version:", new_v))
           '
-          # Step 6: Git operations using the saved version
           NEW_V=$(cat ver.txt)
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
