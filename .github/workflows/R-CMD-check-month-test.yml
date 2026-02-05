@@ -45,13 +45,17 @@ jobs:
             v_line <- lines[grep("^Version:", lines)]
             v_str <- gsub("Version:\\s*", "", v_line)
             
-            # Robust split and bump
             v_parts <- as.numeric(unlist(strsplit(v_str, "\\.")))
             maj <- v_parts[1]; min <- v_parts[2]; pat <- v_parts[3]
             
-            if (impact > 5000) { maj <- maj + 1; min <- 0; pat <- 0 }
-            else if (impact > 300) { min <- min + 1; pat <- 0 }
-            else { pat <- pat + 1 }
+            # The logic that avoids the "unexpected else" error:
+            if (impact > 5000) {
+              maj <- maj + 1; min <- 0; pat <- 0
+            } else if (impact > 300) {
+              min <- min + 1; pat <- 0
+            } else {
+              pat <- pat + 1
+            }
             
             new_v <- paste(maj, min, pat, sep=".")
             lines[grep("^Version:", lines)] <- paste0("Version: ", new_v)
