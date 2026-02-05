@@ -1,15 +1,39 @@
-- name: Auto Version and Tag
+name: R-Package-Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-and-version:
+    # Prevents the pipeline from running on its own version-update commits
+    if: "!contains(github.event.head_commit.message, 'chore: update version')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Crucial: Downloads tags so R can see v0.5.0
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Auto Version and Tag
         if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
         run: |
           Rscript -e '
-            # 1. Find tags
+            # 1. Identify the baseline tag
             all_tags <- system("git tag", intern=TRUE)
             valid_tags <- all_tags[grepl("^v[0-9]", all_tags)]
-            
-            # Use v0.5.0 as default if no tags found
             tag <- if(length(valid_tags) > 0) tail(sort(valid_tags), 1) else ""
             
-            # 2. Calculate impact
+            # 2. Calculate line change impact
             impact <- 0
             if (tag != "") {
               diff_out <- system(paste0("git diff --shortstat ", tag, "..HEAD"), intern=TRUE)
@@ -19,13 +43,12 @@
               }
             }
             
-            # 3. Read DESCRIPTION
+            # 3. Read DESCRIPTION safely
             desc <- read.dcf("DESCRIPTION")
-            # Fallback to 0.5.0 if Version is missing/weird
             raw_v <- if("Version" %in% colnames(desc)) desc[1,"Version"] else "0.5.0"
             curr_v <- numeric_version(raw_v)
             
-            # 4. Versioning Logic with Safety
+            # 4. Versioning Logic
             maj <- curr_v$major
             min <- curr_v$minor
             pat <- curr_v$patch
@@ -40,15 +63,19 @@
             
             new_v <- paste(maj, min, pat, sep=".")
             
-            # FINAL SAFETY: Ensure we don't have 0.0
+            # Final check to prevent v0.0
             if(new_v == "0.0.0" || new_v == "0.0") new_v <- "1.0.0"
             
-            # 5. Write
+            # 5. Save results
             desc[1,"Version"] <- new_v
             write.dcf(desc, "DESCRIPTION", keep.white = colnames(desc))
             writeLines(as.character(new_v), "ver.txt")
-            message(paste("Impact:", impact, "| New Version:", new_v))
+            message(paste("--- LOG REPORT ---"))
+            message(paste("Base Tag:", tag))
+            message(paste("Lines Changed:", impact))
+            message(paste("New Version Target:", new_v))
           '
+          # 6. Push changes back to GitHub
           NEW_V=$(cat ver.txt)
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
