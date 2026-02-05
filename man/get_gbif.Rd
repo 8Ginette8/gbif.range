@@ -59,7 +59,7 @@ variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 \item{phylum}{Character (optional). What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
 Available options are the GBIF Phylums
-((\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum})).
+(\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum}).
 If \code{search = FALSE}, only used if no direct match is found.}
 
 \item{class}{Character (optional). What is the species' Class? Same as above
@@ -113,7 +113,7 @@ Default is native, casual, released, reproducing, established, colonizing
 and absence of information. See descriptions for other managed
 establishments: managed, captive, cultivated, released,
 unestablished and failing
-((\href{https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment}{url})).}
+(\href{https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment}{url}).}
 
 \item{add_infos}{Character. Infos that may be added to the default output
 information. Default IDs contain "taxonKey",

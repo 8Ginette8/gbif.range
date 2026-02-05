@@ -39,7 +39,7 @@ variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 \item{phylum}{Character (optional). What is the species' Phylum? Adds a
 criteria to deal with alternative name matches and select the right synonym.
 Available options are the GBIF Phylums
-((\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum})).
+(\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum}).
 If \code{search = FALSE}, only used if no direct match is found.
 If \code{search = FALSE}, only used if no direct match is found.}
 
