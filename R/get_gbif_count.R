@@ -273,6 +273,4 @@ get_gbif_count <- function(sp_name = NULL,
 	}
 	return(gbif.records)
 }
-
-
 	
