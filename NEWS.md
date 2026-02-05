@@ -1,3 +1,13 @@
+## 1.2.3
+(2026-02-05)
+
+- a821c33 Update R-CMD-check-month-test.yml
+- fff06d0 Update R-CMD-check-month-test.yml
+- a5a4525 Update R-CMD-check-month-test.yml
+- a702056 Update R-CMD-check-month-test.yml
+- aa4a514 Update R-CMD-check-month-test.yml
+- 94260ff Update docs
+
 ## 1.2.2
 (2026-02-05)
 
