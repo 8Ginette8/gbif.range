@@ -46,6 +46,12 @@
 #' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
 #' or \code{sf} (WGS84) to define the study's area extent. Default is
 #' \code{NULL}, i.e., the whole globe.
+#' @param has_xy Logical. If \code{TRUE}, only records with coordinates are
+#' downloaded (default). If \code{FALSE}, only records without coordinates are
+#' downloaded. If \code{NULL}, all records are downloaded.
+#' @param spatial_issue Logical. If \code{FALSE}, only records without
+#' spatial issues are downloaded (default). If \code{TRUE}, only records with
+#' spatial issues are downloaded. If \code{NULL}, all records are downloaded.
 #' @param grain Numeric. Default is 100. Specifies in kilometers the study
 #' resolution. Used to filter gbif records according to their (1) spatial
 #' uncertainties and (2) number of coordinate decimals. Records with
@@ -56,9 +62,6 @@
 #' Default is \code{FALSE}.
 #' @param absences Logical. Should absence records be kept?
 #' Default is \code{FALSE}
-#' @param no_xy Logical. Only records with coordinates are downloaded.
-#' Default is \code{FALSE}. If \code{TRUE}, only records with no
-#' coordinates are downloaded.
 #' @param basis Character. Which basis of records should be selected?
 #' Available (old and new) are "OBSERVATION", "HUMAN_OBSERVATION",
 #' "MACHINE_OBSERVATION", "MATERIAL_CITATION", "MATERIAL_SAMPLE",
@@ -135,8 +138,7 @@
 #' involve several choices: study's extent, removal of duplicates, removal
 #' of absences, basis of records selection, removal of invalid/uncertain
 #' xy coordinates (WGS84), time period selection and removal of raster
-#' centroids. By default, the argument \code{hasGeospatialIssue} in
-#' \code{occ_search()} (\code{rgbif} R function) is set to \code{FALSE}.
+#' centroids.
 #' 
 #' The \code{grain} parameter applies:
 #'
@@ -194,10 +196,11 @@ get_gbif <- function(sp_name = NULL,
 					family = NULL,
 					conf_match = 80,
 					geo = NULL,
+					has_xy = TRUE,
+					spatial_issue = FALSE,
 					grain = 100,
 					duplicates = FALSE,
 					absences = FALSE,
-					no_xy = FALSE,
 					basis =  c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
 						'OCCURRENCE', 'MATERIAL_CITATION', 'MATERIAL_SAMPLE','LITERATURE'),
 					establishment = c('native','casual','released','reproducing',
@@ -223,66 +226,51 @@ get_gbif <- function(sp_name = NULL,
 
 	# General
 	check_character_vector(sp_name, "sp_name")
-  check_logical(search, "search")
-  check_numeric(conf_match, "conf_match")
-  check_numeric(grain, "grain")
-  check_logical(duplicates, "duplicates")
-  check_logical(absences, "absences")
-  check_logical(no_xy, "no_xy")
-  check_character_vector(establishment, "establishment")
-  check_numeric_range(time_period, "time_period", 2)
-  check_logical(identic_xy, "identic_xy")
-  check_logical(wConverted_xy, "wConverted_xy")
-  check_logical(centroids, "centroids")
-  check_numeric(ntries, "ntries")
-  check_logical(error_skip, "error_skip")
-  check_numeric(occ_samp, "occ_samp")
-  check_logical(should_use_occ_download, "should_use_occ_download")
+	check_logical(search, "search")
+	check_numeric(conf_match, "conf_match")
+	check_numeric(grain, "grain")
+	check_logical(duplicates, "duplicates")
+	check_logical(absences, "absences")
+	check_character_vector(establishment, "establishment")
+	check_numeric_range(time_period, "time_period", 2)
+	check_logical(identic_xy, "identic_xy")
+	check_logical(wConverted_xy, "wConverted_xy")
+	check_logical(centroids, "centroids")
+	check_numeric(ntries, "ntries")
+	check_logical(error_skip, "error_skip")
+	check_numeric(occ_samp, "occ_samp")
+	check_logical(should_use_occ_download, "should_use_occ_download")
 
-  # Basis of records
-  allb <- c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
-  	'MATERIAL_CITATION', 'MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN',
-  	'FOSSIL_SPECIMEN', 'LIVING_SPECIMEN', 'LITERATURE', 'UNKNOWN', 'OCCURRENCE')
-  if (!all(basis %in% allb) || is.null(basis)){
-  	stop("Wrong given 'basis', see function help --> ?get_gbif()")
-  }
+	# Basis of records
+	allb <- c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
+		'MATERIAL_CITATION', 'MATERIAL_SAMPLE', 'PRESERVED_SPECIMEN',
+		'FOSSIL_SPECIMEN', 'LIVING_SPECIMEN', 'LITERATURE', 'UNKNOWN', 'OCCURRENCE')
+	if (!all(basis %in% allb) || is.null(basis)) {
+		stop("Wrong given 'basis', see function help --> ?get_gbif()")
+	}
 
-  # Establishment
-  alle <- c('native', 'casual', 'released', 'reproducing', 'established',
-  	'colonising', 'invasive', 'widespreadInvasive', 'managed', 'captive',
-  	'cultivated', 'released', 'unestablished', 'failing')
-  if (!all(establishment %in% alle) || is.null(establishment)){
-  	stop("Wrong given 'establishment', see function help --> ?get_gbif()")
-  }
+	# Establishment
+	alle <- c('native', 'casual', 'released', 'reproducing', 'established',
+		'colonising', 'invasive', 'widespreadInvasive', 'managed', 'captive',
+		'cultivated', 'released', 'unestablished', 'failing')
+	if (!all(establishment %in% alle) || is.null(establishment)) {
+		stop("Wrong given 'establishment', see function help --> ?get_gbif()")
+	}
 
-  # Add_infos
-  if (all(!is.null(add_infos))) {
-  	if (all(is.na(add_infos)))
-  	stop("NA values not allowed for given 'add_infos'")
-  }
+	# Add_infos
+	if (all(!is.null(add_infos))) {
+		if (all(is.na(add_infos))) {
+			stop("NA values not allowed for given 'add_infos'")
+		}
+	}
 
-  # Geo class
-  spatial.class <- c("Extent", "SpatExtent", "SpatialPolygon",
-  	"SpatialPolygonDataframe", "SpatVector", "sf")
-  if (!is.null(geo)) {
-  	 if (!class(geo)[1] %in% spatial.class) {
-     	stop("Wrong 'geo' class (not a spatial object)...")
-     }
-  }
-
-	
-	#############################################################
-	### Convert to SpatVect if class is 'sf' + convert to extent
-	#############################################################
-
-
-	# For study area
+	# Geo class
+	spatial.class <- c("Extent", "SpatExtent", "SpatialPolygon",
+		"SpatialPolygonDataframe", "SpatVector", "sf")
 	if (!is.null(geo)) {
-		if (class(geo)[1] %in% "sf") {geo <- terra::vect(geo)}
-		if (!(class(geo) %in% "SpatExtent")) {geo <- terra::ext(geo)}
-
-	} else {
-		geo <- terra::ext(-180, 180, -90, 90)
+		if (!class(geo)[1] %in% spatial.class) {
+			stop("Wrong 'geo' class (not a spatial object)...")
+		}
 	}
 
 
@@ -325,160 +313,220 @@ get_gbif <- function(sp_name = NULL,
 		)
 	)
 
-	# Set geo.ref
-	geo.ref <- paste0(
-		"POLYGON((", geo$xmin, " ", geo$ymin, ", ",
-			geo$xmax, " ", geo$ymin, ", ",
-			geo$xmax, " ", geo$ymax, ", ",
-			geo$xmin, " ", geo$ymax, ", ",
-			geo$xmin, " ", geo$ymin, "))"
-	)
-
 
 	######################################################
 	### Backbone harmonization and N records
 	######################################################
 
 
-	if (!search){
-    # Search input name via fuzzy match and direct search
-    bsearch <- rgbif::name_backbone(sp_name,
-    	rank = rank,
-    	phylum = phylum,
-    	class = class,
-    	order = order,
-    	family = family,
-    	verbose = FALSE,
-    	strict = FALSE)
+	if (!search) {
+	# Search input name via fuzzy match and direct search
+	bsearch <- rgbif::name_backbone(
+		sp_name,
+		rank = rank,
+		phylum = phylum,
+		class = class,
+		order = order,
+		family = family,
+		verbose = FALSE,
+		strict = FALSE
+	)
 
-  } else {
-    # Search input name via strict match and refined search
-    bsearch <- rgbif::name_backbone(sp_name,
-    	verbose = TRUE,
-    	strict = TRUE)
+	} else {
+		# Search input name via strict match and refined search
+		bsearch <- rgbif::name_backbone(
+			sp_name,
+			verbose = TRUE,
+			strict = TRUE
+		)
 
-    q.crit <- !vapply(
-    	list(rank, phylum, class, order, family),
-    	is.null,
-    	logical(1)
-    )
+		q.crit <- !vapply(
+			list(rank, phylum, class, order, family),
+			is.null,
+			logical(1)
+		)
 
-    # Filter by given criterias if results
-    if (!bsearch$matchType[1] %in% "NONE"){ 
-      if (any(q.crit)){
-        id.crit <- c("rank", "phylum", "class", "order", "family")[q.crit]
-        p.crit <- unlist(list(rank, phylum, class, order, family)[q.crit])
-        n.test <- id.crit %in% names(bsearch)
+		# Filter by given criterias if results
+		if (!bsearch$matchType[1] %in% "NONE") { 
+			if (any(q.crit)) {
+				id.crit <- c("rank", "phylum", "class", "order", "family")[q.crit]
+				p.crit <- unlist(list(rank, phylum, class, order, family)[q.crit])
+				n.test <- id.crit %in% names(bsearch)
 
-        if (any(n.test)){
-          # selecting which
-          id.crit2 <- id.crit[n.test]
-          p.crit2 <- p.crit[n.test]
+				if (any(n.test)) {
+					# Selecting which
+					id.crit2 <- id.crit[n.test]
+					p.crit2 <- p.crit[n.test]
 
-          # Apply the rigth criterias
-          for (i in seq_along(id.crit2)){
-            bsearch <- bsearch[c(bsearch[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
+					# Apply the rigth criterias
+					for (i in seq_along(id.crit2)) {
+						bsearch <- bsearch[c(bsearch[, id.crit2[i]])[[1]] %in% p.crit2[i],]
 
-            if (nrow(bsearch) == 0){
-              bsearch <- data.frame(matchType = "NONE")
-            }
-          }
-        }
+						if (nrow(bsearch) == 0){
+							bsearch <- data.frame(matchType = "NONE")
+						}
+					}
+				}
 
-        if (!all(n.test)){
-          pp <- paste(id.crit[!n.test], collapse = ", ")
-          warning(
-          		"'", pp, 
-          		"' level(s) not available in GBIF, could not be employed...",
-          		"\n"
-          )
-        }
-      }
-    }
-    
-    # Normal procedure with or without criterias
-    if (nrow(bsearch) > 1){
-      if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
-        cat("Not match found...", "\n")
-        return(e.output)
+				if (!all(n.test)){
+					pp <- paste(id.crit[!n.test], collapse = ", ")
+					warning(
+						"'", pp, 
+						"' level(s) not available in GBIF, could not be employed...",
+						"\n"
+					)
+				}
+			}
+		}
+		 
+		# Normal procedure with or without criterias
+		if (nrow(bsearch) > 1) {
+			if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))) {
+				cat("Not match found...", "\n")
+				return(e.output)
 
-      } else {
-        s.keep <- bsearch[bsearch$rank %in%
-        								c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
-        s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
-        if (nrow(s.keep) == 0){
-          cat("Not match found...", "\n")
-          return(e.output)
+			} else {
+				s.keep <- bsearch[bsearch$rank %in%
+					c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
+				s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
+				if (nrow(s.keep) == 0) {
+					cat("Not match found...", "\n")
+					return(e.output)
 
-        } else if (nrow(s.keep) > 1){
+				} else if (nrow(s.keep) > 1) {
+					# If we only find subpsecies and variety, we need to prioritize
+					if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))) {
+						if ("var." %in% strsplit(sp_name," ")[[1]]) {
+							bsearch <- s.keep[s.keep$rank %in% "VARIETY", ]
+							if (nrow(bsearch) == 0) {
+								bsearch <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
+							}
 
-          # If we only find subpsecies and variety, we need to prioritize
-          if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
-            if ("var." %in% strsplit(sp_name," ")[[1]]){
-              bsearch <- s.keep[s.keep$rank %in% "VARIETY", ]
-              if (nrow(bsearch) == 0){
-                bsearch <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
-              }
+						} else {
+							 bsearch <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
+						}
 
-            } else {
-              bsearch <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
-            }
+					} else {
+						bsearch <- s.keep[s.keep$rank %in% "SPECIES", ]
+					}
 
-          } else {
-            bsearch <- s.keep[s.keep$rank %in% "SPECIES", ]
-          }
+					focp.key <- c("familyKey", "orderKey", "classKey", "phylumKey")
+					coltax <- focp.key  %in% colnames(bsearch)
+					key.test <- bsearch[ ,focp.key[coltax]]
 
-          focp.key <- c("familyKey", "orderKey", "classKey", "phylumKey")
-          coltax <- focp.key  %in% colnames(bsearch)
-          key.test <- bsearch[ ,focp.key[coltax]]
+					if (any(bsearch$status %in% "ACCEPTED") &
+						length(unique(key.test[, 1])) == 1) {
+						bsearch <- bsearch[bsearch$status %in% "ACCEPTED", ]
+					}
 
-          if (any(bsearch$status %in% "ACCEPTED") &
-          						length(unique(key.test[, 1])) == 1){
-          	bsearch <- bsearch[bsearch$status %in% "ACCEPTED", ]
-          }
+				} else {
+					bsearch <- s.keep
+				}
 
-        } else {
-          bsearch <- s.keep
-        }
-        # If not the same species overall return empty
-        s.usp <- length(unique(bsearch$speciesKey)) == 1
-        if (!s.usp){
-          cat("No synonyms distinction could be made.",
-          	"Consider using phylum/class/order/family...","\n")
-          return(e.output)
+				# If not the same species overall return empty
+				s.usp <- length(unique(bsearch$speciesKey)) == 1
+				if (!s.usp) {
+					cat("No synonyms distinction could be made.",
+						"Consider using phylum/class/order/family...","\n")
+					return(e.output)
 
-        } else {
-          bsearch <- bsearch[1, ]
-        } 
-      }
-    }
-  }
+				} else {
+					bsearch <- bsearch[1, ]
+				} 
+			}
+		}
+	}
 
-  if (bsearch$matchType %in% "NONE") {
-    cat("No species name found...","\n")
-    return(e.output)
-  }
+	if (bsearch$matchType %in% "NONE") {
+		cat("No species name found...","\n")
+		return(e.output)
+	}
 
-  if (bsearch$confidence[1] < conf_match) {
-    cat("Confidence match not high enough...","\n")
-    return(e.output)
-  }  
+	if (bsearch$confidence[1] < conf_match) {
+		cat("Confidence match not high enough...","\n")
+		return(e.output)
+	}  
 
 	# Get the accepetedKey
-	if (bsearch$status %in% "SYNONYM"){
+	if (bsearch$status %in% "SYNONYM") {
 		sp.key <- bsearch$acceptedUsageKey
 
 	} else {
 		sp.key <- bsearch$usageKey
 	}
 
-	# Check number of records in 'geo' first
-	gbif.records <- rgbif::occ_count(taxonKey = sp.key,
-									 hasCoordinate = !no_xy,
-									 hasGeospatialIssue = FALSE,
-									 geometry = geo.ref)
 
-	cat(">>>>>>>> Total number of records:", gbif.records,"\n")
+	#############################################################
+	### Convert to POLYGON
+	#############################################################
+
+
+
+	if (!is.null(geo)) {
+		if (inherits(geo, "sf")) geo <- terra::vect(geo)
+		if (!inherits(geo, "SpatExtent")) geo <- terra::ext(geo)
+
+		geo.ref <- list(
+			paste0(
+				"POLYGON((", geo$xmin, " ", geo$ymin, ", ",
+					geo$xmax, " ", geo$ymin, ", ",
+					geo$xmax, " ", geo$ymax, ", ",
+					geo$xmin, " ", geo$ymax, ", ",
+					geo$xmin, " ", geo$ymin, "))"
+			)
+		)
+	
+	} else {
+		geo <- terra::ext()
+		geo.ref <- list(NULL)
+	}
+
+	# Check number of records in total first
+	gbif.total <- rgbif::occ_count(
+		taxonKey = sp.key,
+		hasCoordinate = NULL,
+		hasGeospatialIssue = NULL,
+		geometry = NULL
+	)
+
+	gbif.records <- rgbif::occ_count(
+		taxonKey = sp.key,
+		hasCoordinate = has_xy,
+		hasGeospatialIssue = spatial_issue,
+		geometry = geo.ref[[1]]
+	)
+
+	# Print summary
+	l <- sprintf(
+		"%-29s : %10d",
+		c("Total number (all records)", "Kept records"),
+		c(gbif.total, gbif.records)
+	)
+	w <- max(nchar(l)) + 4
+	cat("+",strrep("-",w-2),"+\n| ",
+	paste(l,collapse=" |\n| ")," |\n+",strrep("-",w-2),"+\n",sep="")
+
+	fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
+	cat("Kept records according to parameters:\n")
+
+	# Print additional information depending if global or regional
+	if (is.null(geo.ref[[1]])) {
+		cat(sprintf(
+				"spatial_issue = %s, has_xy = %s\n",
+				fmt(spatial_issue),
+				fmt(has_xy)
+			)
+		)
+	} else {
+		cat(sprintf(
+				paste0(
+					"spatial_issue = %s, has_xy = TRUE by default ",
+					"('geo' was set)\n"
+				),
+				fmt(spatial_issue)
+			)
+		)
+	}
 
 	# Cancel request if n==0
 	if (gbif.records == 0 ) {
@@ -506,8 +554,8 @@ get_gbif <- function(sp_name = NULL,
 			function(x) {
 				gt.out <- rgbif::occ_count(
 					taxonKey = sp.key,
-					hasCoordinate = !no_xy,
-					hasGeospatialIssue = FALSE,
+					hasCoordinate = has_xy,
+					hasGeospatialIssue = spatial_issue,
 					geometry = x
 				)
 				return(gt.out)
@@ -535,7 +583,7 @@ get_gbif <- function(sp_name = NULL,
 				m.process <-
 				lapply(seq_along(new.geo), function(y){
 
-          Sys.sleep(3)
+					Sys.sleep(3)
 
 					# Convert to extent and create 5 new micro tiles
 					new.ext <- terra::ext(new.geo[[y]])
@@ -558,8 +606,8 @@ get_gbif <- function(sp_name = NULL,
 								gt.out <- try(
 									rgbif::occ_count(
 										taxonKey = sp.key,
-										hasCoordinate = !no_xy,
-										hasGeospatialIssue = FALSE,
+										hasCoordinate = has_xy,
+										hasGeospatialIssue = spatial_issue,
 										geometry = z
 									),
 								silent = TRUE
@@ -583,7 +631,7 @@ get_gbif <- function(sp_name = NULL,
 					goody <- micro.tiles[gbif.micro < 10000 & gbif.micro != 0]
 					bady <- micro.meta[!gbif.micro < 10000 & gbif.micro != 0]
 
-          # Return
+					# Return
 					return(list(goody,bady))
 				})
 
@@ -620,19 +668,19 @@ get_gbif <- function(sp_name = NULL,
 
 	# Information messages
 	if (occ_samp != 10000) {
-		cat("...GBIF records of",sp_name,": download of sample starting...","\n")
+		cat("\n...GBIF records of", sp_name, ": download of sample starting...\n")
 	} else {
-		cat("...GBIF records of",sp_name,": download starting...","\n")
+		cat("\n...GBIF records of", sp_name, ": download starting...\n")
 	}
 
 	# Run the gbif search with the acceptedName per chosen tiles
 	batch.search <-
 	lapply(seq_along(geo.ref), function(x)
 	{
-    Sys.sleep(3)
+		Sys.sleep(3)
 
 		## Try the download first: may be request overload problems
-		go.tile <- geo.ref[x]
+		go.tile <- geo.ref[[x]]
 		gbif.search <- if (should_use_occ_download) {
 			
 			## Try to use parameter creds if provided, otherwise use env variables
@@ -663,8 +711,8 @@ get_gbif <- function(sp_name = NULL,
 
 			req_id <- rgbif::occ_download(
 				rgbif::pred("taxonKey", sp.key),
-				rgbif::pred("hasCoordinate", !no_xy),
-				rgbif::pred("hasGeospatialIssue", FALSE),
+				rgbif::pred("hasCoordinate", has_xy),
+				rgbif::pred("hasGeospatialIssue", spatial_issue),
 				rgbif::pred_within(go.tile),
 				format = "SIMPLE_CSV",
 				curlopts = list(http_version=2),
@@ -675,23 +723,31 @@ get_gbif <- function(sp_name = NULL,
 			
 			cat(">>> Download request ID:", req_id, "\n")
 			
-			rgbif::occ_download_wait(req_id,
+			rgbif::occ_download_wait(
+				req_id,
 				status_ping = 5,
 				curlopts = list(http_version=2),
-				quiet = FALSE)
+				quiet = FALSE
+			)
 			download <- rgbif::occ_download_get(req_id)
 			try(rgbif::occ_download_import(download), silent = FALSE)
 		
 		} else {
-    	cat("\r", "----------------- #", 
-    		x, " (", round(x * 100/length(geo.ref), 2),
-    		"%...)\033[K", sep="")
+			cat(
+				"\r", "----------------- #", 
+				x, " (", round(x * 100/length(geo.ref), 2),
+				"%...)\033[K", sep=""
+			)
 			try(
-				rgbif::occ_search(taxonKey = sp.key,
-								limit = occ_samp,
-								hasCoordinate = !no_xy,
-								hasGeospatialIssue = FALSE,
-								geometry = go.tile), silent = TRUE)
+				rgbif::occ_search(
+					taxonKey = sp.key,
+					limit = occ_samp,
+					hasCoordinate = has_xy,
+					hasGeospatialIssue = spatial_issue,
+					geometry = go.tile
+				),
+				silent = TRUE
+			) ########### Here we want NULL if extent is global
 		}
 
 		# If problems, just rerun with while with n attempts, otherwise return NULL
@@ -711,12 +767,16 @@ get_gbif <- function(sp_name = NULL,
 					cat("\n","Attempt", j + 1, "...", "\n")
 					j <- j + 1
 					gbif.search <- try(
-						rgbif::occ_search(taxonKey = sp.key,
-										limit = occ_samp,
-										hasCoordinate = !no_xy,
-										hasGeospatialIssue = FALSE,
-										geometry = go.tile), silent = TRUE)
-					  Sys.sleep(3)
+						rgbif::occ_search(
+							taxonKey = sp.key,
+							limit = occ_samp,
+							hasCoordinate = has_xy,
+							hasGeospatialIssue = spatial_issue,
+							geometry = go.tile
+						),
+						silent = TRUE
+					)
+					Sys.sleep(3)
 				}
 
 				if (class(gbif.search) %in% "try-error") {
@@ -737,7 +797,7 @@ get_gbif <- function(sp_name = NULL,
 		if (should_use_occ_download) gbif.search$data <- gbif.search
 
 		# If no results
-		if (is.null(gbif.search$data)){
+		if (is.null(gbif.search$data)) {
 			return(e.output)
 		
 		} else {
@@ -800,7 +860,7 @@ get_gbif <- function(sp_name = NULL,
 	}
 
 		# Removal summary
-	if (any(names(table(c(id.certain,id.grain))) %in% FALSE)){
+	if (any(names(table(c(id.certain,id.grain))) %in% FALSE)) {
 		removed <- table(c(id.certain,id.grain))[1]
 		cat("Records removed:",removed,"\n")
 
@@ -809,7 +869,7 @@ get_gbif <- function(sp_name = NULL,
 	}
 
 	#### 2) Removing xy duplicates
-	if (!duplicates){
+	if (!duplicates) {
 
 		cat("---> Removal of duplicated records...","\n")
 		
@@ -817,7 +877,7 @@ get_gbif <- function(sp_name = NULL,
 		gbif.correct <- gbif.correct[id.dup, ]
 
 		# Removal summary
-		if (any(names(table(id.dup)) %in% FALSE)){
+		if (any(names(table(id.dup)) %in% FALSE)) {
 			removed <- table(id.dup)[1]
 			cat("Records removed:",removed,"\n")
 
@@ -827,7 +887,7 @@ get_gbif <- function(sp_name = NULL,
 	}
 
 	#### 3) Removing absences
-	if (!absences){
+	if (!absences) {
 
 		cat("---> Removal of absence records...","\n")
 		
@@ -836,7 +896,7 @@ get_gbif <- function(sp_name = NULL,
 		gbif.correct <- gbif.correct[id.abs, ]
 
 		# Removal summary
-		if (any(names(table(id.abs)) %in% FALSE)){
+		if (any(names(table(id.abs)) %in% FALSE)) {
 			removed <- table(id.abs)[1]
 			cat("Records removed:",removed,"\n")
 
@@ -852,7 +912,7 @@ get_gbif <- function(sp_name = NULL,
 	gbif.correct <- gbif.correct[id.basis, ]
 
 		# Removal summary
-	if (any(names(table(id.basis)) %in% FALSE)){
+	if (any(names(table(id.basis)) %in% FALSE)) {
 		removed <- table(id.basis)[1]
 		cat("Records removed:",removed,"\n")
 
@@ -864,11 +924,11 @@ get_gbif <- function(sp_name = NULL,
 	cat("---> Establishment of records selection...","\n")
 
 	id.esta <- gbif.correct$degreeOfEstablishment %in% establishment |
-									is.na(gbif.correct$degreeOfEstablishment)
+					is.na(gbif.correct$degreeOfEstablishment)
 	gbif.correct <- gbif.correct[id.esta, ]
 
 		# Removal summary
-	if (any(names(table(id.esta)) %in% FALSE)){
+	if (any(names(table(id.esta)) %in% FALSE)) {
 		removed <- table(id.esta)[1]
 		cat("Records removed:",removed,"\n")
 
@@ -880,12 +940,12 @@ get_gbif <- function(sp_name = NULL,
 	cat("---> Time period selection...","\n")
 
 	id.year <- gbif.correct$year >= min(time_period) &
-								gbif.correct$year <= max(time_period)
+					gbif.correct$year <= max(time_period)
 	id.year[is.na(id.year)] <- TRUE
 	gbif.correct <- gbif.correct[id.year, ]
 
 		# Removal summary
-	if (any(names(table(id.year)) %in% FALSE)){
+	if (any(names(table(id.year)) %in% FALSE)) {
 		removed <- table(id.year)[1]
 		cat("Records removed:",removed,"\n")
 
@@ -894,7 +954,7 @@ get_gbif <- function(sp_name = NULL,
 	}
 
 	#### 6) Remove records with identical xy
-	if (nrow(gbif.correct) > 0){
+	if (nrow(gbif.correct) > 0) {
 		if (!identic_xy){
 		
 			cat("---> Removal of identical xy records...","\n")
@@ -904,7 +964,7 @@ get_gbif <- function(sp_name = NULL,
 			gbif.correct <- gbif.correct[id.diff, ]
 
 			# Removal summary
-			if (any(names(table(id.diff)) %in% FALSE)){
+			if (any(names(table(id.diff)) %in% FALSE)) {
 				removed <- table(id.diff)[1]
 				cat("Records removed:",removed,"\n")
 
@@ -918,8 +978,8 @@ get_gbif <- function(sp_name = NULL,
 	gbif.correct <- as.data.frame(gbif.correct)
 	gbif.nrow <- nrow(gbif.correct)
 
-	if (nrow(gbif.correct) > 0){
-		if (!wConverted_xy){
+	if (nrow(gbif.correct) > 0) {
+		if (!wConverted_xy) {
 
 			cat("---> Removal of wrong lon/lat converted records...","\n")
 
@@ -929,9 +989,11 @@ get_gbif <- function(sp_name = NULL,
 			# Summary of datasets & cd_ddmm parameter choice
 			gbif.datasets <- names(table(gbif.correct$datasetKey))
 			if (nrow(gbif.correct) < 10000) {
+
 				mat.size <- 100
 			} else if (nrow(gbif.correct) < 1e6) {
 				mat.size <- 1000
+			
 			} else {
 				mat.size <- 10000
 			}
@@ -941,7 +1003,7 @@ get_gbif <- function(sp_name = NULL,
 			lapply(seq_along(gbif.datasets), function(x)
 			{
 				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
-				if (nrow(gbif.dataset) > 50){
+				if (nrow(gbif.dataset) > 50) {
 					diff.chosen <-
 						diff.records[[2]][which(nrow(gbif.dataset) < diff.records[[1]])[1]]
 					gbif.dataset <- suppressWarnings(
@@ -970,7 +1032,7 @@ get_gbif <- function(sp_name = NULL,
 	#### 8) Remove raster centroids (only if > 100 records in one dataset)
 	gbif.nrow <- nrow(gbif.correct)
 
-	if (nrow(gbif.correct) > 0){
+	if (nrow(gbif.correct) > 0) {
 		if (!centroids){
 
 			cat("---> Removal of raster centroids...","\n")
@@ -983,20 +1045,22 @@ get_gbif <- function(sp_name = NULL,
 
 			# Apply correction if the dataset > 100 records
 			gbif.round <-
-			lapply(seq_along(gbif.datasets), function(x){
-
+			lapply(seq_along(gbif.datasets), function(x)
+			{
 				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
-				if (nrow(gbif.dataset) > 100){
+				if (nrow(gbif.dataset) > 100) {
 					gbif.temp <- suppressWarnings(
-						try(CoordinateCleaner::cd_round(
-							x = gbif.dataset,
-							lon = "decimalLongitude",
-							lat = "decimalLatitude",
-							ds = "datasetKey",
-							graphs = FALSE,
-							...
+						try(
+							CoordinateCleaner::cd_round(
+								x = gbif.dataset,
+								lon = "decimalLongitude",
+								lat = "decimalLatitude",
+								ds = "datasetKey",
+								graphs = FALSE,
+								...
 							),
-						silent = TRUE)
+							silent = TRUE
+						)
 					)
 					
 					if (class(gbif.temp) %in% "try-error") {
@@ -1017,7 +1081,7 @@ get_gbif <- function(sp_name = NULL,
 		}
 	}
 	if (nrow(gbif.correct) == 0) {
-		cat("No records left after selection...","\n")
+		cat("No records left after filtering...","\n")
 		return(e.output)
 
 	} else {

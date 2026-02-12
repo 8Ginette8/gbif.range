@@ -14,7 +14,8 @@ get_gbif_count(
   family = NULL,
   conf_match = 80,
   geo = NULL,
-  no_xy = FALSE
+  has_xy = TRUE,
+  spatial_issue = FALSE
 )
 }
 \arguments{
@@ -64,9 +65,13 @@ Default is 90.}
 or \code{sf} (WGS84) to define the study's area extent. Default is
 \code{NULL}, i.e., the whole globe.}
 
-\item{no_xy}{Logical. Only number of records with coordinates are given.
-Default is \code{FALSE}. If \code{TRUE}, number of records without
-coordinates is given.}
+\item{has_xy}{Logical. If \code{TRUE}, only records with coordinates are
+downloaded (default). If \code{FALSE}, only records without coordinates are
+downloaded. If \code{NULL}, all records are downloaded.}
+
+\item{spatial_issue}{Logical. If \code{FALSE}, only records without
+spatial issues are downloaded (default). If \code{TRUE}, only records with
+spatial issues are downloaded. If \code{NULL}, all records are downloaded.}
 }
 \value{
 A simple print of the number of observations found.
@@ -82,9 +87,35 @@ input taxa name, all species records related to its accepted name
 and synonyms are extracted.
 }
 \examples{
-# Get total number of observations
-obs.pt <- get_gbif_count(sp_name = "Acer campestre")
-obs.pt <- get_gbif_count(sp_name = "Acer camptre", search = FALSE)
+# Get number of observations with default (only XY with no spatial issues):
+obs.pt <- get_gbif_count(
+	sp_name = "Ailuropoda melanoleuca",
+	has_xy = TRUE,
+	spatial_issue = FALSE,
+	geo = NULL
+)
+
+# Get total number of observations (everything):
+obs.pt <- get_gbif_count(
+	sp_name = "Ailuropoda melanoleuca",
+	has_xy = NULL,
+	spatial_issue = NULL,
+	geo = NULL
+)
+
+# Example of setting 'geo' (has_xy = TRUE is forced)
+obs.pt <- get_gbif_count(
+	sp_name = "Ailuropoda melanoleuca",
+	has_xy = NULL,
+	spatial_issue = NULL,
+	geo = terra::ext()
+)
+
+# Example of fuzzy match when search is set to FALSE
+obs.pt <- get_gbif_count(
+	sp_name = "Ailuropoda melanolca",
+	search = FALSE
+)
 }
 \references{
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the

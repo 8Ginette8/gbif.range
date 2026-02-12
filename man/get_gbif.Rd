@@ -14,10 +14,11 @@ get_gbif(
   family = NULL,
   conf_match = 80,
   geo = NULL,
+  has_xy = TRUE,
+  spatial_issue = FALSE,
   grain = 100,
   duplicates = FALSE,
   absences = FALSE,
-  no_xy = FALSE,
   basis = c("OBSERVATION", "HUMAN_OBSERVATION", "MACHINE_OBSERVATION", "OCCURRENCE",
     "MATERIAL_CITATION", "MATERIAL_SAMPLE", "LITERATURE"),
   establishment = c("native", "casual", "released", "reproducing", "established",
@@ -83,6 +84,14 @@ Default is 90.}
 or \code{sf} (WGS84) to define the study's area extent. Default is
 \code{NULL}, i.e., the whole globe.}
 
+\item{has_xy}{Logical. If \code{TRUE}, only records with coordinates are
+downloaded (default). If \code{FALSE}, only records without coordinates are
+downloaded. If \code{NULL}, all records are downloaded.}
+
+\item{spatial_issue}{Logical. If \code{FALSE}, only records without
+spatial issues are downloaded (default). If \code{TRUE}, only records with
+spatial issues are downloaded. If \code{NULL}, all records are downloaded.}
+
 \item{grain}{Numeric. Default is 100. Specifies in kilometers the study
 resolution. Used to filter gbif records according to their (1) spatial
 uncertainties and (2) number of coordinate decimals. Records with
@@ -95,10 +104,6 @@ Default is \code{FALSE}.}
 
 \item{absences}{Logical. Should absence records be kept?
 Default is \code{FALSE}}
-
-\item{no_xy}{Logical. Only records with coordinates are downloaded.
-Default is \code{FALSE}. If \code{TRUE}, only records with no
-coordinates are downloaded.}
 
 \item{basis}{Character. Which basis of records should be selected?
 Available (old and new) are "OBSERVATION", "HUMAN_OBSERVATION",
@@ -205,8 +210,7 @@ chosen resolution of the study and by partly employing the
 involve several choices: study's extent, removal of duplicates, removal
 of absences, basis of records selection, removal of invalid/uncertain
 xy coordinates (WGS84), time period selection and removal of raster
-centroids. By default, the argument \code{hasGeospatialIssue} in
-\code{occ_search()} (\code{rgbif} R function) is set to \code{FALSE}.
+centroids.
 
 The \code{grain} parameter applies:
 

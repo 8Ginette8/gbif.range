@@ -43,9 +43,12 @@
 #' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
 #' or \code{sf} (WGS84) to define the study's area extent. Default is
 #' \code{NULL}, i.e., the whole globe.
-#' @param no_xy Logical. Only number of records with coordinates are given.
-#' Default is \code{FALSE}. If \code{TRUE}, number of records without
-#' coordinates is given.
+#' @param has_xy Logical. If \code{TRUE}, only records with coordinates are
+#' downloaded (default). If \code{FALSE}, only records without coordinates are
+#' downloaded. If \code{NULL}, all records are downloaded.
+#' @param spatial_issue Logical. If \code{FALSE}, only records without
+#' spatial issues are downloaded (default). If \code{TRUE}, only records with
+#' spatial issues are downloaded. If \code{NULL}, all records are downloaded.
 #' @details Implements the same search result when
 #' (\href{https://www.gbif.org}{GBIF}) is employed, i.e., based on the
 #' input taxa name, all species records related to its accepted name
@@ -68,209 +71,240 @@ get_gbif_count <- function(sp_name = NULL,
 					family = NULL,
 					conf_match = 80,
 					geo = NULL,
-					no_xy = FALSE) {
+					has_xy = TRUE,
+          spatial_issue = FALSE) {
 	
 	######################################################
 	### Stop messages
 	######################################################
 
 
-	# General
-	check_character_vector(sp_name, "sp_name")
-  check_logical(search, "search")
-  check_numeric(conf_match, "conf_match")
-  check_logical(no_xy, "no_xy")
+  	# General
+  	check_character_vector(sp_name, "sp_name")
+    check_logical(search, "search")
+    check_numeric(conf_match, "conf_match")
 
-  # Geo class
-  spatial.class <- c("Extent", "SpatExtent", "SpatialPolygon",
-  	"SpatialPolygonDataframe", "SpatVector", "sf")
-  if (!is.null(geo)) {
-  	 if (!class(geo)[1] %in% spatial.class) {
-     	stop("Wrong 'geo' class (not a spatial object)...")
-     }
-  }
-
-	
-	#############################################################
-	### Convert to SpatVect if class is 'sf' + convert to extent
-	#############################################################
-
-
-	# For study area
-	if (!is.null(geo)) {
-		if (class(geo)[1] %in% "sf") {geo <- terra::vect(geo)}
-		if (!(class(geo) %in% "SpatExtent")) {geo <- terra::ext(geo)}
-
-	} else {
-		geo <- terra::ext(-180, 180, -90, 90)
-	}
-
-
-	######################################################
-	### Parameter config
-	######################################################
-
-
-	# Set geo.ref
-	geo.ref <- paste0(
-		"POLYGON((", geo$xmin, " ", geo$ymin, ", ",
-			geo$xmax, " ", geo$ymin, ", ",
-			geo$xmax, " ", geo$ymax, ", ",
-			geo$xmin, " ", geo$ymax, ", ",
-			geo$xmin, " ", geo$ymin, "))"
-	)
-
-
-	######################################################
-	### Backbone harmonization and N records
-	######################################################
-
-
-	if (!search){
-    # Search input name via fuzzy match and direct search
-    bsearch <- rgbif::name_backbone(sp_name,
-    	rank = rank,
-    	phylum = phylum,
-    	class = class,
-    	order = order,
-    	family = family,
-    	verbose = FALSE,
-    	strict = FALSE)
-
-  } else {
-    # Search input name via strict match and refined search
-    bsearch <- rgbif::name_backbone(sp_name,
-    	verbose = TRUE,
-    	strict = TRUE)
-
-    q.crit <- !vapply(
-    	list(rank, phylum, class, order, family),
-    	is.null,
-    	logical(1)
-    )
-
-    # Filter by given criterias if results
-    if (!bsearch$matchType[1] %in% "NONE"){ 
-      if (any(q.crit)){
-        id.crit <- c("rank", "phylum", "class", "order", "family")[q.crit]
-        p.crit <- unlist(list(rank, phylum, class, order, family)[q.crit])
-        n.test <- id.crit %in% names(bsearch)
-
-        if (any(n.test)){
-          # selecting which
-          id.crit2 <- id.crit[n.test]
-          p.crit2 <- p.crit[n.test]
-
-          # Apply the rigth criterias
-          for (i in seq_along(id.crit2)){
-            bsearch <- bsearch[c(bsearch[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
-
-            if (nrow(bsearch) == 0){
-              bsearch <- data.frame(matchType = "NONE")
-            }
-          }
-        }
-
-        if (!all(n.test)){
-          pp <- paste(id.crit[!n.test], collapse = ", ")
-          warning(
-          		"'", pp, 
-          		"' level(s) not available in GBIF, could not be employed...",
-          		"\n"
-          )
-        }
+    # Geo class
+    spatial.class <- c("Extent", "SpatExtent", "SpatialPolygon",
+    	"SpatialPolygonDataframe", "SpatVector", "sf")
+    if (!is.null(geo)) {
+    	if (!class(geo)[1] %in% spatial.class) {
+       	stop("Wrong 'geo' class (not a spatial object)...")
       }
     }
-    
-    # Normal procedure with or without criterias
-    if (nrow(bsearch) > 1){
-      if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
-        cat("Not match found...", "\n")
-        return(NULL)
 
-      } else {
-        s.keep <- bsearch[bsearch$rank %in%
-        								c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
-        s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
-        if (nrow(s.keep) == 0){
+  	
+  	#############################################################
+  	### Convert to SpatVect if class is 'sf' + convert to extent
+  	#############################################################
+
+
+  	# Set geo.ref for study area
+    if (!is.null(geo) && !isTRUE(all.equal(geo, terra::ext()))) {
+      if (class(geo)[1] %in% "sf") {
+        geo <- terra::vect(geo)
+      }
+      if (!(class(geo) %in% "SpatExtent")) {
+        geo <- terra::ext(geo)
+      }
+      geo.ref <- paste0(
+        "POLYGON((", geo$xmin, " ", geo$ymin, ", ",
+          geo$xmax, " ", geo$ymin, ", ",
+          geo$xmax, " ", geo$ymax, ", ",
+          geo$xmin, " ", geo$ymax, ", ",
+          geo$xmin, " ", geo$ymin, "))"
+      )
+    } else {
+      geo <- terra::ext()
+      geo.ref <- NULL
+    }
+
+
+  	######################################################
+  	### Backbone harmonization and N records
+  	######################################################
+
+
+  	if (!search){
+      # Search input name via fuzzy match and direct search
+      bsearch <- rgbif::name_backbone(sp_name,
+      	rank = rank,
+      	phylum = phylum,
+      	class = class,
+      	order = order,
+      	family = family,
+      	verbose = FALSE,
+      	strict = FALSE)
+
+    } else {
+      # Search input name via strict match and refined search
+      bsearch <- rgbif::name_backbone(sp_name,
+      	verbose = TRUE,
+      	strict = TRUE)
+
+      q.crit <- !vapply(
+      	list(rank, phylum, class, order, family),
+      	is.null,
+      	logical(1)
+      )
+
+      # Filter by given criterias if results
+      if (!bsearch$matchType[1] %in% "NONE"){ 
+        if (any(q.crit)){
+          id.crit <- c("rank", "phylum", "class", "order", "family")[q.crit]
+          p.crit <- unlist(list(rank, phylum, class, order, family)[q.crit])
+          n.test <- id.crit %in% names(bsearch)
+
+          if (any(n.test)){
+            # selecting which
+            id.crit2 <- id.crit[n.test]
+            p.crit2 <- p.crit[n.test]
+
+            # Apply the rigth criterias
+            for (i in seq_along(id.crit2)){
+              bsearch <- bsearch[c(bsearch[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
+
+              if (nrow(bsearch) == 0){
+                bsearch <- data.frame(matchType = "NONE")
+              }
+            }
+          }
+
+          if (!all(n.test)){
+            pp <- paste(id.crit[!n.test], collapse = ", ")
+            warning(
+            		"'", pp, 
+            		"' level(s) not available in GBIF, could not be employed...",
+            		"\n"
+            )
+          }
+        }
+      }
+      
+      # Normal procedure with or without criterias
+      if (nrow(bsearch) > 1){
+        if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
           cat("Not match found...", "\n")
           return(NULL)
 
-        } else if (nrow(s.keep) > 1){
+        } else {
+          s.keep <- bsearch[bsearch$rank %in%
+          								c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
+          s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
+          if (nrow(s.keep) == 0){
+            cat("Not match found...", "\n")
+            return(NULL)
 
-          # If we only find subpsecies and variety, we need to prioritize
-          if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
-            if ("var." %in% strsplit(sp_name," ")[[1]]){
-              bsearch <- s.keep[s.keep$rank %in% "VARIETY", ]
-              if (nrow(bsearch) == 0){
+          } else if (nrow(s.keep) > 1){
+
+            # If we only find subpsecies and variety, we need to prioritize
+            if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
+              if ("var." %in% strsplit(sp_name," ")[[1]]){
+                bsearch <- s.keep[s.keep$rank %in% "VARIETY", ]
+                if (nrow(bsearch) == 0){
+                  bsearch <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
+                }
+
+              } else {
                 bsearch <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
               }
 
             } else {
-              bsearch <- s.keep[s.keep$rank %in% "SUBSPECIES", ]
+              bsearch <- s.keep[s.keep$rank %in% "SPECIES", ]
+            }
+
+            focp.key <- c("familyKey", "orderKey", "classKey", "phylumKey")
+            coltax <- focp.key  %in% colnames(bsearch)
+            key.test <- bsearch[ ,focp.key[coltax]]
+
+            if (any(bsearch$status %in% "ACCEPTED") &
+            						length(unique(key.test[, 1])) == 1){
+            	bsearch <- bsearch[bsearch$status %in% "ACCEPTED", ]
             }
 
           } else {
-            bsearch <- s.keep[s.keep$rank %in% "SPECIES", ]
+            bsearch <- s.keep
           }
+          # If not the same species overall return empty
+          s.usp <- length(unique(bsearch$speciesKey)) == 1
+          if (!s.usp){
+            cat("No synonyms distinction could be made.",
+            	"Consider using phylum/class/order/family...","\n")
+            return(NULL)
 
-          focp.key <- c("familyKey", "orderKey", "classKey", "phylumKey")
-          coltax <- focp.key  %in% colnames(bsearch)
-          key.test <- bsearch[ ,focp.key[coltax]]
-
-          if (any(bsearch$status %in% "ACCEPTED") &
-          						length(unique(key.test[, 1])) == 1){
-          	bsearch <- bsearch[bsearch$status %in% "ACCEPTED", ]
-          }
-
-        } else {
-          bsearch <- s.keep
+          } else {
+            bsearch <- bsearch[1, ]
+          } 
         }
-        # If not the same species overall return empty
-        s.usp <- length(unique(bsearch$speciesKey)) == 1
-        if (!s.usp){
-          cat("No synonyms distinction could be made.",
-          	"Consider using phylum/class/order/family...","\n")
-          return(NULL)
-
-        } else {
-          bsearch <- bsearch[1, ]
-        } 
       }
     }
-  }
 
-  if (bsearch$matchType %in% "NONE") {
-    cat("No species name found...","\n")
-    return(NULL)
-  }
+    if (bsearch$matchType %in% "NONE") {
+      cat("No species name found...","\n")
+      return(NULL)
+    }
 
-  if (bsearch$confidence[1] < conf_match) {
-    cat("Confidence match not high enough...","\n")
-    return(NULL)
-  }  
+    if (bsearch$confidence[1] < conf_match) {
+      cat("Confidence match not high enough...","\n")
+      return(NULL)
+    }  
 
-	# Get the accepetedKey
-	if (bsearch$status %in% "SYNONYM"){
-		sp.key <- bsearch$acceptedUsageKey
+  	# Get the accepetedKey
+  	if (bsearch$status %in% "SYNONYM"){
+  		sp.key <- bsearch$acceptedUsageKey
 
-	} else {
-		sp.key <- bsearch$usageKey
-	}
+  	} else {
+  		sp.key <- bsearch$usageKey
+  	}
 
-	# Check number of records in 'geo' first
-	gbif.records <- rgbif::occ_count(taxonKey = sp.key,
-									 hasCoordinate = !no_xy,
-									 hasGeospatialIssue = FALSE,
-									 geometry = geo.ref)
+  	# Check number of records in total first
+    gbif.total <- rgbif::occ_count(
+      taxonKey = sp.key,
+      hasCoordinate = NULL,
+      hasGeospatialIssue = NULL,
+      geometry = NULL
+    )
 
-	cat("Total number of records:", gbif.records,"\n")
+    gbif.records <- rgbif::occ_count(
+      taxonKey = sp.key,
+      hasCoordinate = has_xy,
+      hasGeospatialIssue = spatial_issue,
+      geometry = geo.ref
+    )
 
-	# Cancel request if n==0
-	if (gbif.records == 0 ) {
-		cat("No species records found...","\n")
-		return(NULL)
-	}
-	return(gbif.records)
+    # Print summary
+    l <- sprintf(
+      "%-29s : %10d",
+      c("Total number (all records)", "Kept records"),
+      c(gbif.total, gbif.records)
+    )
+    w <- max(nchar(l)) + 4
+    cat("+",strrep("-",w-2),"+\n| ",
+        paste(l,collapse=" |\n| ")," |\n+",strrep("-",w-2),"+\n",sep="")
+
+    fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
+    cat("Kept records according to parameters:\n")
+
+    # Print additional information depending if global or regional
+    if (is.null(geo.ref)) {
+      cat(sprintf("spatial_issue = %s, has_xy = %s\n",
+                  fmt(spatial_issue), fmt(has_xy)))
+    } else {
+      cat(sprintf(
+        paste0(
+          "spatial_issue = %s, has_xy = TRUE by default ",
+          "('geo' was set)\n"
+        ),
+        fmt(spatial_issue)
+        )
+      )
+    }
+
+  	# Cancel request if n==0
+  	if (gbif.records == 0 ) {
+  		cat("No species records found...","\n")
+  		return(NULL)
+  	}
+  	return(c(gbif.total, gbif.records))
 }
 	
