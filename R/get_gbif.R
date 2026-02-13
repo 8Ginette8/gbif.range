@@ -1,7 +1,7 @@
 ### =========================================================================
 ### get_gbif
 ### =========================================================================
-#' Massively download and filter GBIF observations for sound spatial analyses
+#' Intuitively download and filter GBIF observations for sound spatial analyses
 #'
 #' Implement an user-friendly workflow to download and clean gbif taxa
 #' observations. The function (1) implements the same search result as
@@ -55,7 +55,7 @@
 #' @param grain Numeric. Default is 100. Specifies in kilometers the study
 #' resolution. Used to filter gbif records according to their (1) spatial
 #' uncertainties and (2) number of coordinate decimals. Records with
-#' resolution uncertainties \eqn{\ge}{>=} \code{grain} km are removed, and
+#' resolution uncertainties \eqn{\ge}{>=} \code{grain / 2} km are removed, and
 #' records with no info on coordinate uncertainties (column
 #' coordinateUncertaintyInMeters') are kept by default. But see details.
 #' @param duplicates Logical. Should duplicated records be kept?
@@ -118,6 +118,7 @@
 #' Required if \code{should_use_occ_download = TRUE}.
 #' @param occ_download_email Character. GBIF email.
 #' Required if \code{should_use_occ_download = TRUE}.
+#' @param verbose Logical. Function's prints. Defaut is TRUE.
 #' @param ... Additonnal parameters for the function \code{cd_round()} of
 #' the \code{CoordinateCleaner} R package.
 #' @details (1) Implements the same search result when
@@ -163,6 +164,10 @@
 #' information. Although crucial preliminary checks of species records are done
 #' by the function, additional post exploration with the
 #' \code{CoordinateCleaner} R package is still highly recommended.
+#' 
+#' Also, \code{attr(,"filter_log")} can be called on the output to check the
+#' filter log and \code{attr(,"no_xy")} to access species records without
+#' coordinates in case it was parameterized.
 #' @references
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger,
 #' D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and
@@ -186,6 +191,7 @@
 #' @importFrom terra ext vect
 #' @importFrom rgbif name_backbone occ_search
 #' @importFrom CoordinateCleaner cd_ddmm cd_round
+#' @importFrom stats na.omit
 #' @export
 get_gbif <- function(sp_name = NULL,
 					search = TRUE,
@@ -217,6 +223,7 @@ get_gbif <- function(sp_name = NULL,
 					occ_download_user = NULL,
 					occ_download_pwd = NULL,
 					occ_download_email = NULL,
+					verbose = TRUE,
 					...) {
 	
 	######################################################
@@ -279,21 +286,10 @@ get_gbif <- function(sp_name = NULL,
 	######################################################
 
 
-	# For precision and 'cd_ddm'
-		#	
-	grain <- grain * 1000
-		#
-	deci.preci <- list(
-		seq(0,10,1), rev(0.000011 * 10^(0:10))
-	)
-		#
-	deci.chosen <- deci.preci[[1]][which(grain >= deci.preci[[2]])[1]]
-		#
-	diff.records <- list(
-		c(0,5000,100000 * 10^(0:9)),rev(0.00000000001 * 10^(0:11))
-	)
-		#
-	xy.span <- 10 * 10^(-(deci.chosen - 1))
+	# For precision and 'cd_ddmm'
+		# Convert grain to needed units
+	grain_km  <- grain
+	grain_m   <- grain_km * 1000
 
 	# For fields
 	gbif.info <- c('taxonKey', 'scientificName', 'acceptedTaxonKey',
@@ -304,7 +300,7 @@ get_gbif <- function(sp_name = NULL,
 		'publishingOrgKey', 'taxonomicStatus', 'taxonRank', add_infos)
 	gbif.info <- gbif.info[order(gbif.info)]
 
-		# Create an empty ouptut
+	# Create an empty ouptut
 	e.output <- getGBIF(
 		data.frame(matrix(
 			ncol = length(gbif.info),
@@ -312,6 +308,19 @@ get_gbif <- function(sp_name = NULL,
 			dimnames = list(NULL, gbif.info))
 		)
 	)
+
+	# Summary helper
+	summary_log <- data.frame(
+		step = character(),
+		removed = integer(),
+		remaining = integer(),
+		stringsAsFactors = FALSE
+	)
+
+	# Print helper
+	vcat <- function(..., sep = "") {
+		if (isTRUE(verbose)) cat(..., sep = sep)
+	}
 
 
 	######################################################
@@ -461,7 +470,6 @@ get_gbif <- function(sp_name = NULL,
 	#############################################################
 
 
-
 	if (!is.null(geo)) {
 		if (inherits(geo, "sf")) geo <- terra::vect(geo)
 		if (!inherits(geo, "SpatExtent")) geo <- terra::ext(geo)
@@ -503,29 +511,36 @@ get_gbif <- function(sp_name = NULL,
 		c(gbif.total, gbif.records)
 	)
 	w <- max(nchar(l)) + 4
-	cat("+",strrep("-",w-2),"+\n| ",
-	paste(l,collapse=" |\n| ")," |\n+",strrep("-",w-2),"+\n",sep="")
 
-	fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
-	cat("Kept records according to parameters:\n")
+	if (verbose) {
+		cat(
+			"+",strrep("-",w-2),"+\n| ",
+			paste(l,collapse=" |\n| "),
+			" |\n+",strrep("-",w-2),
+			"+\n",sep=""
+		)
 
-	# Print additional information depending if global or regional
-	if (is.null(geo.ref[[1]])) {
-		cat(sprintf(
-				"spatial_issue = %s, has_xy = %s\n",
-				fmt(spatial_issue),
-				fmt(has_xy)
+		fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
+		cat("Kept records according to parameters:\n")
+
+		# Print additional information depending if global or regional
+		if (is.null(geo.ref[[1]])) {
+			cat(sprintf(
+					"spatial_issue = %s, has_xy = %s\n",
+					fmt(spatial_issue),
+					fmt(has_xy)
+				)
 			)
-		)
-	} else {
-		cat(sprintf(
-				paste0(
-					"spatial_issue = %s, has_xy = TRUE by default ",
-					"('geo' was set)\n"
-				),
-				fmt(spatial_issue)
+		} else {
+			cat(sprintf(
+					paste0(
+						"spatial_issue = %s, has_xy = TRUE by default ",
+						"('geo' was set)\n"
+					),
+					fmt(spatial_issue)
+				)
 			)
-		)
+		}
 	}
 
 	# Cancel request if n==0
@@ -668,9 +683,9 @@ get_gbif <- function(sp_name = NULL,
 
 	# Information messages
 	if (occ_samp != 10000) {
-		cat("\n...GBIF records of", sp_name, ": download of sample starting...\n")
+		vcat("\n...GBIF records of ", sp_name, ": download of sample starting...\n")
 	} else {
-		cat("\n...GBIF records of", sp_name, ": download starting...\n")
+		vcat("\n...GBIF records of ", sp_name, ": download starting...\n")
 	}
 
 	# Run the gbif search with the acceptedName per chosen tiles
@@ -721,7 +736,7 @@ get_gbif <- function(sp_name = NULL,
 				email = email
 			)
 			
-			cat(">>> Download request ID:", req_id, "\n")
+			vcat(">>> Download request ID:", req_id, "\n")
 			
 			rgbif::occ_download_wait(
 				req_id,
@@ -733,10 +748,11 @@ get_gbif <- function(sp_name = NULL,
 			try(rgbif::occ_download_import(download), silent = FALSE)
 		
 		} else {
-			cat(
+			vcat(
 				"\r", "----------------- #", 
 				x, " (", round(x * 100/length(geo.ref), 2),
-				"%...)\033[K", sep=""
+				"%...)\033[K",
+				"\n", sep=""
 			)
 			try(
 				rgbif::occ_search(
@@ -747,7 +763,7 @@ get_gbif <- function(sp_name = NULL,
 					geometry = go.tile
 				),
 				silent = TRUE
-			) ########### Here we want NULL if extent is global
+			)
 		}
 
 		# If problems, just rerun with while with n attempts, otherwise return NULL
@@ -764,7 +780,7 @@ get_gbif <- function(sp_name = NULL,
 				j <- 0
 				while (class(gbif.search) %in% "try-error" & j < ntries)
 				{
-					cat("\n","Attempt", j + 1, "...", "\n")
+					vcat("\n","Attempt", j + 1, "...", "\n")
 					j <- j + 1
 					gbif.search <- try(
 						rgbif::occ_search(
@@ -828,264 +844,357 @@ get_gbif <- function(sp_name = NULL,
 	#################### Records filtering ######################
 	#############################################################
 
+	# Initial number
+	n_initial <- nrow(gbif.compile)
+
+	# Has xy / not
+	gbif.no_xy <- gbif.compile[
+		is.na(gbif.compile$decimalLatitude) |
+		is.na(gbif.compile$decimalLongitude),
+	]
+	gbif.xy <- gbif.compile[
+		!is.na(gbif.compile$decimalLatitude) &
+		!is.na(gbif.compile$decimalLongitude),
+	]
 
 	#### 1) Grain filtering
-	cat("\n","---> Grain filtering...","\n",sep="")
 		
-		# GBIF uncertainty
-	id.certain <- gbif.compile$coordinateUncertaintyInMeters <= grain / 2
+	# GBIF uncertainty
+	id.certain <- gbif.xy$coordinateUncertaintyInMeters <= grain_m / 2
 	id.certain[is.na(id.certain)] <- TRUE
-	gbif.correct <- gbif.compile[id.certain, ]
+	gbif.correct <- gbif.xy[id.certain, ]
 
-		# GBIF lon/lat decimals
-	if (grain < 1.1e5) {
+	# GBIF lon/lat decimals
+	if (grain_km < 110) {
 
 		# Remove latitude or/and longitude with no decimals
 		lonlat.format <- data.frame(
-			decimalLatitude = as.character(gbif.correct$decimalLatitude),
-			decimalLongitude = as.character(gbif.correct$decimalLongitude)
+			lat = as.character(gbif.correct$decimalLatitude),
+			lon = as.character(gbif.correct$decimalLongitude)
 		)
-		id.deci <- grepl("\\.",lonlat.format[,1]) + grepl("\\.",lonlat.format[,2])
-		lonlat.deci <- lonlat.format[id.deci %in% 2,]
-		gbif.correct <- gbif.correct[id.deci %in% 2,]
+
+		# Require decimals on BOTH lat and lon
+		id.deci <- grepl("\\.", lonlat.format$lat) & grepl("\\.", lonlat.format$lon)
+		gbif.correct <- gbif.correct[id.deci, ]
+
+		grain_deg <- grain_m / 111320 # 111,320 meters ≈ 1 degree
+		deci.chosen <- max(0, ceiling(-log10(grain_deg)))
 
 		# Keep coordinates compatible with the input 'grain'
-		declat <- gsub(".*\\.", "", lonlat.deci[, 1])
-		declon <- gsub(".*\\.", "", lonlat.deci[, 2])
+		declat <- gsub(".*\\.", "", lonlat.format[id.deci,1])
+		declon <- gsub(".*\\.", "", lonlat.format[id.deci,2])
 		id.grain <- nchar(declon) >= deci.chosen & nchar(declat) >= deci.chosen
 		gbif.correct <- gbif.correct[id.grain, ]
-
-	} else {
-		id.grain <- NULL
 	}
 
-		# Removal summary
-	if (any(names(table(c(id.certain,id.grain))) %in% FALSE)) {
-		removed <- table(c(id.certain,id.grain))[1]
-		cat("Records removed:",removed,"\n")
+	# Removal summary
+	n_after <- nrow(gbif.correct)
+	summary_log <- log_step(
+		log = summary_log, 
+		step_name = "Grain filtering", 
+		before = n_initial,
+		after = n_after
+	)
 
-	} else {
-		cat("Records removed:",0,"\n")
-	}
 
 	#### 2) Removing xy duplicates
 	if (!duplicates) {
 
-		cat("---> Removal of duplicated records...","\n")
+		n_before <- nrow(gbif.correct)
 		
 		id.dup <- !duplicated(gbif.correct[, c("decimalLongitude","decimalLatitude")])
 		gbif.correct <- gbif.correct[id.dup, ]
 
 		# Removal summary
-		if (any(names(table(id.dup)) %in% FALSE)) {
-			removed <- table(id.dup)[1]
-			cat("Records removed:",removed,"\n")
-
-		} else {
-			cat("Records removed:",0,"\n")
-		}
+		n_after <- nrow(gbif.correct)
+		summary_log <- log_step(
+			log = summary_log, 
+			step_name = "Duplicated records", 
+			before = n_before,
+			after = n_after
+		)
 	}
+
 
 	#### 3) Removing absences
 	if (!absences) {
 
-		cat("---> Removal of absence records...","\n")
+		n_before <- nrow(gbif.correct)
 		
 		id.abs <- !(gbif.correct$individualCount %in% 0 |
-										gbif.correct$occurrenceStatus %in% "ABSENT")
+					gbif.correct$occurrenceStatus %in% "ABSENT")
 		gbif.correct <- gbif.correct[id.abs, ]
 
 		# Removal summary
-		if (any(names(table(id.abs)) %in% FALSE)) {
-			removed <- table(id.abs)[1]
-			cat("Records removed:",removed,"\n")
-
-		} else {
-			cat("Records removed:",0,"\n")
-		}
+		n_after <- nrow(gbif.correct)
+		summary_log <- log_step(
+			log = summary_log, 
+			step_name = "Absence records", 
+			before = n_before,
+			after = n_after
+		)
 	}
+
 
 	#### 4) Select basis of records
-	cat("---> Basis of records selection...","\n")
-
+	n_before <- nrow(gbif.correct)
 	id.basis <- gbif.correct$basisOfRecord %in% basis
 	gbif.correct <- gbif.correct[id.basis, ]
+	
+	# Removal summary
+	n_after <- nrow(gbif.correct)
+	summary_log <- log_step(
+		log = summary_log, 
+		step_name = "Basis selection", 
+		before = n_before,
+		after = n_after
+	)
 
-		# Removal summary
-	if (any(names(table(id.basis)) %in% FALSE)) {
-		removed <- table(id.basis)[1]
-		cat("Records removed:",removed,"\n")
 
-	} else {
-		cat("Records removed:",0,"\n")
-	}
-
-	#### 4.5) Select establishment of records
-	cat("---> Establishment of records selection...","\n")
-
+	#### 5) Select establishment of records
+	n_before <- nrow(gbif.correct)
 	id.esta <- gbif.correct$degreeOfEstablishment %in% establishment |
 					is.na(gbif.correct$degreeOfEstablishment)
 	gbif.correct <- gbif.correct[id.esta, ]
+	
+	# Removal summary
+	n_after <- nrow(gbif.correct)
+	summary_log <- log_step(
+		log = summary_log, 
+		step_name = "Establishment selection", 
+		before = n_before,
+		after = n_after
+	)
 
-		# Removal summary
-	if (any(names(table(id.esta)) %in% FALSE)) {
-		removed <- table(id.esta)[1]
-		cat("Records removed:",removed,"\n")
 
-	} else {
-		cat("Records removed:",0,"\n")
-	}
-
-	#### 5) Select records according to year range
-	cat("---> Time period selection...","\n")
-
+	#### 6) Select records according to year range
+	n_before <- nrow(gbif.correct)
 	id.year <- gbif.correct$year >= min(time_period) &
 					gbif.correct$year <= max(time_period)
 	id.year[is.na(id.year)] <- TRUE
 	gbif.correct <- gbif.correct[id.year, ]
+	
+	# Removal summary
+	n_after <- nrow(gbif.correct)
+	summary_log <- log_step(
+		log = summary_log, 
+		step_name = "Time frame", 
+		before = n_before,
+		after = n_after
+	)
 
-		# Removal summary
-	if (any(names(table(id.year)) %in% FALSE)) {
-		removed <- table(id.year)[1]
-		cat("Records removed:",removed,"\n")
-
-	} else {
-		cat("Records removed:",0,"\n")
-	}
-
-	#### 6) Remove records with identical xy
+	
+	#### 7) Remove records with identical xy
 	if (nrow(gbif.correct) > 0) {
 		if (!identic_xy){
-		
-			cat("---> Removal of identical xy records...","\n")
+			n_before <- nrow(gbif.correct)
 
-			id.diff <- c(!(abs(gbif.correct[, "decimalLatitude"]) ==
-				abs(gbif.correct[, "decimalLongitude"])))
+			id.diff <- !(abs(gbif.correct[, "decimalLatitude"]) ==
+						 abs(gbif.correct[, "decimalLongitude"]))
 			gbif.correct <- gbif.correct[id.diff, ]
 
 			# Removal summary
-			if (any(names(table(id.diff)) %in% FALSE)) {
-				removed <- table(id.diff)[1]
-				cat("Records removed:",removed,"\n")
-
-			} else {
-				cat("Records removed:",0,"\n")
-			}
+			n_after <- nrow(gbif.correct)
+			summary_log <- log_step(
+				log = summary_log, 
+				step_name = "Identical records", 
+				before = n_before,
+				after = n_after
+			)
 		}
 	}
 
-	#### 7) Remove wrongly lon/lat converted (only if > 50 records in one dataset)
-	gbif.correct <- as.data.frame(gbif.correct)
-	gbif.nrow <- nrow(gbif.correct)
 
-	if (nrow(gbif.correct) > 0) {
-		if (!wConverted_xy) {
+	#### 8) Remove lon/lat missconverted
+	if (!wConverted_xy && nrow(gbif.correct) > 0) {
+		n_before <- nrow(gbif.correct)
+		gbif.correct <- as.data.frame(gbif.correct)
 
-			cat("---> Removal of wrong lon/lat converted records...","\n")
+		# Keep records with NA datasetKey
+		gbif.na <- gbif.correct[is.na(gbif.correct$datasetKey), ]
 
-			# Keep dataset with NAs
-			gbif.na <- gbif.correct[is.na(gbif.correct$datasetKey),]
+		# Unique dataset keys (excluding NA)
+		gbif.datasets <- unique(na.omit(gbif.correct$datasetKey))
 
-			# Summary of datasets & cd_ddmm parameter choice
-			gbif.datasets <- names(table(gbif.correct$datasetKey))
-			if (nrow(gbif.correct) < 10000) {
-
-				mat.size <- 100
-			} else if (nrow(gbif.correct) < 1e6) {
-				mat.size <- 1000
-			
-			} else {
-				mat.size <- 10000
+		# Apply correction only if dataset > 50 records
+		gbif.ddmm <-
+		lapply(gbif.datasets, function(ds) {
+			gbif.dataset <- gbif.correct[gbif.correct$datasetKey == ds, ]
+			if (nrow(gbif.dataset) > 50) {
+				# Set
+				n <- nrow(gbif.dataset)
+				# Matrix size
+				mat.size <- if (n < 10000) {
+					100
+				} else if (n < 1e6) {
+					1000
+				} else {
+					10000
+				}
+				# Dataset spatial extent
+				lon_span <- diff(range(gbif.dataset$decimalLongitude, na.rm = TRUE))
+				lat_span <- diff(range(gbif.dataset$decimalLatitude, na.rm = TRUE))
+				dataset_span <- max(lon_span, lat_span)
+				# Minimum span
+				min.span <- max(1, min(5, dataset_span * 0.1))
+				# Decimal imbalance threshold
+				diff.param <- 1
+				# Function
+				gbif.dataset <- suppressWarnings(
+					CoordinateCleaner::cd_ddmm(
+						x = gbif.dataset,
+						lon = "decimalLongitude",
+						lat = "decimalLatitude",
+						ds = "datasetKey",
+						mat_size = mat.size,
+						diff = diff.param,
+						min_span = min.span
+					)
+				)
 			}
+			return(gbif.dataset)
+		})
+		gbif.Wna <- if (length(gbif.ddmm) > 0) {
+			do.call("rbind", gbif.ddmm)
+		} else {
+			NULL
+		}
+		gbif.correct <- if (!is.null(gbif.Wna)) {
+			rbind(gbif.na, gbif.Wna)
+		} else {
+			gbif.na
+		}
+		
+		# Removal summary
+		n_after <- nrow(gbif.correct)
+		summary_log <- log_step(
+			log = summary_log, 
+			step_name = "Missconverted records", 
+			before = n_before,
+			after = n_after
+		)
+	}
 
-			# Apply correction if the dataset > 50 records
-			gbif.ddmm <-
-			lapply(seq_along(gbif.datasets), function(x)
-			{
-				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
-				if (nrow(gbif.dataset) > 50) {
-					diff.chosen <-
-						diff.records[[2]][which(nrow(gbif.dataset) < diff.records[[1]])[1]]
-					gbif.dataset <- suppressWarnings(
-						CoordinateCleaner::cd_ddmm(
+
+	#### 9) Remove raster centroids
+	if (!centroids && nrow(gbif.correct) > 0) {
+		n_before <- nrow(gbif.correct)
+		gbif.correct <- as.data.frame(gbif.correct)
+
+		# Keep records with NA datasetKey
+		gbif.na <- gbif.correct[is.na(gbif.correct$datasetKey), ]
+
+		# Unique non-NA datasets
+		gbif.datasets <- unique(na.omit(gbif.correct$datasetKey))
+
+		# Apply correction only if dataset > 100 records
+		gbif.round <- lapply(gbif.datasets, function(ds) {
+			gbif.dataset <- gbif.correct[gbif.correct$datasetKey == ds, ]
+
+			if (nrow(gbif.dataset) > 100) {
+
+				gbif.temp <- suppressWarnings(
+					try(
+						CoordinateCleaner::cd_round(
 							x = gbif.dataset,
 							lon = "decimalLongitude",
 							lat = "decimalLatitude",
 							ds = "datasetKey",
-							mat_size = mat.size,
-							diff = diff.chosen,
-							min_span = xy.span
-						)
+							graphs = FALSE,
+							...
+						),
+						silent = TRUE
 					)
+				)
+
+				if (!inherits(gbif.temp, "try-error")) {
+					gbif.dataset <- gbif.temp
 				}
-				return(gbif.dataset)
-			})
-
-			gbif.Wna <- do.call("rbind", gbif.ddmm)
-			gbif.correct <- rbind(gbif.na, gbif.Wna)
-
-			# Removal summary
-			cat("Records removed:",gbif.nrow - nrow(gbif.correct),"\n")
+			}
+			return(gbif.dataset)
+		})	
+		gbif.Wna <- if (length(gbif.round) > 0) {
+			do.call("rbind", gbif.round)
+		} else {
+			NULL
 		}
+		gbif.correct <- if (!is.null(gbif.Wna)) {
+			rbind(gbif.na, gbif.Wna)
+		} else {
+			gbif.na
+		}
+
+		# Removal summary
+		n_after <- nrow(gbif.correct)
+		summary_log <- log_step(
+			log = summary_log, 
+			step_name = "Raster centroids", 
+			before = n_before,
+			after = n_after
+		)
 	}
 
-	#### 8) Remove raster centroids (only if > 100 records in one dataset)
-	gbif.nrow <- nrow(gbif.correct)
-
-	if (nrow(gbif.correct) > 0) {
-		if (!centroids){
-
-			cat("---> Removal of raster centroids...","\n")
-
-			# Keep dataset with NAs
-			gbif.na <- gbif.correct[is.na(gbif.correct$datasetKey), ]
-			
-			# Summary of datasets & cd_ddmm parameter choice
-			gbif.datasets <- names(table(gbif.correct$datasetKey))
-
-			# Apply correction if the dataset > 100 records
-			gbif.round <-
-			lapply(seq_along(gbif.datasets), function(x)
-			{
-				gbif.dataset <- gbif.correct[gbif.correct$datasetKey %in% gbif.datasets[x],]
-				if (nrow(gbif.dataset) > 100) {
-					gbif.temp <- suppressWarnings(
-						try(
-							CoordinateCleaner::cd_round(
-								x = gbif.dataset,
-								lon = "decimalLongitude",
-								lat = "decimalLatitude",
-								ds = "datasetKey",
-								graphs = FALSE,
-								...
-							),
-							silent = TRUE
-						)
-					)
-					
-					if (class(gbif.temp) %in% "try-error") {
-						return(gbif.dataset)
-
-					} else {
-						gbif.dataset <- gbif.temp
-					}
-				}
-				return(gbif.dataset)
-			})
-
-			gbif.Wna <- do.call("rbind", gbif.round)
-			gbif.correct <- rbind(gbif.na, gbif.Wna)
-
-			# Removal summary
-			cat("Records removed:",gbif.nrow - nrow(gbif.correct),"\n")
-		}
-	}
 	if (nrow(gbif.correct) == 0) {
-		cat("No records left after filtering...","\n")
-		return(e.output)
+	    if (nrow(gbif.no_xy) > 0) {
+	        if (verbose) {
+	            cat("No spatial records left after filtering.\n")
+	        }
 
-	} else {
-		proper.output <- getGBIF(cbind(input_search = sp_name,gbif.correct))
-		return(proper.output)
+	        proper.output <- getGBIF(
+	            cbind(
+	                input_search = sp_name,
+	                gbif.no_xy
+	            )
+	        )
+
+	        attr(proper.output, "filter_log") <- summary_log
+	        attr(proper.output, "no_xy") <- gbif.no_xy
+	        return(proper.output)
+
+	    } else {
+	        cat("No records left after filtering...\n")
+	        return(e.output)
+	    }
 	}
+
+	# ---- FINAL SUMMARY PRINT ----
+	if (verbose) {
+		cat("\n")
+		
+		if (nrow(summary_log) > 0) {
+			max_step_width <- max(nchar(summary_log$step))
+			max_num_width <- max(
+				nchar(as.character(summary_log$removed)),
+				nchar(as.character(summary_log$remaining))
+			)
+		} else {
+			max_step_width <- 10
+			max_num_width <- 10
+		}
+		
+		box_width <- max_step_width + max_num_width + 20
+		sep_equal <- strrep("-", box_width)
+		sep_dash  <- strrep("-", box_width)
+
+		print(summary_log, row.names = FALSE)
+
+		cat(sep_dash, "\n")
+		cat(sprintf("%-22s : %d\n", "Initial records", n_initial))
+		cat(sprintf("%-22s : %d\n", "Total removed", n_initial - nrow(gbif.correct)))
+		cat(sprintf("%-22s : %d\n", "Final records with XY", nrow(gbif.correct)))
+		cat(sprintf("%-22s : %d\n", "Records without XY", nrow(gbif.no_xy)))
+		cat(sep_dash, "\n")
+	}
+
+	# ---- RETURN AFTER PRINTING ----
+	proper.output <- getGBIF(
+		cbind(
+			input_search = sp_name,
+			gbif.correct
+		)
+	)
+
+	attr(proper.output, "filter_log") <- summary_log
+	attr(proper.output, "no_xy") <- gbif.no_xy
+	return(proper.output)
 }

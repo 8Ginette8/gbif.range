@@ -79,3 +79,22 @@ check_numeric_range <- function(x, name, len) {
     )
   }
 }
+
+#' Summary log helper for get_gbif filtering
+#'
+#' @param log Argument value
+#' @param step_name Filtering step name
+#' @param before Pre-filtering number of observations
+#' @param after Post-filtering number of observations
+#' @keywords internal
+log_step <- function(log, step_name, before, after) {
+  rbind(
+    log,
+    data.frame(
+      step = step_name,
+      removed = before - after,
+      remaining = after,
+      stringsAsFactors = FALSE
+    )
+  )
+}

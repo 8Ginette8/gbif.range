@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_gbif.R
 \name{get_gbif}
 \alias{get_gbif}
-\title{Massively download and filter GBIF observations for sound spatial analyses}
+\title{Intuitively download and filter GBIF observations for sound spatial analyses}
 \usage{
 get_gbif(
   sp_name = NULL,
@@ -35,6 +35,7 @@ get_gbif(
   occ_download_user = NULL,
   occ_download_pwd = NULL,
   occ_download_email = NULL,
+  verbose = TRUE,
   ...
 )
 }
@@ -95,7 +96,7 @@ spatial issues are downloaded. If \code{NULL}, all records are downloaded.}
 \item{grain}{Numeric. Default is 100. Specifies in kilometers the study
 resolution. Used to filter gbif records according to their (1) spatial
 uncertainties and (2) number of coordinate decimals. Records with
-resolution uncertainties \eqn{\ge}{>=} \code{grain} km are removed, and
+resolution uncertainties \eqn{\ge}{>=} \code{grain / 2} km are removed, and
 records with no info on coordinate uncertainties (column
 coordinateUncertaintyInMeters') are kept by default. But see details.}
 
@@ -174,6 +175,8 @@ Required if \code{should_use_occ_download = TRUE}.}
 \item{occ_download_email}{Character. GBIF email.
 Required if \code{should_use_occ_download = TRUE}.}
 
+\item{verbose}{Logical. Function's prints. Defaut is TRUE.}
+
 \item{...}{Additonnal parameters for the function \code{cd_round()} of
 the \code{CoordinateCleaner} R package.}
 }
@@ -182,6 +185,10 @@ Object of class \code{getGBIF} (data.frame type) with requested GBIF
 information. Although crucial preliminary checks of species records are done
 by the function, additional post exploration with the
 \code{CoordinateCleaner} R package is still highly recommended.
+
+Also, \code{attr(,"filter_log")} can be called on the output to check the
+filter log and \code{attr(,"no_xy")} to access species records without
+coordinates in case it was parameterized.
 }
 \description{
 Implement an user-friendly workflow to download and clean gbif taxa
