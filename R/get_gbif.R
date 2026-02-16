@@ -1137,7 +1137,7 @@ get_gbif <- function(sp_name = NULL,
 	if (nrow(gbif.correct) == 0) {
 	    if (nrow(gbif.no_xy) > 0) {
 	        if (verbose) {
-	            cat("No spatial records left after filtering.\n")
+	            cat("No spatial records left after filtering...\n")
 	        }
 
 	        proper.output <- getGBIF(
@@ -1159,7 +1159,7 @@ get_gbif <- function(sp_name = NULL,
 
 	# ---- FINAL SUMMARY PRINT ----
 	if (verbose) {
-		cat("\n")
+		vcat("\n")
 		
 		if (nrow(summary_log) > 0) {
 			max_step_width <- max(nchar(summary_log$step))
@@ -1173,19 +1173,20 @@ get_gbif <- function(sp_name = NULL,
 		}
 		
 		box_width <- max_step_width + max_num_width + 20
-		sep_pt <- strrep("", box_width)
+		sep_pt <- strrep("\\.", box_width)
 		sep_dash  <- strrep("-", box_width)
 
-		vcat("\n...XY records filtering summary:\n")
+		vcat("...XY records filtering summary:\n")
 
+		vcat(sep_pt, "\n")
 		print(summary_log, row.names = FALSE)
+		vcat(sep_pt, "\n")
 
-		cat(sep_pt, "\n")
-		cat(sprintf("%-22s : %d\n", "Initial records", n_initial))
-		cat(sprintf("%-22s : %d\n", "Total removed", n_initial - nrow(gbif.correct)))
-		cat(sprintf("%-22s : %d\n", "Kept (XY) records", nrow(gbif.correct)))
-		cat(sep_dash, "\n")
-		cat(sprintf("%-22s : %d\n", "Kept (without XY) records", nrow(gbif.no_xy)))
+		vcat(sprintf("%-22s : %d\n", "Initial records", n_initial))
+		vcat(sprintf("%-22s : %d\n", "Total removed", n_initial - nrow(gbif.correct)))
+		vcat(sprintf("%-22s : %d\n", "Kept (XY) records", nrow(gbif.correct)))
+		vcat(sep_dash, "\n")
+		vcat(sprintf("%-22s : %d\n", "Kept (without XY) records", nrow(gbif.no_xy)))
 	}
 
 	# ---- RETURN AFTER PRINTING ----
