@@ -1173,7 +1173,7 @@ get_gbif <- function(sp_name = NULL,
 		}
 		
 		box_width <- max_step_width + max_num_width + 20
-		sep_pt <- strrep("\\.", box_width)
+		sep_pt <- strrep(".", box_width)
 		sep_dash  <- strrep("-", box_width)
 
 		vcat("...XY records filtering summary:\n")
