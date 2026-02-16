@@ -526,7 +526,7 @@ get_gbif <- function(sp_name = NULL,
 		# Print additional information depending if global or regional
 		if (is.null(geo.ref[[1]])) {
 			cat(sprintf(
-					"spatial_issue = %s, has_xy = %s\n",
+					"spatial_issue = %s, has_xy = %s",
 					fmt(spatial_issue),
 					fmt(has_xy)
 				)
@@ -535,7 +535,7 @@ get_gbif <- function(sp_name = NULL,
 			cat(sprintf(
 					paste0(
 						"spatial_issue = %s, has_xy = TRUE by default ",
-						"('geo' was set)\n"
+						"('geo' was set)"
 					),
 					fmt(spatial_issue)
 				)
@@ -1101,6 +1101,7 @@ get_gbif <- function(sp_name = NULL,
 							lat = "decimalLatitude",
 							ds = "datasetKey",
 							graphs = FALSE,
+							verbose = FALSE,
 							...
 						),
 						silent = TRUE
@@ -1159,8 +1160,6 @@ get_gbif <- function(sp_name = NULL,
 
 	# ---- FINAL SUMMARY PRINT ----
 	if (verbose) {
-		vcat("\n")
-		
 		if (nrow(summary_log) > 0) {
 			max_step_width <- max(nchar(summary_log$step))
 			max_num_width <- max(
