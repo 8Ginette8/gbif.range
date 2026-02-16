@@ -1176,7 +1176,7 @@ get_gbif <- function(sp_name = NULL,
 		sep_pt <- strrep(".", box_width)
 		sep_dash  <- strrep("-", box_width)
 
-		vcat("...XY records filtering summary:\n")
+		vcat("...Records (XY) filtering summary:\n")
 
 		vcat(sep_dash, "\n")
 		print(summary_log, row.names = FALSE)
