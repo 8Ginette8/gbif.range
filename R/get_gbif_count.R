@@ -162,7 +162,9 @@ get_gbif_count <- function(sp_name = NULL,
 
             # Apply the rigth criterias
             for (i in seq_along(id.crit2)){
-              bsearch <- bsearch[c(bsearch[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
+              bsearch <- bsearch[
+                c(bsearch[, id.crit2[i]])[[1]] %in% p.crit2[i],
+              ]
 
               if (nrow(bsearch) == 0){
                 bsearch <- data.frame(matchType = "NONE")

@@ -70,7 +70,7 @@
 #' "PRESERVED_SPECIMEN", "FOSSIL_SPECIMEN", "LIVING_SPECIMEN", "LITERATURE",
 #' "UNKNOWN" and "OCCURRENCE". Default setting removes specimens and
 #' unknown observations. Description may be found
-#' (\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here}). 
+#' (\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here}).
 #' @param establishment Character. Is the individual native, captive or else?
 #' Default is native, casual, released, reproducing, established, colonizing
 #' and absence of information. See descriptions for other managed
