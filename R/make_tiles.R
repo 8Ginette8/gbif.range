@@ -7,9 +7,9 @@
 #' Each tile is returned as a \code{POLYGON()} geometry.
 #'
 #' @param geo Object of class \code{Extent}, \code{SpatExtent},
-#' \code{SpatialPolygon}, \code{SpatialPolygonDataframe} or \code{SpaVector}
-#' (WGS84 or planar) to define the study's area extent.
-#' Default is \code{NULL} i.e. the whole globe.
+#' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
+#' or \code{sf} (WGS84) to define the study's area extent. Default is
+#' \code{NULL}, i.e., the whole globe.
 #' @param ntiles Numeric. Into how many tiles/fragments should \code{geo} be
 #' divided approximately?
 #' @param sext Logical. Should a list of \code{SpatExtent} also be returned
@@ -45,7 +45,8 @@ t
 
     # For study area
 	if (!is.null(geo)) {
-		if (!(class(geo) %in% "SpatExtent")) {geo <- terra::ext(geo)}
+		if (inherits(geo, "sf")) geo <- terra::vect(geo)
+		if (!inherits(geo, "SpatExtent")) geo <- terra::ext(geo)
 	} else {
 		geo <- terra::ext(-180, 180, -90, 90)
 	}

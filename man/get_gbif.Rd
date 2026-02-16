@@ -49,19 +49,20 @@ look for the most relevant result across the names given by \code{rgbif}
 (only species, subspecies and variety allowed here), and give an error if
 name matching is impeded by synonym duplicates. If \code{FALSE}, the
 function will simply pick the first most relevant name (taxa rank higher
-than species are allowed here). Also, unlike \code{search = TRUE}, fuzzy
-search (~approximative name matching) is here allowed, and the \code{rank},
-\code{phylum}, \code{class}, \code{order} and \code{family} parameters are
-optionally used only if no convincing match is found. \code{FALSE} is
-particularly useful if the given species name already includes the author.}
+than species are allowed here), with fuzzy search (~approximative name
+matching) allowed, and \code{rank},\code{phylum}, \code{class},
+\code{order} and \code{family} parameters optionally used, i.e., only
+if no convincing match is found. \code{FALSE} is particularly useful if
+the given species name already includes the author.}
 
 \item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
 (default), the order of priority is (1) species, (2) subspecies and (3)
 variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
 
 \item{phylum}{Character (optional). What is the species' Phylum? Adds a
-criteria to deal with alternative name matches and select the right synonym.
-Available options are the GBIF Phylums
+criteria to deal with alternative name matches and select the right species.
+Particularly useful to avoid hemihomonyms (a scientific name used for
+different taxa). Available options are the GBIF Phylums
 (\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum}).
 If \code{search = FALSE}, only used if no direct match is found.}
 

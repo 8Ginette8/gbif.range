@@ -8,9 +8,9 @@ make_tiles(geo, ntiles, sext = TRUE)
 }
 \arguments{
 \item{geo}{Object of class \code{Extent}, \code{SpatExtent},
-\code{SpatialPolygon}, \code{SpatialPolygonDataframe} or \code{SpaVector}
-(WGS84 or planar) to define the study's area extent.
-Default is \code{NULL} i.e. the whole globe.}
+\code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
+or \code{sf} (WGS84) to define the study's area extent. Default is
+\code{NULL}, i.e., the whole globe.}
 
 \item{ntiles}{Numeric. Into how many tiles/fragments should \code{geo} be
 divided approximately?}
