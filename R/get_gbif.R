@@ -521,12 +521,12 @@ get_gbif <- function(sp_name = NULL,
 		)
 
 		fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
-		cat("| -> Kept records according to parameters:\n")
+		cat("+ Kept records according to parameters:\n")
 
 		# Print additional information depending if global or regional
 		if (is.null(geo.ref[[1]])) {
 			cat(sprintf(
-					"| spatial_issue = %s, has_xy = %s",
+					"+ spatial_issue = %s, has_xy = %s",
 					fmt(spatial_issue),
 					fmt(has_xy)
 				)
@@ -534,7 +534,7 @@ get_gbif <- function(sp_name = NULL,
 		} else {
 			cat(sprintf(
 					paste0(
-						"| spatial_issue = %s, has_xy = TRUE by default ",
+						"+ spatial_issue = %s, has_xy = TRUE by default ",
 						"('geo' was set)"
 					),
 					fmt(spatial_issue)
