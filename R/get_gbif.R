@@ -1173,17 +1173,19 @@ get_gbif <- function(sp_name = NULL,
 		}
 		
 		box_width <- max_step_width + max_num_width + 20
-		sep_equal <- strrep("-", box_width)
+		sep_pt <- strrep("", box_width)
 		sep_dash  <- strrep("-", box_width)
+
+		vcat("\n...XY records filtering summary:\n")
 
 		print(summary_log, row.names = FALSE)
 
-		cat(sep_dash, "\n")
+		cat(sep_pt, "\n")
 		cat(sprintf("%-22s : %d\n", "Initial records", n_initial))
 		cat(sprintf("%-22s : %d\n", "Total removed", n_initial - nrow(gbif.correct)))
-		cat(sprintf("%-22s : %d\n", "Final records with XY", nrow(gbif.correct)))
-		cat(sprintf("%-22s : %d\n", "Records without XY", nrow(gbif.no_xy)))
+		cat(sprintf("%-22s : %d\n", "Kept (XY) records", nrow(gbif.correct)))
 		cat(sep_dash, "\n")
+		cat(sprintf("%-22s : %d\n", "Kept (without XY) records", nrow(gbif.no_xy)))
 	}
 
 	# ---- RETURN AFTER PRINTING ----
