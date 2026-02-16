@@ -6,8 +6,9 @@
 #' Follows the same code implementation as \code{get_gbif} for retrieving
 #' the number of occurrences per species without downloading the data.
 #' 
-#' @param sp_name Character. Species name from which the user wants to retrieve
-#' all existing GBIF names with associated taxonomy and IUCN status.
+#' @param sp_name Character. Species name may be scientific or addressing
+#' Genus and species only. Fuzzy matches are allowed but see \code{search}
+#' parameter below.
 #' @param search Logical. If \code{TRUE} (default), the function will strictly
 #' look for the most relevant result across the names given by \code{rgbif}
 #' (only species, subspecies and variety allowed here), and give an error if
@@ -44,14 +45,14 @@
 #' or \code{sf} (WGS84) to define the study's area extent. Default is
 #' \code{NULL}, i.e., the whole globe.
 #' @param has_xy Logical. If \code{TRUE}, only records with coordinates are
-#' downloaded (default). If \code{FALSE}, only records without coordinates are
-#' downloaded. If \code{NULL}, all records are downloaded.
+#' accounted ofr (default). If \code{FALSE}, only records without coordinates.
+#' If \code{NULL}, all records.
 #' @param spatial_issue Logical. If \code{FALSE}, only records without
-#' spatial issues are downloaded (default). If \code{TRUE}, only records with
-#' spatial issues are downloaded. If \code{NULL}, all records are downloaded.
+#' spatial issues are accounted for (default). If \code{TRUE}, only records with
+#' spatial issues. If \code{NULL}, all records.
 #' @details Implements the same search result when
 #' (\href{https://www.gbif.org}{GBIF}) is employed, i.e., based on the
-#' input taxa name, all species records related to its accepted name
+#' input taxa name, all species records count related to its accepted name
 #' and synonyms are extracted.
 #' @return A simple print of the number of observations found.
 #' @references
@@ -279,20 +280,20 @@ get_gbif_count <- function(sp_name = NULL,
       c(gbif.total, gbif.records)
     )
     w <- max(nchar(l)) + 4
-    cat("+",strrep("-",w-2),"+\n| ",
-        paste(l,collapse=" |\n| ")," |\n+",strrep("-",w-2),"+\n",sep="")
+    cat("|",strrep("-",w-2),"|\n| ",
+        paste(l,collapse=" |\n| ")," |\n|",strrep("-",w-2),"|\n",sep="")
 
     fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
-    cat("Kept records according to parameters:\n")
+    cat("| Kept records according to parameters:\n")
 
     # Print additional information depending if global or regional
     if (is.null(geo.ref)) {
-      cat(sprintf("spatial_issue = %s, has_xy = %s\n",
+      cat(sprintf("| spatial_issue = %s, has_xy = %s\n",
                   fmt(spatial_issue), fmt(has_xy)))
     } else {
       cat(sprintf(
         paste0(
-          "spatial_issue = %s, has_xy = TRUE by default ",
+          "| spatial_issue = %s, has_xy = TRUE by default ",
           "('geo' was set)\n"
         ),
         fmt(spatial_issue)

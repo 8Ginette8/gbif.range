@@ -10,8 +10,9 @@
 #' of observations based on the chosen resolution of the study and
 #' by partly employing the \code{CoordinateCleaner} R package.
 #' 
-#' @param sp_name Character. Species name from which the user wants to retrieve
-#' all existing GBIF names with associated taxonomy and IUCN status.
+#' @param sp_name Character. Species name may be scientific or addressing
+#' Genus and species only. Fuzzy matches are allowed but see \code{search}
+#' parameter below.
 #' @param search Logical. If \code{TRUE} (default), the function will strictly
 #' look for the most relevant result across the names given by \code{rgbif}
 #' (only species, subspecies and variety allowed here), and give an error if

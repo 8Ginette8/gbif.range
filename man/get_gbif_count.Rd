@@ -19,8 +19,9 @@ get_gbif_count(
 )
 }
 \arguments{
-\item{sp_name}{Character. Species name from which the user wants to retrieve
-all existing GBIF names with associated taxonomy and IUCN status.}
+\item{sp_name}{Character. Species name may be scientific or addressing
+Genus and species only. Fuzzy matches are allowed but see \code{search}
+parameter below.}
 
 \item{search}{Logical. If \code{TRUE} (default), the function will strictly
 look for the most relevant result across the names given by \code{rgbif}
@@ -66,12 +67,12 @@ or \code{sf} (WGS84) to define the study's area extent. Default is
 \code{NULL}, i.e., the whole globe.}
 
 \item{has_xy}{Logical. If \code{TRUE}, only records with coordinates are
-downloaded (default). If \code{FALSE}, only records without coordinates are
-downloaded. If \code{NULL}, all records are downloaded.}
+accounted ofr (default). If \code{FALSE}, only records without coordinates.
+If \code{NULL}, all records.}
 
 \item{spatial_issue}{Logical. If \code{FALSE}, only records without
-spatial issues are downloaded (default). If \code{TRUE}, only records with
-spatial issues are downloaded. If \code{NULL}, all records are downloaded.}
+spatial issues are accounted for (default). If \code{TRUE}, only records with
+spatial issues. If \code{NULL}, all records.}
 }
 \value{
 A simple print of the number of observations found.
@@ -83,7 +84,7 @@ the number of occurrences per species without downloading the data.
 \details{
 Implements the same search result when
 (\href{https://www.gbif.org}{GBIF}) is employed, i.e., based on the
-input taxa name, all species records related to its accepted name
+input taxa name, all species records count related to its accepted name
 and synonyms are extracted.
 }
 \examples{

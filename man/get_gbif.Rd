@@ -40,8 +40,9 @@ get_gbif(
 )
 }
 \arguments{
-\item{sp_name}{Character. Species name from which the user wants to retrieve
-all existing GBIF names with associated taxonomy and IUCN status.}
+\item{sp_name}{Character. Species name may be scientific or addressing
+Genus and species only. Fuzzy matches are allowed but see \code{search}
+parameter below.}
 
 \item{search}{Logical. If \code{TRUE} (default), the function will strictly
 look for the most relevant result across the names given by \code{rgbif}
