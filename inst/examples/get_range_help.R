@@ -127,7 +127,7 @@ png(
     res = 100,
     pointsize = 110
 )
-par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 10, cex = 0.5)
+par(mfrow = c(1, 1), mar = c(5, 5, 5, 20), lwd = 10, cex = 0.5)
 terra::plot(
     eco.local,
     col = eco.local$color,
@@ -203,7 +203,7 @@ terra::plot(
 terra::plot(countries.robin, add = TRUE, lwd = 5)
 terra::plot(bb.robin, add = TRUE, lwd = 8)
 par(xpd = NA)
-cscl(
+gbif.range:::cscl(
     colors = col(10),
     crds = c(-9501111, 9734033, -11800000, -13000000),
     zrng = c(0, max.iucn),
@@ -248,7 +248,7 @@ terra::plot(
 terra::plot(countries.robin, add = TRUE, lwd = 5)
 terra::plot(bb.robin, add = TRUE, lwd = 8)
 par(xpd = NA)
-cscl(
+gbif.range:::cscl(
     colors = col(10),
     crds = c(-9501111, 9734033, -11800000, -13000000),
     zrng = c(0, max.gf),
@@ -273,7 +273,7 @@ dev.off()
 data(area_data)
 
 # Extract data to plot
-cor.ras <- rast(list(gf.robin,iucn.robin))
+cor.ras <- terra::rast(list(gf.robin,iucn.robin))
 names(cor.ras) <- c("RANGE","IUCN")
 set.seed(1)
 samp.div <- terra::spatSample(cor.ras,5000,replace=FALSE,na.rm=TRUE)
@@ -330,7 +330,7 @@ lapply(1:length(dat.plot), function(x) {
     # Plot text
     text_cor1 <- bquote("ccc"==.(round(ccc.div,2)))
     text_cor2 <- bquote("r"==.(round(cor.div,2)))
-    fig_label(
+    gbif.range:::fig_label(
         text_cor1,
         region = "plot",
         pos = "topleft",
@@ -340,7 +340,7 @@ lapply(1:length(dat.plot), function(x) {
         cex = 2,
         margin = 0.02
     )
-    fig_label(
+    gbif.range:::fig_label(
         text_cor2,
         region = "plot",
         pos = "bottomright",

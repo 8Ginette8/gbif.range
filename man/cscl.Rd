@@ -53,3 +53,4 @@ cscl(
 \description{
 Original legend bar (from Dr. Philipp Brun)
 }
+\keyword{internal}

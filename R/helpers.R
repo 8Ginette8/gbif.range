@@ -116,6 +116,7 @@ log_step <- function(log, step_name, before, after) {
 #' @param cx Parameter 14
 #' @param tria Parameter 15
 #' @importFrom graphics polygon lines text
+#' @keywords internal
 cscl <- function (colors, crds, horiz = FALSE, zrng = c(0, 100), at = 10 *
     0:10, labs = NA, tickle = 0.2, title = 1, lablag = 1, titlag = 2,
     box = TRUE, breaks, cx = 0.8, tria = "n")
