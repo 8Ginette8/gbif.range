@@ -218,7 +218,7 @@ doi: <a href="https://doi.org/10.22541/au.175130858.83083354/v1">10.22541/au.175
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. doi: <a href="https://doi.org/10.5281/zenodo.6023735">10.5281/zenodo.6023735</a>
 
-Karger, D.N., Conrad, O., Böhner, J., Kawohl, T., Kreft, H., Soria-Auza, R.W., Zimmermann, N.E., Linder, H.P., , Kessler, M. (2017). Climatologies at high resolution for the earth’s land surface areas. Sci Data 4, 170122. doi: <a href=https://doi.org/10.1038/sdata.2017.122</a>
+Karger, D.N., Conrad, O., Böhner, J., Kawohl, T., Kreft, H., Soria-Auza, R.W., Zimmermann, N.E., Linder, H.P., , Kessler, M. (2017). Climatologies at high resolution for the earth’s land surface areas. Sci Data 4, 170122. doi: <a href="https://doi.org/10.1038/sdata.2017.122">10.1038/sdata.2017.122</a>
 
 Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C., Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 10(5), 744-751. doi: <a href="https://doi.org/10.1111/2041-210X.13152">10.1111/2041-210X.13152</a>
 
