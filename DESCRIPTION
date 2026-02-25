@@ -38,5 +38,5 @@ Authors@R: c( person("Yohann", "Chauvier", role = c("cre","aut"), email
  "Pellissier", role = "aut", comment = "0000-0002-2289-8259"))
 Collate: 'make_tiles.R' 'get_gbif.R' 'get_status.R' 'get_doi.R'
  'obs_filter.R' 'get_range.R' 'conv_function.R' 'get_gbif_count.R'
- 'make_ecoreg.R' 'get_ecoreg.R' 'evaluate_range.R'
+ 'make_ecoreg.R' 'get_ecoreg.R' 'evaluate_range.R' 'data.R'
  'make_blocks.R' 'optme.R' 'cv_range.R' 'classes.R' 'helpers.R'

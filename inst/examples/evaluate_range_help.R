@@ -121,9 +121,9 @@ if (!requireNamespace("colorspace", quietly = TRUE)) {
   install.packages("colorspace")
 }
 
-###########
-##### Plant #########
-###########
+# -------------------------------------
+# Plant
+# -------------------------------------
 
 # Preliminary
 shp.lonlat <- terra::vect(
@@ -206,9 +206,9 @@ terra::plot(
 )
 dev.off()
 
-###########
-##### Tiger #########
-###########
+# -------------------------------------
+# Tiger
+# -------------------------------------
 
 # Preliminary
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
