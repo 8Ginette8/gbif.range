@@ -122,7 +122,7 @@ ecoreg_list
 
 Additionally, if the in-house ecoregions are too coarse for a given geographic region (e.g., for local studies) or an ecoshapefile of finer environmental details is needed, `make_ecoreg()` can be used based on spatially-informed data (e.g. climate, biodiversity) of desired resolution and extent defining the study area.
 
-Example of 10 ecoregions based on CHELSA bioclimatic layers at 5 × 5 km resolution (Karger et al. 2017), i.e., mean annual air temperature (bio1) and annual precipitation amount (bio12) 1981–2010:
+Example of 10 ecoregions in the European Alps based on CHELSA bioclimatic layers at 5 × 5 km resolution (Karger et al. 2017), i.e., mean annual air temperature (bio1) and annual precipitation amount (bio12) 1981–2010:
 
 ``` r
 bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
