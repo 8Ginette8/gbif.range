@@ -425,7 +425,7 @@ get_gbif <- function(sp_name = NULL,
 					coltax <- focp.key  %in% colnames(bsearch)
 					key.test <- bsearch[ ,focp.key[coltax]]
 
-					if (any(bsearch$status %in% "ACCEPTED") &
+					if (any(bsearch$status %in% "ACCEPTED") &&
 						length(unique(key.test[, 1])) == 1) {
 						bsearch <- bsearch[bsearch$status %in% "ACCEPTED", ]
 					}
