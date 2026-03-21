@@ -2,20 +2,23 @@
 % Please edit documentation in R/helpers.R
 \name{log_step}
 \alias{log_step}
-\title{Summary log helper for get_gbif filtering}
+\title{Append a Filtering Step to a Log Table}
 \usage{
 log_step(log, step_name, before, after)
 }
 \arguments{
-\item{log}{Argument value}
+\item{log}{Existing log data frame.}
 
-\item{step_name}{Filtering step name}
+\item{step_name}{Name of the filtering step.}
 
-\item{before}{Pre-filtering number of observations}
+\item{before}{Number of records before filtering.}
 
-\item{after}{Post-filtering number of observations}
+\item{after}{Number of records after filtering.}
+}
+\value{
+An updated log data frame.
 }
 \description{
-Summary log helper for get_gbif filtering
+Append a Filtering Step to a Log Table
 }
 \keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluate_range.R
 \name{evaluate_range}
 \alias{evaluate_range}
-\title{Evaluate the sensitivity & precision of range maps}
+\title{Evaluate Range Maps Against Independent Validation Data}
 \usage{
 evaluate_range(
   root_dir = NULL,
@@ -16,51 +16,48 @@ evaluate_range(
 )
 }
 \arguments{
-\item{root_dir}{Character. Working directory to load and save target files.}
+\item{root_dir}{Character string giving the root directory that contains both
+the generated range maps and the validation data.}
 
-\item{valData_dir}{Character. Directory to spatial validation data. Must have
-same name as data in \code{ecoRM_dir}.}
+\item{valData_dir}{Character string giving the directory, relative to
+\code{root_dir}, containing the validation data.}
 
-\item{ecoRM_dir}{Character. Directory to range maps generated with
-\code{get_range()}.}
+\item{ecoRM_dir}{Character string giving the directory, relative to
+\code{root_dir}, containing range maps generated with \code{get_range()}.}
 
-\item{valData_type}{Character. Type of valData: either "SHP" or "TIFF".}
+\item{valData_type}{Character string indicating the expected validation-data
+format: \code{"SHP"} or \code{"TIFF"}.}
 
-\item{verbose}{Logical (optional). Report details while running.}
+\item{verbose}{Logical. Should progress information be printed while the
+comparison is running?}
 
-\item{print_map}{Logical (optional). If \code{verbose = TRUE}, should a map
-of result be printed? Default is \code{TRUE}.}
+\item{print_map}{Logical. If \code{TRUE}, write a PDF overlay map for each
+evaluated species.}
 
-\item{mask}{Object of class \code{SpatRaster} (optional). To mask the
-study the focal study region. Default is \code{FALSE}.}
+\item{mask}{Optional \code{SpatRaster} used as a study-area mask and common
+comparison domain.}
 
-\item{res_fact}{Integer. Factor for coarsening the original resolution (i.e.,
-that of the species range map)}
+\item{res_fact}{Optional integer aggregation factor used to coarsen the
+native resolution before comparison.}
 }
 \value{
-A data.frame of evaluation for all species and a list of range
-overlay maps:\cr
-- Precision (ppv) =
-number true presences (TP) / [TP + number false presences (FP)]\cr 
-- Sensitivity =
-number true presences (TP) / [TP + number false absences (FA)]\cr
-- Specificity =
-number true absences (TA) / [TA + number false presences (FP)]\cr
-- TSS = Sensitivity + Specificity - 1
+A list with two elements: \code{df_eval}, a data frame containing
+per-species evaluation statistics, and \code{overlay_list}, a list of raster
+overlays used for plotting and inspection.
 }
 \description{
-Evaluates the precision (ppv), sensitivity, specificity and TSS of range
-maps based on independent validation data, such as predictions of species
-distributions (SDMs) or IUCN expert range maps.
+Compare range maps produced by \code{get_range()} with external validation
+data, such as species distribution models (SDMs) or expert-derived range
+maps, and summarize precision, sensitivity, specificity, and TSS.
 }
 \details{
-See Pinkert et al. (2023)
-for metrics and comparisons of various types of range data, including
-expert range maps, SDMs and ecoregional range maps. Optional
-functionalities include the masking of the focal study region (see
-\code{mask} parameter) and aggregations of the input maps to different
-resolutions, given the importance of these factors for specific
-applications (Pinkert et al., 2023).
+TIFF validation files must have file names matching the species
+names of the range maps. Shapefile-based validation data must include a
+column named \code{sci_name} with matching species names.
+
+The function can optionally mask the focal study region and aggregate maps to
+coarser resolutions before calculating evaluation metrics, which is useful
+when comparing products with different native resolutions.
 }
 \examples{
 \dontrun{

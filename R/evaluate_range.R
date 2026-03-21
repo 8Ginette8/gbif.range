@@ -1,40 +1,38 @@
 ### ==================================================================
 ### evaluate_range
 ### ==================================================================
-#' Evaluate the sensitivity & precision of range maps
+#' Evaluate Range Maps Against Independent Validation Data
 #' 
-#' Evaluates the precision (ppv), sensitivity, specificity and TSS of range
-#' maps based on independent validation data, such as predictions of species
-#' distributions (SDMs) or IUCN expert range maps.
-#' @param root_dir Character. Working directory to load and save target files.
-#' @param valData_dir Character. Directory to spatial validation data. Must have
-#' same name as data in \code{ecoRM_dir}.
-#' @param ecoRM_dir  Character. Directory to range maps generated with
-#' \code{get_range()}.
-#' @param valData_type Character. Type of valData: either "SHP" or "TIFF".
-#' @param verbose Logical (optional). Report details while running.
-#' @param print_map Logical (optional). If \code{verbose = TRUE}, should a map
-#' of result be printed? Default is \code{TRUE}.
-#' @param mask Object of class \code{SpatRaster} (optional). To mask the
-#' study the focal study region. Default is \code{FALSE}.
-#' @param res_fact Integer. Factor for coarsening the original resolution (i.e.,
-#' that of the species range map)
-#' @details See Pinkert et al. (2023)
-#' for metrics and comparisons of various types of range data, including
-#' expert range maps, SDMs and ecoregional range maps. Optional
-#' functionalities include the masking of the focal study region (see
-#' \code{mask} parameter) and aggregations of the input maps to different
-#' resolutions, given the importance of these factors for specific
-#' applications (Pinkert et al., 2023).
-#' @return A data.frame of evaluation for all species and a list of range
-#' overlay maps:\cr
-#' - Precision (ppv) =
-#' number true presences (TP) / [TP + number false presences (FP)]\cr 
-#' - Sensitivity =
-#' number true presences (TP) / [TP + number false absences (FA)]\cr
-#' - Specificity =
-#' number true absences (TA) / [TA + number false presences (FP)]\cr
-#' - TSS = Sensitivity + Specificity - 1
+#' Compare range maps produced by \code{get_range()} with external validation
+#' data, such as species distribution models (SDMs) or expert-derived range
+#' maps, and summarize precision, sensitivity, specificity, and TSS.
+#'
+#' @param root_dir Character string giving the root directory that contains both
+#' the generated range maps and the validation data.
+#' @param valData_dir Character string giving the directory, relative to
+#' \code{root_dir}, containing the validation data.
+#' @param ecoRM_dir Character string giving the directory, relative to
+#' \code{root_dir}, containing range maps generated with \code{get_range()}.
+#' @param valData_type Character string indicating the expected validation-data
+#' format: \code{"SHP"} or \code{"TIFF"}.
+#' @param verbose Logical. Should progress information be printed while the
+#' comparison is running?
+#' @param print_map Logical. If \code{TRUE}, write a PDF overlay map for each
+#' evaluated species.
+#' @param mask Optional \code{SpatRaster} used as a study-area mask and common
+#' comparison domain.
+#' @param res_fact Optional integer aggregation factor used to coarsen the
+#' native resolution before comparison.
+#' @details TIFF validation files must have file names matching the species
+#' names of the range maps. Shapefile-based validation data must include a
+#' column named \code{sci_name} with matching species names.
+#'
+#' The function can optionally mask the focal study region and aggregate maps to
+#' coarser resolutions before calculating evaluation metrics, which is useful
+#' when comparing products with different native resolutions.
+#' @return A list with two elements: \code{df_eval}, a data frame containing
+#' per-species evaluation statistics, and \code{overlay_list}, a list of raster
+#' overlays used for plotting and inspection.
 #' @references
 #' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
 #' ecoregional range maps for boosting taxonomic coverage in ecology and 

@@ -4,9 +4,10 @@
 \name{getRange-class}
 \alias{getRange-class}
 \alias{getRange}
-\title{Class to store get_range output}
+\title{Reference Class for \code{get_range()} Results}
 \description{
-Class to store get_range output
+Stores the original arguments used to build a range map and the resulting
+spatial output.
 }
 
 \keyword{internal}

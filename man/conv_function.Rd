@@ -2,24 +2,28 @@
 % Please edit documentation in R/conv_function.R
 \name{conv_function}
 \alias{conv_function}
-\title{Create polygon objects in different ecoregions.}
+\title{Low-Level Polygon Builder Used by \code{get_range()}}
 \usage{
 conv_function(sp_coord, bwp, bipl, bwpo, temp_dir, g = NULL)
 }
 \arguments{
-\item{sp_coord}{Object of class matrix of data.frame. Spatial coordinates.}
+\item{sp_coord}{Spatial coordinates for one cluster of occurrences.}
 
-\item{bwp}{Numeric. Buffer width parameter.}
+\item{bwp}{Numeric buffer width, in degrees, used for isolated points.}
 
-\item{bipl}{Numeric. Number of observation points.}
+\item{bipl}{Numeric increment, in degrees, added to the point buffer for
+linear clusters.}
 
-\item{bwpo}{Numeric. Buffer width parameter for the convex hull.}
+\item{bwpo}{Numeric buffer width, in degrees, applied to convex hull
+polygons.}
 
-\item{temp_dir}{Character. Temporary directory name.}
+\item{temp_dir}{Character string giving the temporary directory used for
+intermediate convex-hull files.}
 
-\item{g}{Optional parameter.}
+\item{g}{Optional ecoregion identifier used in status messages.}
 }
 \description{
-Not to be called directly by the user.
+Internal helper that creates buffered polygons from clustered occurrence
+points inside a single ecoregion.
 }
 \keyword{internal}

@@ -16,7 +16,7 @@ shp.path <- paste0(
 shp.lonlat <- terra::vect(shp.path)
 rst <- terra::crop(rst, shp.lonlat)
 
-# Apply the function by infering 50 classes of environments
+# Apply the function by inferring 200 environmental classes
 my.eco <- make_ecoreg(env = rst,
 	nclass = 200,
 	format = "sf"

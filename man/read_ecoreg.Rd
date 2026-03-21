@@ -2,39 +2,39 @@
 % Please edit documentation in R/get_ecoreg.R
 \name{read_ecoreg}
 \alias{read_ecoreg}
-\title{Load ecoreg Data Files}
+\title{Read an Ecoregion Layer}
 \usage{
 read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL, format = "SpatVector")
 }
 \arguments{
-\item{ecoreg_name}{Filename of the desired ecoregion to be loaded.
-See \code{ecoreg_list} for available options.}
+\item{ecoreg_name}{File name of the ecoregion dataset to load. See
+\code{ecoreg_list} for available options.}
 
-\item{save_dir}{The directory to save the downloaded files. Defaults to
-"inst/extdata/downloads" within the package structure.}
+\item{save_dir}{Directory where the downloaded files are stored.}
 
-\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
-layer output. Default is the \code{SpatVector} class from the \code{terra}
-package.}
+\item{format}{Output format. Use \code{"SpatVector"} (default) or
+\code{"sf"}.}
 }
 \value{
-\code{SpatVector} object representing the ecoregion shapefile.
+An ecoregion layer as a \code{SpatVector} or \code{sf} object,
+depending on \code{format}.
 }
 \description{
-Loads a shapefile based on the provided ecoregion name and the
-\code{ecoreg_list}.
+Load one of the packaged ecoregion datasets listed in \code{ecoreg_list()}.
+If the requested data are not available locally, they are downloaded first.
 }
 \details{
-Four shapefiles can be downloaded with the library:
+Four datasets are currently available:
 
-(1) 'eco_terra' (for terrestrial species, Nature conservancy version adapted
-from Olson & al. 2001)
+(1) \code{eco_terra} for terrestrial species, based on The Nature
+Conservancy version adapted from Olson et al. (2001).
 
-(2) 'eco_marine' (for marine species, Spalding & al. 2007, 2012).
+(2) \code{eco_marine} for marine species, based on Spalding et al. (2007,
+2012).
 
-(3) 'eco_hd_marine' (higher resolution).
+(3) \code{eco_hd_marine}, a higher-resolution marine version.
 
-(4) 'eco_fresh' (for freshwater species, Abell & al. 2008).
+(4) \code{eco_fresh} for freshwater species, based on Abell et al. (2008).
 }
 \examples{
 \dontrun{

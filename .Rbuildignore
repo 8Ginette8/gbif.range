@@ -9,3 +9,5 @@
 ^inst/extdata/downloads$
 ^\.gitignore$
 ^\.Rbuildignore$
+^tools/validate-collate\.R$
+^gbif\.range\.code-workspace$

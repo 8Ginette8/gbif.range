@@ -1,10 +1,10 @@
-# Download worldwide the observations of Panthera tigris
+\dontrun{
+# Download worldwide observations of Panthera tigris
 # and Ailuropoda melanoleuca
 obspt <- get_gbif("Panthera tigris")
 obsam <- get_gbif("Ailuropoda melanoleuca")
 
-\dontrun{
-# Retrieve DOI for only one get_gbif() output
+# Retrieve a DOI for one get_gbif() output
 get_doi(
        gbifs = obspt,
        title = "GBIF_test1",
@@ -14,9 +14,9 @@ get_doi(
        pwd = ""
 ) # Use your own GBIF credentials here
 
-# Retrieve DOIs for several get_gbif() outputs
+# Retrieve a DOI for several get_gbif() outputs
 get_doi(
-       gbifd = list(obspt,obsam),
+       gbifs = list(obspt,obsam),
        title = "GBIF_test2",
        description = "A small example 2",
        source_url = "https://example.com/",

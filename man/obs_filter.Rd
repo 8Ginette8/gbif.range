@@ -2,42 +2,35 @@
 % Please edit documentation in R/obs_filter.R
 \name{obs_filter}
 \alias{obs_filter}
-\title{Filter a set of GBIF observations according to a defined grid resolution}
+\title{Filter GBIF Records by Grid Cell}
 \usage{
 obs_filter(gbifs, grid, threshold = NULL)
 }
 \arguments{
-\item{gbifs}{Object of class \code{getGBIF} including one or several
-species. Note that if GBIF absences are kept in the output(s), the
-function should be used distinctively for observations and absences.}
+\item{gbifs}{A \code{getGBIF} object containing one or more species.}
 
-\item{grid}{Object of class \code{SpatRaster}, \code{RasterLayer},
-\code{RasterBrick}, or \code{RasterStack} of desired resolution and
-extent (WGS84).}
+\item{grid}{Raster defining the target spatial resolution and extent.
+Accepted classes are \code{SpatRaster}, \code{RasterLayer},
+\code{RasterBrick}, and \code{RasterStack}.}
 
-\item{threshold}{Integer (optional). Specifies the minimum number of
-observations per grid pixel to retain. Default is \code{NULL},
-meaning no threshold filtering.}
+\item{threshold}{Optional integer specifying the minimum number of records a
+cell must contain to be retained.}
 }
 \value{
-Data frame with columns 'Species', 'x', and 'y' comprising
-the new set of observations filtered at grid resolution.
+A data frame with the columns \code{Species}, \code{x}, and
+\code{y}, representing the filtered coordinates.
 }
 \description{
-Processes a \code{getGBIF} object (which can include data for one or
-multiple species) and filters the observations based on a specified grid
-resolution.
+Reduce the spatial density of a \code{getGBIF} object by retaining a single
+record per grid cell and, optionally, removing cells with too few records.
 }
 \details{
-The function can retain one observation per grid pixel
-and/or remove observations from grid pixels that contain fewer than
-a specified number of records (e.g., fewer than 3 observations per
-pixel). This function helps users refine the spatial density of GBIF
-datasets by retaining one observation per grid pixel and/or removing
-observations from grid pixels with fewer than a user-defined threshold
-of records.
+The function first collapses each species to one occurrence per grid
+cell. If \code{threshold} is supplied, cells with fewer than that many
+original records are then discarded.
 }
 \examples{
+\dontrun{
 # Load data
 shp.path <- paste0(
 	system.file(package = "gbif.range"),
@@ -50,7 +43,7 @@ rst.path <- paste0(
 )
 rst <- terra::rast(rst.path)
 
-# Downloading in the European Alps the observations of two plant species
+# Download observations for two plant species in the European Alps
 obs.arcto <- get_gbif(
 	sp_name = "Arctostaphylos alpinus",
 	geo = shp.lonlat
@@ -75,7 +68,7 @@ graphics::points(
 	cex = 1
 )
 
-# rbind both datasets
+# Combine both datasets
 both.sp <- rbind(obs.arcto,obs.saxi)
 
 # Run function
@@ -95,4 +88,5 @@ graphics::points(
 	col = "#99000d50",
 	cex = 1
 )
+}
 }

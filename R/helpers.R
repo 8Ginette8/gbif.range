@@ -1,7 +1,7 @@
-#' Check if an argument is NULL or NA
+#' Check Whether an Argument Is Missing
 #'
-#' @param x Argument value
-#' @param name Argument name for error reporting
+#' @param x Argument value.
+#' @param name Argument name used in error messages.
 #' @keywords internal
 check_null_na <- function(x, name) {
   if (is.null(x) || (length(x) == 1 && is.na(x))) {
@@ -13,10 +13,10 @@ check_null_na <- function(x, name) {
   }
 }
 
-#' Check if argument is a non-missing logical scalar
+#' Check Whether an Argument Is a Logical Scalar
 #'
-#' @param x Argument value
-#' @param name Argument name for error reporting
+#' @param x Argument value.
+#' @param name Argument name used in error messages.
 #' @keywords internal
 check_logical <- function(x, name) {
   check_null_na(x, name)
@@ -29,10 +29,10 @@ check_logical <- function(x, name) {
   }
 }
 
-#' Check if argument is a non-missing numeric scalar
+#' Check Whether an Argument Is a Numeric Scalar
 #'
-#' @param x Argument value
-#' @param name Argument name for error reporting
+#' @param x Argument value.
+#' @param name Argument name used in error messages.
 #' @keywords internal
 check_numeric <- function(x, name) {
   check_null_na(x, name)
@@ -45,10 +45,10 @@ check_numeric <- function(x, name) {
   }
 }
 
-#' Check if argument is a non-empty character vector (no NA)
+#' Check Whether an Argument Is a Character Vector
 #'
-#' @param x Argument value
-#' @param name Argument name for error reporting
+#' @param x Argument value.
+#' @param name Argument name used in error messages.
 #' @keywords internal
 check_character_vector <- function(x, name) {
   check_null_na(x, name)
@@ -61,11 +61,11 @@ check_character_vector <- function(x, name) {
   }
 }
 
-#' Check if argument is a numeric vector of exact length
+#' Check Whether an Argument Is a Numeric Vector of Fixed Length
 #'
-#' @param x Argument value
-#' @param name Argument name for error reporting
-#' @param len Expected length of numeric vector
+#' @param x Argument value.
+#' @param name Argument name used in error messages.
+#' @param len Expected length of the numeric vector.
 #' @keywords internal
 check_numeric_range <- function(x, name, len) {
   check_null_na(x, name)
@@ -80,12 +80,13 @@ check_numeric_range <- function(x, name, len) {
   }
 }
 
-#' Summary log helper for get_gbif filtering
+#' Append a Filtering Step to a Log Table
 #'
-#' @param log Argument value
-#' @param step_name Filtering step name
-#' @param before Pre-filtering number of observations
-#' @param after Post-filtering number of observations
+#' @param log Existing log data frame.
+#' @param step_name Name of the filtering step.
+#' @param before Number of records before filtering.
+#' @param after Number of records after filtering.
+#' @return An updated log data frame.
 #' @keywords internal
 log_step <- function(log, step_name, before, after) {
   rbind(
@@ -99,22 +100,27 @@ log_step <- function(log, step_name, before, after) {
   )
 }
 
-#' Original legend bar (from Dr. Philipp Brun)
+#' Draw a Custom Legend Bar
 #'
-#' @param colors Parameter 1
-#' @param crds Parameter 2
-#' @param horiz Parameter 3
-#' @param zrng Parameter 5
-#' @param at Parameter 6
-#' @param labs Parameter 7
-#' @param tickle Parameter 8
-#' @param title Parameter 9
-#' @param lablag Parameter 10
-#' @param titlag Parameter 11
-#' @param box Parameter 12
-#' @param breaks Parameter 13
-#' @param cx Parameter 14
-#' @param tria Parameter 15
+#' Internal plotting helper adapted from Philipp Brun.
+#'
+#' @param colors Vector of fill colors.
+#' @param crds Numeric vector of length four giving the plotting coordinates of
+#' the legend box.
+#' @param horiz Logical. Should the legend be drawn horizontally?
+#' @param zrng Numeric vector of length two giving the value range represented
+#' by the legend.
+#' @param at Numeric values at which tick marks should be drawn.
+#' @param labs Optional labels for \code{at}. If \code{NA}, \code{at} is used.
+#' @param tickle Numeric tick-mark length scaling factor.
+#' @param title Legend title.
+#' @param lablag Numeric offset multiplier for tick labels.
+#' @param titlag Numeric offset multiplier for the title.
+#' @param box Logical. Should a border be drawn around the legend?
+#' @param breaks Optional custom break points. Must have length
+#' \code{length(colors) + 1} if supplied.
+#' @param cx Numeric text expansion factor.
+#' @param tria Character flag controlling triangular tips at the legend ends.
 #' @importFrom graphics polygon lines text
 #' @keywords internal
 cscl <- function (colors, crds, horiz = FALSE, zrng = c(0, 100), at = 10 *
@@ -214,14 +220,18 @@ cscl <- function (colors, crds, horiz = FALSE, zrng = c(0, 100), at = 10 *
     }
 }
 
-#' Custom figure label plot
+#' Draw a Figure Label at a Standard Position
 #'
-#' @param text Parameter 1
-#' @param region Parameter 2
-#' @param pos Parameter 3
-#' @param cex Parameter 5
-#' @param margin Parameter 6
-#' @param ... Parameter 7
+#' @param text Label text.
+#' @param region Character string specifying whether the label should be placed
+#' relative to the \code{"figure"}, \code{"plot"}, or \code{"device"}.
+#' @param pos Character string giving the label position.
+#' @param cex Optional text expansion factor.
+#' @param margin Numeric margin used to offset the label from the selected
+#' boundary.
+#' @param ... Additional arguments passed to \code{graphics::text()}.
+#' @return Invisibly returns the plotting coordinates used to position the
+#' label.
 #' @importFrom grDevices dev.size
 #' @importFrom graphics grconvertX grconvertY strheight strwidth
 #' @keywords internal

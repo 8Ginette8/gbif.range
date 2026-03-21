@@ -2,16 +2,16 @@
 % Please edit documentation in R/helpers.R
 \name{check_character_vector}
 \alias{check_character_vector}
-\title{Check if argument is a non-empty character vector (no NA)}
+\title{Check Whether an Argument Is a Character Vector}
 \usage{
 check_character_vector(x, name)
 }
 \arguments{
-\item{x}{Argument value}
+\item{x}{Argument value.}
 
-\item{name}{Argument name for error reporting}
+\item{name}{Argument name used in error messages.}
 }
 \description{
-Check if argument is a non-empty character vector (no NA)
+Check Whether an Argument Is a Character Vector
 }
 \keyword{internal}

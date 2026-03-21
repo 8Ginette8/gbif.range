@@ -29,6 +29,10 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - name: Validate Collate
+        run: source("tools/validate-collate.R")
+        shell: Rscript {0}
+
       - name: R CMD check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning")
         shell: Rscript {0}

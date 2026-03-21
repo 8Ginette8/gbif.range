@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_status.R
 \name{get_status}
 \alias{get_status}
-\title{Retrieve from GBIF the IUCN and taxonomy status of a specific taxa}
+\title{Retrieve Taxonomy and IUCN Status from GBIF}
 \usage{
 get_status(
   sp_name = NULL,
@@ -17,78 +17,60 @@ get_status(
 )
 }
 \arguments{
-\item{sp_name}{Character. Species name may be scientific or addressing
-Genus and species only. Fuzzy matches are allowed but see \code{search}
-parameter below.}
+\item{sp_name}{Character string with the species name. Scientific names at
+genus-species level are expected; fuzzy matching is available when
+\code{search = FALSE}.}
 
-\item{search}{Logical. If \code{TRUE} (default), the function will strictly
-look for the most relevant result across the names given by \code{rgbif}
-(only species, subspecies and variety allowed here), and give an error if
-name matching is impeded by synonym duplicates. If \code{FALSE}, the
-function will simply pick the first most relevant name (taxa rank higher
-than species are allowed here), with fuzzy search (~approximative name
-matching) allowed, and \code{rank},\code{phylum}, \code{class},
-\code{order} and \code{family} parameters optionally used, i.e., only
-if no convincing match is found. \code{FALSE} is particularly useful if
-the given species name already includes the author.}
+\item{search}{Logical. If \code{TRUE} (default), use a strict GBIF backbone
+search and keep only species-, subspecies-, or variety-level matches. If
+\code{FALSE}, use a more permissive search and optionally rely on
+\code{rank}, \code{phylum}, \code{class}, \code{order}, and
+\code{family} to resolve ambiguous matches.}
 
-\item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
-(default), the order of priority is (1) species, (2) subspecies and (3)
-variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
+\item{rank}{Character string giving the preferred rank to keep:
+\code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
+\code{NULL}, rank priority is inferred from \code{sp_name}.}
 
-\item{phylum}{Character (optional). What is the species' Phylum? Adds a
-criteria to deal with alternative name matches and select the right species.
-Particularly useful to avoid hemihomonyms (a scientific name used for
-different taxa). Available options are the GBIF Phylums
-(\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum}).
-If \code{search = FALSE}, only used if no direct match is found.}
+\item{phylum}{Optional phylum used to disambiguate alternative GBIF matches.
+Particularly useful for hemihomonyms.}
 
-\item{class}{Character (optional). What is the species' Class? Same as above
-but at the finer class level. Available options are the GBIF Classes
-(same url). If \code{search = FALSE}, only used if no direct match is found.}
+\item{class}{Optional class used to disambiguate alternative GBIF matches.}
 
-\item{order}{Character (optional). What is the species' Order? Same as above
-but at the finer order level. Available options are the GBIF Orders (same
-url). If \code{search = FALSE}, only used if no direct match is found.}
+\item{order}{Optional order used to disambiguate alternative GBIF matches.}
 
-\item{family}{Character (optional). What is the species' Family? Same as
-above but at the finer family level. Available options are the GBIF
-Families (same url). If \code{search = FALSE}, used only if no direct
-match is found.}
+\item{family}{Optional family used to disambiguate alternative GBIF matches.}
 
-\item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold
-of match between \code{sp_name} and the GBIF backbone taxonomy.
-Default is 90.}
+\item{conf_match}{Numeric confidence threshold between 0 and 100 for the
+GBIF backbone match. Default is \code{80}.}
 
-\item{all}{Logical. Default is \code{FALSE}. Should all species names be
-retrieved or only the accepted name and its synonyms?}
+\item{all}{Logical. If \code{FALSE} (default), return the accepted name and
+its synonyms. If \code{TRUE}, also include children and related names that
+are not used by \code{get_gbif()}.}
 }
 \value{
-Data.frame with nine columns: (0) Simplified name,
-(1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
-(4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-(9) 'sp_nameMatch' informing which scientific name has matched with
-\code{sp_name}.
+A data frame with the columns \code{canonicalName}, \code{rank},
+\code{gbif_key}, \code{scientificName}, \code{gbif_status},
+\code{Genus}, \code{Family}, \code{Order}, \code{Class},
+\code{Phylum}, \code{IUCN_status}, and \code{sp_nameMatch}.
 }
 \description{
-Generates, based on a given species name, the IUCN red list status and
-a list of all scientific names (accepted, synonyms) found in the GBIF
-backbone taxonomy and used to download the data with \code{get_gbif()}.
-Children and related doubtful names not used to download the data may
-also be extracted.
+Query the GBIF backbone taxonomy for a species name, report the matched
+accepted name and synonyms, and return the associated IUCN status when
+available.
 }
 \examples{
-# Get the taxonomy and IUCN status of Panthera tigris
+\dontrun{
+# Get the taxonomy and IUCN status of Cypripedium calceolus
 # (with and without related names)
 get_status("Cypripedium calceolus", all = FALSE)
 get_status("Cypripedium calceolus", all = TRUE)
+}
 }
 \references{
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 global biodiversity information facility API. 10.5281/zenodo.6023735
 }
 \seealso{
-The \code{rgbif} R package for additional and more general
-approaches on how to retrieve scientific names from the GBIF backbone
-taxonomy.
+The \code{rgbif} package for more general approaches to querying
+the GBIF backbone taxonomy.
 }

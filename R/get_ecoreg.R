@@ -1,6 +1,7 @@
-#' Ecoreg data Files
+#' Metadata for Downloadable Ecoregion Layers
 #'
-#' A list of data files including download links, filenames, and descriptions.
+#' A list describing the ecoregion layers that can be downloaded with
+#' \code{get_ecoreg()}.
 #'
 #' @format A list with each element containing:
 #' \describe{
@@ -54,11 +55,12 @@ ecoreg_list <- list(
 
 #' Get Save Directory
 #'
-#' Determines the save directory within the package structure.
+#' Determine the directory used to store downloaded ecoregion data.
 #'
-#' @param save_dir Optional. The directory to save the downloaded files.
-#' Defaults to "inst/extdata/downloads" within the package structure.
-#' @return A string representing the save directory.
+#' @param save_dir Optional directory where downloaded files should be stored.
+#' Defaults to \code{inst/extdata/downloads} in the installed package, or to
+#' the same relative path in the working directory when running from source.
+#' @return A character string giving the target directory.
 #' @noRd
 get_save_dir <- function(save_dir = NULL) {
   if (is.null(save_dir)) {
@@ -71,21 +73,19 @@ get_save_dir <- function(save_dir = NULL) {
 }
 
 
-#' Download Ecoreg Data Files
+#' Download Ecoregion Layers
 #'
-#' Downloads data files from a provided list of links and saves them
-#' to a specified directory.
+#' Download one or more ecoregion datasets listed in \code{ecoreg_list()} and
+#' unpack them into a local directory.
 #'
-#' @param ecoreg_name Character. "all" or the filename of the desired ecoregion
-#' to be downloaded. See \code{ecoreg_list} for available options. This
-#' contains a list of data file information with elements containing `link`,
-#' `filename`, and `description`.
-#' @param save_dir The directory to save the downloaded files. Defaults to
-#' "inst/extdata/downloads" within the package structure.
-#' @return \code{NULL}. Downloads the files to the specified directory.
+#' @param ecoreg_name Character string. Use \code{"all"} to download every
+#' dataset, or supply a single file name listed in \code{ecoreg_list}.
+#' @param save_dir Directory where the downloaded zip files and extracted
+#' shapefiles should be stored.
+#' @return \code{NULL}. Files are downloaded and unpacked for side effects.
 #' @examples
 #' \dontrun{
-#' # download all ecoregions available in ecoreg_list
+#' # Download every ecoregion dataset listed in ecoreg_list
 #' get_ecoreg()
 #' }
 #' @export
@@ -175,17 +175,15 @@ get_ecoreg <- function(ecoreg_name = "all", save_dir = NULL) {
 }
 
 
-#' Check and Download Ecoreg Data Files
+#' Check for a Local Ecoregion Layer and Download It if Needed
 #'
-#' Checks if a directory exists and contains at least one .shp file.
-#' If not, calls get_ecoreg to download the data.
+#' Check whether a target ecoregion directory exists and contains at least one
+#' shapefile. If not, download the dataset with \code{get_ecoreg()}.
 #'
-#' @param ecoreg_name Filename of the desired ecoregion to be checked and
-#' downloaded if necessary. See \code{ecoreg_list} for available options.
-#' @param save_dir The directory to save the downloaded files. Defaults to
-#' "inst/extdata/downloads" within the package structure.
-#' @return \code{NULL}. Checks and downloads the files to the specified
-#' directory if necessary.
+#' @param ecoreg_name File name of the ecoregion dataset to check. See
+#' \code{ecoreg_list} for valid values.
+#' @param save_dir Directory where downloaded files should be stored.
+#' @return \code{NULL}. The function downloads data only when required.
 #' @examples
 #' \dontrun{
 #' check_and_get_ecoreg("eco_terra")
@@ -213,28 +211,29 @@ check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
 }
 
 
-#' Load ecoreg Data Files
+#' Read an Ecoregion Layer
 #' 
-#' Loads a shapefile based on the provided ecoregion name and the
-#' \code{ecoreg_list}.
-#' @param ecoreg_name Filename of the desired ecoregion to be loaded.
-#' See \code{ecoreg_list} for available options.
-#' @param save_dir The directory to save the downloaded files. Defaults to
-#' "inst/extdata/downloads" within the package structure.
-#' @param format Character. "\code{sf}" or "\code{SpatVector}" class for
-#' layer output. Default is the \code{SpatVector} class from the \code{terra}
-#' package.
-#' @details Four shapefiles can be downloaded with the library:
+#' Load one of the packaged ecoregion datasets listed in \code{ecoreg_list()}.
+#' If the requested data are not available locally, they are downloaded first.
 #'
-#' (1) 'eco_terra' (for terrestrial species, Nature conservancy version adapted
-#' from Olson & al. 2001)
+#' @param ecoreg_name File name of the ecoregion dataset to load. See
+#' \code{ecoreg_list} for available options.
+#' @param save_dir Directory where the downloaded files are stored.
+#' @param format Output format. Use \code{"SpatVector"} (default) or
+#' \code{"sf"}.
+#' @details Four datasets are currently available:
+#'
+#' (1) \code{eco_terra} for terrestrial species, based on The Nature
+#' Conservancy version adapted from Olson et al. (2001).
 #' 
-#' (2) 'eco_marine' (for marine species, Spalding & al. 2007, 2012).
+#' (2) \code{eco_marine} for marine species, based on Spalding et al. (2007,
+#' 2012).
 #' 
-#' (3) 'eco_hd_marine' (higher resolution).
+#' (3) \code{eco_hd_marine}, a higher-resolution marine version.
 #' 
-#' (4) 'eco_fresh' (for freshwater species, Abell & al. 2008).
-#' @return \code{SpatVector} object representing the ecoregion shapefile.
+#' (4) \code{eco_fresh} for freshwater species, based on Abell et al. (2008).
+#' @return An ecoregion layer as a \code{SpatVector} or \code{sf} object,
+#' depending on \code{format}.
 #' @references
 #' Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
 #' Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,

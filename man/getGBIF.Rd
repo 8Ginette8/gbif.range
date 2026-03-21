@@ -2,11 +2,18 @@
 % Please edit documentation in R/classes.R
 \name{getGBIF}
 \alias{getGBIF}
-\title{Class to store get_gbif output}
+\title{Constructor for \code{getGBIF} Objects}
 \usage{
 getGBIF(df)
 }
+\arguments{
+\item{df}{A data frame containing GBIF occurrence records.}
+}
+\value{
+An object of class \code{getGBIF}.
+}
 \description{
-Class to store get_gbif output
+Wrap a data frame in the \code{getGBIF} class used by downstream functions
+in the package.
 }
 \keyword{internal}

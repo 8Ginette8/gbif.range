@@ -1,4 +1,5 @@
-# Get number of observations with default (only XY with no spatial issues):
+\dontrun{
+# Get number of observations with default filters
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = TRUE,
@@ -6,7 +7,7 @@ obs.pt <- get_gbif_count(
 	geo = NULL
 )
 
-# Get total number of observations (everything):
+# Get the total number of observations
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = NULL,
@@ -22,8 +23,9 @@ obs.pt <- get_gbif_count(
 	geo = terra::ext()
 )
 
-# Example of fuzzy match when search is set to FALSE
+# Example of fuzzy matching when search is set to FALSE
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanolca",
 	search = FALSE
 )
+}

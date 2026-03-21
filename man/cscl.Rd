@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers.R
 \name{cscl}
 \alias{cscl}
-\title{Original legend bar (from Dr. Philipp Brun)}
+\title{Draw a Custom Legend Bar}
 \usage{
 cscl(
   colors,
@@ -22,35 +22,38 @@ cscl(
 )
 }
 \arguments{
-\item{colors}{Parameter 1}
+\item{colors}{Vector of fill colors.}
 
-\item{crds}{Parameter 2}
+\item{crds}{Numeric vector of length four giving the plotting coordinates of
+the legend box.}
 
-\item{horiz}{Parameter 3}
+\item{horiz}{Logical. Should the legend be drawn horizontally?}
 
-\item{zrng}{Parameter 5}
+\item{zrng}{Numeric vector of length two giving the value range represented
+by the legend.}
 
-\item{at}{Parameter 6}
+\item{at}{Numeric values at which tick marks should be drawn.}
 
-\item{labs}{Parameter 7}
+\item{labs}{Optional labels for \code{at}. If \code{NA}, \code{at} is used.}
 
-\item{tickle}{Parameter 8}
+\item{tickle}{Numeric tick-mark length scaling factor.}
 
-\item{title}{Parameter 9}
+\item{title}{Legend title.}
 
-\item{lablag}{Parameter 10}
+\item{lablag}{Numeric offset multiplier for tick labels.}
 
-\item{titlag}{Parameter 11}
+\item{titlag}{Numeric offset multiplier for the title.}
 
-\item{box}{Parameter 12}
+\item{box}{Logical. Should a border be drawn around the legend?}
 
-\item{breaks}{Parameter 13}
+\item{breaks}{Optional custom break points. Must have length
+\code{length(colors) + 1} if supplied.}
 
-\item{cx}{Parameter 14}
+\item{cx}{Numeric text expansion factor.}
 
-\item{tria}{Parameter 15}
+\item{tria}{Character flag controlling triangular tips at the legend ends.}
 }
 \description{
-Original legend bar (from Dr. Philipp Brun)
+Internal plotting helper adapted from Philipp Brun.
 }
 \keyword{internal}

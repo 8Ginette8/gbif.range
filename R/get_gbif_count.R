@@ -1,60 +1,46 @@
 ### =========================================================================
 ### get_gbif_count
 ### =========================================================================
-#' Retrieve GBIF observations count to select study case
+#' Count GBIF Occurrences Before Downloading Data
 #'
-#' Follows the same code implementation as \code{get_gbif} for retrieving
-#' the number of occurrences per species without downloading the data.
+#' Query GBIF and return the number of available records for a taxon using the
+#' same name-matching logic as \code{get_gbif()}, but without downloading the
+#' occurrence table.
 #' 
-#' @param sp_name Character. Species name may be scientific or addressing
-#' Genus and species only. Fuzzy matches are allowed but see \code{search}
-#' parameter below.
-#' @param search Logical. If \code{TRUE} (default), the function will strictly
-#' look for the most relevant result across the names given by \code{rgbif}
-#' (only species, subspecies and variety allowed here), and give an error if
-#' name matching is impeded by synonym duplicates. If \code{FALSE}, the
-#' function will simply pick the first most relevant name (taxa rank higher
-#' than species are allowed here), with fuzzy search (~approximative name
-#' matching) allowed, and \code{rank},\code{phylum}, \code{class},
-#' \code{order} and \code{family} parameters optionally used, i.e., only
-#' if no convincing match is found. \code{FALSE} is particularly useful if
-#' the given species name already includes the author.
-#' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
-#' (default), the order of priority is (1) species, (2) subspecies and (3)
-#' variety unless "subsp." or "var." is found in the \code{sp_name} parameter.
-#' @param phylum Character (optional). What is the species' Phylum? Adds a
-#' criteria to deal with alternative name matches and select the right species.
-#' Particularly useful to avoid hemihomonyms (a scientific name used for
-#' different taxa). Available options are the GBIF Phylums
-#' (\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum}).
-#' If \code{search = FALSE}, only used if no direct match is found.
-#' @param class Character (optional). What is the species' Class? Same as above
-#' but at the finer class level. Available options are the GBIF Classes
-#' (same url). If \code{search = FALSE}, only used if no direct match is found.
-#' @param order Character (optional). What is the species' Order? Same as above
-#' but at the finer order level. Available options are the GBIF Orders (same
-#' url). If \code{search = FALSE}, only used if no direct match is found.
-#' @param family Character (optional). What is the species' Family? Same as
-#' above but at the finer family level. Available options are the GBIF Families
-#' (same url). If \code{search = FALSE}, used only if no direct match is found.
-#' @param conf_match Numeric from 0 to 100. Determine the confidence threshold
-#' of match between \code{sp_name} and the GBIF backbone taxonomy.
-#' Default is 90.
-#' @param geo Object of class \code{Extent}, \code{SpatExtent},
-#' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
-#' or \code{sf} (WGS84) to define the study's area extent. Default is
-#' \code{NULL}, i.e., the whole globe.
-#' @param has_xy Logical. If \code{TRUE}, only records with coordinates are
-#' accounted ofr (default). If \code{FALSE}, only records without coordinates.
-#' If \code{NULL}, all records.
-#' @param spatial_issue Logical. If \code{FALSE}, only records without
-#' spatial issues are accounted for (default). If \code{TRUE}, only records with
-#' spatial issues. If \code{NULL}, all records.
-#' @details Implements the same search result when
-#' (\href{https://www.gbif.org}{GBIF}) is employed, i.e., based on the
-#' input taxa name, all species records count related to its accepted name
-#' and synonyms are extracted.
-#' @return A simple print of the number of observations found.
+#' @param sp_name Character string with the species name. Scientific names at
+#' genus-species level are expected; fuzzy matching is available when
+#' \code{search = FALSE}.
+#' @param search Logical. If \code{TRUE} (default), use a strict GBIF backbone
+#' search and keep only species-, subspecies-, or variety-level matches. If
+#' \code{FALSE}, use a more permissive search and optionally rely on
+#' \code{rank}, \code{phylum}, \code{class}, \code{order}, and
+#' \code{family} to resolve ambiguous matches.
+#' @param rank Character string giving the preferred rank to keep:
+#' \code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
+#' \code{NULL}, rank priority is inferred from \code{sp_name}.
+#' @param phylum Optional phylum used to disambiguate alternative GBIF matches.
+#' Particularly useful for hemihomonyms.
+#' @param class Optional class used to disambiguate alternative GBIF matches.
+#' @param order Optional order used to disambiguate alternative GBIF matches.
+#' @param family Optional family used to disambiguate alternative GBIF matches.
+#' @param conf_match Numeric confidence threshold between 0 and 100 for the
+#' GBIF backbone match. Default is \code{80}.
+#' @param geo Spatial object used to restrict the query extent. Accepted classes
+#' are \code{Extent}, \code{SpatExtent}, \code{SpatialPolygon},
+#' \code{SpatialPolygonDataFrame}, \code{SpatVector}, and \code{sf}. The
+#' default \code{NULL} queries the whole globe.
+#' @param has_xy Logical. If \code{TRUE} (default), count only records with
+#' coordinates. If \code{FALSE}, count only records without coordinates. If
+#' \code{NULL}, count all records.
+#' @param spatial_issue Logical. If \code{FALSE} (default), count only records
+#' without geospatial issues. If \code{TRUE}, count only records with
+#' geospatial issues. If \code{NULL}, count all records.
+#' @details The function mirrors the taxonomic matching strategy used by
+#' \code{get_gbif()}, then reports both the total number of GBIF records and
+#' the number retained after applying the chosen filters.
+#' @return A numeric vector of length two giving the total number of GBIF
+#' records and the number retained by the requested filters. A formatted summary
+#' is also printed to the console.
 #' @references
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 #' global biodiversity information facility API. 10.5281/zenodo.6023735
@@ -148,7 +134,7 @@ get_gbif_count <- function(sp_name = NULL,
       	logical(1)
       )
 
-      # Filter by given criterias if results
+      # Filter by the supplied criteria if results are available
       if (!bsearch$matchType[1] %in% "NONE"){ 
         if (any(q.crit)){
           id.crit <- c("rank", "phylum", "class", "order", "family")[q.crit]
@@ -160,7 +146,7 @@ get_gbif_count <- function(sp_name = NULL,
             id.crit2 <- id.crit[n.test]
             p.crit2 <- p.crit[n.test]
 
-            # Apply the rigth criterias
+            # Apply the requested criteria
             for (i in seq_along(id.crit2)){
               bsearch <- bsearch[
                 c(bsearch[, id.crit2[i]])[[1]] %in% p.crit2[i],
@@ -183,7 +169,7 @@ get_gbif_count <- function(sp_name = NULL,
         }
       }
       
-      # Normal procedure with or without criterias
+      # Continue with or without the supplied criteria
       if (nrow(bsearch) > 1){
         if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
           cat("Not match found...", "\n")
@@ -199,7 +185,7 @@ get_gbif_count <- function(sp_name = NULL,
 
           } else if (nrow(s.keep) > 1){
 
-            # If we only find subpsecies and variety, we need to prioritize
+            # If only subspecies and variety are found, prioritize one
             if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
               if ("var." %in% strsplit(sp_name," ")[[1]]){
                 bsearch <- s.keep[s.keep$rank %in% "VARIETY", ]

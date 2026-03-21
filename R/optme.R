@@ -1,14 +1,15 @@
 ### =========================================================================
 ### optimization function for cluster distribution (meta)
 ### =========================================================================
-#' Optimization function to create equal-sized strata in the
-#' make_blocks' function
+#' Objective Function for \code{make_blocks()}
 #'
-#' Not to be called directly by the user.
-#' @param x Input 1.
-#' @param nms Input 2.
-#' @param grps Input 3.
-#' @param tot Input 4.
+#' Internal helper used by \code{make_blocks()} to distribute clusters across
+#' folds as evenly as possible.
+#'
+#' @param x Candidate allocation of the remaining clusters to folds.
+#' @param nms Named vector of cluster sizes.
+#' @param grps Current fold assignments built before optimization.
+#' @param tot Total number of observations across all clusters.
 #' @keywords internal
 #' @importFrom stats aggregate
 optme <- function(x, nms, grps, tot){

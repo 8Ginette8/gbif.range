@@ -16,3 +16,5 @@ inst/extdata/downloads/*
 /.Rproj.user
 /.Rproj.user
 *.code-workspace
+*.Rcheck/
+*.tar.gz

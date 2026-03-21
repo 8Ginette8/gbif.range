@@ -3,7 +3,7 @@
 \docType{data}
 \name{ecoreg_list}
 \alias{ecoreg_list}
-\title{Ecoreg data Files}
+\title{Metadata for Downloadable Ecoregion Layers}
 \format{
 A list with each element containing:
 \describe{
@@ -16,7 +16,8 @@ A list with each element containing:
 ecoreg_list
 }
 \description{
-A list of data files including download links, filenames, and descriptions.
+A list describing the ecoregion layers that can be downloaded with
+\code{get_ecoreg()}.
 }
 \examples{
 \dontrun{

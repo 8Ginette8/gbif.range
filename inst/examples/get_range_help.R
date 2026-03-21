@@ -12,7 +12,7 @@ eco.terra <- read_ecoreg(
 # First download the worldwide observations of Panthera tigris from GBIF
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
-# Make range from occurance points
+# Build a range map from occurrence points
 range.tiger <- get_range(
     occ_coord = obs.pt,
     ecoreg = eco.terra,
@@ -40,7 +40,7 @@ terra::plot(
     add = TRUE
 )
 
-    # Plot the occurence points
+    # Plot the occurrence points
 graphics::points(
     obs.pt[, c("decimalLongitude","decimalLatitude")],
     pch = 20,

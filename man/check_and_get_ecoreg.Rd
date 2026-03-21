@@ -2,24 +2,22 @@
 % Please edit documentation in R/get_ecoreg.R
 \name{check_and_get_ecoreg}
 \alias{check_and_get_ecoreg}
-\title{Check and Download Ecoreg Data Files}
+\title{Check for a Local Ecoregion Layer and Download It if Needed}
 \usage{
 check_and_get_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
 }
 \arguments{
-\item{ecoreg_name}{Filename of the desired ecoregion to be checked and
-downloaded if necessary. See \code{ecoreg_list} for available options.}
+\item{ecoreg_name}{File name of the ecoregion dataset to check. See
+\code{ecoreg_list} for valid values.}
 
-\item{save_dir}{The directory to save the downloaded files. Defaults to
-"inst/extdata/downloads" within the package structure.}
+\item{save_dir}{Directory where downloaded files should be stored.}
 }
 \value{
-\code{NULL}. Checks and downloads the files to the specified
-directory if necessary.
+\code{NULL}. The function downloads data only when required.
 }
 \description{
-Checks if a directory exists and contains at least one .shp file.
-If not, calls get_ecoreg to download the data.
+Check whether a target ecoregion directory exists and contains at least one
+shapefile. If not, download the dataset with \code{get_ecoreg()}.
 }
 \examples{
 \dontrun{

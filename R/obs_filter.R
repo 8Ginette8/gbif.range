@@ -1,30 +1,22 @@
 ### =========================================================================
 ### obs_filter
 ### =========================================================================
-#' Filter a set of GBIF observations according to a defined grid resolution
+#' Filter GBIF Records by Grid Cell
 #'
-#' Processes a \code{getGBIF} object (which can include data for one or
-#' multiple species) and filters the observations based on a specified grid
-#' resolution.
+#' Reduce the spatial density of a \code{getGBIF} object by retaining a single
+#' record per grid cell and, optionally, removing cells with too few records.
 #'
-#' @param gbifs Object of class \code{getGBIF} including one or several
-#' species. Note that if GBIF absences are kept in the output(s), the
-#' function should be used distinctively for observations and absences.
-#' @param grid Object of class \code{SpatRaster}, \code{RasterLayer},
-#' \code{RasterBrick}, or \code{RasterStack} of desired resolution and
-#' extent (WGS84).
-#' @param threshold Integer (optional). Specifies the minimum number of
-#' observations per grid pixel to retain. Default is \code{NULL},
-#' meaning no threshold filtering.
-#' @details The function can retain one observation per grid pixel
-#' and/or remove observations from grid pixels that contain fewer than
-#' a specified number of records (e.g., fewer than 3 observations per
-#' pixel). This function helps users refine the spatial density of GBIF
-#' datasets by retaining one observation per grid pixel and/or removing
-#' observations from grid pixels with fewer than a user-defined threshold
-#' of records.
-#' @return Data frame with columns 'Species', 'x', and 'y' comprising
-#' the new set of observations filtered at grid resolution.
+#' @param gbifs A \code{getGBIF} object containing one or more species.
+#' @param grid Raster defining the target spatial resolution and extent.
+#' Accepted classes are \code{SpatRaster}, \code{RasterLayer},
+#' \code{RasterBrick}, and \code{RasterStack}.
+#' @param threshold Optional integer specifying the minimum number of records a
+#' cell must contain to be retained.
+#' @details The function first collapses each species to one occurrence per grid
+#' cell. If \code{threshold} is supplied, cells with fewer than that many
+#' original records are then discarded.
+#' @return A data frame with the columns \code{Species}, \code{x}, and
+#' \code{y}, representing the filtered coordinates.
 #' @example inst/examples/obs_filter_help.R
 #' @importFrom terra rast cellFromXY xyFromCell
 #' @export

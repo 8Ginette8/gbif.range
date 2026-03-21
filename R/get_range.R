@@ -1,116 +1,65 @@
 ### ==================================================================
 ### get_range
 ### ==================================================================
-#' Create a species range map based on \code{get_gbif()} object
+#' Create Species Range Maps from Occurrences and Ecoregions
 #'
-#' This function estimates species ranges from occurrence data (GBIF or
-#' else) and ecoregions [see \code{make_ecoreg()} or \code{ecoreg_list}].
+#' Estimate ecologically informed species ranges from occurrence data and an
+#' ecoregion layer. The workflow combines outlier filtering, clustering, convex
+#' hull construction, and intersection with occupied ecoregions.
 #' 
-#' @param occ_coord Object of class \code{getGBIF} [see \code{get_gbif()}]
-#' or a \code{data.frame} containing two columns named 'decimalLongitude'
-#' and 'decimalLatitude'.
-#' @param ecoreg  Object of class \code{SpatialPolygonsDataFrame},
-#' \code{SpatVector} or \code{sf} containing different ecoregions (WGS84).
-#' Define the range extent and ecoregions. Note that this
-#' parameter may be fed with an external, generated
-#' [see \code{make_ecoreg()}] or downloaded ecoregion shapefile
-#' [see \code{read_ecoreg()}]. Four ecoregions can be downloaded
-#' with the library: 'eco_terra', 'eco_marine', 'eco_hd_marine'
-#' and 'eco_fresh' (see \code{ecoreg_list} and details below).
-#' @param ecoreg_name Character. One ecoregion level/category name from the
-#' \code{ecoreg} parameter polygon must be supplied, e.g., very detailed level
-#' of 'eco_terra' is "ECO_NAME". Note that default applies if a
-#' \code{make_ecoreg()} polygon is provided as a \code{ecoreg} parameter.
-#' @param degrees_outlier Numeric. Distance threshold (degrees). Points whose 
-#' \code{clust_pts_outlier}-th nearest neighbour exceeds this distance are
-#' classified as outliers (default: 5 degrees).
-#' @param clust_pts_outlier Numeric. k-NN order for outlier detection. Points 
-#' must have \eqn{\ge}{>=} \code{k} nearest neighbours within
-#' \code{degrees_outlier} distance to be retained (default: 4).
-#' @param buff_width_point Numeric. Buffer (in degrees) which will be applied
-#' around single observations.
-#' @param buff_incrmt_pts_line Numeric. How much should the buffer be increased
-#' for each point on a line.
-#' @param buff_width_polygon Numeric. Buffer (in degrees) which will be
-#' applied around distribution polygons (for each ecoregion).
-#' @param dir_temp Character. Where should the temporary text file for the
-#' convex hull be saved? (text file will be deleted again). Default value
-#' is \code{tempdir()}.
-#' @param raster Logical. Should the output be a unified raster?
-#' Default is \code{TRUE}
-#' @param format Character. "\code{sf}" or "\code{SpatVector}" class for
-#' layer output. Default is the \code{SpatVector} class from the \code{terra}
-#' package.
-#' @param res Numeric. If \code{raster = TRUE}, resolution of the output in
-#' degrees (1° = ~111 km at the equator). Default is 0.1 (~11.1 km). It is
-#' important to note that the highest achievable resolution of the output will
-#' depend on its \code{ecoreg} precision, e.g., a species range output can reach
-#' the same resolution of the rasters used to create a \code{make_ecoreg()}
-#' object.
-#' @param verbose Logical. Should progression be printed?
-#' @details
-#' The function implements a four-step species range mapping process: 
-#' 
-#' **Step 1 - Outlier filtering and ecoregion assignment**: Outliers
-#' are removed from occurrence records using k-nearest neighbour (k-NN)
-#' distances. Points whose distance to their \code{clust_pts_outlier}-th
-#' nearest neighbour exceeds the  \code{degrees_outlier} threshold (default:
-#' 5 degrees) are excluded, retaining only well-supported clusters (default:
-#' \eqn{\ge}{>=} 4 points within 5 degrees). Then, non-outlier points are
-#' spatially intersected with ecoregions (\code{ecoreg}, specified via
-#' \code{ecoreg_name}) to identify occupied ecoregions.
-#' 
-#' **Step 2 - Clustering**: Within each occupied ecoregion, points are
-#' clustered using Gaussian mixture modeling (\code{mclust::Mclust}) to
-#' determine the optimal number of clusters, followed by k-means clustering 
-#' (\code{ClusterR::KMeans_rcpp}). For fewer than 3 points, a single cluster
-#' is assigned via basic k-means; collinear points receive minimal jittering.
-#' 
-#' **Step 3 - Convex hull**: For each cluster within an ecoregion, 
-#' \code{conv_function()} generates a buffered convex hull. Special cases
-#' include: (1) single points receive circular buffers
-#' (\code{buff_width_point}, default: 4 degrees); (2) collinear points
-#' (suggesting transects) receive incrementally widening buffers along
-#' the line (\code{buff_incrmt_pts_line}, default: 0.5 degrees per additional
-#' point); and (3) standard clusters receive polygon expansion
-#' (\code{buff_width_polygon}, default: 4 degrees).
+#' @param occ_coord A \code{getGBIF} object returned by \code{get_gbif()} or a
+#' \code{data.frame} containing the columns \code{decimalLongitude} and
+#' \code{decimalLatitude}.
+#' @param ecoreg Spatial ecoregion layer in WGS84. Accepted classes are
+#' \code{SpatialPolygonsDataFrame}, \code{SpatVector}, and \code{sf}. This can
+#' be a downloaded layer from \code{read_ecoreg()} or a custom layer created by
+#' \code{make_ecoreg()}.
+#' @param ecoreg_name Character string naming the field in \code{ecoreg} that
+#' defines ecoregion categories. For \code{eco_terra}, for example,
+#' \code{"ECO_NAME"} is the most detailed level. When \code{ecoreg} comes from
+#' \code{make_ecoreg()}, \code{"EcoRegion"} is used automatically.
+#' @param degrees_outlier Numeric distance threshold in degrees. Points whose
+#' \code{clust_pts_outlier}-th nearest neighbour lies beyond this distance are
+#' treated as outliers. Default is \code{5}.
+#' @param clust_pts_outlier Numeric k-nearest-neighbour order used for outlier
+#' detection. Default is \code{4}.
+#' @param buff_width_point Numeric buffer width in degrees for isolated points.
+#' @param buff_incrmt_pts_line Numeric increment in buffer width for linear
+#' clusters.
+#' @param buff_width_polygon Numeric buffer width in degrees applied to convex
+#' hull polygons.
+#' @param dir_temp Character string giving the directory used for temporary
+#' convex-hull files. Defaults to \code{tempdir()}.
+#' @param raster Logical. Should the final output be rasterized? Default is
+#' \code{TRUE}.
+#' @param format Output format used when \code{raster = FALSE}. Choose between
+#' \code{"SpatVector"} (default) and \code{"sf"}.
+#' @param res Numeric output resolution in degrees when \code{raster = TRUE}.
+#' Default is \code{0.1} (about 11.1 km at the equator). The achievable
+#' resolution is constrained by the spatial precision of \code{ecoreg}.
+#' @param verbose Logical. Should progress messages be printed?
+#' @details The function follows four main steps.
 #'
-#' **Step 4 - Ecological intersection**: Each cluster-derived polygon is 
-#' intersected with its parent ecoregion boundary (after zero-width buffering 
-#' to ensure topological validity). Per-ecoregion cluster polygons are merged, 
-#' then combined across all occupied ecoregions to produce the final species 
-#' range (\code{SpatVector} or \code{SpatRaster} at \code{res = 0.1 degrees} if 
-#' \code{raster = TRUE}).
-#''
-#' If there are too many records, \code{get_range()} can process a sub-sample
-#' of species observations to speed up polygon creation or avoid potential RAM
-#' issues.
-#' 
-#' Ecoregions represent large, geographically distinct areas containing 
-#' characteristic assemblages of species, dynamics, and environmental
-#' conditions
-#' (\href{https://en.wikipedia.org/wiki/Ecoregion}{Ecoregion Wikipedia page}).
-#' Download-ready ecoregion datasets 
-#' include:
+#' First, occurrence points are filtered for spatial outliers using
+#' k-nearest-neighbour distances and are assigned to ecoregions.
 #'
-#' (1) 'eco_terra' is for terrestrial species. Has three different levels:
-#' "ECO_NAME", "WWF_MHTNAM" and "WWF_REALM2".
+#' Second, points within occupied ecoregions are grouped into clusters using a
+#' combination of Gaussian mixture modeling and k-means clustering.
 #'
-#' (2) 'eco_fresh' is for freshwater species. Has only one: "ECOREGION".
-#' 
-#' (3) 'eco_marine' and 'eco_hd_marine' is for marine species. It contains
-#' three distinct levels: "ECOREGION", "PROVINCE" and "REALM".
+#' Third, each cluster is converted into a polygon. Single points receive
+#' circular buffers, collinear clusters receive line-based buffers, and other
+#' clusters receive buffered convex hulls through \code{conv_function()}.
 #'
-#' For marine species, 'eco_terra' may also be used if the user wants to
-#' represent the terrestrial range of species that also partially settle
-#' on mainland. For freshwater species, same may be done if the user
-#' considers that terrestrial ecoregions should be more representative of
-#' the species ecology.
+#' Fourth, cluster polygons are intersected with their parent ecoregions and
+#' merged into a final range layer.
+#'
+#' Download-ready ecoregion datasets include \code{eco_terra} for terrestrial
+#' species, \code{eco_fresh} for freshwater species, and \code{eco_marine} or
+#' \code{eco_hd_marine} for marine species.
 #' @return An object of class \code{getRange} with two fields:
-#' \code{init.args} (parameters and data employed) and
-#' \code{rangeOutput} (object of class \code{SpatVector} or
-#' \code{SpatRaster} depending on what the user set as \code{raster}
-#' parameter).
+#' \code{init.args}, containing the arguments and data used to build the map,
+#' and \code{rangeOutput}, containing the resulting \code{SpatVector},
+#' \code{sf}, or \code{SpatRaster} object.
 #' @references
 #' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger,
 #' Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese,
@@ -166,11 +115,7 @@
 #' 
 #' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
 #' (2022). Terra - CRAN
-#' @seealso
-#' For more information on the original code and methods, check Hagen et al.
-#' (2019), Data from: Mountain building, climate cooling and the richness
-#' of cold-adapted plants in the northern hemisphere, Dryad, Dataset,
-#' https://doi.org/10.5061/dryad.0ff6b04.
+#' @seealso \code{read_ecoreg()}, \code{make_ecoreg()}, and \code{cv_range()}.
 #' @example inst/examples/get_range_help.R
 #' @importFrom rnaturalearth ne_countries
 #' @importFrom methods is new

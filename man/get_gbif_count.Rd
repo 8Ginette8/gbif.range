@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_gbif_count.R
 \name{get_gbif_count}
 \alias{get_gbif_count}
-\title{Retrieve GBIF observations count to select study case}
+\title{Count GBIF Occurrences Before Downloading Data}
 \usage{
 get_gbif_count(
   sp_name = NULL,
@@ -19,76 +19,63 @@ get_gbif_count(
 )
 }
 \arguments{
-\item{sp_name}{Character. Species name may be scientific or addressing
-Genus and species only. Fuzzy matches are allowed but see \code{search}
-parameter below.}
+\item{sp_name}{Character string with the species name. Scientific names at
+genus-species level are expected; fuzzy matching is available when
+\code{search = FALSE}.}
 
-\item{search}{Logical. If \code{TRUE} (default), the function will strictly
-look for the most relevant result across the names given by \code{rgbif}
-(only species, subspecies and variety allowed here), and give an error if
-name matching is impeded by synonym duplicates. If \code{FALSE}, the
-function will simply pick the first most relevant name (taxa rank higher
-than species are allowed here), with fuzzy search (~approximative name
-matching) allowed, and \code{rank},\code{phylum}, \code{class},
-\code{order} and \code{family} parameters optionally used, i.e., only
-if no convincing match is found. \code{FALSE} is particularly useful if
-the given species name already includes the author.}
+\item{search}{Logical. If \code{TRUE} (default), use a strict GBIF backbone
+search and keep only species-, subspecies-, or variety-level matches. If
+\code{FALSE}, use a more permissive search and optionally rely on
+\code{rank}, \code{phylum}, \code{class}, \code{order}, and
+\code{family} to resolve ambiguous matches.}
 
-\item{rank}{Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
-(default), the order of priority is (1) species, (2) subspecies and (3)
-variety unless "subsp." or "var." is found in the \code{sp_name} parameter.}
+\item{rank}{Character string giving the preferred rank to keep:
+\code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
+\code{NULL}, rank priority is inferred from \code{sp_name}.}
 
-\item{phylum}{Character (optional). What is the species' Phylum? Adds a
-criteria to deal with alternative name matches and select the right species.
-Particularly useful to avoid hemihomonyms (a scientific name used for
-different taxa). Available options are the GBIF Phylums
-(\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum}).
-If \code{search = FALSE}, only used if no direct match is found.}
+\item{phylum}{Optional phylum used to disambiguate alternative GBIF matches.
+Particularly useful for hemihomonyms.}
 
-\item{class}{Character (optional). What is the species' Class? Same as above
-but at the finer class level. Available options are the GBIF Classes
-(same url). If \code{search = FALSE}, only used if no direct match is found.}
+\item{class}{Optional class used to disambiguate alternative GBIF matches.}
 
-\item{order}{Character (optional). What is the species' Order? Same as above
-but at the finer order level. Available options are the GBIF Orders (same
-url). If \code{search = FALSE}, only used if no direct match is found.}
+\item{order}{Optional order used to disambiguate alternative GBIF matches.}
 
-\item{family}{Character (optional). What is the species' Family? Same as
-above but at the finer family level. Available options are the GBIF Families
-(same url). If \code{search = FALSE}, used only if no direct match is found.}
+\item{family}{Optional family used to disambiguate alternative GBIF matches.}
 
-\item{conf_match}{Numeric from 0 to 100. Determine the confidence threshold
-of match between \code{sp_name} and the GBIF backbone taxonomy.
-Default is 90.}
+\item{conf_match}{Numeric confidence threshold between 0 and 100 for the
+GBIF backbone match. Default is \code{80}.}
 
-\item{geo}{Object of class \code{Extent}, \code{SpatExtent},
-\code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
-or \code{sf} (WGS84) to define the study's area extent. Default is
-\code{NULL}, i.e., the whole globe.}
+\item{geo}{Spatial object used to restrict the query extent. Accepted classes
+are \code{Extent}, \code{SpatExtent}, \code{SpatialPolygon},
+\code{SpatialPolygonDataFrame}, \code{SpatVector}, and \code{sf}. The
+default \code{NULL} queries the whole globe.}
 
-\item{has_xy}{Logical. If \code{TRUE}, only records with coordinates are
-accounted ofr (default). If \code{FALSE}, only records without coordinates.
-If \code{NULL}, all records.}
+\item{has_xy}{Logical. If \code{TRUE} (default), count only records with
+coordinates. If \code{FALSE}, count only records without coordinates. If
+\code{NULL}, count all records.}
 
-\item{spatial_issue}{Logical. If \code{FALSE}, only records without
-spatial issues are accounted for (default). If \code{TRUE}, only records with
-spatial issues. If \code{NULL}, all records.}
+\item{spatial_issue}{Logical. If \code{FALSE} (default), count only records
+without geospatial issues. If \code{TRUE}, count only records with
+geospatial issues. If \code{NULL}, count all records.}
 }
 \value{
-A simple print of the number of observations found.
+A numeric vector of length two giving the total number of GBIF
+records and the number retained by the requested filters. A formatted summary
+is also printed to the console.
 }
 \description{
-Follows the same code implementation as \code{get_gbif} for retrieving
-the number of occurrences per species without downloading the data.
+Query GBIF and return the number of available records for a taxon using the
+same name-matching logic as \code{get_gbif()}, but without downloading the
+occurrence table.
 }
 \details{
-Implements the same search result when
-(\href{https://www.gbif.org}{GBIF}) is employed, i.e., based on the
-input taxa name, all species records count related to its accepted name
-and synonyms are extracted.
+The function mirrors the taxonomic matching strategy used by
+\code{get_gbif()}, then reports both the total number of GBIF records and
+the number retained after applying the chosen filters.
 }
 \examples{
-# Get number of observations with default (only XY with no spatial issues):
+\dontrun{
+# Get number of observations with default filters
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = TRUE,
@@ -96,7 +83,7 @@ obs.pt <- get_gbif_count(
 	geo = NULL
 )
 
-# Get total number of observations (everything):
+# Get the total number of observations
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = NULL,
@@ -112,11 +99,12 @@ obs.pt <- get_gbif_count(
 	geo = terra::ext()
 )
 
-# Example of fuzzy match when search is set to FALSE
+# Example of fuzzy matching when search is set to FALSE
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanolca",
 	search = FALSE
 )
+}
 }
 \references{
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the

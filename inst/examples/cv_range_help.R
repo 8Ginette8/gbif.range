@@ -13,12 +13,12 @@ eco.terra <- read_ecoreg(
 # First download the worldwide observations of Panthera tigris from GBIF
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
-# Make range from occurance points
+# Build a range map from occurrence points
 range.tiger <- get_range(
     occ_coord = obs.pt,
     ecoreg = eco.terra,
     ecoreg_name = "ECO_NAME",
-    ras = FALSE,
+    raster = FALSE,
     format = "sf"
 )
 
@@ -80,7 +80,7 @@ ext.temp <- c(ext.temp[1]-0.6, ext.temp[2]+0.05,
                 ext.temp[3]-0.05, ext.temp[4]+0.05)
 
 # Create pseudo-absences
-    # Firt remove observations considered as outliers in get_range
+    # First remove observations considered outliers in get_range()
 xy.df <- range.arcto$init.args$occ_coord
 r.ext <- terra::ext(range.arcto$rangeOutput)
 Xrm.cond <- xy.df$decimalLongitude >= r.ext[1] &
@@ -194,7 +194,7 @@ ext.temp <- c(ext.temp[1]-0.2, ext.temp[2]+0.2,
                 ext.temp[3]-0.2, ext.temp[4]+0.2)
 
 # Create pseudo-absences
-    # Firt remove observations considered as outliers in get_range
+    # First remove observations considered outliers in get_range()
 xy.df <- range.tiger$init.args$occ_coord
 r.ext <- terra::ext(range.tiger$rangeOutput)
 Xrm.cond <- xy.df$decimalLongitude >= r.ext[1] &

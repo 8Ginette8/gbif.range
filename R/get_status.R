@@ -1,62 +1,42 @@
 ### ==================================================================
 ### get_status
 ### ==================================================================
-#' Retrieve from GBIF the IUCN and taxonomy status of a specific taxa
+#' Retrieve Taxonomy and IUCN Status from GBIF
 #'
-#' Generates, based on a given species name, the IUCN red list status and
-#' a list of all scientific names (accepted, synonyms) found in the GBIF
-#' backbone taxonomy and used to download the data with \code{get_gbif()}.
-#' Children and related doubtful names not used to download the data may
-#' also be extracted.
+#' Query the GBIF backbone taxonomy for a species name, report the matched
+#' accepted name and synonyms, and return the associated IUCN status when
+#' available.
 #'
-#' @param sp_name Character. Species name may be scientific or addressing
-#' Genus and species only. Fuzzy matches are allowed but see \code{search}
-#' parameter below.
-#' @param search Logical. If \code{TRUE} (default), the function will strictly
-#' look for the most relevant result across the names given by \code{rgbif}
-#' (only species, subspecies and variety allowed here), and give an error if
-#' name matching is impeded by synonym duplicates. If \code{FALSE}, the
-#' function will simply pick the first most relevant name (taxa rank higher
-#' than species are allowed here), with fuzzy search (~approximative name
-#' matching) allowed, and \code{rank},\code{phylum}, \code{class},
-#' \code{order} and \code{family} parameters optionally used, i.e., only
-#' if no convincing match is found. \code{FALSE} is particularly useful if
-#' the given species name already includes the author.
-#' @param rank Character. "SPECIES", "SUBSPECIES" or "VARIETY". If \code{NULL}
-#' (default), the order of priority is (1) species, (2) subspecies and (3)
-#' variety unless "subsp." or "var." is found in the \code{sp_name} parameter.
-#' @param phylum Character (optional). What is the species' Phylum? Adds a
-#' criteria to deal with alternative name matches and select the right species.
-#' Particularly useful to avoid hemihomonyms (a scientific name used for
-#' different taxa). Available options are the GBIF Phylums
-#' (\href{https://www.gbif.org/species/search}{listed per Kingdom/Phylum}).
-#' If \code{search = FALSE}, only used if no direct match is found.
-#' @param class Character (optional). What is the species' Class? Same as above
-#' but at the finer class level. Available options are the GBIF Classes
-#' (same url). If \code{search = FALSE}, only used if no direct match is found.
-#' @param order Character (optional). What is the species' Order? Same as above
-#' but at the finer order level. Available options are the GBIF Orders (same
-#' url). If \code{search = FALSE}, only used if no direct match is found.
-#' @param family Character (optional). What is the species' Family? Same as
-#' above but at the finer family level. Available options are the GBIF
-#' Families (same url). If \code{search = FALSE}, used only if no direct
-#' match is found.
-#' @param conf_match Numeric from 0 to 100. Determine the confidence threshold
-#' of match between \code{sp_name} and the GBIF backbone taxonomy.
-#' Default is 90.
-#' @param all Logical. Default is \code{FALSE}. Should all species names be
-#' retrieved or only the accepted name and its synonyms?
-#' @return Data.frame with nine columns: (0) Simplified name,
-#' (1) GBIF taxonomic key, (2) scientificName,  (3) Backbone Taxonomy Status,
-#' (4) Genus, (5) Family, (6) Order, (7) Phylum, (8) IUCN status and
-#' (9) 'sp_nameMatch' informing which scientific name has matched with
-#' \code{sp_name}.
+#' @param sp_name Character string with the species name. Scientific names at
+#' genus-species level are expected; fuzzy matching is available when
+#' \code{search = FALSE}.
+#' @param search Logical. If \code{TRUE} (default), use a strict GBIF backbone
+#' search and keep only species-, subspecies-, or variety-level matches. If
+#' \code{FALSE}, use a more permissive search and optionally rely on
+#' \code{rank}, \code{phylum}, \code{class}, \code{order}, and
+#' \code{family} to resolve ambiguous matches.
+#' @param rank Character string giving the preferred rank to keep:
+#' \code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
+#' \code{NULL}, rank priority is inferred from \code{sp_name}.
+#' @param phylum Optional phylum used to disambiguate alternative GBIF matches.
+#' Particularly useful for hemihomonyms.
+#' @param class Optional class used to disambiguate alternative GBIF matches.
+#' @param order Optional order used to disambiguate alternative GBIF matches.
+#' @param family Optional family used to disambiguate alternative GBIF matches.
+#' @param conf_match Numeric confidence threshold between 0 and 100 for the
+#' GBIF backbone match. Default is \code{80}.
+#' @param all Logical. If \code{FALSE} (default), return the accepted name and
+#' its synonyms. If \code{TRUE}, also include children and related names that
+#' are not used by \code{get_gbif()}.
+#' @return A data frame with the columns \code{canonicalName}, \code{rank},
+#' \code{gbif_key}, \code{scientificName}, \code{gbif_status},
+#' \code{Genus}, \code{Family}, \code{Order}, \code{Class},
+#' \code{Phylum}, \code{IUCN_status}, and \code{sp_nameMatch}.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 #' global biodiversity information facility API. 10.5281/zenodo.6023735
-#' @seealso The \code{rgbif} R package for additional and more general
-#' approaches on how to retrieve scientific names from the GBIF backbone
-#' taxonomy.
+#' @seealso The \code{rgbif} package for more general approaches to querying
+#' the GBIF backbone taxonomy.
 #' @example inst/examples/get_status_help.R
 #' @importFrom rgbif name_backbone name_usage
 #' @importFrom methods is
@@ -126,7 +106,7 @@ get_status <- function(sp_name = NULL,
       FUN.VALUE = logical(1)
     )
 
-    # Filter by given criterias if results
+    # Filter by the supplied criteria if results are available
     if (!bone.search$matchType[1] %in% "NONE"){ 
 
       if (any(q.crit)){
@@ -139,7 +119,7 @@ get_status <- function(sp_name = NULL,
           id.crit2 <- id.crit[n.test]
           p.crit2 <- p.crit[n.test]
 
-          # Apply the rigth criterias
+          # Apply the requested criteria
           for (i in seq_along(id.crit2)){
             bone.search <-
               bone.search[c(bone.search[, id.crit2[i]])[[1]] %in% p.crit2[i], ]
@@ -162,7 +142,7 @@ get_status <- function(sp_name = NULL,
       }
     }
     
-    # Normal procedure with or without criterias
+    # Continue with or without the supplied criteria
     if (nrow(bone.search) > 1){
 
       if (all(!bone.search$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
@@ -179,7 +159,7 @@ get_status <- function(sp_name = NULL,
 
         } else if (nrow(s.keep) > 1){
 
-          # If we only find subpsecies and variety,
+          # If only subspecies and variety are found,
           # we need to (default) prioritize
           if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
 

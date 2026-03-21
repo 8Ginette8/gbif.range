@@ -2,21 +2,21 @@
 % Please edit documentation in R/optme.R
 \name{optme}
 \alias{optme}
-\title{Optimization function to create equal-sized strata in the
-make_blocks' function}
+\title{Objective Function for \code{make_blocks()}}
 \usage{
 optme(x, nms, grps, tot)
 }
 \arguments{
-\item{x}{Input 1.}
+\item{x}{Candidate allocation of the remaining clusters to folds.}
 
-\item{nms}{Input 2.}
+\item{nms}{Named vector of cluster sizes.}
 
-\item{grps}{Input 3.}
+\item{grps}{Current fold assignments built before optimization.}
 
-\item{tot}{Input 4.}
+\item{tot}{Total number of observations across all clusters.}
 }
 \description{
-Not to be called directly by the user.
+Internal helper used by \code{make_blocks()} to distribute clusters across
+folds as evenly as possible.
 }
 \keyword{internal}

@@ -1,4 +1,5 @@
-# Downloading worldwide the observations of Panthera tigris
+\dontrun{
+# Download worldwide observations of Panthera tigris
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Plot
@@ -14,8 +15,7 @@ terra::points(
        cex = 4
 )
 
-\dontrun{
-# Downloading worldwide the observations of Ailuropoda melanoleuca
+# Download worldwide observations of Ailuropoda melanoleuca
 # (with a 100km grain, after 1990 and by keeping duplicates and by
 # adding the name of the person who collected the panda records)
 obs.am <- get_gbif(
@@ -35,7 +35,7 @@ terra::points(
        cex = 4
 )
 
-# Downloading worlwide the observations of Bison bison
+# Download worldwide observations of Bison bison
 # (with a 1km grain, after 1990, and keeping raster centroids)
 obs.pc <- get_gbif(
        sp_name = "Bison bison",
@@ -43,5 +43,4 @@ obs.pc <- get_gbif(
        time_period = c(1990,3000),
        centroids = TRUE
 )
-
 }

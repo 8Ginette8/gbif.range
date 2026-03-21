@@ -2,16 +2,16 @@
 % Please edit documentation in R/helpers.R
 \name{check_null_na}
 \alias{check_null_na}
-\title{Check if an argument is NULL or NA}
+\title{Check Whether an Argument Is Missing}
 \usage{
 check_null_na(x, name)
 }
 \arguments{
-\item{x}{Argument value}
+\item{x}{Argument value.}
 
-\item{name}{Argument name for error reporting}
+\item{name}{Argument name used in error messages.}
 }
 \description{
-Check if an argument is NULL or NA
+Check Whether an Argument Is Missing
 }
 \keyword{internal}

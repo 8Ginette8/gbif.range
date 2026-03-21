@@ -1,34 +1,27 @@
 ### =========================================================================
 ### cv blocks
 ### =========================================================================
-#' Block-wise split data into training and testing
+#' Split Data into Approximately Balanced Folds
 #'
-#' Creates a stratum vector based on a data.frame with \emph{n} columns. 
+#' Create a fold-assignment vector for random or spatially structured
+#' cross-validation.
 #'
-#' @param nfolds Numeric. Number of approximately equal-sized classes (folds)
-#' to separate groups for block-cross validation.
-#' @param df Object of class \code{data.frame} with \emph{n} columns
-#' containing criteria for cluster building. Not necessary if parameter
-#' \code{npoints} is supplied.
-#' @param nblocks Numeric. Number of clusters (blocks) based on the number
-#' of folds that should be built. Minimum is the same number as \code{nfolds}.
-#' Maximum is \code{nrow(df) / 10}.
-#' @param pres Binary vector. Optional argument. If \code{df} is supplied, this
-#' argument can be used to save processing time. 1 stands for the points
-#' on which CLARA is applied, and 0 stands for the points on which K-nearest
-#' neighbors is applied relative to the 1. If \code{df} is not supplied, for
-#' which points should random sampling be made? 
-#' @param npoints Optional argument if \code{df} is not supplied. For how many
-#' points should random sampling be made?
-#' @details If \code{df} has one column, the output vector is created based on
-#' clusters separated by quantiles. If \code{df} has two or more columns,
-#' the output vector is created based on the 'Clustering Large Applications'
-#' method [\code{clara()} from the \code{cluster} R package]. Also,
-#' instead of a \code{data.frame} the argument \code{npoints} can be provided,
-#' which create groups by random sampling. An opitimization algorithm optimizes
-#' for equal stratum sizes (\code{gridSearch} from the \code{NMOF} R package)
-#' @return Object of class vector of length \code{nrow(df)} or \code{npoints},
-#' with integers defining different folds.
+#' @param nfolds Numeric number of folds to create.
+#' @param df Optional \code{data.frame} whose columns define the structure used
+#' to build folds. When omitted, random folds are created from
+#' \code{npoints}.
+#' @param nblocks Numeric number of initial clusters used to build the folds.
+#' Must be at least \code{nfolds}.
+#' @param pres Optional binary vector used to restrict CLARA clustering to a
+#' subset of rows and assign the remainder by nearest neighbours.
+#' @param npoints Optional number of observations to split when \code{df} is
+#' not supplied.
+#' @details If \code{df} has one column, folds are based on quantile bins. If
+#' \code{df} has two or more columns, folds are based on CLARA clustering.
+#' Remaining clusters are assigned to folds with an optimization step that
+#' tries to balance fold sizes as evenly as possible.
+#' @return An integer vector of length \code{nrow(df)} or \code{npoints},
+#' giving the fold assignment for each observation.
 #' @references
 #' Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O.,
 #' Wang, Z., & Zimmermann, N. E. (2020). Model complexity affects species

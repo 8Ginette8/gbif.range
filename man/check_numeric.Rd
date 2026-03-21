@@ -2,16 +2,16 @@
 % Please edit documentation in R/helpers.R
 \name{check_numeric}
 \alias{check_numeric}
-\title{Check if argument is a non-missing numeric scalar}
+\title{Check Whether an Argument Is a Numeric Scalar}
 \usage{
 check_numeric(x, name)
 }
 \arguments{
-\item{x}{Argument value}
+\item{x}{Argument value.}
 
-\item{name}{Argument name for error reporting}
+\item{name}{Argument name used in error messages.}
 }
 \description{
-Check if argument is a non-missing numeric scalar
+Check Whether an Argument Is a Numeric Scalar
 }
 \keyword{internal}

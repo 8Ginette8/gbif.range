@@ -1,33 +1,24 @@
 ### =========================================================================
 ### make_tiles
 ### =========================================================================
-#' Generate Spatial tiles from a raster extent or geometry
+#' Create Tiled GBIF Geometry Queries
 #'
-#' Divides a given spatial extent or geometry into a specified number of tiles.
-#' Each tile is returned as a \code{POLYGON()} geometry.
+#' Divide a study extent into a set of smaller \code{POLYGON()} query strings
+#' that can be used with the GBIF \code{geometry} parameter.
 #'
-#' @param geo Object of class \code{Extent}, \code{SpatExtent},
-#' \code{SpatialPolygon}, \code{SpatialPolygonDataframe}, \code{SpatVector}
-#' or \code{sf} (WGS84) to define the study's area extent. Default is
-#' \code{NULL}, i.e., the whole globe.
-#' @param ntiles Numeric. Into how many tiles/fragments should \code{geo} be
-#' divided approximately?
-#' @param sext Logical. Should a list of \code{SpatExtent} also be returned
-#' for each generated \code{POLYGON()}?
-#' @details The original extent can be:
-#' 
-#' (1) Converted into a single \code{POLYGON()}.
-#' 
-#' (2) Subdivided into approximately \code{ntiles} regular fragments, each
-#' returned as a \code{POLYGON()} and, optionally, as a \code{SpatExtent}.
-#' 
-#' Based on a specific extent, one or several tiles are generated.
-#' Tiles can be smaller raster extents or geometry arguments \code{POLYGON()}.
-#' The original extent is therefore either converted into a \code{POLYGON()}
-#' argument, or divided into \code{ntiles} of regular fragments which are
-#' converted into \code{POLYGON()} arguments and smaller \code{SpatExtent}.
-#' @return A list of geometry arguments \code{POLYGON()} of length
-#' \code{ntiles}, and of \code{SpatExtent} if \code{sext = TRUE}).
+#' @param geo Spatial extent or geometry used to define the study area.
+#' Accepted classes are \code{Extent}, \code{SpatExtent},
+#' \code{SpatialPolygon}, \code{SpatialPolygonDataFrame}, \code{SpatVector},
+#' and \code{sf}. If \code{NULL}, the whole globe is used.
+#' @param ntiles Numeric approximate number of tiles to create.
+#' @param sext Logical. Should the corresponding \code{SpatExtent} objects also
+#' be returned?
+#' @details The input extent is converted into a regular grid of smaller query
+#' polygons. This is mainly intended to support tiled GBIF downloads when large
+#' extents would otherwise return too many records in a single query.
+#' @return If \code{sext = TRUE}, a list containing WKT \code{POLYGON()}
+#' strings and matching \code{SpatExtent} objects. Otherwise, a vector of WKT
+#' \code{POLYGON()} strings.
 #' @references 
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
 #' Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate,
@@ -41,7 +32,6 @@ make_tiles <- function(geo, ntiles, sext = TRUE){
     ###########################################
     ### Check input data
     ###########################################
-t
 
     # For study area
 	if (!is.null(geo)) {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_ecoreg.R
 \name{make_ecoreg}
 \alias{make_ecoreg}
-\title{Make an ecoregion map based on input environmental variables}
+\title{Build Custom Ecoregions from Environmental Layers}
 \usage{
 make_ecoreg(
   env = NULL,
@@ -15,45 +15,37 @@ make_ecoreg(
 )
 }
 \arguments{
-\item{env}{Object of class \code{SpatRaster}, \code{RasterBrick} or
-\code{RasterStack} of desired resolution, crs and extent defining the study
-area. Used to generate a map of clusters summarizing the environmental space
-of the study area.}
+\item{env}{Environmental raster stack. Accepted classes are
+\code{SpatRaster}, \code{RasterBrick}, and \code{RasterStack}.}
 
-\item{nclass}{Numeric. How many number of environmental classes
-should have the output?}
+\item{nclass}{Numeric number of environmental classes to create.}
 
-\item{path}{Character. Folder path where the output should be saved.
-Default is none.}
+\item{path}{Optional directory where the output should be written. Leave
+empty to return the result directly.}
 
-\item{name}{Character. If \code{path} is used, should include the name of
-the output file without file extension.}
+\item{name}{Output file name without extension when \code{path} is used.}
 
-\item{format}{Character. "\code{sf}" or "\code{SpatVector}" class for
-layer output. Default is the \code{SpatVector} class from the \code{terra}
-package.}
+\item{format}{Output format for polygon results: \code{"SpatVector"}
+(default) or \code{"sf"}.}
 
-\item{raster}{Logical. Whether the output should be a raster layer. Default
-is \code{FALSE}.}
+\item{raster}{Logical. Should the output remain a raster instead of being
+converted to polygons? Default is \code{FALSE}.}
 
-\item{...}{Additonnal parameters for the function \code{clara()} of the
-\code{clutser} R package.}
+\item{...}{Additional arguments passed to \code{cluster::clara()}.}
 }
 \value{
-\code{tif} or \code{shp} file.
+If \code{path == ""}, returns the generated raster or polygon object.
+Otherwise, writes the output to disk as a GeoTIFF or Shapefile.
 }
 \description{
-Based on chosen environmental layers, this function can generate an
-ecoregion map of \emph{n} categories/classes.
+Cluster multi-layer environmental data to create a custom ecoregion map that
+can be used directly in \code{get_range()}.
 }
 \details{
-Useful if the in-house ecoregion shapefiles ('eco.terra',
-eco.fresh', 'eco.marine') are too coarse for a given geographic region
-(e.g., for local studies) or a shapefile of finer environmental details is
-needed. The classes are calculated with the 'Clustering Large Applications'
-method [\code{clara()} from the cluster R \code{package}], which recognize
-patterns and relationships existing in spatial data, and classify it into
-clusters.
+This function is useful when the packaged ecoregion layers are too
+coarse for a study area or when a custom environmental regionalization is
+needed. Clusters are created with the CLARA algorithm on the multivariate
+environmental space represented by \code{env}.
 }
 \examples{
 \dontrun{
@@ -74,7 +66,7 @@ shp.path <- paste0(
 shp.lonlat <- terra::vect(shp.path)
 rst <- terra::crop(rst, shp.lonlat)
 
-# Apply the function by infering 50 classes of environments
+# Apply the function by inferring 200 environmental classes
 my.eco <- make_ecoreg(env = rst,
 	nclass = 200,
 	format = "sf"

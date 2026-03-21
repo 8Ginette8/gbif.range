@@ -1,15 +1,20 @@
 ### ==================================================================
 ### conv_function (meta)
 ### ==================================================================
-#' Create polygon objects in different ecoregions.
+#' Low-Level Polygon Builder Used by \code{get_range()}
 #' 
-#' Not to be called directly by the user.
-#' @param sp_coord Object of class matrix of data.frame. Spatial coordinates.
-#' @param bwp Numeric. Buffer width parameter.
-#' @param bipl Numeric. Number of observation points.
-#' @param bwpo Numeric. Buffer width parameter for the convex hull.
-#' @param temp_dir Character. Temporary directory name.
-#' @param g Optional parameter.
+#' Internal helper that creates buffered polygons from clustered occurrence
+#' points inside a single ecoregion.
+#'
+#' @param sp_coord Spatial coordinates for one cluster of occurrences.
+#' @param bwp Numeric buffer width, in degrees, used for isolated points.
+#' @param bipl Numeric increment, in degrees, added to the point buffer for
+#' linear clusters.
+#' @param bwpo Numeric buffer width, in degrees, applied to convex hull
+#' polygons.
+#' @param temp_dir Character string giving the temporary directory used for
+#' intermediate convex-hull files.
+#' @param g Optional ecoregion identifier used in status messages.
 #' @keywords internal
 #' @importFrom terra crds buffer aggregate vect crs
 #' @importFrom sf st_polygon
@@ -52,7 +57,7 @@ conv_function <- function (sp_coord,
       
       # Print
       cat('\n','ecoreg=',g,nrow(x),
-        'points laying on one line. Using buffer width of ',
+        'points lying on one line. Using buffer width of ',
         bwp.bipl.m/1000,'km','\n')
 
       # Buffer

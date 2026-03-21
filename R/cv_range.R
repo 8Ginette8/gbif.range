@@ -1,53 +1,35 @@
 ### ==================================================================
 ### cv_range
 ### ==================================================================
-#' Evaluate the accuracy of a range map using cross-validation
+#' Evaluate a Range Map by Cross-Validation
 #' 
-#' Assesses the accuracy of a species range map by applying cross-validation
-#' using the observations and function arguments of a \code{get_range()}
-#' object (including its extent).
+#' Rebuild a \code{get_range()} model repeatedly from subsets of the occurrence
+#' data stored in a \code{getRange} object and evaluate each rebuild against
+#' held-out observations.
 #' 
-#' @param range_object Object of class \code{getRange}
-#' [see \code{get_range()}] containing the range map and associated parameters.
-#' @param cv Character. Should the range map be evaluated with random
-#' ("random-cv") or spatial block cross validation ("block-cv").
-#' @param nfolds Numeric. Number of chosen folds for cross-validation.
-#' @param nblocks Numeric. Only applies if "block-cv" is employed. Defined
-#' the number of blocks per fold.
-#' @param backpoints Numeric (optional). Number of regular background points
-#' that should be sampled. Default is 10,000.
-#' @details By using \code{get_range()} arguments, the function iteratively
-#' re-generates the range map n times, each time using a defined percentage
-#' of the observations for training, while evaluating
-#' the quality of the range map using the remaining ones (by default,
-#' \code{nfolds = 5}, i.e., calibration = \code{80\%},
-#' evaluation = \code{20\%}).
+#' @param range_object Object of class \code{getRange}, typically returned by
+#' \code{get_range()}.
+#' @param cv Character string specifying the cross-validation strategy:
+#' \code{"random-cv"} or \code{"block-cv"}.
+#' @param nfolds Numeric number of folds.
+#' @param nblocks Numeric multiplier used when \code{cv = "block-cv"} to define
+#' the total number of spatial blocks as \code{nfolds * nblocks}.
+#' @param backpoints Numeric number of regularly spaced background points used
+#' as pseudo-absences. Default is \code{10000}.
+#' @details The function rebuilds the range map \code{nfolds} times. In each
+#' iteration, one fold is reserved for evaluation and the remaining folds are
+#' used for training.
 #'
-#' Two cross-validation methods are available: (1) random and (2) spatial block
-#' cross-validation:
-#' 
-#' (1) In random cross-validation, a random subset of the observations is chosen
-#' for training in each fold, with the generated map evaluated on the remaining
-#' data.
+#' Two strategies are available: random cross-validation and spatial block
+#' cross-validation. The latter reduces the influence of spatial autocorrelation
+#' by grouping nearby observations before splitting them across folds.
 #'
-#' (2) In spatial block cross-validation, the observations are spatially
-#' divided into blocks based on their coordinates, and each fold uses a
-#' different set of blocks for training and testing, ensuring that spatial
-#' dependencies are properly considered.
-#'
-#' Available evaluation metrics are Precision, Sensitivity, Specificity and TSS.
-#' It is important to note that since no absences are available for evaluation,
-#' a uniform random layer of background points is first generated over the study
-#' area extent and used as pseudo-absences proxy.
-#' @return A data.frame with \code{nfolds} rows and 8 evaluation columns:\cr 
-#' - Precision (ppv) =
-#' number true presences (TP) / [TP + number false presences (FP)]\cr 
-#' - Sensitivity =
-#' number true presences (TP) / [TP + number false absences (FA)]\cr
-#' - Specificity =
-#' number true absences (TA) / [TA + number false presences (FP)]\cr
-#' - TSS =
-#' Sensitivity + Specificity - 1
+#' Because true absences are generally unavailable, the evaluation uses a
+#' regular grid of background points as pseudo-absences and reports precision,
+#' sensitivity, specificity, and TSS.
+#' @return A data frame with one row per fold plus a \code{Mean} row, and the
+#' columns \code{TP}, \code{FA}, \code{TA}, \code{FP}, \code{Precision},
+#' \code{Sensitivity}, \code{Specificity}, and \code{TSS}.
 #' @references
 #' Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera‐
 #' Arroita, G., ... & Dormann, C. F. (2017). Cross‐validation strategies
@@ -89,7 +71,7 @@ cv_range <- function(range_object = NULL,
   ######################################################
 
 
-  # Firt remove observations considered as outliers in get_range
+  # First remove observations considered outliers in get_range()
   # (outside range extent)
   xy.df <- range_object$init.args$occ_coord
   r.ext <- terra::ext(range_object$rangeOutput)

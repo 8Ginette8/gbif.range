@@ -2,29 +2,27 @@
 % Please edit documentation in R/get_ecoreg.R
 \name{get_ecoreg}
 \alias{get_ecoreg}
-\title{Download Ecoreg Data Files}
+\title{Download Ecoregion Layers}
 \usage{
 get_ecoreg(ecoreg_name = "all", save_dir = NULL)
 }
 \arguments{
-\item{ecoreg_name}{Character. "all" or the filename of the desired ecoregion
-to be downloaded. See \code{ecoreg_list} for available options. This
-contains a list of data file information with elements containing `link`,
-`filename`, and `description`.}
+\item{ecoreg_name}{Character string. Use \code{"all"} to download every
+dataset, or supply a single file name listed in \code{ecoreg_list}.}
 
-\item{save_dir}{The directory to save the downloaded files. Defaults to
-"inst/extdata/downloads" within the package structure.}
+\item{save_dir}{Directory where the downloaded zip files and extracted
+shapefiles should be stored.}
 }
 \value{
-\code{NULL}. Downloads the files to the specified directory.
+\code{NULL}. Files are downloaded and unpacked for side effects.
 }
 \description{
-Downloads data files from a provided list of links and saves them
-to a specified directory.
+Download one or more ecoregion datasets listed in \code{ecoreg_list()} and
+unpack them into a local directory.
 }
 \examples{
 \dontrun{
-# download all ecoregions available in ecoreg_list
+# Download every ecoregion dataset listed in ecoreg_list
 get_ecoreg()
 }
 }

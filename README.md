@@ -6,11 +6,11 @@
 [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-Although species ranges may be obtained using expert maps (e.g., <a href="https://www.iucnredlist.org/resources/spatial-data-download">IUCN</a> and <a href="https://www.euforgen.org/species/">EUFORGEN</a>) or modeling methods, expert data remains limited in the number of available species while applying models usually need more technical expertise, as well as many species observations.
+Species ranges can be estimated from expert maps (for example <a href="https://www.iucnredlist.org/resources/spatial-data-download">IUCN</a> and <a href="https://www.euforgen.org/species/">EUFORGEN</a>) or with modelling approaches. Expert data, however, remain unavailable for many species, whereas modelling workflows often require substantial technical expertise and large numbers of occurrence records.
 
-When unavailable, such information may be extracted from the Global Biodiversity Information facility (GBIF), the largest public data repository inventorying georeferenced species observations worldwide (https://www.gbif.org/). However, retrieving GBIF records at large scale in R may be tedious, if users are unaware of the limitations of the *rgbif* library.
+When such data are unavailable, they can often be approximated from the Global Biodiversity Information Facility (GBIF), the largest public repository of georeferenced species observations worldwide (https://www.gbif.org/). Retrieving GBIF records at large scale in R can still be cumbersome, especially if users are unfamiliar with the practical limits of the *rgbif* package.
 
-Here we present **gbif.range**, a R library that contains automated methods to generate species range maps from scratch using in-house ecoregions shapefiles and an easy-to-use GBIF download wrapper. Finally, this library also offers a set of additional very useful tools for large GBIF datasets (generate doi, extract GBIF taxonomy, records filtering...).
+**gbif.range** provides a workflow to retrieve GBIF records, filter them for spatial analyses, generate ecologically informed range maps from bundled or custom ecoregions, and evaluate the resulting products. The package also includes utilities to create GBIF-derived DOIs, inspect GBIF taxonomy, and thin large occurrence datasets.
 
 _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
@@ -36,7 +36,7 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   geographic extent. This function is meant to help users who want to use the `rgbif` R package and its parameter
   `geometry` that uses a `POLYGON()` argument.
 
-  - `get_doi()`: a small wrapper of `derived_dataset()` in `rgbif` that simplifies the obtention of a general DOI
+  - `get_doi()`: a small wrapper of `derived_dataset()` in `rgbif` that simplifies obtaining a general DOI
   for a set of several gbif species datasets.
 
   - `make_ecoreg()`: a function to create custom ecoregions based on environmental layers.
@@ -107,10 +107,10 @@ Here, default parameters were employed, however, `clust_pts_outlier` (in degrees
 
 ### Available ecoregions
 
-Although whatever shapefile may be set in `get_range()` as input, note that ecoregion shapefiles may be downloaded using the package: *eco.earth* (for terrestrial species; The Nature conservancy 2009 adapted from Olson & al. 2001), *eco.marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding & al. 2007, 2012) and *eco.fresh* (for freshwater species; Abell & al. 2008). Each are available under different precision levels:
+Any suitable shapefile can be supplied to `get_range()`, but the package can also download several ecoregion layers directly: *eco_terra* (for terrestrial species; The Nature Conservancy 2009 adapted from Olson et al. 2001), *eco_marine* (for marine species, two versions; The Nature Conservancy 2012 adapted from Spalding et al. 2007, 2012), and *eco_fresh* (for freshwater species; Abell et al. 2008). Each is available at different levels of detail:
 - *eco_terra* has three different levels: 'ECO_NAME', 'WWF_MHTNAM' and 'WWF_REALM2'.
 - *eco_fresh* has only one: 'ECOREGION'.
-- *eco_marine* and *eco_hd_marine* (very coastal-precise version) contains three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
+- *eco_marine* and *eco_hd_marine* (the more coastline-precise version) contain three distinct levels: 'ECOREGION', 'PROVINCE' and 'REALM'.
 
 Available ecoregion files that can be downloaded with the package:
 ``` r

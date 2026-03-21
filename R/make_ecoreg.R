@@ -1,36 +1,28 @@
 ### =========================================================================
 ### make_ecoreg
 ### =========================================================================
-#' Make an ecoregion map based on input environmental variables
+#' Build Custom Ecoregions from Environmental Layers
 #'
-#' Based on chosen environmental layers, this function can generate an
-#' ecoregion map of \emph{n} categories/classes.
+#' Cluster multi-layer environmental data to create a custom ecoregion map that
+#' can be used directly in \code{get_range()}.
 #'
-#' @param env Object of class \code{SpatRaster}, \code{RasterBrick} or
-#' \code{RasterStack} of desired resolution, crs and extent defining the study
-#' area. Used to generate a map of clusters summarizing the environmental space
-#' of the study area.
-#' @param nclass Numeric. How many number of environmental classes
-#' should have the output?
-#' @param path Character. Folder path where the output should be saved.
-#' Default is none.
-#' @param name Character. If \code{path} is used, should include the name of
-#' the output file without file extension.
-#' @param format Character. "\code{sf}" or "\code{SpatVector}" class for
-#' layer output. Default is the \code{SpatVector} class from the \code{terra}
-#' package.
-#' @param raster Logical. Whether the output should be a raster layer. Default
-#' is \code{FALSE}.
-#' @param ... Additonnal parameters for the function \code{clara()} of the
-#' \code{clutser} R package.
-#' @details Useful if the in-house ecoregion shapefiles ('eco.terra',
-#' eco.fresh', 'eco.marine') are too coarse for a given geographic region
-#' (e.g., for local studies) or a shapefile of finer environmental details is
-#' needed. The classes are calculated with the 'Clustering Large Applications'
-#' method [\code{clara()} from the cluster R \code{package}], which recognize
-#' patterns and relationships existing in spatial data, and classify it into
-#' clusters.
-#' @return \code{tif} or \code{shp} file.
+#' @param env Environmental raster stack. Accepted classes are
+#' \code{SpatRaster}, \code{RasterBrick}, and \code{RasterStack}.
+#' @param nclass Numeric number of environmental classes to create.
+#' @param path Optional directory where the output should be written. Leave
+#' empty to return the result directly.
+#' @param name Output file name without extension when \code{path} is used.
+#' @param format Output format for polygon results: \code{"SpatVector"}
+#' (default) or \code{"sf"}.
+#' @param raster Logical. Should the output remain a raster instead of being
+#' converted to polygons? Default is \code{FALSE}.
+#' @param ... Additional arguments passed to \code{cluster::clara()}.
+#' @details This function is useful when the packaged ecoregion layers are too
+#' coarse for a study area or when a custom environmental regionalization is
+#' needed. Clusters are created with the CLARA algorithm on the multivariate
+#' environmental space represented by \code{env}.
+#' @return If \code{path == ""}, returns the generated raster or polygon object.
+#' Otherwise, writes the output to disk as a GeoTIFF or Shapefile.
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
 #' Thuiller, W. (2021). Novel methods to correct for observer and sampling bias

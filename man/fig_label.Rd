@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers.R
 \name{fig_label}
 \alias{fig_label}
-\title{Custom figure label plot}
+\title{Draw a Figure Label at a Standard Position}
 \usage{
 fig_label(
   text,
@@ -14,19 +14,25 @@ fig_label(
 )
 }
 \arguments{
-\item{text}{Parameter 1}
+\item{text}{Label text.}
 
-\item{region}{Parameter 2}
+\item{region}{Character string specifying whether the label should be placed
+relative to the \code{"figure"}, \code{"plot"}, or \code{"device"}.}
 
-\item{pos}{Parameter 3}
+\item{pos}{Character string giving the label position.}
 
-\item{cex}{Parameter 5}
+\item{cex}{Optional text expansion factor.}
 
-\item{margin}{Parameter 6}
+\item{margin}{Numeric margin used to offset the label from the selected
+boundary.}
 
-\item{...}{Parameter 7}
+\item{...}{Additional arguments passed to \code{graphics::text()}.}
+}
+\value{
+Invisibly returns the plotting coordinates used to position the
+label.
 }
 \description{
-Custom figure label plot
+Draw a Figure Label at a Standard Position
 }
 \keyword{internal}

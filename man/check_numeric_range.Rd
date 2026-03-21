@@ -2,18 +2,18 @@
 % Please edit documentation in R/helpers.R
 \name{check_numeric_range}
 \alias{check_numeric_range}
-\title{Check if argument is a numeric vector of exact length}
+\title{Check Whether an Argument Is a Numeric Vector of Fixed Length}
 \usage{
 check_numeric_range(x, name, len)
 }
 \arguments{
-\item{x}{Argument value}
+\item{x}{Argument value.}
 
-\item{name}{Argument name for error reporting}
+\item{name}{Argument name used in error messages.}
 
-\item{len}{Expected length of numeric vector}
+\item{len}{Expected length of the numeric vector.}
 }
 \description{
-Check if argument is a numeric vector of exact length
+Check Whether an Argument Is a Numeric Vector of Fixed Length
 }
 \keyword{internal}

@@ -2,16 +2,16 @@
 % Please edit documentation in R/helpers.R
 \name{check_logical}
 \alias{check_logical}
-\title{Check if argument is a non-missing logical scalar}
+\title{Check Whether an Argument Is a Logical Scalar}
 \usage{
 check_logical(x, name)
 }
 \arguments{
-\item{x}{Argument value}
+\item{x}{Argument value.}
 
-\item{name}{Argument name for error reporting}
+\item{name}{Argument name used in error messages.}
 }
 \description{
-Check if argument is a non-missing logical scalar
+Check Whether an Argument Is a Logical Scalar
 }
 \keyword{internal}

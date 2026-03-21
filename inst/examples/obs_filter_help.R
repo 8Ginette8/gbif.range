@@ -1,3 +1,4 @@
+\dontrun{
 # Load data
 shp.path <- paste0(
 	system.file(package = "gbif.range"),
@@ -10,7 +11,7 @@ rst.path <- paste0(
 )
 rst <- terra::rast(rst.path)
 
-# Downloading in the European Alps the observations of two plant species
+# Download observations for two plant species in the European Alps
 obs.arcto <- get_gbif(
 	sp_name = "Arctostaphylos alpinus",
 	geo = shp.lonlat
@@ -35,7 +36,7 @@ graphics::points(
 	cex = 1
 )
 
-# rbind both datasets
+# Combine both datasets
 both.sp <- rbind(obs.arcto,obs.saxi)
 
 # Run function
@@ -55,3 +56,4 @@ graphics::points(
 	col = "#99000d50",
 	cex = 1
 )
+}
