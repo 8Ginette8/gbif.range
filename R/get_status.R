@@ -130,7 +130,7 @@ get_status <- function(sp_name = NULL,
           }
         }
 
-        if (!all(n.test)){
+        if (!base::all(n.test)){
           pp <- paste(id.crit[!n.test],collapse = ", ")
           warning(
             paste0(
@@ -145,7 +145,7 @@ get_status <- function(sp_name = NULL,
     # Continue with or without the supplied criteria
     if (nrow(bone.search) > 1){
 
-      if (all(!bone.search$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
+      if (base::all(!bone.search$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
         cat("Not match found...", "\n")
         return(e.output)
 
@@ -161,7 +161,7 @@ get_status <- function(sp_name = NULL,
 
           # If only subspecies and variety are found,
           # we need to (default) prioritize
-          if (all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
+          if (base::all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
 
             if ("var." %in% strsplit(sp_name," ")[[1]]){
               bone.search <- s.keep[s.keep$rank %in% "VARIETY",]
