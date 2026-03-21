@@ -34,7 +34,7 @@ terra::values(r2) <- rep(seq(0, 1, length.out = 20), times = 20)
 env <- c(r1, r2)
 
 # Create custom ecoregions and a small occurrence dataset
-eco <- make_ecoreg(env = env, nclass = 4, raster = FALSE)
+eco <- make_ecoreg(env = env, nclass = 4)
 occ <- data.frame(
   decimalLongitude = c(0.5, 1.2, 2.4, 3.6, 2.8, 6.0, 7.2, 7.4, 7.6, 8.8),
   decimalLatitude = c(1.0, 0.1, 2.3, 2.5, 2.7, 5.0, 7.1, 7.3, 6.5, 7.7)
@@ -50,24 +50,20 @@ range_obj <- get_range(
 terra::plot(range_obj$rangeOutput, col=3, main = "Range Map")
 # Plot the occurrence points
 points(occ, pch="x")
-# Plot the ecoregions
-plot(eco, add = TRUE)
 
 \dontrun{
 # Typical online workflow with GBIF data
 obs <- get_gbif("Panthera tigris", grain = 25)
-status <- get_status("Panthera tigris")
+# obs <- obs[obs$taxonRank=="SPECIES",]
+# status <- get_status("Panthera tigris")
 eco_terra <- read_ecoreg("eco_terra")
 tiger_range <- get_range(
   occ_coord = obs,
   ecoreg = eco_terra,
   ecoreg_name = "ECO_NAME"
 )
-plot(tiger_range$rangeOutput, col=3, main = paste("Range Map"))
+plot(tiger_range$rangeOutput, col=3, main = paste("Range:", obs$scientificName[1]))
 points(obs$decimalLongitude, obs$decimalLatitude,  pch="x", col=rgb(1, 0, 1, 0.2))
-### crop eco_terra to the range of the species
-# eco_terra_cropped <- terra::crop(eco_terra, tiger_range$rangeOutput)
-# plot(eco_terra_cropped, add = TRUE)
 }
 }
 \seealso{
