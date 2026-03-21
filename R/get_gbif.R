@@ -84,7 +84,17 @@
 #' \code{CoordinateCleaner::cd_round()}.
 #' @details The function follows the same taxonomic matching logic used by the
 #' GBIF website and retrieves records linked to the accepted name and its
-#' synonyms.
+#' synonyms. Internally, the input name is first resolved against the GBIF
+#' backbone taxonomy. If the matched name is a synonym, the download is carried
+#' out with the corresponding accepted GBIF taxon key rather than the synonym
+#' key itself.
+#'
+#' This means that \code{get_gbif()} harmonizes the taxon concept used for the
+#' query, but it does not rewrite every returned record to a single final name.
+#' The output keeps the original GBIF taxonomic fields for each record,
+#' including \code{scientificName}, while also retaining the harmonized fields
+#' \code{acceptedScientificName}, \code{acceptedTaxonKey}, and
+#' \code{taxonomicStatus}.
 #' 
 #' If the requested extent contains many records, the query is fragmented into
 #' a set of tiles so that individual API calls remain manageable. By default,
@@ -114,6 +124,13 @@
 #' \code{filter_log}, which records how many rows were removed at each
 #' filtering step, and \code{no_xy}, which stores records without coordinates
 #' when they are requested.
+#'
+#' Taxonomic harmonization is reflected in the output columns rather than by
+#' replacing all names with a single accepted label. In particular,
+#' \code{scientificName} stores the record-level GBIF name, whereas
+#' \code{acceptedScientificName}, \code{acceptedTaxonKey}, and
+#' \code{taxonomicStatus} expose the accepted GBIF interpretation used by the
+#' query.
 #' @references
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger,
 #' D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and
@@ -130,7 +147,8 @@
 #'
 #' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
 #' (2022). Terra - CRAN
-#' @seealso The \code{rgbif} package for more general GBIF retrieval workflows
+#' @seealso \code{get_status()} to inspect the accepted name and synonym mapping
+#' returned by GBIF; \code{rgbif} for more general GBIF retrieval workflows;
 #' and \code{CoordinateCleaner} for more extensive occurrence cleaning.
 #' @example inst/examples/get_gbif_help.R
 #' @importFrom terra ext vect
