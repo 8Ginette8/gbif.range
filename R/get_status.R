@@ -7,6 +7,11 @@
 #' accepted name and synonyms, and return the associated IUCN status when
 #' available.
 #'
+#' Use \code{get_status()} before \code{get_gbif()} when you want to inspect
+#' how GBIF resolves an input name, which name is treated as the accepted
+#' backbone taxon, and which synonyms are included in the taxon concept used
+#' for occurrence retrieval.
+#'
 #' @param sp_name Character string with the species name. Scientific names at
 #' genus-species level are expected; fuzzy matching is available when
 #' \code{search = FALSE}.
@@ -28,15 +33,27 @@
 #' @param all Logical. If \code{FALSE} (default), return the accepted name and
 #' its synonyms. If \code{TRUE}, also include children and related names that
 #' are not used by \code{get_gbif()}.
+#' @details When \code{all = FALSE}, the returned rows correspond to the
+#' accepted name and synonyms linked to the accepted GBIF taxon key. This is
+#' the same taxon concept used internally by \code{get_gbif()}.
+#'
+#' When \code{all = TRUE}, the output is expanded with \code{CHILDREN} and
+#' \code{RELATED} names returned by the GBIF backbone. These extra rows are
+#' useful for taxonomic inspection, but they are not included when
+#' \code{get_gbif()} downloads occurrence records.
 #' @return A data frame with the columns \code{canonicalName}, \code{rank},
 #' \code{gbif_key}, \code{scientificName}, \code{gbif_status},
 #' \code{Genus}, \code{Family}, \code{Order}, \code{Class},
-#' \code{Phylum}, \code{IUCN_status}, and \code{sp_nameMatch}.
+#' \code{Phylum}, \code{IUCN_status}, and \code{sp_nameMatch}. The row with
+#' \code{gbif_status = "ACCEPTED"} identifies the accepted GBIF taxon concept
+#' used by \code{get_gbif()}, while \code{sp_nameMatch} marks the row that most
+#' closely matches the submitted input name.
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 #' global biodiversity information facility API. 10.5281/zenodo.6023735
-#' @seealso The \code{rgbif} package for more general approaches to querying
-#' the GBIF backbone taxonomy.
+#' @seealso \code{get_gbif()} to download occurrences for the accepted taxon
+#' concept returned here; the \code{rgbif} package for more general approaches
+#' to querying the GBIF backbone taxonomy.
 #' @example inst/examples/get_status_help.R
 #' @importFrom rgbif name_backbone name_usage
 #' @importFrom methods is

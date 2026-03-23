@@ -5,6 +5,8 @@ Depends: R (>= 4.0.0)
 Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry,
  cluster, rnaturalearth, mclust, methods, utils, zip, class,
  NMOF
+Suggests:
+    testthat (>= 3.0.0)
 Description: Provides a workflow to retrieve, filter, and analyze GBIF
  occurrence records and to generate ecologically informed species
  range maps using downloaded or custom ecoregions. The package
@@ -17,6 +19,7 @@ BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
+Config/testthat/edition: 3
 Authors@R: c( person("Yohann", "Chauvier", role = c("cre","aut"), email
  = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
  person("Oskar", "Hagen", role = c("aut"), email =

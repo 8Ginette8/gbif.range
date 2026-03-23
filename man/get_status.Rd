@@ -51,18 +51,70 @@ are not used by \code{get_gbif()}.}
 A data frame with the columns \code{canonicalName}, \code{rank},
 \code{gbif_key}, \code{scientificName}, \code{gbif_status},
 \code{Genus}, \code{Family}, \code{Order}, \code{Class},
-\code{Phylum}, \code{IUCN_status}, and \code{sp_nameMatch}.
+\code{Phylum}, \code{IUCN_status}, and \code{sp_nameMatch}. The row with
+\code{gbif_status = "ACCEPTED"} identifies the accepted GBIF taxon concept
+used by \code{get_gbif()}, while \code{sp_nameMatch} marks the row that most
+closely matches the submitted input name.
 }
 \description{
 Query the GBIF backbone taxonomy for a species name, report the matched
 accepted name and synonyms, and return the associated IUCN status when
 available.
 }
+\details{
+Use \code{get_status()} before \code{get_gbif()} when you want to inspect
+how GBIF resolves an input name, which name is treated as the accepted
+backbone taxon, and which synonyms are included in the taxon concept used
+for occurrence retrieval.
+
+When \code{all = FALSE}, the returned rows correspond to the
+accepted name and synonyms linked to the accepted GBIF taxon key. This is
+the same taxon concept used internally by \code{get_gbif()}.
+
+When \code{all = TRUE}, the output is expanded with \code{CHILDREN} and
+\code{RELATED} names returned by the GBIF backbone. These extra rows are
+useful for taxonomic inspection, but they are not included when
+\code{get_gbif()} downloads occurrence records.
+}
 \examples{
 \dontrun{
-# Get the taxonomy and IUCN status of Cypripedium calceolus
-# (with and without related names)
-get_status("Cypripedium calceolus", all = FALSE)
+# Inspect how GBIF resolves the queried name before downloading records
+tax <- get_status("Cypripedium calceolus", all = FALSE)
+
+# Keep the accepted name and synonyms used by get_gbif()
+tax[
+  tax$gbif_status \%in\% c("ACCEPTED", "SYNONYM"),
+  c("scientificName", "gbif_status", "gbif_key", "sp_nameMatch", "IUCN_status")
+]
+
+# The ACCEPTED row identifies the GBIF taxon concept used by get_gbif()
+accepted_name <- tax$scientificName[tax$gbif_status == "ACCEPTED"][1]
+accepted_key <- tax$gbif_key[tax$gbif_status == "ACCEPTED"][1]
+
+# Download occurrences for the same input name
+occ <- get_gbif(
+  "Cypripedium calceolus",
+  has_xy = TRUE,
+  verbose = FALSE
+)
+
+# Inspect the returned record-level and accepted taxonomy side by side
+head(occ[
+  ,
+  c(
+    "input_search",
+    "scientificName",
+    "acceptedScientificName",
+    "taxonomicStatus",
+    "acceptedTaxonKey"
+  )
+])
+
+# The harmonized taxon key in the occurrences should match get_status()
+unique(occ$acceptedTaxonKey)
+accepted_key
+
+# Use all = TRUE only if you also want children and related names for review
 get_status("Cypripedium calceolus", all = TRUE)
 }
 }
@@ -71,6 +123,7 @@ Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 global biodiversity information facility API. 10.5281/zenodo.6023735
 }
 \seealso{
-The \code{rgbif} package for more general approaches to querying
-the GBIF backbone taxonomy.
+\code{get_gbif()} to download occurrences for the accepted taxon
+concept returned here; the \code{rgbif} package for more general approaches
+to querying the GBIF backbone taxonomy.
 }
