@@ -1,4 +1,5 @@
 test_that("make_ecoreg creates offline polygon ecoregions", {
+  # Two small rasters are enough to exercise the CLARA-based partitioning code.
   r1 <- terra::rast(
     ncols = 4,
     nrows = 4,
@@ -16,6 +17,7 @@ test_that("make_ecoreg creates offline polygon ecoregions", {
   set.seed(1)
   ecoreg <- make_ecoreg(env = env, nclass = 2, raster = FALSE)
 
+  # Polygon output should include the fields created by make_ecoreg().
   expect_true(inherits(ecoreg, "SpatVector"))
   expect_true(all(c("CLARA", "EcoRegion") %in% names(ecoreg)))
   expect_gte(nrow(as.data.frame(ecoreg)), 1)
