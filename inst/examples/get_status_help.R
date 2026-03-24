@@ -1,12 +1,11 @@
 \dontrun{
 # Inspect how GBIF resolves the queried name before downloading records
+# Get the taxonomy and IUCN status of Cypripedium calceolus from GBIF
 tax <- get_status("Cypripedium calceolus", all = FALSE)
 
 # Keep the accepted name and synonyms used by get_gbif()
-tax[
-  tax$gbif_status %in% c("ACCEPTED", "SYNONYM"),
-  c("scientificName", "gbif_status", "gbif_key", "sp_nameMatch", "IUCN_status")
-]
+tax[  tax$gbif_status %in% c("ACCEPTED", "SYNONYM"),
+  c("scientificName", "gbif_status", "gbif_key", "sp_nameMatch", "IUCN_status")]
 
 # The ACCEPTED row identifies the GBIF taxon concept used by get_gbif()
 accepted_name <- tax$scientificName[tax$gbif_status == "ACCEPTED"][1]
