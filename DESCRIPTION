@@ -6,6 +6,9 @@ Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry,
  cluster, rnaturalearth, mclust, methods, utils, zip, class,
  NMOF
 Suggests:
+    data.table,
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Description: Provides a workflow to retrieve, filter, and analyze GBIF
  occurrence records and to generate ecologically informed species
@@ -19,6 +22,7 @@ BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 Authors@R: c( person("Yohann", "Chauvier", role = c("cre","aut"), email
  = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
@@ -40,4 +44,4 @@ Collate: 'make_tiles.R' 'get_gbif.R' 'get_status.R' 'get_doi.R'
  'obs_filter.R' 'get_range.R' 'conv_function.R' 'get_gbif_count.R'
  'make_ecoreg.R' 'get_ecoreg.R' 'evaluate_range.R' 'data.R'
  'make_blocks.R' 'optme.R' 'cv_range.R' 'classes.R' 'helpers.R'
- 'gbif.range-package.R'
+ 'gbif_file_workflows.R' 'gbif.range-package.R'

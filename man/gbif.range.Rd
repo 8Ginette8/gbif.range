@@ -22,8 +22,11 @@ and (5) evaluate those maps with \code{evaluate_range()} or
 \code{cv_range()}.
 
 Additional helpers include \code{get_doi()} for creating GBIF-derived
-dataset DOIs, \code{obs_filter()} for grid-based thinning, and
-\code{make_tiles()} for splitting study extents into GBIF-ready polygons.
+dataset DOIs, \code{obs_filter()} for grid-based thinning,
+\code{make_tiles()} for splitting study extents into GBIF-ready polygons,
+and a disk-based workflow built around \code{split_gbif_by_species()},
+\code{species_csvs_to_ranges()}, and \code{read_range_rds()} for very large
+downloaded GBIF tables.
 }
 \examples{
 # -------------------------------------------------------------------------
@@ -152,17 +155,15 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   range_one <- read_range_rds(range_summary$range_file[1])
   range_two <- read_range_rds(range_summary$range_file[2])
 
-  plot(
+  terra::plot(
     range_one$rangeOutput,
     col = rgb(0.1, 0.6, 0.2, 0.5),
-    border = "darkgreen",
     main = "Two example ranges"
   )
-  plot(
+  terra::plot(
     range_two$rangeOutput,
     add = TRUE,
-    col = rgb(0.8, 0.3, 0.1, 0.5),
-    border = "firebrick"
+    col = rgb(0.8, 0.3, 0.1, 0.5)
   )
 }
 }

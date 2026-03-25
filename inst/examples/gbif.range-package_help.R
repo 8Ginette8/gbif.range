@@ -124,17 +124,15 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   range_one <- read_range_rds(range_summary$range_file[1])
   range_two <- read_range_rds(range_summary$range_file[2])
 
-  plot(
+  terra::plot(
     range_one$rangeOutput,
     col = rgb(0.1, 0.6, 0.2, 0.5),
-    border = "darkgreen",
     main = "Two example ranges"
   )
-  plot(
+  terra::plot(
     range_two$rangeOutput,
     add = TRUE,
-    col = rgb(0.8, 0.3, 0.1, 0.5),
-    border = "firebrick"
+    col = rgb(0.8, 0.3, 0.1, 0.5)
   )
 }
 }

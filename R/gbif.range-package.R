@@ -14,8 +14,11 @@
 #' \code{cv_range()}.
 #'
 #' Additional helpers include \code{get_doi()} for creating GBIF-derived
-#' dataset DOIs, \code{obs_filter()} for grid-based thinning, and
-#' \code{make_tiles()} for splitting study extents into GBIF-ready polygons.
+#' dataset DOIs, \code{obs_filter()} for grid-based thinning,
+#' \code{make_tiles()} for splitting study extents into GBIF-ready polygons,
+#' and a disk-based workflow built around \code{split_gbif_by_species()},
+#' \code{species_csvs_to_ranges()}, and \code{read_range_rds()} for very large
+#' downloaded GBIF tables.
 #'
 #' @name gbif.range
 #' @aliases gbif.range gbif.range-package package-gbif.range

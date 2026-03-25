@@ -1,12 +1,21 @@
 occ_fixture_path <- function() {
-  # Keep the CSV fixture under tests/testthat so R CMD check sees it as test data.
-  testthat::test_path("fixtures", "occ_example_2sps.csv")
+  # Use the packaged extdata fixture as the single source of truth.
+  inst_path <- system.file("extdata", "occ_example_2sps.csv", package = "gbif.range")
+  if (nzchar(inst_path)) {
+    return(inst_path)
+  }
+
+  # During source-tree tests the package may not yet be installed, so fall back
+  # to the repository copy under inst/extdata.
+  testthat::test_path("..", "..", "inst", "extdata", "occ_example_2sps.csv")
 }
 
 load_occ_fixture <- function() {
-  # Preserve original column names because downstream package code expects them.
+  # Preserve original column names because downstream package code expects them,
+  # and read the GBIF-style file exactly as a tab-delimited export.
   utils::read.delim(
     occ_fixture_path(),
+    sep = "\t",
     check.names = FALSE,
     stringsAsFactors = FALSE
   )
