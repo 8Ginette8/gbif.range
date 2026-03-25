@@ -37,6 +37,8 @@ The workflow is built around three functions:
 - `species_csvs_to_ranges()` to read those files sequentially and build one range per species,
 - `read_range_rds()` to read the saved range outputs back from disk.
 
+This workflow is meant for the point where direct credential-free GBIF retrieval is no longer the most practical option. For many single-species or moderate-volume tasks, `get_gbif()` is enough. For very large downloaded exports, working from files on disk is usually the better choice.
+
 ## Why the workflow is split into two steps
 
 `get_range()` is intentionally a single-species function. That is scientifically sensible, because range inference depends on one focal set of occurrences and one associated taxon concept at a time.
@@ -47,6 +49,8 @@ For large multi-species downloads, the package therefore separates file handling
 2. then process those files one by one.
 
 This design keeps peak memory use low and makes intermediate files easy to inspect, clean, archive, or parallelize outside R if needed.
+
+It also keeps the biological interpretation clean. Each file still corresponds to one focal GBIF taxon key, and each range is then inferred with the same `get_range()` machinery described in Part 1.
 
 ## Example data
 
@@ -86,6 +90,8 @@ knitr::kable(split_summary[, c("species_name", "n_records", "species_file")], al
 A few implementation details are worth highlighting.
 
 The splitter reads only the requested columns, not the full source table. It keeps the file extension as `.csv` for convenience, but the files remain tab-delimited by default. This preserves GBIF-style exports while still producing species-specific files that are easy to browse or reuse.
+
+This is also the right place to simplify the table before any range-building starts. In a production workflow, this step can be used to retain only the columns needed for the later analysis and to create a species-level file archive that is easier to inspect than one monolithic GBIF export.
 
 ## Step 2: build ranges sequentially from disk
 
@@ -139,6 +145,8 @@ knitr::kable(range_summary[, c("species_name", "n_points", "occ_file", "range_fi
 
 Internally, `species_csvs_to_ranges()` reduces each species file to the minimal structure expected by `get_range()`: one focal species plus decimal longitude and latitude. It can also save those minimal occurrence tables to disk, which is useful if you want to inspect exactly what was passed to `get_range()` after deduplication.
 
+Once the occurrences are split to species level, it becomes straightforward to rerun the exact same batch with different ecoregions, different range arguments, or stricter deduplication while keeping the raw downloaded export unchanged.
+
 ## The built-in ecoregion shortcut
 
 The same workflow can resolve packaged ecoregions internally:
@@ -154,6 +162,47 @@ range_summary <- species_csvs_to_ranges(
 ```
 
 This is the most convenient option when your downloaded table and your intended range product both target a broad terrestrial workflow.
+
+It is also the most natural way to move from a large terrestrial GBIF export to a batch of ecoregion-constrained range maps without having to pre-load the ecoregion object yourself.
+
+## A production-style terrestrial batch
+
+The offline vignette uses a simple polygon because it must build quickly and without network access. A real downloaded terrestrial workflow would normally look more like this:
+
+```{r production-batch, eval = FALSE}
+split_summary <- split_gbif_by_species(
+  input_file = "gbif_download.tsv",
+  outdir = "species_occurrences",
+  chunk_size = 1e5,
+  sep_in = "\t",
+  sep_out = "\t",
+  overwrite = TRUE
+)
+
+range_summary <- species_csvs_to_ranges(
+  species_dir = "species_occurrences",
+  ecoreg = "eco_terra",
+  ecoreg_name = "ECO_NAME",
+  outdir = "species_ranges",
+  occ_outdir = "species_occurrences_min",
+  occ_save_as = "tsv",
+  range_save_as = "rds",
+  overwrite = TRUE
+)
+```
+
+This is the clearest batch version of the main terrestrial workflow: one GBIF export in, one species file per taxon, one saved range per taxon.
+
+## Inspect one species file before building ranges
+
+One advantage of the split-first design is that you can inspect or clean individual species files before generating ranges. This is often useful when testing a new workflow on a few taxa before launching a full batch.
+
+```{r inspect-split-file, eval = has_data_table}
+first_species_file <- split_summary$species_file[1]
+utils::head(utils::read.delim(first_species_file, sep = "\t", stringsAsFactors = FALSE))
+```
+
+That inspection step is simple, but it is often the moment where issues such as missing coordinates, duplicated points, or unexpected names become obvious.
 
 ## Step 3: read and inspect the saved ranges
 
@@ -196,6 +245,8 @@ First, when a direct in-memory call to `get_gbif()` is not appropriate because t
 Second, when a large multi-species table needs to be checked, cleaned, or archived at the species level before range inference.
 
 Third, when the same species-specific occurrence files need to be processed repeatedly with different `get_range()` settings, ecoregions, or evaluation schemes.
+
+The third point matters scientifically, not just computationally. It makes parameter sensitivity analyses much cleaner, because you can rerun the same archived species files under alternative ecoregion layers or buffering choices without changing the underlying occurrence input.
 
 ## Take-home message
 

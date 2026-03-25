@@ -60,9 +60,11 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 You can install the development version from GitHub with (make sure the R package `remotes` is up to date):
 
 ``` r
-remotes::install_github("8Ginette8/gbif.range")
+remotes::install_github("8Ginette8/gbif.range", build_vignettes = TRUE)
 library(gbif.range)
 ```
+
+If you install from GitHub or a local source tree without `build_vignettes = TRUE`, the package will load normally but `browseVignettes("gbif.range")` will not find the workflow vignettes.
 
 ## Vignettes
 
@@ -81,6 +83,8 @@ vignette("ecoregion-constrained-range-inference", package = "gbif.range")
 vignette("gbif-retrieval-and-taxonomy", package = "gbif.range")
 vignette("large-downloaded-gbif-tables", package = "gbif.range")
 ```
+
+If they are not found after a GitHub or local install, reinstall with `build_vignettes = TRUE`, or install the built source tarball with `R CMD INSTALL`.
 
 ## Example
 

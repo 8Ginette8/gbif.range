@@ -18,3 +18,5 @@ inst/extdata/downloads/*
 *.code-workspace
 *.Rcheck/
 *.tar.gz
+.tmp*
+.temp*

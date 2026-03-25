@@ -11,3 +11,5 @@
 ^\.Rbuildignore$
 ^tools/validate-collate\.R$
 ^gbif\.range\.code-workspace$
+^\.tmp.*$
+^\.temp.*$

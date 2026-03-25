@@ -37,6 +37,8 @@ This vignette covers the package components that sit upstream of range inference
 - `make_tiles()` to build explicit GBIF geometry tiles,
 - `get_doi()` to turn one or more downloads into a citable GBIF-derived DOI.
 
+The examples below follow a practical sequence that works well in real analyses: resolve taxonomy first, estimate likely download size second, and only then choose the most appropriate retrieval strategy for the spatial scale and record volume of the analysis.
+
 ## Why taxonomy comes first
 
 In `gbif.range`, taxonomy is not an afterthought. The package uses the GBIF backbone to decide which accepted taxon concept a query refers to and which synonyms belong to that concept.
@@ -52,6 +54,19 @@ When `all = FALSE`, the output is deliberately close to the logic used by `get_g
 
 The practical consequence is important: `get_gbif()` harmonizes the query to the accepted GBIF taxon key, but the returned occurrence table still preserves both record-level and accepted-name fields.
 
+## Strict versus permissive name matching
+
+An important distinction is controlled by `search`. With `search = TRUE`, `get_gbif()` expects a GBIF backbone match for the focal taxon concept. With `search = FALSE`, the function becomes more permissive and can return records for fuzzy matches or higher-rank names.
+
+```{r search-logic, eval = FALSE}
+get_gbif("Panthera tigris", search = TRUE)      # records for the tiger concept
+get_gbif("Panthera tigriiis", search = TRUE)    # typically no records
+get_gbif("Panthera tigriiis", search = FALSE)   # permissive fuzzy retrieval
+get_gbif("Acer", search = FALSE)                # higher-rank retrieval
+```
+
+For most single-species analyses the strict setting is preferable, because it keeps the biological interpretation clear. The permissive mode is more appropriate when the aim is exploratory retrieval, manual inspection, or broader higher-rank data collection.
+
 ## Count before download
 
 For broad extents or common taxa, a quick count helps you decide whether a direct retrieval is appropriate:
@@ -65,6 +80,8 @@ This is particularly useful if you need to decide between:
 - a direct `get_gbif()` call,
 - a more strongly filtered call with a stricter `grain` or `occ_samp`,
 - or a downloaded GBIF export that will later be processed with the disk-based batch workflow described in Part 3.
+
+In practice, this is the quickest way to decide whether a direct `get_gbif()` call remains convenient or whether the project has crossed into the "download first, process on disk later" regime.
 
 ## Credential-free GBIF retrieval
 
@@ -93,6 +110,33 @@ The arguments most often worth adjusting are:
 - `time_period`, if the analysis targets a defined time window,
 - `occ_samp`, if the geographic extent is so large that a full retrieval is unnecessary or impractical.
 
+These arguments have different roles. `grain` is the main spatial-quality filter. `basis`, `establishment`, and related arguments define which kinds of records are biologically acceptable. `occ_samp` is the pragmatic scaling argument when a full credential-free retrieval would be too slow or too large for the immediate task.
+
+## A marine large-extent example
+
+*Delphinus delphis* is a good example of a case where record volume becomes a practical constraint. The point is not that marine workflows are special inside the package, but that large extents can require more deliberate choices about sampling and ecoregions.
+
+```{r marine-example, eval = FALSE}
+# Retrieve a manageable subsample per internally generated tile.
+obs_delphis <- get_gbif(
+  sp_name = "Delphinus delphis",
+  occ_samp = 1000
+)
+
+# Inspect the accepted name and all related names.
+get_status("Delphinus delphis", all = TRUE)
+
+# Build a marine range from the packaged ecoregions.
+eco_marine <- read_ecoreg("eco_marine")
+range_delphis <- get_range(
+  occ_coord = obs_delphis,
+  ecoreg = eco_marine,
+  ecoreg_name = "ECOREGION"
+)
+```
+
+This is exactly the kind of analysis where `get_gbif_count()` is useful upstream. If the expected volume is extremely large and the project targets many taxa, the disk-based workflow in Part 3 is usually the more scalable choice.
+
 ## Post-download thinning with `obs_filter()`
 
 The package also includes a lightweight grid-based thinning helper. This is useful when many records fall into the same grid cell and you want one retained observation per species per cell before a downstream analysis.
@@ -120,6 +164,8 @@ head(obs_thin)
 ```
 
 This kind of thinning does not replace ecological cleaning or taxonomic checks, but it can be a useful way to reduce local clustering before plotting or model calibration.
+
+Dense clusters of records can easily dominate visual inspection or downstream calibration even when they add little new geographic information, so this kind of lightweight aggregation is often worth doing early.
 
 ## Explicit tiling workflows
 
