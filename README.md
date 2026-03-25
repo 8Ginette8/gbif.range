@@ -54,6 +54,24 @@ remotes::install_github("8Ginette8/gbif.range")
 library(gbif.range)
 ```
 
+## Vignettes
+
+The package now includes three focused workflow vignettes:
+
+- `ecoregion-constrained-range-inference`: the core logic of `get_range()`, packaged versus custom ecoregions, and evaluation workflows.
+- `gbif-retrieval-and-taxonomy`: synonym-aware GBIF backbone inspection, credential-free retrieval, filtering, tiling, and GBIF-derived DOIs.
+- `large-downloaded-gbif-tables`: the disk-based workflow for splitting large downloaded GBIF tables and generating one range per species.
+
+After installation, open them with:
+
+``` r
+browseVignettes("gbif.range")
+
+vignette("ecoregion-constrained-range-inference", package = "gbif.range")
+vignette("gbif-retrieval-and-taxonomy", package = "gbif.range")
+vignette("large-downloaded-gbif-tables", package = "gbif.range")
+```
+
 ## Example
 
 ### Terrestrial species
