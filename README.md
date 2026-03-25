@@ -21,6 +21,8 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   contains > 100,000 observations and implements 13 post-processing options to flag and clean erroneous records based on custom functions and the
   `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>).
 
+  - `get_gbif_count()`: estimates how many GBIF records are available for a taxon using the same taxonomic matching logic as `get_gbif()`, which is useful before launching large downloads.
+
   - `get_range()`: estimates species ranges based on occurrence data (a `getGBIF` output or a set of coordinates) and
   <a href="https://en.wikipedia.org/wiki/Ecoregion">ecoregion</a> polygons.
 
@@ -44,6 +46,14 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
   - `evaluate_range()`: evaluation function to validate the species ranges with distribution information provided by the user.
 
   - `cv_range()`: cross-validation function to evaluate a `getRange` output based on its occurrence data.
+
+  - `make_blocks()`: helper used to split observations into approximately balanced random or spatially structured folds, for example in cross-validation workflows.
+
+  - `split_gbif_by_species()`: streams a large downloaded GBIF table from disk and writes one occurrence file per species or GBIF taxon key without loading the full table into memory.
+
+  - `species_csvs_to_ranges()`: reads those per-species files sequentially, keeps the minimal occurrence columns needed by `get_range()`, and saves one range output per species.
+
+  - `read_range_rds()`: reads back `.rds` range files created by `species_csvs_to_ranges()` and restores the saved range output for plotting or further analysis.
 
 ## Installation
 
@@ -226,6 +236,45 @@ points(obs.dd[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 ![image](https://github.com/user-attachments/assets/52d63434-f64b-4076-b8bc-d3c03c899137)
 
 Although our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations would have been extracted. Therefore, `occ_samp` must be in this case increased or removed.
+
+### Large downloaded GBIF tables
+
+For very large multi-species GBIF exports already stored on disk, the package also provides a disk-based workflow:
+
+``` r
+gbif_file <- system.file("extdata", "occ_example_4sps.csv", package = "gbif.range")
+
+split_dir <- file.path(tempdir(), "gbif_split")
+range_dir <- file.path(tempdir(), "gbif_ranges")
+
+# Split one downloaded GBIF table into one species file per GBIF key.
+split_summary <- split_gbif_by_species(
+  input_file = gbif_file,
+  outdir = split_dir,
+  chunk_size = 100,
+  sep_in = "\t",
+  sep_out = "\t",
+  overwrite = TRUE,
+  verbose = FALSE
+)
+
+# Build one range per species from those on-disk occurrence files.
+range_summary <- species_csvs_to_ranges(
+  species_dir = split_dir,
+  ecoreg = "eco_terra",
+  ecoreg_name = "ECO_NAME",
+  outdir = range_dir,
+  range_save_as = "rds",
+  overwrite = TRUE,
+  verbose = FALSE
+)
+
+# Read one saved range back from disk.
+rg <- read_range_rds(range_summary$range_file[1])
+terra::plot(rg$rangeOutput)
+```
+
+This disk-based workflow is described in more detail in the vignette `large-downloaded-gbif-tables`.
 
 ## Citation
 
