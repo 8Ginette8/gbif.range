@@ -60,14 +60,16 @@ split_gbif_by_species <- function(
     stop("Input file does not exist: ", input_file)
   }
 
-  dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
-  gbif_remove_existing_files(
+  # Prepare the output directory once so every chunk can append safely.
+  gbif_prepare_output_dir(
     outdir = outdir,
     pattern = "^occurrences_speciesKey_.*\\.csv$",
     overwrite = overwrite,
     label = "species occurrence files"
   )
 
+  # Read the header only once, then reuse the column indices while streaming
+  # the file chunk by chunk.
   header <- data.table::fread(
     input_file,
     sep = sep_in,
@@ -92,10 +94,12 @@ split_gbif_by_species <- function(
   }
   select_idx <- match(cols_to_read, all_cols)
 
+  # Keep one running summary entry per species key across all chunks.
   summary_map <- new.env(parent = emptyenv())
   rows_read <- 0L
 
   repeat {
+    # Read the next slice of the file without loading previous chunks again.
     chunk <- gbif_fread_chunk(
       input_file = input_file,
       sep = sep_in,
@@ -111,6 +115,8 @@ split_gbif_by_species <- function(
     chunk_n <- nrow(chunk)
 
     chunk <- as.data.frame(chunk, stringsAsFactors = FALSE)
+    # Only keyed occurrences with usable coordinates can contribute to a
+    # species-level occurrence file or a downstream range.
     chunk <- chunk[!is.na(chunk$speciesKey), , drop = FALSE]
     if (nrow(chunk) > 0) {
       chunk <- chunk[
@@ -127,6 +133,8 @@ split_gbif_by_species <- function(
         scientific_name = chunk[["scientificName"]]
       )
 
+      # Append rows species by species so the output directory becomes a set of
+      # single-species files ready for get_range()-style processing.
       for (key in unique(chunk$speciesKey)) {
         idx <- which(chunk$speciesKey %in% key)
         species_name <- gbif_choose_name_from_chunk(chunk$species_name[idx], key)
@@ -232,8 +240,7 @@ species_csvs_to_ranges <- function(
     stop("No species files found in: ", species_dir)
   }
 
-  dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
-  gbif_remove_existing_files(
+  gbif_prepare_output_dir(
     outdir = outdir,
     pattern = "^range_speciesKey_.*\\.(rds|gpkg|tif)$",
     overwrite = overwrite,
@@ -241,8 +248,7 @@ species_csvs_to_ranges <- function(
   )
 
   if (!is.null(occ_outdir) && !identical(occ_save_as, "none")) {
-    dir.create(occ_outdir, recursive = TRUE, showWarnings = FALSE)
-    gbif_remove_existing_files(
+    gbif_prepare_output_dir(
       outdir = occ_outdir,
       pattern = "^occ_min_speciesKey_.*\\.(tsv|rds)$",
       overwrite = overwrite,
@@ -250,6 +256,7 @@ species_csvs_to_ranges <- function(
     )
   }
 
+  # Resolve built-in ecoregion shortcuts once, outside the per-species loop.
   ecoreg_object <- gbif_resolve_ecoreg_input(ecoreg)
   summary_list <- vector("list", length(species_files))
 
@@ -257,6 +264,8 @@ species_csvs_to_ranges <- function(
     file_i <- species_files[i]
     file_meta <- gbif_parse_split_filename(file_i)
 
+    # Read only the label and coordinate columns needed to derive a minimal
+    # get_range() input for this species.
     header_i <- data.table::fread(
       file_i,
       sep = sep_in,
@@ -288,6 +297,9 @@ species_csvs_to_ranges <- function(
       candidates = c(file_meta$species_name, occ_i$species, occ_i$scientificName),
       fallback = file_meta$species_key
     )
+
+    # Collapse the per-species file to the minimal structure expected by
+    # get_range(): one focal species plus decimal longitude and latitude.
     occ_min <- gbif_prepare_occ_min(
       occ = occ_i,
       species_name = species_name,
@@ -312,6 +324,8 @@ species_csvs_to_ranges <- function(
       )
     }
 
+    # Delegate the actual range inference to get_range() so the batch workflow
+    # stays a thin file-handling layer over the core mapping algorithm.
     range_obj <- get_range(
       occ_coord = occ_min,
       ecoreg = ecoreg_object,
@@ -343,7 +357,7 @@ species_csvs_to_ranges <- function(
     }
   }
 
-  do.call(rbind, summary_list[!vapply(summary_list, is.null, logical(1))])
+  gbif_bind_batch_summary(summary_list)
 }
 
 
@@ -419,6 +433,25 @@ gbif_require_data_table <- function(caller) {
       "Please install it with install.packages('data.table')."
     )
   }
+}
+
+
+#' Prepare an Output Directory for a Fresh Batch Run
+#'
+#' @param outdir Output directory.
+#' @param pattern File pattern to clear when \code{overwrite = TRUE}.
+#' @param overwrite Logical. Should existing matching files be removed?
+#' @param label Human-readable output label for error messages.
+#' @keywords internal
+#' @noRd
+gbif_prepare_output_dir <- function(outdir, pattern, overwrite, label) {
+  dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
+  gbif_remove_existing_files(
+    outdir = outdir,
+    pattern = pattern,
+    overwrite = overwrite,
+    label = label
+  )
 }
 
 
@@ -734,6 +767,27 @@ gbif_prepare_occ_min <- function(occ, species_name, deduplicate) {
 }
 
 
+#' Bind Non-Empty Per-Species Summaries into One Data Frame
+#'
+#' @param summary_list List of optional summary rows.
+#' @keywords internal
+#' @noRd
+gbif_bind_batch_summary <- function(summary_list) {
+  keep <- !vapply(summary_list, is.null, logical(1))
+  if (!any(keep)) {
+    return(data.frame(
+      species_key = character(),
+      species_name = character(),
+      n_points = integer(),
+      occ_file = character(),
+      range_file = character(),
+      stringsAsFactors = FALSE
+    ))
+  }
+  do.call(rbind, summary_list[keep])
+}
+
+
 #' Save the Minimal Occurrence Table Used for Range Inference
 #'
 #' @param occ_min Minimal occurrence data frame.
@@ -777,6 +831,7 @@ gbif_save_occ_min <- function(occ_min, outdir, species_key, species_name, save_a
 #' @noRd
 gbif_make_rds_safe <- function(x) {
   if (inherits(x, c("SpatVector", "SpatRaster"))) {
+    # terra::wrap() stores a portable representation that can be written to RDS.
     packed <- terra::wrap(x)
     if (inherits(x, "SpatVector")) {
       return(structure(list(packed = packed), class = "gbifPackedSpatVector"))
@@ -814,6 +869,8 @@ gbif_save_range_output <- function(
 
   if (identical(save_as, "rds")) {
     outfile <- file.path(outdir, paste0(stub, ".rds"))
+    # Store a simple list rather than the live reference object so the batch
+    # files can be read back safely in a new R session.
     safe_obj <- list(
       init.args = range_obj$init.args,
       rangeOutput = gbif_make_rds_safe(range_obj$rangeOutput)

@@ -1,0 +1,202 @@
+---
+title: "Part 3: Large Downloaded GBIF Tables"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Part 3: Large Downloaded GBIF Tables}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+
+library(gbif.range)
+
+has_data_table <- requireNamespace("data.table", quietly = TRUE)
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
+```
+
+## Scope
+
+This vignette documents the disk-based workflow for large downloaded GBIF tables. It is intended for situations where occurrences have already been exported from GBIF and the full table is too large or too inconvenient to keep in memory.
+
+The workflow is built around three functions:
+
+- `split_gbif_by_species()` to split a large GBIF table into one file per species or GBIF key,
+- `species_csvs_to_ranges()` to read those files sequentially and build one range per species,
+- `read_range_rds()` to read the saved range outputs back from disk.
+
+## Why the workflow is split into two steps
+
+`get_range()` is intentionally a single-species function. That is scientifically sensible, because range inference depends on one focal set of occurrences and one associated taxon concept at a time.
+
+For large multi-species downloads, the package therefore separates file handling from range inference:
+
+1. first create one species file per GBIF key,
+2. then process those files one by one.
+
+This design keeps peak memory use low and makes intermediate files easy to inspect, clean, archive, or parallelize outside R if needed.
+
+## Example data
+
+The package includes a small GBIF-style offline example under `inst/extdata`. The file is much smaller than a real GBIF export, but it exercises the same workflow.
+
+```{r input-file, eval = has_data_table}
+gbif_file <- ext_file("occ_example_4sps.csv")
+utils::head(utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE))
+```
+
+## Step 1: split the downloaded table by species
+
+The first step is to stream the input file in chunks and write one species file per GBIF key.
+
+```{r split-table, eval = has_data_table}
+batch_root <- file.path(tempdir(), "gbif-range-batch-vignette")
+split_dir <- file.path(batch_root, "split")
+occ_dir <- file.path(batch_root, "occ_min")
+range_dir <- file.path(batch_root, "ranges")
+
+# Start from a clean temporary workspace so the vignette is reproducible.
+unlink(batch_root, recursive = TRUE)
+
+split_summary <- split_gbif_by_species(
+  input_file = gbif_file,
+  outdir = split_dir,
+  chunk_size = 100,
+  sep_in = "\t",
+  sep_out = "\t",
+  overwrite = TRUE,
+  verbose = FALSE
+)
+
+knitr::kable(split_summary[, c("species_name", "n_records", "species_file")], align = "l")
+```
+
+A few implementation details are worth highlighting.
+
+The splitter reads only the requested columns, not the full source table. It keeps the file extension as `.csv` for convenience, but the files remain tab-delimited by default. This preserves GBIF-style exports while still producing species-specific files that are easy to browse or reuse.
+
+## Step 2: build ranges sequentially from disk
+
+For this vignette, the ecoregion layer is a single enclosing polygon built from the extent of the example records. This keeps the example fully offline and lightweight while still exercising the file-based range workflow.
+
+In ordinary use, you would typically replace this with `ecoreg = "eco_terra"` or with a spatial object returned by `read_ecoreg("eco_terra")`.
+
+```{r batch-range-build, eval = has_data_table}
+occ_example <- utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE)
+
+eco_batch <- sf::st_sf(
+  data.frame(ECO_NAME = "batch_demo"),
+  geometry = sf::st_sfc(
+    sf::st_polygon(list(matrix(
+      c(
+        min(occ_example$decimalLongitude) - 5, min(occ_example$decimalLatitude) - 5,
+        max(occ_example$decimalLongitude) + 5, min(occ_example$decimalLatitude) - 5,
+        max(occ_example$decimalLongitude) + 5, max(occ_example$decimalLatitude) + 5,
+        min(occ_example$decimalLongitude) - 5, max(occ_example$decimalLatitude) + 5,
+        min(occ_example$decimalLongitude) - 5, min(occ_example$decimalLatitude) - 5
+      ),
+      ncol = 2,
+      byrow = TRUE
+    ))),
+    crs = 4326
+  )
+)
+
+range_summary <- species_csvs_to_ranges(
+  species_dir = split_dir,
+  ecoreg = eco_batch,
+  ecoreg_name = "ECO_NAME",
+  outdir = range_dir,
+  occ_outdir = occ_dir,
+  occ_save_as = "tsv",
+  range_save_as = "rds",
+  sep_in = "\t",
+  overwrite = TRUE,
+  degrees_outlier = 30,
+  clust_pts_outlier = 2,
+  buff_width_point = 1,
+  buff_incrmt_pts_line = 0.1,
+  buff_width_polygon = 1,
+  raster = FALSE,
+  format = "SpatVector",
+  verbose = FALSE
+)
+
+knitr::kable(range_summary[, c("species_name", "n_points", "occ_file", "range_file")], align = "l")
+```
+
+Internally, `species_csvs_to_ranges()` reduces each species file to the minimal structure expected by `get_range()`: one focal species plus decimal longitude and latitude. It can also save those minimal occurrence tables to disk, which is useful if you want to inspect exactly what was passed to `get_range()` after deduplication.
+
+## The built-in ecoregion shortcut
+
+The same workflow can resolve packaged ecoregions internally:
+
+```{r ecoreg-shortcut, eval = FALSE}
+range_summary <- species_csvs_to_ranges(
+  species_dir = split_dir,
+  ecoreg = "eco_terra",
+  ecoreg_name = "ECO_NAME",
+  outdir = range_dir,
+  overwrite = TRUE
+)
+```
+
+This is the most convenient option when your downloaded table and your intended range product both target a broad terrestrial workflow.
+
+## Step 3: read and inspect the saved ranges
+
+If the range outputs are saved as `.rds`, `read_range_rds()` restores them to a simple list with `init.args` and `rangeOutput`.
+
+```{r read-ranges, eval = has_data_table}
+# Read the first saved range to inspect its structure.
+range_one <- read_range_rds(range_summary$range_file[1])
+names(range_one)
+class(range_one$rangeOutput)
+```
+
+The example below overlays every saved range in the batch summary. This is a useful diagnostic pattern when checking whether a batch run produced geometries with the expected extent and shape.
+
+```{r plot-ranges, eval = has_data_table}
+range_colors <- c(
+  rgb(0.10, 0.40, 0.75, 0.30),
+  rgb(0.85, 0.35, 0.10, 0.30),
+  rgb(0.20, 0.65, 0.30, 0.30),
+  rgb(0.70, 0.65, 0.10, 0.30)
+)
+
+first_range <- read_range_rds(range_summary$range_file[1])
+terra::plot(first_range$rangeOutput, col = range_colors[1], main = "Batch-generated ranges")
+
+if (nrow(range_summary) > 1) {
+  for (i in 2:nrow(range_summary)) {
+    range_i <- read_range_rds(range_summary$range_file[i])
+    terra::plot(range_i$rangeOutput, add = TRUE, col = range_colors[i])
+  }
+}
+```
+
+## Practical advice
+
+The disk-based workflow is most useful in three situations.
+
+First, when a direct in-memory call to `get_gbif()` is not appropriate because the project already relies on downloaded GBIF exports.
+
+Second, when a large multi-species table needs to be checked, cleaned, or archived at the species level before range inference.
+
+Third, when the same species-specific occurrence files need to be processed repeatedly with different `get_range()` settings, ecoregions, or evaluation schemes.
+
+## Take-home message
+
+The disk-based workflow turns `gbif.range` into a practical bridge between very large GBIF exports and species-level range inference. Instead of treating file splitting and range building as an external preprocessing step, the package now provides a coherent, testable, and documented path from a downloaded GBIF table to saved species ranges on disk.

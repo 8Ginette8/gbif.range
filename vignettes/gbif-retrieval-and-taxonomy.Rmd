@@ -1,0 +1,156 @@
+---
+title: "Part 2: GBIF Retrieval, Taxonomy, and Filtering"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Part 2: GBIF Retrieval, Taxonomy, and Filtering}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+
+library(gbif.range)
+
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
+```
+
+## Scope
+
+This vignette covers the package components that sit upstream of range inference:
+
+- `get_status()` to inspect the GBIF backbone taxon concept and synonym set,
+- `get_gbif_count()` to gauge likely download size,
+- `get_gbif()` to retrieve occurrences without GBIF credentials,
+- `obs_filter()` to thin or aggregate occurrences for downstream work,
+- `make_tiles()` to build explicit GBIF geometry tiles,
+- `get_doi()` to turn one or more downloads into a citable GBIF-derived DOI.
+
+## Why taxonomy comes first
+
+In `gbif.range`, taxonomy is not an afterthought. The package uses the GBIF backbone to decide which accepted taxon concept a query refers to and which synonyms belong to that concept.
+
+This is why `get_status()` is often the best first step:
+
+```{r get-status, eval = FALSE}
+tax <- get_status("Cypripedium calceolus", all = FALSE)
+tax
+```
+
+When `all = FALSE`, the output is deliberately close to the logic used by `get_gbif()`: it returns the accepted name and the synonyms that are actually used for occurrence retrieval. When `all = TRUE`, additional related and child names are included for taxonomic inspection, but those extra names are not used to download occurrences.
+
+The practical consequence is important: `get_gbif()` harmonizes the query to the accepted GBIF taxon key, but the returned occurrence table still preserves both record-level and accepted-name fields.
+
+## Count before download
+
+For broad extents or common taxa, a quick count helps you decide whether a direct retrieval is appropriate:
+
+```{r get-gbif-count, eval = FALSE}
+get_gbif_count("Panthera tigris", search = TRUE)
+```
+
+This is particularly useful if you need to decide between:
+
+- a direct `get_gbif()` call,
+- a more strongly filtered call with a stricter `grain` or `occ_samp`,
+- or a downloaded GBIF export that will later be processed with the disk-based batch workflow described in Part 3.
+
+## Credential-free GBIF retrieval
+
+`get_gbif()` is a credential-free wrapper around `rgbif::occ_search()`. The main package contribution is that it combines taxonomic harmonization, geographic tiling of large extents, and a practical sequence of post-download filters in one function.
+
+```{r get-gbif, eval = FALSE}
+# Download global tiger occurrences with the default filters.
+obs_tiger <- get_gbif("Panthera tigris", grain = 100)
+
+# Inspect the accepted name and synonym mapping used internally.
+get_status("Panthera tigris", all = FALSE)
+
+# Retrieve a terrestrial ecoregion layer and build the range.
+eco_terra <- read_ecoreg("eco_terra")
+range_tiger <- get_range(
+  occ_coord = obs_tiger,
+  ecoreg = eco_terra,
+  ecoreg_name = "ECO_NAME"
+)
+```
+
+The arguments most often worth adjusting are:
+
+- `grain`, which filters by coordinate uncertainty and decimal precision,
+- `basis` and `establishment`, which control the allowed record types,
+- `time_period`, if the analysis targets a defined time window,
+- `occ_samp`, if the geographic extent is so large that a full retrieval is unnecessary or impractical.
+
+## Post-download thinning with `obs_filter()`
+
+The package also includes a lightweight grid-based thinning helper. This is useful when many records fall into the same grid cell and you want one retained observation per species per cell before a downstream analysis.
+
+The example below uses the bundled offline GBIF-style example table rather than a live web query.
+
+```{r obs-filter}
+occ_raw <- utils::read.delim(ext_file("occ_example_4sps.csv"), sep = "\t", stringsAsFactors = FALSE)
+occ_raw$input_search <- occ_raw$species
+occ_gbif <- gbif.range:::getGBIF(occ_raw)
+
+# Build a coarse grid that spans the example records.
+grid <- terra::rast(
+  xmin = min(occ_gbif$decimalLongitude) - 1,
+  xmax = max(occ_gbif$decimalLongitude) + 1,
+  ymin = min(occ_gbif$decimalLatitude) - 1,
+  ymax = max(occ_gbif$decimalLatitude) + 1,
+  resolution = 10,
+  crs = "EPSG:4326"
+)
+
+# Keep at most one record per species and grid cell.
+obs_thin <- obs_filter(occ_gbif, grid)
+head(obs_thin)
+```
+
+This kind of thinning does not replace ecological cleaning or taxonomic checks, but it can be a useful way to reduce local clustering before plotting or model calibration.
+
+## Explicit tiling workflows
+
+`get_gbif()` handles tiling internally, but `make_tiles()` is available when you want to create GBIF-ready geometry tiles yourself:
+
+```{r make-tiles, eval = FALSE}
+tiles <- make_tiles(terra::ext(-20, 40, 0, 60), nsize = 5)
+tiles[[1]]
+```
+
+This is mostly useful for custom `rgbif` workflows or explicit diagnostics of how an extent is being subdivided.
+
+## Reproducible GBIF citation
+
+Once one or more `get_gbif()` calls have been made, `get_doi()` can be used to generate a GBIF-derived DOI reference for those records:
+
+```{r get-doi, eval = FALSE}
+doi_url <- get_doi(obs_tiger)
+doi_url
+```
+
+This is a small function, but it is scientifically important because it improves traceability and citation of the exact GBIF-derived datasets used in an analysis.
+
+## Take-home message
+
+The GBIF-facing side of `gbif.range` is built around a clear sequence:
+
+1. inspect the GBIF backbone taxon concept with `get_status()`,
+2. count likely record volume with `get_gbif_count()`,
+3. download filtered occurrences with `get_gbif()`,
+4. optionally thin or aggregate them with `obs_filter()`,
+5. cite the resulting GBIF-derived datasets with `get_doi()`.
+
+That sequence keeps taxonomic interpretation, record selection, and reproducibility visible before range inference begins.
