@@ -1,5 +1,5 @@
 ---
-title: "Part 1: Ecoregion-Constrained Range Inference"
+title: "Part 1: Ecoregion-Based Range Inference"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Part 1: Ecoregion-Constrained Range Inference}
