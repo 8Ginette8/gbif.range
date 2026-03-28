@@ -167,8 +167,10 @@ get_status <- function(sp_name = NULL,
         return(e.output)
 
       } else {
+        # Keep only species, subspecies, and variety matches with ACCEPTED or SYNONYM status
         s.keep <- bone.search[bone.search$rank
                       %in% c("SPECIES", "SUBSPECIES", "VARIETY"),]
+        # If multiple matches, keep only those with ACCEPTED or SYNONYM status
         s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
         if (nrow(s.keep) == 0){
           cat("Not match found...","\n")
@@ -179,6 +181,10 @@ get_status <- function(sp_name = NULL,
           # If only subspecies and variety are found,
           # we need to (default) prioritize
           if (base::all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
+            # print note that only subspecies and variety matches are found
+             Warning(
+              "Only subspecies and variety matches found. ",
+              "Consider using rank = 'SUBSPECIES' or rank = 'VARIETY' to prioritize one of them.")
 
             if ("var." %in% strsplit(sp_name," ")[[1]]){
               bone.search <- s.keep[s.keep$rank %in% "VARIETY",]
