@@ -59,7 +59,7 @@ jobs:
             maj <- v[1]; min <- v[2]; pat <- v[3]
 
             # ---- 6. Bump rules (stable + safe) ----
-            if (pct >= 50) {
+            if (pct >= 200) {
               maj <- maj + 1; min <- 0; pat <- 0
             } else if (pct >= 8) {
               min <- min + 1; pat <- 0
