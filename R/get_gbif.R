@@ -715,7 +715,7 @@ get_gbif <- function(sp_name = NULL,
 		
 		} else {
 			vcat(
-				"\r", "----------------- #", 
+				"\r", "-------------- #", 
 				x, " (", round(x * 100/length(geo.ref), 2),
 				"%...)\033[K",
 				sep=""
@@ -737,7 +737,6 @@ get_gbif <- function(sp_name = NULL,
 		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
 			print(gbif.search[1])
 			warning(
-				"\n",
 				"GBIF query overload or rgbif package error [taxonKey=",
 				sp.key,"]...","\n",sep=""
 			)
