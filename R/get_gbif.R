@@ -649,9 +649,9 @@ get_gbif <- function(sp_name = NULL,
 
 	# Information messages
 	if (occ_samp != 10000) {
-		vcat("\n...GBIF records of ", sp_name, ": download of sample starting...\n")
+		vcat("...GBIF records of ", sp_name, ": download of sample starting...\n")
 	} else {
-		vcat("\n...GBIF records of ", sp_name, ": download starting...\n")
+		vcat("...GBIF records of ", sp_name, ": download starting...\n")
 	}
 
 	# Run the gbif search with the acceptedName per chosen tiles
@@ -718,7 +718,7 @@ get_gbif <- function(sp_name = NULL,
 				"\r", "----------------- #", 
 				x, " (", round(x * 100/length(geo.ref), 2),
 				"%...)\033[K",
-				"\n", sep=""
+				sep=""
 			)
 			try(
 				rgbif::occ_search(
@@ -731,6 +731,7 @@ get_gbif <- function(sp_name = NULL,
 				silent = TRUE
 			)
 		}
+		cat("\n")
 
 		# If problems, just rerun with while with n attempts, otherwise return NULL
 		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
@@ -746,7 +747,7 @@ get_gbif <- function(sp_name = NULL,
 				j <- 0
 				while (class(gbif.search) %in% "try-error" & j < ntries)
 				{
-					vcat("\n","Attempt", j + 1, "...", "\n")
+					vcat("Attempt", j + 1, "...", "\n")
 					j <- j + 1
 					gbif.search <- try(
 						rgbif::occ_search(
@@ -763,12 +764,12 @@ get_gbif <- function(sp_name = NULL,
 
 				if (class(gbif.search) %in% "try-error") {
 					if (error_skip){
-						cat("\n","Attempts to download failed...Returning no results")
+						cat("Attempts to download failed...Returning no results","\n")
 						return(e.output)
 
 					} else {
 						stop(
-							"\n","ERROR (not skipped) for [taxonKey=",sp.key,"]...",
+							"ERROR (not skipped) for [taxonKey=",sp.key,"]...",
 							"\n",sep=""
 						)
 					}
