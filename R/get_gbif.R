@@ -731,13 +731,12 @@ get_gbif <- function(sp_name = NULL,
 				silent = TRUE
 			)
 		}
-		cat("\n")
 
 		# If problems, just rerun with while with n attempts, otherwise return NULL
 		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
 			print(gbif.search[1])
 			warning(
-				"GBIF query overload or rgbif package error [taxonKey=",
+				"\n","GBIF query overload or rgbif package error [taxonKey=",
 				sp.key,"]...","\n",sep=""
 			)
 
