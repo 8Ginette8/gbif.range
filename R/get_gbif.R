@@ -520,6 +520,9 @@ get_gbif <- function(sp_name = NULL,
 
 	## 1) If species records > 10'000, search for the optimum tiles
 	if (!should_use_occ_download && gbif.records > 10000) {
+
+		vcat("\n...Scanning tiles...\n")
+
 		# Start with 10 tiles
 		tile.100 <- make_tiles(geo, ntiles = 10, sext = TRUE)
 		geo.tiles <- tile.100[[1]]
