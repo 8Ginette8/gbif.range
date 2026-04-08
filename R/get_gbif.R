@@ -1139,7 +1139,7 @@ get_gbif <- function(sp_name = NULL,
 		box_width <- max_step_width + max_num_width + 20
 		sep_dash  <- strrep("-", box_width)
 
-		vcat("...Records (XY) filtering summary:\n")
+		vcat("\n","...Records (XY) filtering summary:\n")
 
 		vcat(sep_dash, "\n")
 		print(summary_log, row.names = FALSE)
