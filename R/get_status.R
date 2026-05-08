@@ -182,7 +182,7 @@ get_status <- function(sp_name = NULL,
           # we need to (default) prioritize
           if (base::all(s.keep$rank %in% c("VARIETY", "SUBSPECIES"))){
             # print note that only subspecies and variety matches are found
-             Warning(
+             warning(
               "Only subspecies and variety matches found. ",
               "Consider using rank = 'SUBSPECIES' or rank = 'VARIETY' to prioritize one of them.")
 

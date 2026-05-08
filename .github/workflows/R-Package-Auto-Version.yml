@@ -27,6 +27,7 @@ jobs:
           Rscript -e '
             # ---- 1. Latest tag ----
             tags <- system("git tag --sort=-v:refname", intern=TRUE)
+            tags <- tags[grepl("^v[0-9]+\\.[0-9]+\\.[0-9]+$", tags)]
             tag <- if (length(tags)) tags[1] else "v0.0.0"
 
             # ---- 2. Changed files (ignore docs/tests/vignettes) ----
@@ -58,7 +59,7 @@ jobs:
             maj <- v[1]; min <- v[2]; pat <- v[3]
 
             # ---- 6. Bump rules (stable + safe) ----
-            if (pct >= 30) {
+            if (pct >= 50) {
               maj <- maj + 1; min <- 0; pat <- 0
             } else if (pct >= 8) {
               min <- min + 1; pat <- 0

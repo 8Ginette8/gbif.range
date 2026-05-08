@@ -520,6 +520,9 @@ get_gbif <- function(sp_name = NULL,
 
 	## 1) If species records > 10'000, search for the optimum tiles
 	if (!should_use_occ_download && gbif.records > 10000) {
+
+		vcat("\n...(> 10'000 records) retrieving tiles...\n")
+
 		# Start with 10 tiles
 		tile.100 <- make_tiles(geo, ntiles = 10, sext = TRUE)
 		geo.tiles <- tile.100[[1]]
@@ -646,9 +649,9 @@ get_gbif <- function(sp_name = NULL,
 
 	# Information messages
 	if (occ_samp != 10000) {
-		vcat("\n...GBIF records of ", sp_name, ": download of sample starting...\n")
+		vcat("...GBIF records of ", sp_name, ": download of sample starting...\n")
 	} else {
-		vcat("\n...GBIF records of ", sp_name, ": download starting...\n")
+		vcat("...GBIF records of ", sp_name, ": download starting...\n")
 	}
 
 	# Run the gbif search with the acceptedName per chosen tiles
@@ -712,10 +715,10 @@ get_gbif <- function(sp_name = NULL,
 		
 		} else {
 			vcat(
-				"\r", "----------------- #", 
+				"\r", "------------- #", 
 				x, " (", round(x * 100/length(geo.ref), 2),
 				"%...)\033[K",
-				"\n", sep=""
+				sep=""
 			)
 			try(
 				rgbif::occ_search(
@@ -733,8 +736,7 @@ get_gbif <- function(sp_name = NULL,
 		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
 			print(gbif.search[1])
 			warning(
-				"\n",
-				"GBIF query overload or rgbif package error [taxonKey=",
+				"\n","GBIF query overload or rgbif package error [taxonKey=",
 				sp.key,"]...","\n",sep=""
 			)
 
@@ -743,7 +745,7 @@ get_gbif <- function(sp_name = NULL,
 				j <- 0
 				while (class(gbif.search) %in% "try-error" & j < ntries)
 				{
-					vcat("\n","Attempt", j + 1, "...", "\n")
+					vcat("Attempt", j + 1, "...", "\n")
 					j <- j + 1
 					gbif.search <- try(
 						rgbif::occ_search(
@@ -760,12 +762,12 @@ get_gbif <- function(sp_name = NULL,
 
 				if (class(gbif.search) %in% "try-error") {
 					if (error_skip){
-						cat("\n","Attempts to download failed...Returning no results")
+						cat("Attempts to download failed...Returning no results","\n")
 						return(e.output)
 
 					} else {
 						stop(
-							"\n","ERROR (not skipped) for [taxonKey=",sp.key,"]...",
+							"ERROR (not skipped) for [taxonKey=",sp.key,"]...",
 							"\n",sep=""
 						)
 					}
@@ -1137,7 +1139,7 @@ get_gbif <- function(sp_name = NULL,
 		box_width <- max_step_width + max_num_width + 20
 		sep_dash  <- strrep("-", box_width)
 
-		vcat("...Records (XY) filtering summary:\n")
+		vcat("\n","...Records (XY) filtering summary:\n")
 
 		vcat(sep_dash, "\n")
 		print(summary_log, row.names = FALSE)
