@@ -250,4 +250,4 @@ The third point matters scientifically, not just computationally. It makes param
 
 ## Take-home message
 
-The disk-based workflow turns `gbif.range` into a practical bridge between very large GBIF exports and species-level range inference. Instead of treating file splitting and range building as an external preprocessing step, the package now provides a coherent, testable, and documented path from a downloaded GBIF table to saved species ranges on disk.
+The disk-based workflow turns `gbif.range` into a practical bridge between very large GBIF exports and species-level range inference. Instead of treating file splitting and range building as an external preprocessing step, Gbif.range provides a coherent, testable, and documented path from a downloaded GBIF table to saved species ranges on disk.
