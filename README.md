@@ -28,8 +28,9 @@ _(source: globe image from the Noun Project adapted by LenaCassie-Studio)_
 
   - `read_ecoreg()`: download and read available ecoregion files from different available URL sources. See also associated calls `ecoreg_list`, `get_ecoreg()` and `check_and_get_ecoreg()`.
     
-  - `get_status()`: generates, based on a given species name, its IUCN red list status and a list of all scientific names
-  (accepted, synonyms) found in the GBIF backbone taxonomy. Children and related doubtful names not used to download the data may also be extracted.
+  - `get_status()`: Retrieves the accepted name, synonyms, infra-specific taxa (subspecies, varieties), and IUCN Red List status for a given species from the GBIF backbone taxonomy.
+  Designed to be used before get_gbif() to inspect the full taxon concept — including which keys will drive the occurrence download and which non-backbone
+  entries (e.g. BOLD sequences) may appear in the output.
 
   - `obs_filter()`: `obs_filter()` accepts as input a `getGBIF` output (one or several species) and filter the observations according
   to a specific given grid resolution. It can retain one observation per grid pixel and/or remove observations from grid pixels that contain fewer than a specified number of records.
@@ -105,10 +106,12 @@ points(obs.pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 ![image](https://github.com/user-attachments/assets/2eef058d-3a0f-4b63-b053-7b1e4a94f3a2)
 
 
-Note that the function did not manage to get rid of observations of most likely non-informed captive individuals (e.g., in Europe, U.S. and South Africa); see the `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the tiger **IUCN red list status**, and its scientific names (accepted and synonyms) that were used in the download with the **GBIF backbone taxonomy**. If all = TRUE, additional children and related doubtful names may also be extracted (not used in `get_gbif()`):
+Note that the function did not manage to get rid of observations of most likely non-informed captive individuals (e.g., in Europe, U.S. and South Africa); see the `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the **IUCN Red List status** and the full taxon concept used by the `get_gbif()` download — accepted name and synonyms — with `get_status()`. Setting
+`children = TRUE` additionally shows the infra-specific taxa (subspecies, varieties) that `get_gbif()` also retrieves, while `related = TRUE` adds alternative name representations for taxonomic inspection only:
 
 ``` r
-get_status("Panthera tigris", all = FALSE)
+get_status("Panthera tigris")
+get_status("Panthera tigris", children = TRUE)
 ```
 
 Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) and generate the distributional range map of *Panthera tigris* :
@@ -213,8 +216,8 @@ Let's reapply the same process as for Panthera tigris, but with the marine speci
 # Here the example is a sample of 1000 observations per geographic tile
 obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000)
 
-# Here the list is longer because 'all=TRUE' includes every names (even doubtful)
-get_status("Delphinus delphis", all = TRUE)
+# Here the list is longer because adding 'related = TRUE' includes every names (even doubtful)
+get_status("Delphinus delphis", children = TRUE, related = TRUE)
 ```
 
 Let's now generate three range maps of *Delphinus delphis* using the *eco.marine* as ecoregion shapefile:
