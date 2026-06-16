@@ -180,6 +180,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Yohann Chauvier \email{yohann.chauvier@wsl.ch} (0000-0001-9399-3192)
   \item Oskar Hagen \email{oskar@hagen.bio} (0000-0002-7931-6571)
   \item Stefan Pinkert (0000-0002-8348-2337)
   \item Camille Albouy (0000-0003-1629-2389)

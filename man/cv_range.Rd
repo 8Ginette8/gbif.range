@@ -105,9 +105,7 @@ if (!requireNamespace("colorspace", quietly = TRUE)) {
 ###########
 
 # Preliminary
-spdf.world <- terra::vect(
-    rnaturalearth::ne_countries(scale=10,returnclass="sf")
-)
+spdf.world <- rnaturalearth::ne_countries(type = "countries",returnclass = "sv")
 shp.lonlat <- terra::vect(
     paste0(
         system.file(package = "gbif.range"),
@@ -126,7 +124,8 @@ range.arcto <- get_range(
     occ_coord = obs.arcto,
     ecoreg = my.eco,
     ecoreg_name = "EcoRegion",
-    res = 0.05
+    res = 0.05,
+    raster = TRUE
 )
 ext.temp <- terra::ext(range.arcto$rangeOutput)
 ext.temp <- c(ext.temp[1]-0.6, ext.temp[2]+0.05,
@@ -189,10 +188,8 @@ world.local <- terra::crop(spdf.world, ext.temp)
 world.local.ar <- terra::aggregate(world.local)
 pres <- all.xy[all.xy$Pres\%in\%1, ]
 abs <- all.xy[all.xy$Pres\%in\%0, ]
-id.in <- terra::extract(
-    range.arcto$rangeOutput,
-    as.data.frame(pres[,1:2])
-)
+pres_coords <- as.data.frame(pres[, c("decimalLongitude", "decimalLatitude")])
+id.in <- terra::extract(range.arcto$rangeOutput, pres_coords)
 pres <- pres[!is.na(id.in[,2]), ]
 
     # Continue plotting
@@ -241,15 +238,25 @@ dev.off()
 ##### Tiger #########
 ###########
 
+
+# Convert the range polygon to raster
+tiger_rast <- terra::rasterize(
+    range.tiger$rangeOutput,
+    terra::rast(
+        terra::ext(range.tiger$rangeOutput),
+        resolution = 0.1
+    )
+)
+
 # Preliminary
-ext.temp <- terra::ext(range.tiger$rangeOutput)
+ext.temp <- terra::ext(tiger_rast)
 ext.temp <- c(ext.temp[1]-0.2, ext.temp[2]+0.2,
                 ext.temp[3]-0.2, ext.temp[4]+0.2)
 
 # Create pseudo-absences
     # First remove observations considered outliers in get_range()
 xy.df <- range.tiger$init.args$occ_coord
-r.ext <- terra::ext(range.tiger$rangeOutput)
+r.ext <- terra::ext(tiger_rast)
 Xrm.cond <- xy.df$decimalLongitude >= r.ext[1] &
                 xy.df$decimalLongitude <= r.ext[2]
 Yrm.cond <-  xy.df$decimalLatitude >= r.ext[3] &
@@ -295,10 +302,8 @@ world.local <- terra::crop(spdf.world, ext.temp)
 world.local.ti <- terra::aggregate(world.local)
 pres <- all.xy[all.xy$Pres\%in\%1, ]
 abs <- all.xy[all.xy$Pres\%in\%0, ]
-id.in <- terra::extract(
-    range.tiger$rangeOutput,
-    as.data.frame(pres[,1:2])
-)
+pres_coords <- as.data.frame(pres[, c("decimalLongitude", "decimalLatitude")])
+id.in <- terra::extract(tiger_rast, pres_coords)
 pres <- pres[!is.na(id.in[,2]),]
 
     # Continue plotting
@@ -317,7 +322,7 @@ par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
 terra::plot(world.local.ti, col = "#bcd1bc", axes = FALSE, lwd = 2)
 terra::points(abs, col = paste0(abs$col,"50"), pch = 16, cex = 0.6)
 terra::plot(
-    terra::as.polygons(range.tiger$rangeOutput),
+    terra::as.polygons(tiger_rast),
     border = "black",
     lwd = 6,
     col = "#63636370",

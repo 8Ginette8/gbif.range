@@ -147,9 +147,7 @@ range.arcto <- get_range(
 ext.temp <- terra::ext(range.arcto$rangeOutput)
 ext.temp <- c(ext.temp[1]-0.6, ext.temp[2]+0.05,
                 ext.temp[3]-0.05, ext.temp[4]+0.05)
-spdf.world <- terra::vect(
-  rnaturalearth::ne_countries(scale = 10,returnclass = "sf")
-)
+spdf.world <- rnaturalearth::ne_countries(type = "countries",returnclass = "sv")
 world.local <- terra::crop(spdf.world,ext.temp)
 world.local.ar <- terra::aggregate(world.local)
 r.arcto <- terra::mask(range.arcto$rangeOutput, world.local.ar)

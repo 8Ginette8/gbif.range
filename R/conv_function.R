@@ -56,9 +56,12 @@ conv_function <- function (sp_coord,
     if (all(abs(is.line) == 0)) { 
       
       # Print
-      cat('\n','ecoreg=',g,nrow(x),
+      cat(
+        '\n[ecoreg =',g,nrow(x),
         'points lying on one line. Using buffer width of ',
-        bwp.bipl.m/1000,'km','\n')
+        bwp.bipl.m/1000,
+        'km]\n'
+      )
 
       # Buffer
       rtn <- terra::buffer(

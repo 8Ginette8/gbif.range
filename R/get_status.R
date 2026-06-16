@@ -30,24 +30,38 @@
 #' @param family Optional family used to disambiguate alternative GBIF matches.
 #' @param conf_match Numeric confidence threshold between 0 and 100 for the
 #' GBIF backbone match. Default is \code{80}.
-#' @param all Logical. If \code{FALSE} (default), return the accepted name and
-#' its synonyms. If \code{TRUE}, also include children and related names that
-#' are not used by \code{get_gbif()}.
-#' @details When \code{all = FALSE}, the returned rows correspond to the
-#' accepted name and synonyms linked to the accepted GBIF taxon key. This is
-#' the same taxon concept used internally by \code{get_gbif()}.
+#' @param children Logical. If \code{TRUE}, also include subspecies and
+#' variety-level children of the accepted key as \code{CHILDREN} rows. These
+#' are the same infra-specific taxa retrieved by \code{get_gbif()}, so this
+#' flag is useful to mirror exactly what the occurrence download will cover.
+#' Default is \code{FALSE}.
+#' @param related Logical. If \code{FALSE} (default), return the accepted name
+#' and its synonyms (plus children if \code{children = TRUE}). If \code{TRUE},
+#' also include alternative name string representations (orthographic variants,
+#' etc.) returned by the GBIF backbone as \code{RELATED} rows. These are not
+#' used by \code{get_gbif()} and are intended for taxonomic inspection only.
+#' @details When \code{children = FALSE} and \code{related = FALSE}, the
+#' returned rows correspond to the accepted name and synonyms linked to the
+#' accepted GBIF taxon key — the same taxon concept used internally by
+#' \code{get_gbif()}.
 #'
-#' When \code{all = TRUE}, the output is expanded with \code{CHILDREN} and
-#' \code{RELATED} names returned by the GBIF backbone. These extra rows are
-#' useful for taxonomic inspection, but they are not included when
-#' \code{get_gbif()} downloads occurrence records.
+#' Setting \code{children = TRUE} adds infra-specific taxa (subspecies,
+#' varieties) that \code{get_gbif()} also retrieves, giving a complete picture
+#' of the occurrence download scope.
+#'
+#' Setting \code{related = TRUE} further expands the output with alternative
+#' name representations useful for taxonomic review but outside the
+#' \code{get_gbif()} query scope.
 #' @return A data frame with the columns \code{canonicalName}, \code{rank},
 #' \code{gbif_key}, \code{scientificName}, \code{gbif_status},
 #' \code{Genus}, \code{Family}, \code{Order}, \code{Class},
 #' \code{Phylum}, \code{IUCN_status}, and \code{sp_nameMatch}. The row with
 #' \code{gbif_status = "ACCEPTED"} identifies the accepted GBIF taxon concept
 #' used by \code{get_gbif()}, while \code{sp_nameMatch} marks the row that most
-#' closely matches the submitted input name.
+#' closely matches the submitted input name. Additional rows carry
+#' \code{gbif_status = "CHILDREN"} (infra-specific taxa, when
+#' \code{children = TRUE}) or \code{gbif_status = "RELATED"} (alternative name
+#' representations, when \code{related = TRUE}).
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
 #' global biodiversity information facility API. 10.5281/zenodo.6023735
@@ -66,7 +80,8 @@ get_status <- function(sp_name = NULL,
                     order = NULL,
                     family = NULL,
                     conf_match = 80,
-                    all = FALSE)
+                    children = FALSE,
+                    related = FALSE)
 {
 
   ######################################################
@@ -78,7 +93,8 @@ get_status <- function(sp_name = NULL,
   check_character_vector(sp_name, "sp_name")
   check_logical(search, "search")
   check_numeric(conf_match, "conf_match")
-  check_logical(all, "all")
+  check_logical(children, "children")
+  check_logical(related, "related")
 
 
   ######################################################
@@ -258,19 +274,31 @@ get_status <- function(sp_name = NULL,
   accep.name <- rgbif::name_usage(accep.key, data = "name")$data
   syn.syn <- rgbif::name_usage(accep.key, data = "synonyms")$data
   main.dat <-  rgbif::name_usage(accep.key, data = "all")$data
-  iucn <- try(
-    rgbif::name_usage(
-      accep.key, data = "iucnRedListCategory"
-    )$data,
-    silent = TRUE
-  )
 
-  if (methods::is(iucn,"try-error")) {
-    iucn <- "NOT_FOUND"
-
+  # Fetch children (subspecies/varieties) when requested or needed for related
+  chil.chil <- if (children || related) {
+    ch <- rgbif::name_usage(accep.key, data = "children")$data
+    if (!is.null(ch) && nrow(ch) > 0) {
+      ch[ch$rank %in% c("SUBSPECIES", "VARIETY"), , drop = FALSE]
     } else {
-      iucn <- iucn$category
+      NULL
     }
+  } else {
+    NULL
+  }
+
+  # IUCN status — fetched for accepted key only
+  # GBIF does not store subspecies-level IUCN status
+  get_iucn <- function(key) {
+    out <- try(
+      rgbif::name_usage(key, data = "iucnRedListCategory")$data,
+      silent = TRUE
+    )
+    if (inherits(out, "try-error") || is.null(out)) "NOT_FOUND" else out$category
+  }
+
+  iucn <- get_iucn(accep.key)
+  c.iucn <- iucn  # recycled across all rows in data.frame()
 
   # Avoid the canonicalName error (sometimes the column is absent wtf...)
   if (!"canonicalName" %in% colnames(main.dat)){
@@ -280,24 +308,32 @@ get_status <- function(sp_name = NULL,
   }
 
   # Specific columns
-  c.key <- suppressWarnings(c(accep.key, syn.syn$key))
-  c.sc <- suppressWarnings(
-    c(accep.name$scientificName,
-      syn.syn$scientificName)
-  )
-  c.can <- suppressWarnings(
-    c(accep.name$canonicalName,
-      syn.syn$canonicalName)
-  )
-  c.status <- c("ACCEPTED",
-    rep("SYNONYM",
-      length(suppressWarnings(syn.syn$scientificName)))
+  c.key <- suppressWarnings(c(
+    accep.key,
+    syn.syn$key,
+    if (children && !related) chil.chil$key
+  ))
+  c.sc <- suppressWarnings(c(
+    accep.name$scientificName,
+    syn.syn$scientificName,
+    if (children && !related) chil.chil$scientificName
+  ))
+  c.can <- suppressWarnings(c(
+    accep.name$canonicalName,
+    syn.syn$canonicalName,
+    if (children && !related) chil.chil$canonicalName
+  ))
+  c.status <- c(
+    "ACCEPTED",
+    rep("SYNONYM",  length(suppressWarnings(syn.syn$scientificName))),
+    if (children && !related) rep("CHILDREN", if (!is.null(chil.chil)) nrow(chil.chil) else 0) else character(0)
   )
 
-  # If all=TRUE, then continue the search to find possible name correspondence
-  if (all) {
+  # If related=TRUE, expand with children + related name string variants
+  if (related) {
     # Combine everything and search for related names
-    all.key <- suppressWarnings(c(accep.key, syn.syn$key, main.dat$key))
+    all.key <- suppressWarnings(c(accep.key, syn.syn$key, main.dat$key,
+                                   if (!is.null(chil.chil)) chil.chil$key))
     all.version <-
     lapply(all.key, function(x){
       
@@ -350,40 +386,68 @@ get_status <- function(sp_name = NULL,
         scientificName = NULL
       )
     }
-    all.names <- rbind(accep.n, syn.n, c.n, r.n)
+    all.names <- rbind(accep.n, syn.n,
+                       if (!is.null(chil.chil)) {
+                         ch <- chil.chil[, c("canonicalName", "key", "scientificName"), drop = FALSE]
+                         names(ch) <- c("canonicalName", "key", "scientificName")
+                         ch
+                       },
+                       c.n, r.n)
 
     # Specific columns
     c.key <- all.names$key
     c.sc <- suppressWarnings(all.names$scientificName)
     c.can <- suppressWarnings(all.names$canonicalName)
     c.status <- c("ACCEPTED",
-              rep("SYNONYM", nrow(syn.n)),
-              rep("CHILDREN", nrow(c.n)),
-              rep("RELATED", nrow(r.n)))
+              rep("SYNONYM",  nrow(syn.n)),
+              rep("CHILDREN", if (!is.null(chil.chil)) nrow(chil.chil) else 0),
+              rep("RELATED",  nrow(c.n)),
+              rep("RELATED",  nrow(r.n)))
+  }
+  # (accepted, synonyms, children) — each already fetched, no extra API calls
+  tax_cols <- c("key", "rank", "genus", "family", "order", "class", "phylum")
+
+  safe_tax <- function(dat) {
+    if (is.null(dat) || nrow(dat) == 0) return(NULL)
+    out <- data.frame(
+      matrix(NA_character_, nrow = nrow(dat), ncol = length(tax_cols),
+             dimnames = list(NULL, tax_cols)),
+      stringsAsFactors = FALSE
+    )
+    for (col in tax_cols) {
+      if (col %in% names(dat)) out[[col]] <- as.character(dat[[col]])
+    }
+    out
   }
 
-  # Which is null in main.dat for Genus, Family, Order, Phyllum?
-  gfocp <- c("genus", "family", "order", "class", "phylum")
-  exist.not <- gfocp %in% names(main.dat)
-  main.out <- data.frame(
-    Genus = NA,
-    Family = NA,
-    Order = NA,
-    Class = NA,
-    Phylum = NA
-  )
-  main.out[exist.not] <- main.dat[, gfocp[exist.not]]
+  tax_src <- do.call(rbind, Filter(Negate(is.null), list(
+    safe_tax(main.dat[1, , drop = FALSE]),
+    safe_tax(syn.syn),
+    safe_tax(chil.chil)
+  )))
+
+  lookup_tax <- function(keys, col) {
+    vapply(as.character(keys), function(k) {
+      hit <- tax_src[!is.na(tax_src$key) & tax_src$key == k, col, drop = TRUE]
+      if (length(hit) > 0 && !is.na(hit[1])) as.character(hit[1]) else NA_character_
+    }, character(1))
+  }
 
   # Extract accepted names and synonyms
   e.output <- data.frame(
-    canonicalName = c.can,
-    rank = bone.search$rank,
-    gbif_key = c.key,
+    canonicalName  = c.can,
+    rank           = lookup_tax(c.key, "rank"),
+    gbif_key       = c.key,
     scientificName = c.sc,
-    gbif_status = c.status,
-    main.out,
-    IUCN_status = iucn,
-    sp_nameMatch = bone.search$matchType
+    gbif_status    = c.status,
+    Genus          = lookup_tax(c.key, "genus"),
+    Family         = lookup_tax(c.key, "family"),
+    Order          = lookup_tax(c.key, "order"),
+    Class          = lookup_tax(c.key, "class"),
+    Phylum         = lookup_tax(c.key, "phylum"),
+    IUCN_status    = c.iucn,
+    sp_nameMatch   = bone.search$matchType,
+    stringsAsFactors = FALSE
   )
 
   # Remove duplicated & # change sp_nameMatch to know which

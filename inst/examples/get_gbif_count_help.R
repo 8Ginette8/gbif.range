@@ -15,7 +15,7 @@ obs.pt <- get_gbif_count(
 	geo = NULL
 )
 
-# Example of setting 'geo' (has_xy = TRUE is forced)
+# Example of setting 'geo' (still considered as global)
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = NULL,
@@ -28,4 +28,19 @@ obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanolca",
 	search = FALSE
 )
+
+# Example on the European Alps
+shp.lonlat <- terra::vect(
+    paste0(
+        system.file(package = "gbif.range"),
+        "/extdata/shp_lonlat.shp"
+    )
+)
+obs.pt <- get_gbif_count(
+	sp_name = "Arctostaphylos alpinus",
+	has_xy = TRUE,
+	spatial_issue = FALSE,
+	geo = shp.lonlat
+)
+
 }

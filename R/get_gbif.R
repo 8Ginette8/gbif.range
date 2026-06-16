@@ -3,10 +3,13 @@
 ### =========================================================================
 #' Download and Filter GBIF Occurrences for Spatial Analyses
 #'
-#' Retrieve GBIF occurrence records for a focal taxon, harmonize the supplied
-#' name against the GBIF backbone taxonomy, optionally split large downloads
-#' into smaller tiles, and apply a series of post-download filters designed for
-#' spatial analyses and range mapping.
+#' Downloads occurrence records from GBIF for a focal taxon, resolving the
+#' input name against the GBIF backbone taxonomy and querying by accepted
+#' taxon key — thereby capturing records linked to synonyms and infra-specific
+#' taxa (subspecies, varieties) in the same way as the GBIF website. Large
+#' requests are automatically split into spatial tiles, and a series of
+#' post-download filters can be applied to clean records for spatial analyses
+#' and range mapping.
 #' 
 #' @param sp_name Character string with the species name. Scientific names at
 #' genus-species level are expected; fuzzy matching is available when
@@ -82,24 +85,42 @@
 #' \code{TRUE}.
 #' @param ... Additional arguments passed to
 #' \code{CoordinateCleaner::cd_round()}.
-#' @details The function follows the same taxonomic matching logic used by the
-#' GBIF website and retrieves records linked to the accepted name and its
-#' synonyms. Internally, the input name is first resolved against the GBIF
-#' backbone taxonomy. If the matched name is a synonym, the download is carried
-#' out with the corresponding accepted GBIF taxon key rather than the synonym
-#' key itself.
+#' @details #' @details
+#' The function follows the same taxonomic matching logic used by the GBIF
+#' website. Internally, the input name is first resolved against the GBIF
+#' backbone taxonomy. If the matched name is a synonym, the download uses the
+#' corresponding accepted GBIF taxon key rather than the synonym key itself.
 #'
-#' This means that \code{get_gbif()} harmonizes the taxon concept used for the
-#' query, but it does not rewrite every returned record to a single final name.
-#' The output keeps the original GBIF taxonomic fields for each record,
-#' including \code{scientificName}, while also retaining the harmonized fields
+#' Querying by accepted taxon key means that occurrence records linked to
+#' infra-specific taxa (subspecies, varieties) under that accepted name are
+#' also retrieved, mirroring GBIF website behaviour. The \code{acceptedTaxonKey}
+#' and \code{scientificName} columns in the output therefore reflect the
+#' original GBIF record-level assignment and may refer to a subspecies or
+#' variety rather than the species-level input name. Use
+#' \code{get_status(children = TRUE)} beforehand to inspect which
+#' infra-specific keys fall under the queried taxon concept.
+#'
+#' The output preserves the original GBIF taxonomic fields for each record
+#' rather than rewriting them to a single accepted name. In particular,
+#' \code{scientificName} stores the record-level GBIF name, while
 #' \code{acceptedScientificName}, \code{acceptedTaxonKey}, and
-#' \code{taxonomicStatus}.
-#' 
+#' \code{taxonomicStatus} reflect the harmonized taxon concept used for the
+#' query.
+#'
+#' Records linked to non-taxonomic backbone entries (e.g. BOLD barcode
+#' sequences) may also appear in the output, since GBIF associates them with
+#' the accepted taxon key. These records typically carry
+#' \code{basisOfRecord = "MATERIAL_SAMPLE"}. Note however that
+#' \code{MATERIAL_SAMPLE} is not a reliable proxy for sequence-based records
+#' across all taxonomic groups. Users can cross-check returned
+#' \code{acceptedTaxonKey} values against \code{get_status(children = TRUE)}
+#' to identify any records linked to non-backbone entries; see
+#' \code{get_status()} examples.
+#'
 #' If the requested extent contains many records, the query is fragmented into
-#' a set of tiles so that individual API calls remain manageable. By default,
-#' tiles are refined until they contain fewer than about 10,000 records, which
-#' is faster and more robust than relying on a single large request.
+#' spatial tiles so that individual API calls remain manageable. Tiles are
+#' refined until each contains fewer than 10,000 records, which is faster and
+#' more robust than relying on a single large request.
 #'
 #' Post-download filtering can remove records outside the study extent,
 #' duplicated coordinates, absences, unwanted bases of record, records with low
@@ -344,8 +365,7 @@ get_gbif <- function(sp_name = NULL,
 					pp <- paste(id.crit[!n.test], collapse = ", ")
 					warning(
 						"'", pp, 
-						"' level(s) not available in GBIF, could not be employed...",
-						"\n"
+						"' level(s) not available in GBIF, could not be employed...\n"
 					)
 				}
 			}
@@ -354,7 +374,7 @@ get_gbif <- function(sp_name = NULL,
 		# Continue with or without the supplied criteria
 		if (nrow(bsearch) > 1) {
 			if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))) {
-				cat("Not match found...", "\n")
+				cat("Not match found...\n")
 				return(e.output)
 
 			} else {
@@ -362,7 +382,7 @@ get_gbif <- function(sp_name = NULL,
 					c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
 				s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
 				if (nrow(s.keep) == 0) {
-					cat("Not match found...", "\n")
+					cat("Not match found...\n")
 					return(e.output)
 
 				} else if (nrow(s.keep) > 1) {
@@ -399,7 +419,7 @@ get_gbif <- function(sp_name = NULL,
 				s.usp <- length(unique(bsearch$speciesKey)) == 1
 				if (!s.usp) {
 					cat("No synonyms distinction could be made.",
-						"Consider using phylum/class/order/family...","\n")
+						"Consider using phylum/class/order/family...\n")
 					return(e.output)
 
 				} else {
@@ -410,12 +430,12 @@ get_gbif <- function(sp_name = NULL,
 	}
 
 	if (bsearch$matchType %in% "NONE") {
-		cat("No species name found...","\n")
+		cat("No species name found...\n")
 		return(e.output)
 	}
 
 	if (bsearch$confidence[1] < conf_match) {
-		cat("Confidence match not high enough...","\n")
+		cat("Confidence match not high enough...\n")
 		return(e.output)
 	}  
 
@@ -508,7 +528,7 @@ get_gbif <- function(sp_name = NULL,
 
 	# Cancel request if n==0
 	if (gbif.records == 0 ) {
-		cat("No species records found...","\n")
+		cat("\nNo species records found...\n")
 		return(e.output)
 	}
 
@@ -521,7 +541,7 @@ get_gbif <- function(sp_name = NULL,
 	## 1) If species records > 10'000, search for the optimum tiles
 	if (!should_use_occ_download && gbif.records > 10000) {
 
-		vcat("\n...(> 10'000 records) retrieving tiles...\n")
+		vcat("\n...(> 10'000 records) retrieving tiles...")
 
 		# Start with 10 tiles
 		tile.100 <- make_tiles(geo, ntiles = 10, sext = TRUE)
@@ -649,9 +669,9 @@ get_gbif <- function(sp_name = NULL,
 
 	# Information messages
 	if (occ_samp != 10000) {
-		vcat("...GBIF records of ", sp_name, ": download of sample starting...\n")
+		vcat("\n...GBIF records of ", sp_name, ": download of sample starting...\n")
 	} else {
-		vcat("...GBIF records of ", sp_name, ": download starting...\n")
+		vcat("\n...GBIF records of ", sp_name, ": download starting...\n")
 	}
 
 	# Run the gbif search with the acceptedName per chosen tiles
@@ -736,8 +756,8 @@ get_gbif <- function(sp_name = NULL,
 		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
 			print(gbif.search[1])
 			warning(
-				"\n","GBIF query overload or rgbif package error [taxonKey=",
-				sp.key,"]...","\n",sep=""
+				"\nGBIF query overload or rgbif package error [taxonKey=",
+				sp.key,"]...\n",sep=""
 			)
 
 			# While
@@ -745,7 +765,7 @@ get_gbif <- function(sp_name = NULL,
 				j <- 0
 				while (class(gbif.search) %in% "try-error" & j < ntries)
 				{
-					vcat("Attempt", j + 1, "...", "\n")
+					vcat("Attempt", j + 1, "...\n")
 					j <- j + 1
 					gbif.search <- try(
 						rgbif::occ_search(
@@ -762,13 +782,13 @@ get_gbif <- function(sp_name = NULL,
 
 				if (class(gbif.search) %in% "try-error") {
 					if (error_skip){
-						cat("Attempts to download failed...Returning no results","\n")
+						cat("Attempts to download failed...Returning no results...\n")
 						return(e.output)
 
 					} else {
 						stop(
-							"ERROR (not skipped) for [taxonKey=",sp.key,"]...",
-							"\n",sep=""
+							"ERROR (not skipped) for [taxonKey=",sp.key,"]...\n",
+							sep=""
 						)
 					}
 				}
@@ -1139,7 +1159,7 @@ get_gbif <- function(sp_name = NULL,
 		box_width <- max_step_width + max_num_width + 20
 		sep_dash  <- strrep("-", box_width)
 
-		vcat("\n","...Records (XY) filtering summary:\n")
+		vcat("\n...Records (XY) filtering summary:\n")
 
 		vcat(sep_dash, "\n")
 		print(summary_log, row.names = FALSE)

@@ -38,8 +38,7 @@
 #' ecoregional range maps for boosting taxonomic coverage in ecology and 
 #' conservation. Ecography, 12, e06794.
 #' @example inst/examples/evaluate_range_help.R
-#' @importFrom terra rast ext crs project aggregate rasterize crop extend
-#' resample values classify ncol nrow plot
+#' @importFrom terra rast ext crs project aggregate rasterize crop extend resample values classify ncol nrow plot
 #' @importFrom sf st_read st_as_sf st_union st_drop_geometry st_transform
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics legend par

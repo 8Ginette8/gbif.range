@@ -16,7 +16,8 @@ obs.pt <- get_gbif(sp_name = "Panthera tigris")
 range.tiger <- get_range(
     occ_coord = obs.pt,
     ecoreg = eco.terra,
-    ecoreg_name = "ECO_NAME"
+    ecoreg_name = "ECO_NAME",
+    format = "SpatVector"
 )
 
 # Plot

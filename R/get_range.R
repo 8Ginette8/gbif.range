@@ -119,8 +119,7 @@
 #' @example inst/examples/get_range_help.R
 #' @importFrom rnaturalearth ne_countries
 #' @importFrom methods is new
-#' @importFrom terra vect crds intersect simplifyGeom buffer
-#' rast disagg aggregate rasterize crop
+#' @importFrom terra vect crds intersect simplifyGeom buffer rast disagg aggregate rasterize crop
 #' @importFrom FNN knn.dist
 #' @importFrom stats kmeans
 #' @importFrom mclust Mclust mclustBIC
