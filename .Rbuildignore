@@ -13,3 +13,5 @@
 ^gbif\.range\.code-workspace$
 ^\.tmp.*$
 ^\.temp.*$
+^doc$
+^Meta$
