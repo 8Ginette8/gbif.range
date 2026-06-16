@@ -70,7 +70,6 @@
 #' to querying the GBIF backbone taxonomy.
 #' @example inst/examples/get_status_help.R
 #' @importFrom rgbif name_backbone name_usage
-#' @importFrom methods is
 #' @export
 get_status <- function(sp_name = NULL,
                     search = TRUE,
