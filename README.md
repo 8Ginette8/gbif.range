@@ -241,8 +241,6 @@ terra::plot(range.dd3$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, le
 points(obs.dd[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#99340470", cex = 1)
 ```
 
-![image](https://github.com/user-attachments/assets/52d63434-f64b-4076-b8bc-d3c03c899137)
-
 Although our result map follows the sampling pattern found in <a href="https://www.gbif.org/species/8324617">GBIF</a>, the dolphin range map might have been improved if more GBIF observations would have been extracted. Therefore, `occ_samp` must be in this case increased or removed.
 
 ### Large downloaded GBIF tables
