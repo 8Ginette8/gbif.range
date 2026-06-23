@@ -58,8 +58,8 @@ collapsed before range inference?}
 }
 \value{
 A data frame summarizing the processed files, with one row per range
-  and the columns \code{species_key}, \code{species_name}, \code{n_points},
-  \code{occ_file}, and \code{range_file}.
+and the columns \code{species_key}, \code{species_name}, \code{n_points},
+\code{occ_file}, and \code{range_file}.
 }
 \description{
 Read one occurrence file per species, prepare the minimal coordinate table
@@ -67,10 +67,10 @@ needed by \code{\link{get_range}()}, and save one range output per species.
 }
 \details{
 The function is intended to work seamlessly with
-  \code{\link{split_gbif_by_species}()}. It reads each species file
-  sequentially, adds the single-species \code{input_search} column expected
-  by \code{get_range()}, and keeps only the coordinate columns needed for
-  range construction.
+\code{\link{split_gbif_by_species}()}. It reads each species file
+sequentially, adds the single-species \code{input_search} column expected
+by \code{get_range()}, and keeps only the coordinate columns needed for
+range construction.
 }
 \examples{
 \dontrun{
@@ -136,5 +136,5 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 }
 \seealso{
 \code{\link{split_gbif_by_species}()} and
-  \code{\link{read_range_rds}()}.
+\code{\link{read_range_rds}()}.
 }

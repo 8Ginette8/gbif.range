@@ -40,8 +40,8 @@ this function in \code{outdir} are removed before writing new ones.}
 }
 \value{
 A data frame summarizing the written files, with one row per species
-  key and the columns \code{species_key}, \code{species_name},
-  \code{n_records}, and \code{species_file}.
+key and the columns \code{species_key}, \code{species_name},
+\code{n_records}, and \code{species_file}.
 }
 \description{
 Stream a large GBIF export from disk in chunks and write one occurrence file
@@ -50,8 +50,8 @@ tables that are too large to load fully into memory.
 }
 \details{
 Output file names follow the pattern
-  \code{occurrences_speciesKey_<key>_<species>.csv}. The extension is kept as
-  \code{.csv} for convenience, even when the file remains tab-delimited.
+\code{occurrences_speciesKey_<key>_<species>.csv}. The extension is kept as
+\code{.csv} for convenience, even when the file remains tab-delimited.
 }
 \examples{
 \dontrun{
@@ -78,5 +78,5 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 }
 \seealso{
 \code{\link{species_csvs_to_ranges}()} to process the written
-  species files sequentially with \code{\link{get_range}()}.
+species files sequentially with \code{\link{get_range}()}.
 }

@@ -12,7 +12,7 @@ read_range_rds(file)
 }
 \value{
 A list with \code{init.args} and \code{rangeOutput}, matching the
-  structure written by the batch workflow.
+structure written by the batch workflow.
 }
 \description{
 Convenience wrapper around \code{readRDS()} for range files saved with

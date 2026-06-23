@@ -170,26 +170,26 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://github.com/8Ginette8/gbif.range}
   \item Report bugs at \url{https://github.com/8Ginette8/gbif.range/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Yohann Chauvier \email{yohann.chauvier@wsl.ch} (0000-0001-9399-3192)
+\strong{Maintainer}: Yohann Chauvier \email{yohann.chauvier@wsl.ch} (\href{https://orcid.org/0000-0001-9399-3192}{ORCID})
 
 Authors:
 \itemize{
-  \item Yohann Chauvier \email{yohann.chauvier@wsl.ch} (0000-0001-9399-3192)
-  \item Oskar Hagen \email{oskar@hagen.bio} (0000-0002-7931-6571)
-  \item Stefan Pinkert (0000-0002-8348-2337)
-  \item Camille Albouy (0000-0003-1629-2389)
-  \item Patrice Descombes (0000-0002-3760-9907)
-  \item Fabian Fopp (0000-0003-0648-8484)
-  \item Michael P. Nobis (0000-0003-3285-1590)
-  \item Philipp Brun (0000-0002-2750-9793)
-  \item Lisha Lyu (0000-0001-7855-8109)
-  \item Katalin Csillery (0000-0003-0039-9296)
-  \item Loïc Pellissier (0000-0002-2289-8259)
+  \item Yohann Chauvier \email{yohann.chauvier@wsl.ch} (\href{https://orcid.org/0000-0001-9399-3192}{ORCID})
+  \item Oskar Hagen \email{oskar@hagen.bio} (\href{https://orcid.org/0000-0002-7931-6571}{ORCID})
+  \item Stefan Pinkert (\href{https://orcid.org/0000-0002-8348-2337}{ORCID})
+  \item Camille Albouy (\href{https://orcid.org/0000-0003-1629-2389}{ORCID})
+  \item Fabian Fopp (\href{https://orcid.org/0000-0003-0648-8484}{ORCID})
+  \item Philipp Brun (\href{https://orcid.org/0000-0002-2750-9793}{ORCID})
+  \item Patrice Descombes (\href{https://orcid.org/0000-0002-3760-9907}{ORCID})
+  \item Florian Altermatt (\href{https://orcid.org/0000-0002-4831-6958}{ORCID})
+  \item Loïc Pellissier (\href{https://orcid.org/0000-0002-2289-8259}{ORCID})
+  \item Katalin Csillery (\href{https://orcid.org/0000-0003-0039-9296}{ORCID})
 }
 
 }

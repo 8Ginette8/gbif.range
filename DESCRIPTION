@@ -18,30 +18,40 @@ Description: Provides a workflow to retrieve, filter, and analyze GBIF
  building range maps, and evaluating them against independent
  validation data.
 License: GPL (>= 3) | file LICENCE
+URL: https://github.com/8Ginette8/gbif.range
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Authors@R: c( person("Yohann", "Chauvier", role = c("cre","aut"), email
- = "yohann.chauvier@wsl.ch", comment = "0000-0001-9399-3192"),
- person("Oskar", "Hagen", role = c("aut"), email =
- "oskar@hagen.bio", comment = "0000-0002-7931-6571"),
- person("Stefan", "Pinkert", role = c("aut"), comment =
- "0000-0002-8348-2337"), person("Camille", "Albouy", role =
- "aut", comment = "0000-0003-1629-2389"), person("Patrice",
- "Descombes", role = "aut", comment = "0000-0002-3760-9907"),
- person("Fabian", "Fopp", role = "aut", comment =
- "0000-0003-0648-8484"), person("Michael P.", "Nobis", role =
- "aut", comment = "0000-0003-3285-1590"), person("Philipp",
- "Brun", role = "aut", comment = "0000-0002-2750-9793"),
- person("Lisha", "Lyu", role = "aut", comment =
- "0000-0001-7855-8109"), person("Katalin", "Csillery", role =
- "aut", comment = "0000-0003-0039-9296"), person("Loïc",
- "Pellissier", role = "aut", comment = "0000-0002-2289-8259"))
+Authors@R: c(
+ person("Yohann", "Chauvier", role = c("cre", "aut"),
+   email = "yohann.chauvier@wsl.ch",
+   comment = c(ORCID = "0000-0001-9399-3192")),
+ person("Oskar", "Hagen", role = "aut",
+   email = "oskar@hagen.bio",
+   comment = c(ORCID = "0000-0002-7931-6571")),
+ person("Stefan", "Pinkert", role = "aut",
+   comment = c(ORCID = "0000-0002-8348-2337")),
+ person("Camille", "Albouy", role = "aut",
+   comment = c(ORCID = "0000-0003-1629-2389")),
+ person("Fabian", "Fopp", role = "aut",
+   comment = c(ORCID = "0000-0003-0648-8484")),
+ person("Philipp", "Brun", role = "aut",
+   comment = c(ORCID = "0000-0002-2750-9793")),
+ person("Patrice", "Descombes", role = "aut",
+   comment = c(ORCID = "0000-0002-3760-9907")),
+ person("Florian", "Altermatt", role = "aut",
+   comment = c(ORCID = "0000-0002-4831-6958")),
+ person("Lo\u00efc", "Pellissier", role = "aut",
+   comment = c(ORCID = "0000-0002-2289-8259")),
+ person("Katalin", "Csillery", role = "aut",
+   comment = c(ORCID = "0000-0003-0039-9296")))
 Collate: 'make_tiles.R' 'get_gbif.R' 'get_status.R' 'get_doi.R'
  'obs_filter.R' 'get_range.R' 'conv_function.R' 'get_gbif_count.R'
  'make_ecoreg.R' 'get_ecoreg.R' 'evaluate_range.R' 'data.R'
  'make_blocks.R' 'optme.R' 'cv_range.R' 'classes.R' 'helpers.R'
  'gbif_file_workflows.R' 'gbif.range-package.R'
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0
 Config/roxygen2/version: 8.0.0

@@ -346,7 +346,7 @@ dev.off()
 }
 }
 \references{
-Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
-ecoregional range maps for boosting taxonomic coverage in ecology and 
+Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of
+ecoregional range maps for boosting taxonomic coverage in ecology and
 conservation. Ecography, 12, e06794.
 }

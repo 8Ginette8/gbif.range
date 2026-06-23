@@ -6,9 +6,9 @@
 \format{
 A list with each element containing:
 \describe{
-  \item{filename}{The name to save the downloaded file as.}
-  \item{link}{The URL to download the file.}
-  \item{description}{A short description of the file.}
+\item{filename}{The name to save the downloaded file as.}
+\item{link}{The URL to download the file.}
+\item{description}{A short description of the file.}
 }
 }
 \usage{

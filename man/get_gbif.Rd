@@ -211,16 +211,18 @@ filtering and the minimum number of coordinate decimals that must be
 reported.
 
 Decimal filtering follows these thresholds:\cr
-- if 110 km > \code{grain} \eqn{\ge}{>=} 11 km, coordinates with at least
+\itemize{
+\item if 110 km > \code{grain} \eqn{\ge}{>=} 11 km, coordinates with at least
 1 decimal are kept\cr
-- if 11 km > \code{grain} \eqn{\ge}{>=} 1100 m, coordinates with at least
+\item if 11 km > \code{grain} \eqn{\ge}{>=} 1100 m, coordinates with at least
 2 decimals are kept\cr
-- if 1100 m > \code{grain} \eqn{\ge}{>=} 110 m, coordinates with at least
+\item if 1100 m > \code{grain} \eqn{\ge}{>=} 110 m, coordinates with at least
 3 decimals are kept\cr
-- if 110 m > \code{grain} \eqn{\ge}{>=} 11 m, coordinates with at least
+\item if 110 m > \code{grain} \eqn{\ge}{>=} 11 m, coordinates with at least
 4 decimals are kept\cr
-- if 11 m > \code{grain} \eqn{\ge}{>=} 1.1 m, coordinates with at least
+\item if 11 m > \code{grain} \eqn{\ge}{>=} 1.1 m, coordinates with at least
 5 decimals are kept
+}
 }
 \examples{
 \dontrun{
