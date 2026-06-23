@@ -1,3 +1,4 @@
+
 # gbif.range R package
 
 [<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/blob/main/inst/logo/logo_gbif.range.png">](https://www.gbif.org)
@@ -107,11 +108,11 @@ points(obs.pt[, c("decimalLongitude","decimalLatitude")], pch = 20, col = "#9934
 
 
 Note that the function did not manage to get rid of observations of most likely non-informed captive individuals (e.g., in Europe, U.S. and South Africa); see the `CoordinateCleaner` R package (<a href="https://cran.r-project.org/web/packages/CoordinateCleaner/index.html">CRAN</a>) for improved filtering. We can also retrieve the **IUCN Red List status** and the full taxon concept used by the `get_gbif()` download — accepted name and synonyms — with `get_status()`. Setting
-`children = TRUE` additionally shows the infra-specific taxa (subspecies, varieties) that `get_gbif()` also retrieves, while `related = TRUE` adds alternative name representations for taxonomic inspection only:
+`level = "children"` additionally shows the infra-specific taxa (subspecies, varieties) that `get_gbif()` also retrieves, while `level = "all"` adds alternative name representations for taxonomic inspection only:
 
 ``` r
 get_status("Panthera tigris")
-get_status("Panthera tigris", children = TRUE)
+get_status("Panthera tigris", level = "children")
 ```
 
 Let's now extract the terrestrial ecoregions of the world (Nature Conservancy) and generate the distributional range map of *Panthera tigris* :
@@ -217,7 +218,7 @@ Let's reapply the same process as for Panthera tigris, but with the marine speci
 obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000)
 
 # Here the list is longer because adding 'related = TRUE' includes every names (even doubtful)
-get_status("Delphinus delphis", children = TRUE, related = TRUE)
+get_status("Delphinus delphis", level = "all")
 ```
 
 Let's now generate three range maps of *Delphinus delphis* using the *eco.marine* as ecoregion shapefile:
