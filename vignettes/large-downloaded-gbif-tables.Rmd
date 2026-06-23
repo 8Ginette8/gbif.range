@@ -181,25 +181,25 @@ It is also the most natural way to move from a large terrestrial GBIF export to 
 The offline vignette uses a simple polygon because it must build quickly and without network access. A real downloaded terrestrial workflow would normally look more like this:
 
 ```{r production-batch, eval = FALSE}
-split_summary <- split_gbif_by_species(
-  input_file = "gbif_download.tsv",
-  outdir = "species_occurrences",
-  chunk_size = 1e5,
-  sep_in = "\t",
-  sep_out = "\t",
-  overwrite = TRUE
-)
+#split_summary <- split_gbif_by_species(
+#  input_file = "gbif_download.tsv",
+#  outdir = "species_occurrences",
+#  chunk_size = 1e5,
+#  sep_in = "\t",
+#  sep_out = "\t",
+#  overwrite = TRUE
+#)
 
-range_summary <- species_csvs_to_ranges(
-  species_dir = "species_occurrences",
-  ecoreg = "eco_terra",
-  ecoreg_name = "ECO_NAME",
-  outdir = "species_ranges",
-  occ_outdir = "species_occurrences_min",
-  occ_save_as = "tsv",
-  range_save_as = "rds",
-  overwrite = TRUE
-)
+#range_summary <- species_csvs_to_ranges(
+#  species_dir = "species_occurrences",
+#  ecoreg = "eco_terra",
+#  ecoreg_name = "ECO_NAME",
+#  outdir = "species_ranges",
+#  occ_outdir = "species_occurrences_min",
+#  occ_save_as = "tsv",
+#  range_save_as = "rds",
+#  overwrite = TRUE
+#)
 ```
 
 This is the clearest batch version of the main terrestrial workflow: one GBIF export in, one species file per taxon, one saved range per taxon.

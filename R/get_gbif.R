@@ -733,10 +733,16 @@ get_gbif <- function(sp_name = NULL,
 		
 		} else {
 			vcat(
-				"\r", "------------- #", 
-				x, " (", round(x * 100/length(geo.ref), 2),
-				"%...)\033[K",
-				sep=""
+			    "\r",
+			    formatC(
+			        paste0(
+			        	"------------- #", x, " (",
+			        	round(x * 100 / length(geo.ref), 2), "%..)"
+			        ),
+			        width = 40,
+			        flag = "-"
+			    ),
+			    sep = ""
 			)
 			try(
 				rgbif::occ_search(

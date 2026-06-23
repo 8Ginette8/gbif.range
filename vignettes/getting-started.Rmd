@@ -53,7 +53,8 @@ finds all workflow vignettes after installation.
 ## Package overview
 
 `gbif.range` provides a complete workflow from raw GBIF records to
-ecologically informed range maps. The main functions are:
+ecologically informed range maps. Spatial operations throughout rely on the
+`terra` package (Hijmans 2022). The main functions are:
 
 | Function | Role |
 |---|---|
@@ -99,17 +100,21 @@ retrieval.
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 ```
 
-`get_gbif()` works without GBIF credentials. It harmonizes the query to the
-accepted GBIF taxon key, applies a dynamic moving-window tiling strategy when
-the geographic extent contains more than 100,000 records, and runs 13
-configurable post-processing filters based on custom logic and
-`CoordinateCleaner`.
+`get_gbif()` works without GBIF credentials. It is built on top of `rgbif`
+(Chamberlain et al. 2022) and harmonizes the query to the accepted GBIF taxon
+key, applies a dynamic moving-window tiling strategy when the geographic extent
+contains more than 100,000 records, and runs 13 configurable post-processing
+filters based on custom logic and `CoordinateCleaner` (Zizka et al. 2019).
 
-```{r plot-tiger, eval = FALSE}
+```{r plot-tiger-occ, eval = FALSE}
 countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
 terra::plot(countries, col = "#bcbddc")
 points(obs.pt[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1.5)
+```
+
+```{r fig-tiger-occ, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("figures/Part0_plot1.png")
 ```
 
 Note that some records of likely captive individuals remain (e.g., in Europe,
@@ -134,6 +139,10 @@ range.tiger <- get_range(
 terra::plot(countries, col = "#bcbddc")
 terra::plot(range.tiger$rangeOutput, col = "#238b45",
             add = TRUE, axes = FALSE, legend = FALSE)
+```
+
+```{r fig-tiger-range, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("figures/Part0_plot2.png")
 ```
 
 `degrees_outlier` and `clust_pts_outlier` control how isolated clusters of
@@ -171,6 +180,10 @@ points(obs.dd[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
 ```
 
+```{r fig-dolphin, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("figures/Part0_plot3.png")
+```
+
 Because only a subsample was retrieved, the resulting map closely follows the
 GBIF sampling pattern. Increasing or removing `occ_samp` would produce a more
 complete distributional estimate.
@@ -188,9 +201,9 @@ The packaged ecoregion layers and their available spatial levels are:
 
 | Layer | `ecoreg_name` values |
 |---|---|
-| `eco_terra` — terrestrial (Olson et al. 2001) | `"ECO_NAME"`, `"WWF_MHTNAM"`, `"WWF_REALM2"` |
-| `eco_marine` — marine (Spalding et al. 2007) | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` |
-| `eco_hd_marine` — high-detail marine coastlines | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` |
+| `eco_terra` — terrestrial (Olson et al. 2001; The Nature Conservancy 2009) | `"ECO_NAME"`, `"WWF_MHTNAM"`, `"WWF_REALM2"` |
+| `eco_marine` — marine (Spalding et al. 2007; The Nature Conservancy 2012) | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` |
+| `eco_hd_marine` — high-detail marine coastlines (Spalding et al. 2007, 2012; The Nature Conservancy 2012) | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` |
 | `eco_fresh` — freshwater (Abell et al. 2008) | `"ECOREGION"` |
 
 Any suitable polygon shapefile can be supplied to `get_range()` as the
@@ -201,6 +214,26 @@ Any suitable polygon shapefile can be supplied to `get_range()` as the
 For regional analyses the packaged ecoregions may be too coarse.
 `make_ecoreg()` builds a custom ecoregion layer by k-means clustering of one
 or more environmental rasters.
+
+The example below first illustrates what a `make_ecoreg()` output looks like
+with 10 classes over the European Alps, using two CHELSA bioclimatic layers
+(Karger et al. 2017) — mean annual temperature (bio1) and annual precipitation
+(bio12) at 5 × 5 km resolution. The `make_ecoreg()` function applies k-means
+clustering to derive ecologically coherent units from environmental rasters
+(Hagen et al. 2019):
+
+```{r make-ecoreg-plot, eval = FALSE}
+bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
+eco.eg <- make_ecoreg(env = bio, nclass = 10)
+terra::plot(eco.eg, col = rainbow(10))
+```
+
+```{r fig-ecoreg, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("figures/Part0_plot4.png")
+```
+
+For a real regional analysis, more classes are appropriate. The full workflow
+with 200 classes and *Arctostaphylos alpinus*:
 
 ```{r custom-ecoreg, eval = FALSE}
 # Two CHELSA bioclimatic layers for the European Alps at 5 x 5 km resolution
@@ -236,6 +269,10 @@ terra::plot(alps.shp, col = "#bcbddc")
 terra::plot(r.arcto, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
 points(obs.arcto[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
+```
+
+```{r fig-arcto, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("figures/Part0_plot5.png")
 ```
 
 Two design choices matter here. First, `grain = 1` keeps only records with
@@ -283,6 +320,10 @@ rg <- read_range_rds(range_summary$range_file[1])
 terra::plot(rg$rangeOutput)
 ```
 
+```{r fig-disk, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("figures/Part0_plot6.png")
+```
+
 This workflow is described in full in
 `vignette("large-downloaded-gbif-tables", package = "gbif.range")`.
 
@@ -303,7 +344,6 @@ Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M., Bogutskaya, N., 
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. https://doi.org/10.5281/zenodo.6023735
 
-Chauvier, Y., Hagen, O., Pinkert, S., Albouy, C., Fopp, F., Brun, P., Descombes, P., Altermatt, F., Pellissier, L., & Csilléry, K. (2025). gbif.range: An R package to generate ecologically-informed species range maps from occurrence data with seamless GBIF integration. *Authorea*. https://doi.org/10.22541/au.175130858.83083354/v1
 
 Hagen, O., Vaterlaus, L., Albouy, C., Brown, A., Leugger, F., Onstein, R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019). Mountain building, climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. *Journal of Biogeography*, 46(8), 1792–1807. https://doi.org/10.1111/jbi.13653
 
