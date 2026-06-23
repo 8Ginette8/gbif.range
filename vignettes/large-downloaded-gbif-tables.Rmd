@@ -12,7 +12,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.width = 7,
-  fig.height = 5
+  fig.height = 5,
+  message = FALSE
 )
 
 library(gbif.range)
@@ -84,7 +85,12 @@ split_summary <- split_gbif_by_species(
   verbose = FALSE
 )
 
-knitr::kable(split_summary[, c("species_name", "n_records", "species_file")], align = "l")
+knitr::kable(
+  transform(split_summary, species_file = basename(species_file))[
+    , c("species_name", "n_records", "species_file")
+  ],
+  align = "l"
+)
 ```
 
 A few implementation details are worth highlighting.
@@ -139,7 +145,13 @@ range_summary <- species_csvs_to_ranges(
   verbose = FALSE
 )
 
-knitr::kable(range_summary[, c("species_name", "n_points", "occ_file", "range_file")], align = "l")
+knitr::kable(
+  transform(range_summary,
+    occ_file   = basename(occ_file),
+    range_file = basename(range_file)
+  )[, c("species_name", "n_points", "occ_file", "range_file")],
+  align = "l"
+)
 ```
 
 Internally, `species_csvs_to_ranges()` reduces each species file to the minimal structure expected by `get_range()`: one focal species plus decimal longitude and latitude. It can also save those minimal occurrence tables to disk, which is useful if you want to inspect exactly what was passed to `get_range()` after deduplication.
