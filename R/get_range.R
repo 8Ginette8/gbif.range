@@ -30,11 +30,11 @@
 #' hull polygons.
 #' @param dir_temp Character. String giving the directory used for temporary
 #' convex-hull files. Defaults to \code{tempdir()}.
-#' @param raster Logical. Should the final output be rasterized? Default is
-#' \code{TRUE}.
-#' @param format \code{"SpatVector"} (default) or \code{"sf"}. Output format
-#' used when \code{raster = FALSE}.
-#' @param res Numeric. Output resolution in degrees when \code{raster = TRUE}.
+#' @param format Character. Output format for the range map. One of
+#' \code{"SpatVector"} (default), \code{"sf"}, or \code{"SpatRaster"}.
+#' \code{"SpatRaster"} rasterizes the range at the resolution set by
+#' \code{res}.
+#' @param res Numeric. Output resolution in degrees when \code{format = "SpatRaster"}.
 #' Default is \code{0.1} (about 11.1 km at the equator). The achievable
 #' resolution is constrained by the spatial precision of \code{ecoreg}.
 #' @param verbose Logical. Should progress messages be printed?
@@ -134,8 +134,7 @@ get_range <- function (occ_coord = NULL,
                        buff_incrmt_pts_line = 0.5, 
                        buff_width_polygon = 4,
                        dir_temp = tempdir(),
-                       raster = TRUE,
-                       format = "SpatVector",
+                       format = c("SpatVector", "sf", "SpatRaster"),
                        res = 0.1,
                        verbose = TRUE){
 
@@ -149,7 +148,7 @@ get_range <- function (occ_coord = NULL,
   check_numeric(buff_width_point, "buff_width_point")
   check_numeric(buff_incrmt_pts_line, "buff_incrmt_pts_line")
   check_numeric(buff_width_polygon, "buff_width_polygon")
-  check_logical(raster, "raster")
+  format <- match.arg(format)
   check_numeric(res, "res")
   check_logical(verbose, "verbose")
 
@@ -388,8 +387,8 @@ get_range <- function (occ_coord = NULL,
   }
   shp.species <- terra::aggregate(do.call("rbind", lala))
 
-  # Convert to raster or not
-  if (raster) {
+  # Convert to requested format
+  if (format == "SpatRaster") {
     res.use <- 1 / res
     ras.res <- terra::rast(terra::disagg(terra::rast(), res.use))
     ras <- terra::rasterize(shp.species, ras.res)
@@ -398,6 +397,11 @@ get_range <- function (occ_coord = NULL,
 
   } else if (format == "sf") {
     shp.species <- sf::st_as_sf(shp.species)
+    shp.species$species <- occ_coord$input_search[1]
+
+  } else {
+    # SpatVector
+    shp.species$species <- occ_coord$input_search[1]
   }
   
   # Final print
@@ -416,7 +420,7 @@ get_range <- function (occ_coord = NULL,
                            buff_incrmt_pts_line = buff_incrmt_pts_line,
                            buff_width_polygon = buff_width_polygon,
                            dir_temp = dir_temp,
-                           raster = TRUE,
+                           format = format,
                            res = res)
   result$rangeOutput <- shp.species
 

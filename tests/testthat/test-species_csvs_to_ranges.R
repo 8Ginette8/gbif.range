@@ -35,7 +35,6 @@ test_that("species_csvs_to_ranges builds offline ranges from split occurrence fi
     buff_width_point = 1,
     buff_incrmt_pts_line = 0.1,
     buff_width_polygon = 1,
-    raster = FALSE,
     format = "SpatVector",
     verbose = FALSE
   )
@@ -100,7 +99,6 @@ test_that("species_csvs_to_ranges resolves built-in ecoregion names", {
     buff_width_point = 1,
     buff_incrmt_pts_line = 0.1,
     buff_width_polygon = 1,
-    raster = FALSE,
     format = "SpatVector",
     verbose = FALSE
   )

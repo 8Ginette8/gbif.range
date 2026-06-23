@@ -15,7 +15,6 @@ test_that("get_range returns a range object for offline fixture data", {
     buff_incrmt_pts_line = 0.1,
     buff_width_polygon = 1,
     dir_temp = tempdir(),
-    raster = FALSE,
     format = "SpatVector",
     verbose = FALSE
   )

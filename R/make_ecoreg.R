@@ -13,10 +13,9 @@
 #' @param path Optional character. Directory where the output should be written.
 #' Leave empty to return the result directly.
 #' @param name Character. Output file name without extension when \code{path} is used.
-#' @param format Output format for polygon results: \code{"SpatVector"}
-#' (default) or \code{"sf"}.
-#' @param raster Logical. Should the output remain a raster instead of being
-#' converted to polygons? Default is \code{FALSE}.
+#' @param format Output format. One of \code{"SpatVector"} (default),
+#' \code{"sf"}, or \code{"SpatRaster"}. \code{"SpatRaster"} returns the
+#' raw cluster raster instead of converting to polygons.
 #' @param ... Additional arguments passed to \code{cluster::clara()}.
 #' @details This function is useful when the packaged ecoregion layers are too
 #' coarse for a study area or when a custom environmental regionalization is
@@ -55,8 +54,7 @@ make_ecoreg <- function(env = NULL,
                           nclass = NULL,
                           path = "",
                           name = "",
-                          format = "SpatVector",
-                          raster = FALSE,
+                          format = c("SpatVector", "sf", "SpatRaster"),
                           ...)
 {
     ######################################################
@@ -68,7 +66,7 @@ make_ecoreg <- function(env = NULL,
     check_numeric(nclass, "nclass")
     check_character_vector(path, "path")
     check_character_vector(name, "name")
-    check_logical(raster, "raster")
+    format <- match.arg(format)
 
     # env must be of a specific class
     if (!(class(env) %in% c("SpatRaster", "RasterBrick", "RasterStack"))){
@@ -112,11 +110,11 @@ make_ecoreg <- function(env = NULL,
     toNew.ras[][id.toReplace] <- blocks$clustering
     toNew.ras[][!id.toReplace] <- NA
 
-    # Save in raster or shapefile
-    if (raster&path == "") {
+    # Save in raster or polygon format
+    if (format == "SpatRaster" & path == "") {
       return(toNew.ras)
 
-    } else if (raster&path != "") {
+    } else if (format == "SpatRaster" & path != "") {
       terra::writeRaster(
         x = toNew.ras,
         filename = paste0(path ,"/", name, ".tif"),
@@ -140,9 +138,8 @@ make_ecoreg <- function(env = NULL,
       topoly <- terra::buffer(topoly, width = 0) 
       
       if (format == "sf") {
-        # Return sf object
         topoly <- sf::st_as_sf(topoly)
-        if (!raster & path == "") {
+        if (path == "") {
           return(topoly)
         } else {
           sf::st_write(
@@ -154,7 +151,7 @@ make_ecoreg <- function(env = NULL,
             )
           }
       } else {
-        if (!raster & path == "") {
+        if (path == "") {
           return(topoly)
         } else {
           terra::writeVector(

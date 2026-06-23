@@ -123,7 +123,6 @@ if (requireNamespace("data.table", quietly = TRUE)) {
     buff_width_point = 1,
     buff_incrmt_pts_line = 0.1,
     buff_width_polygon = 1,
-    raster = FALSE,
     format = "SpatVector",
     verbose = FALSE
   )

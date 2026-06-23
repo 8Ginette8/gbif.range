@@ -15,7 +15,7 @@ test_that("make_ecoreg creates offline polygon ecoregions", {
   env <- c(r1, r2)
 
   set.seed(1)
-  ecoreg <- make_ecoreg(env = env, nclass = 2, raster = FALSE)
+  ecoreg <- make_ecoreg(env = env, nclass = 2)
 
   # Polygon output should include the fields created by make_ecoreg().
   expect_true(inherits(ecoreg, "SpatVector"))

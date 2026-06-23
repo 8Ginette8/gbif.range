@@ -71,7 +71,6 @@ range.tiger <- get_range(
     occ_coord = obs.pt,
     ecoreg = eco.terra,
     ecoreg_name = "ECO_NAME",
-    raster = FALSE,
     format = "sf"
 )
 
@@ -125,7 +124,7 @@ range.arcto <- get_range(
     ecoreg = my.eco,
     ecoreg_name = "EcoRegion",
     res = 0.05,
-    raster = TRUE
+    format = "SpatRaster"
 )
 ext.temp <- terra::ext(range.arcto$rangeOutput)
 ext.temp <- c(ext.temp[1]-0.6, ext.temp[2]+0.05,

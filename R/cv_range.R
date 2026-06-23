@@ -149,7 +149,7 @@ cv_range <- function(range_object = NULL,
       buff_incrmt_pts_line = range_object$init.args$buff_incrmt_pts_line,
       buff_width_polygon = range_object$init.args$buff_width_polygon,
       dir_temp = range_object$init.args$dir_temp,
-      raster = TRUE,
+      format = "SpatRaster",
       res = range_object$init.args$res,
       verbose = FALSE
     )

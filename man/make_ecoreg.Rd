@@ -9,8 +9,7 @@ make_ecoreg(
   nclass = NULL,
   path = "",
   name = "",
-  format = "SpatVector",
-  raster = FALSE,
+  format = c("SpatVector", "sf", "SpatRaster"),
   ...
 )
 }
@@ -26,11 +25,9 @@ Leave empty to return the result directly.}
 
 \item{name}{Character. Output file name without extension when \code{path} is used.}
 
-\item{format}{Output format for polygon results: \code{"SpatVector"}
-(default) or \code{"sf"}.}
-
-\item{raster}{Logical. Should the output remain a raster instead of being
-converted to polygons? Default is \code{FALSE}.}
+\item{format}{Output format. One of \code{"SpatVector"} (default),
+\code{"sf"}, or \code{"SpatRaster"}. \code{"SpatRaster"} returns the
+raw cluster raster instead of converting to polygons.}
 
 \item{...}{Additional arguments passed to \code{cluster::clara()}.}
 }

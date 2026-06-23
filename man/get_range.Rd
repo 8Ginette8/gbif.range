@@ -14,8 +14,7 @@ get_range(
   buff_incrmt_pts_line = 0.5,
   buff_width_polygon = 4,
   dir_temp = tempdir(),
-  raster = TRUE,
-  format = "SpatVector",
+  format = c("SpatVector", "sf", "SpatRaster"),
   res = 0.1,
   verbose = TRUE
 )
@@ -53,13 +52,12 @@ hull polygons.}
 \item{dir_temp}{Character. String giving the directory used for temporary
 convex-hull files. Defaults to \code{tempdir()}.}
 
-\item{raster}{Logical. Should the final output be rasterized? Default is
-\code{TRUE}.}
+\item{format}{Character. Output format for the range map. One of
+\code{"SpatVector"} (default), \code{"sf"}, or \code{"SpatRaster"}.
+\code{"SpatRaster"} rasterizes the range at the resolution set by
+\code{res}.}
 
-\item{format}{\code{"SpatVector"} (default) or \code{"sf"}. Output format
-used when \code{raster = FALSE}.}
-
-\item{res}{Numeric. Output resolution in degrees when \code{raster = TRUE}.
+\item{res}{Numeric. Output resolution in degrees when \code{format = "SpatRaster"}.
 Default is \code{0.1} (about 11.1 km at the equator). The achievable
 resolution is constrained by the spatial precision of \code{ecoreg}.}
 
@@ -116,7 +114,7 @@ range.tiger <- get_range(
     occ_coord = obs.pt,
     ecoreg = eco.terra,
     ecoreg_name = "ECO_NAME",
-    format = "SpatVector"
+    format = "SpatRaster"
 )
 
 # Plot
