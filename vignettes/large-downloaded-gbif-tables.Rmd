@@ -87,9 +87,9 @@ split_summary <- split_gbif_by_species(
 )
 
 knitr::kable(
-  transform(split_summary, species_file = basename(species_file))[
-    , c("species_name", "n_records", "species_file")
-  ],
+  transform(split_summary,
+    species_file = sub(".*speciesKey_", "", basename(species_file))
+  )[, c("species_name", "n_records", "species_file")],
   align = "l"
 )
 ```
@@ -148,8 +148,8 @@ range_summary <- species_csvs_to_ranges(
 
 knitr::kable(
   transform(range_summary,
-    occ_file   = basename(occ_file),
-    range_file = basename(range_file)
+    occ_file   = sub(".*speciesKey_", "", basename(occ_file)),
+    range_file = sub(".*speciesKey_", "", basename(range_file))
   )[, c("species_name", "n_points", "occ_file", "range_file")],
   align = "l"
 )
