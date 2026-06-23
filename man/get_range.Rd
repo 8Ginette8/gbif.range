@@ -21,7 +21,7 @@ get_range(
 )
 }
 \arguments{
-\item{occ_coord}{A \code{getGBIF} object returned by \code{get_gbif()} or a
+\item{occ_coord}{\code{getGBIF} object returned by \code{get_gbif()} or a
 \code{data.frame} containing the columns \code{decimalLongitude} and
 \code{decimalLatitude}.}
 
@@ -30,36 +30,36 @@ get_range(
 be a downloaded layer from \code{read_ecoreg()} or a custom layer created by
 \code{make_ecoreg()}.}
 
-\item{ecoreg_name}{Character string naming the field in \code{ecoreg} that
+\item{ecoreg_name}{Character. String naming the field in \code{ecoreg} that
 defines ecoregion categories. For \code{eco_terra}, for example,
 \code{"ECO_NAME"} is the most detailed level. When \code{ecoreg} comes from
 \code{make_ecoreg()}, \code{"EcoRegion"} is used automatically.}
 
-\item{degrees_outlier}{Numeric distance threshold in degrees. Points whose
+\item{degrees_outlier}{Numeric. Distance threshold in degrees. Points whose
 \code{clust_pts_outlier}-th nearest neighbour lies beyond this distance are
 treated as outliers. Default is \code{5}.}
 
-\item{clust_pts_outlier}{Numeric k-nearest-neighbour order used for outlier
+\item{clust_pts_outlier}{Numeric. k-nearest-neighbour order used for outlier
 detection. Default is \code{4}.}
 
-\item{buff_width_point}{Numeric buffer width in degrees for isolated points.}
+\item{buff_width_point}{Numeric. Buffer width in degrees for isolated points.}
 
-\item{buff_incrmt_pts_line}{Numeric increment in buffer width for linear
+\item{buff_incrmt_pts_line}{Numeric. Increment in buffer width for linear
 clusters.}
 
-\item{buff_width_polygon}{Numeric buffer width in degrees applied to convex
+\item{buff_width_polygon}{Numeric. Buffer width in degrees applied to convex
 hull polygons.}
 
-\item{dir_temp}{Character string giving the directory used for temporary
+\item{dir_temp}{Character. String giving the directory used for temporary
 convex-hull files. Defaults to \code{tempdir()}.}
 
 \item{raster}{Logical. Should the final output be rasterized? Default is
 \code{TRUE}.}
 
-\item{format}{Output format used when \code{raster = FALSE}. Choose between
-\code{"SpatVector"} (default) and \code{"sf"}.}
+\item{format}{\code{"SpatVector"} (default) or \code{"sf"}. Output format
+used when \code{raster = FALSE}.}
 
-\item{res}{Numeric output resolution in degrees when \code{raster = TRUE}.
+\item{res}{Numeric. Output resolution in degrees when \code{raster = TRUE}.
 Default is \code{0.1} (about 11.1 km at the equator). The achievable
 resolution is constrained by the spatial precision of \code{ecoreg}.}
 
@@ -241,9 +241,9 @@ terra::plot(
     col = "#63636399",
     add = TRUE
 )
-terra::points(pt.plot, col = pt.col2, pch = 16, cex = 1)
-terra::points(pt.plot, col = pt.col3, pch = 16, cex = 0.6)
-terra::points(out.plot, col = "black", pch = 4, cex = 1, lwd = 10)
+graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 1)
+graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.6)
+graphics::points(out.plot, col = "black", pch = 4, cex = 1, lwd = 10)
 dev.off()
 
 # ------------------------------------------------

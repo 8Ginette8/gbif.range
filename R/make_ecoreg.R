@@ -6,12 +6,13 @@
 #' Cluster multi-layer environmental data to create a custom ecoregion map that
 #' can be used directly in \code{get_range()}.
 #'
-#' @param env Environmental raster stack. Accepted classes are
+#' @param env Raster stack. Can be any aboitic or biotic factors thought of
+#' defining ecoregions boundaries. Accepted classes are
 #' \code{SpatRaster}, \code{RasterBrick}, and \code{RasterStack}.
-#' @param nclass Numeric number of environmental classes to create.
-#' @param path Optional directory where the output should be written. Leave
-#' empty to return the result directly.
-#' @param name Output file name without extension when \code{path} is used.
+#' @param nclass Numeric. Number of environmental classes to create.
+#' @param path Optional character. Directory where the output should be written.
+#' Leave empty to return the result directly.
+#' @param name Character. Output file name without extension when \code{path} is used.
 #' @param format Output format for polygon results: \code{"SpatVector"}
 #' (default) or \code{"sf"}.
 #' @param raster Logical. Should the output remain a raster instead of being

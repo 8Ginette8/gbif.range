@@ -57,7 +57,7 @@ ecoreg_list <- list(
 #'
 #' Determine the directory used to store downloaded ecoregion data.
 #'
-#' @param save_dir Optional directory where downloaded files should be stored.
+#' @param save_dir Optional character. Directory where downloaded files should be stored.
 #' Defaults to \code{inst/extdata/downloads} in the installed package, or to
 #' the same relative path in the working directory when running from source.
 #' @return A character string giving the target directory.
@@ -78,9 +78,9 @@ get_save_dir <- function(save_dir = NULL) {
 #' Download one or more ecoregion datasets listed in \code{ecoreg_list()} and
 #' unpack them into a local directory.
 #'
-#' @param ecoreg_name Character string. Use \code{"all"} to download every
+#' @param ecoreg_name Character. Use \code{"all"} to download every
 #' dataset, or supply a single file name listed in \code{ecoreg_list}.
-#' @param save_dir Directory where the downloaded zip files and extracted
+#' @param save_dir Character. Directory where the downloaded zip files and extracted
 #' shapefiles should be stored.
 #' @return \code{NULL}. Files are downloaded and unpacked for side effects.
 #' @examples
@@ -180,9 +180,9 @@ get_ecoreg <- function(ecoreg_name = "all", save_dir = NULL) {
 #' Check whether a target ecoregion directory exists and contains at least one
 #' shapefile. If not, download the dataset with \code{get_ecoreg()}.
 #'
-#' @param ecoreg_name File name of the ecoregion dataset to check. See
+#' @param ecoreg_name Character. File name of the ecoregion dataset to check. See
 #' \code{ecoreg_list} for valid values.
-#' @param save_dir Directory where downloaded files should be stored.
+#' @param save_dir Character. Directory where downloaded files should be stored.
 #' @return \code{NULL}. The function downloads data only when required.
 #' @examples
 #' \dontrun{
@@ -216,10 +216,10 @@ check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
 #' Load one of the packaged ecoregion datasets listed in \code{ecoreg_list()}.
 #' If the requested data are not available locally, they are downloaded first.
 #'
-#' @param ecoreg_name File name of the ecoregion dataset to load. See
+#' @param ecoreg_name Character. File name of the ecoregion dataset to load. See
 #' \code{ecoreg_list} for available options.
-#' @param save_dir Directory where the downloaded files are stored.
-#' @param format Output format. Use \code{"SpatVector"} (default) or
+#' @param save_dir Character. irectory where the downloaded files are stored.
+#' @param format \code{"SpatVector"} (default) or
 #' \code{"sf"}.
 #' @details Four datasets are currently available:
 #'

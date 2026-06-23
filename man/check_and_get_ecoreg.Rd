@@ -7,10 +7,10 @@
 check_and_get_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
 }
 \arguments{
-\item{ecoreg_name}{File name of the ecoregion dataset to check. See
+\item{ecoreg_name}{Character. File name of the ecoregion dataset to check. See
 \code{ecoreg_list} for valid values.}
 
-\item{save_dir}{Directory where downloaded files should be stored.}
+\item{save_dir}{Character. Directory where downloaded files should be stored.}
 }
 \value{
 \code{NULL}. The function downloads data only when required.

@@ -158,7 +158,7 @@ par(
     cex = 0.5
 )
 terra::plot(world.local.ar, col = "#bcd1bc", axes = FALSE, lwd = 2)
-terra::points(abs, col = paste0(abs$col, "50"), pch = 16, cex = 0.7)
+graphics::points(abs, col = paste0(abs$col, "50"), pch = 16, cex = 0.7)
 terra::plot(
     terra::as.polygons(range.arcto$rangeOutput),
     border = "black",
@@ -166,7 +166,7 @@ terra::plot(
     col = "#63636370",
     add = TRUE
 )
-terra::points(pres, col = paste0(pres$col,"90"), pch = 16, cex = 1.5)
+graphics::points(pres, col = paste0(pres$col,"90"), pch = 16, cex = 1.5)
 text(
     6.6,43.2,
     paste("Mean TSS =", round(tail(ar.test[,"TSS"],1),2)),
@@ -267,7 +267,7 @@ png(
 )
 par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
 terra::plot(world.local.ti, col = "#bcd1bc", axes = FALSE, lwd = 2)
-terra::points(abs, col = paste0(abs$col,"50"), pch = 16, cex = 0.6)
+graphics::points(abs, col = paste0(abs$col,"50"), pch = 16, cex = 0.6)
 terra::plot(
     terra::as.polygons(tiger_rast),
     border = "black",
@@ -275,7 +275,7 @@ terra::plot(
     col = "#63636370",
     add = TRUE
 )
-terra::points(pres, col = paste0(pres$col,"80"), pch = 16, cex = 1.6)
+graphics::points(pres, col = paste0(pres$col,"80"), pch = 16, cex = 1.6)
 text(86,49,
     paste("Mean TSS =", round(tail(pt.test[,"TSS"],1),2)),
     cex = 1.5,

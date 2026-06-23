@@ -15,15 +15,16 @@ make_ecoreg(
 )
 }
 \arguments{
-\item{env}{Environmental raster stack. Accepted classes are
+\item{env}{Raster stack. Can be any aboitic or biotic factors thought of
+defining ecoregions boundaries. Accepted classes are
 \code{SpatRaster}, \code{RasterBrick}, and \code{RasterStack}.}
 
-\item{nclass}{Numeric number of environmental classes to create.}
+\item{nclass}{Numeric. Number of environmental classes to create.}
 
-\item{path}{Optional directory where the output should be written. Leave
-empty to return the result directly.}
+\item{path}{Optional character. Directory where the output should be written.
+Leave empty to return the result directly.}
 
-\item{name}{Output file name without extension when \code{path} is used.}
+\item{name}{Character. Output file name without extension when \code{path} is used.}
 
 \item{format}{Output format for polygon results: \code{"SpatVector"}
 (default) or \code{"sf"}.}
@@ -178,8 +179,8 @@ terra::plot(
 	col = "#00000099",
 	add = TRUE
 )
-terra::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
-terra::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
+graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
+graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
 dev.off()
 
 }

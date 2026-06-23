@@ -142,9 +142,9 @@ terra::plot(
     col = "#63636399",
     add = TRUE
 )
-terra::points(pt.plot, col = pt.col2, pch = 16, cex = 1)
-terra::points(pt.plot, col = pt.col3, pch = 16, cex = 0.6)
-terra::points(out.plot, col = "black", pch = 4, cex = 1, lwd = 10)
+graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 1)
+graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.6)
+graphics::points(out.plot, col = "black", pch = 4, cex = 1, lwd = 10)
 dev.off()
 
 # ------------------------------------------------

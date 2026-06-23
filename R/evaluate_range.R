@@ -7,21 +7,21 @@
 #' data, such as species distribution models (SDMs) or expert-derived range
 #' maps, and summarize precision, sensitivity, specificity, and TSS.
 #'
-#' @param root_dir Character string giving the root directory that contains both
+#' @param root_dir Character. String giving the root directory that contains both
 #' the generated range maps and the validation data.
-#' @param valData_dir Character string giving the directory, relative to
+#' @param valData_dir Character. String giving the directory, relative to
 #' \code{root_dir}, containing the validation data.
-#' @param ecoRM_dir Character string giving the directory, relative to
+#' @param ecoRM_dir Character. String giving the directory, relative to
 #' \code{root_dir}, containing range maps generated with \code{get_range()}.
-#' @param valData_type Character string indicating the expected validation-data
+#' @param valData_type Character. String indicating the expected validation-data
 #' format: \code{"SHP"} or \code{"TIFF"}.
 #' @param verbose Logical. Should progress information be printed while the
 #' comparison is running?
 #' @param print_map Logical. If \code{TRUE}, write a PDF overlay map for each
 #' evaluated species.
-#' @param mask Optional \code{SpatRaster} used as a study-area mask and common
+#' @param mask Optional \code{SpatRaster}. Used as a study-area mask and common
 #' comparison domain.
-#' @param res_fact Optional integer aggregation factor used to coarsen the
+#' @param res_fact Optional integer. Aggregation factor used to coarsen the
 #' native resolution before comparison.
 #' @details TIFF validation files must have file names matching the species
 #' names of the range maps. Shapefile-based validation data must include a

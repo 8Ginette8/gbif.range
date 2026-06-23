@@ -15,7 +15,7 @@ obs.pt <- get_gbif_count(
 	geo = NULL
 )
 
-# Example of setting 'geo' (still considered as global)
+# Example of setting global 'geo' (all records are still kept)
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = NULL,

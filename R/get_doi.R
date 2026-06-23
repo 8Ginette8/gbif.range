@@ -6,14 +6,14 @@
 #' A lightweight wrapper around \code{rgbif::derived_dataset()} that combines
 #' one or more \code{get_gbif()} outputs into a citable derived dataset.
 #' 
-#' @param gbifs A \code{getGBIF} object or a list of \code{getGBIF} objects.
-#' @param title Character string giving the title of the derived dataset.
-#' @param description Character string describing the dataset.
-#' @param source_url Character string pointing to the location where the
+#' @param gbifs \code{getGBIF} object or a list of \code{getGBIF} objects.
+#' @param title Character. String giving the title of the derived dataset.
+#' @param description Character. String describing the dataset.
+#' @param source_url Character. String pointing to the location where the
 #' derived dataset or workflow is documented.
-#' @param user Character string with the GBIF username used to submit the
+#' @param user Character. String with the GBIF username used to submit the
 #' request.
-#' @param pwd Character string with the GBIF password used to submit the
+#' @param pwd Character. String with the GBIF password used to submit the
 #' request.
 #' @param ... Additional arguments passed to
 #' \code{rgbif::derived_dataset()}.

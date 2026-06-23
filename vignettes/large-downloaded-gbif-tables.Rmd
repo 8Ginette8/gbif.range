@@ -210,9 +210,9 @@ If the range outputs are saved as `.rds`, `read_range_rds()` restores them to a 
 
 ```{r read-ranges, eval = has_data_table}
 # Read the first saved range to inspect its structure.
-range_one <- read_range_rds(range_summary$range_file[1])
-names(range_one)
-class(range_one$rangeOutput)
+first_range <- read_range_rds(range_summary$range_file[1])
+names(first_range)
+class(first_range$rangeOutput)
 ```
 
 The example below overlays every saved range in the batch summary. This is a useful diagnostic pattern when checking whether a batch run produced geometries with the expected extent and shape.
@@ -225,8 +225,22 @@ range_colors <- c(
   rgb(0.70, 0.65, 0.10, 0.30)
 )
 
-first_range <- read_range_rds(range_summary$range_file[1])
-terra::plot(first_range$rangeOutput, col = range_colors[1], main = "Batch-generated ranges")
+combined_ext <- terra::ext(first_range$rangeOutput)
+
+if (nrow(range_summary) > 1) {
+  for (i in 2:nrow(range_summary)) {
+    range_i <- read_range_rds(range_summary$range_file[i])
+    combined_ext <- terra::ext(
+      min(terra::xmin(combined_ext), terra::xmin(range_i$rangeOutput)),
+      max(terra::xmax(combined_ext), terra::xmax(range_i$rangeOutput)),
+      min(terra::ymin(combined_ext), terra::ymin(range_i$rangeOutput)),
+      max(terra::ymax(combined_ext), terra::ymax(range_i$rangeOutput))
+    )
+  }
+}
+
+terra::plot(combined_ext, col = NA, legend = FALSE, main = "Batch-generated ranges")
+terra::plot(first_range$rangeOutput, add = TRUE, col = range_colors[1])
 
 if (nrow(range_summary) > 1) {
   for (i in 2:nrow(range_summary)) {

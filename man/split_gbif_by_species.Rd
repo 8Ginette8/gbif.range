@@ -17,21 +17,21 @@ split_gbif_by_species(
 )
 }
 \arguments{
-\item{input_file}{Path to a tabular GBIF export already stored on disk.}
+\item{input_file}{Character. Path to a tabular GBIF export already stored on disk.}
 
-\item{outdir}{Directory where one per-species file will be written.}
+\item{outdir}{Chracter. Directory where one per-species file will be written.}
 
-\item{chunk_size}{Number of rows read at a time. Larger values are usually
+\item{chunk_size}{Integer. Number of rows read at a time. Larger values are usually
 faster, whereas smaller values reduce peak memory use.}
 
-\item{select_cols}{Character vector of columns to keep from the original
+\item{select_cols}{Character. Vector of columns to keep from the original
 file. The defaults retain the taxon key, species labels, and geographic
 coordinates needed by downstream range workflows.}
 
-\item{sep_in}{Field separator used by the input file. GBIF downloads are
+\item{sep_in}{Character. Field separator Used by the input file. GBIF downloads are
 usually tab-delimited.}
 
-\item{sep_out}{Field separator used for the saved species files.}
+\item{sep_out}{Character. Field separator used for the saved species files.}
 
 \item{overwrite}{Logical. If \code{TRUE}, existing batch files created by
 this function in \code{outdir} are removed before writing new ones.}

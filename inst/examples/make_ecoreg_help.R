@@ -128,8 +128,8 @@ terra::plot(
 	col = "#00000099",
 	add = TRUE
 )
-terra::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
-terra::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
+graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
+graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
 dev.off()
 
 }

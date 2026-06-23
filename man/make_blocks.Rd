@@ -13,19 +13,19 @@ make_blocks(
 )
 }
 \arguments{
-\item{nfolds}{Numeric number of folds to create.}
+\item{nfolds}{Numeric. Number of folds to create.}
 
-\item{df}{Optional \code{data.frame} whose columns define the structure used
+\item{df}{Optional \code{data.frame}. Columns define the structure used
 to build folds. When omitted, random folds are created from
 \code{npoints}.}
 
-\item{nblocks}{Numeric number of initial clusters used to build the folds.
+\item{nblocks}{Numeric. Number of initial clusters used to build the folds.
 Must be at least \code{nfolds}.}
 
-\item{npoints}{Optional number of observations to split when \code{df} is
+\item{npoints}{Optional numeric. Number of observations to split when \code{df} is
 not supplied.}
 
-\item{pres}{Optional binary vector used to restrict CLARA clustering to a
+\item{pres}{Optional binary vector. Used to restrict CLARA clustering to a
 subset of rows and assign the remainder by nearest neighbours.}
 }
 \value{

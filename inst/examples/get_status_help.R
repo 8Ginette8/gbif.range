@@ -1,23 +1,19 @@
 \dontrun{
 # --- 1. Default: accepted name + synonyms only ---
 tax <- get_status("Panthera tigris")
-tax[, c("canonicalName", "gbif_status", "gbif_key", "IUCN_status", "sp_nameMatch")]
+tax
 
 # --- 2. Include infra-specific taxa (subspecies, varieties) ---
 # These are the same keys retrieved by get_gbif()
-tax_ch <- get_status("Panthera tigris", children = TRUE)
-tax_ch[, c("canonicalName", "gbif_status", "gbif_key", "sp_nameMatch")]
+tax_ch <- get_status("Panthera tigris", level = "children")
+tax_ch
 
 # --- 3. Include alternative name string representations (inspection only) ---
 # RELATED rows are not used by get_gbif()
-tax_rel <- get_status("Panthera tigris", related = TRUE)
-tax_rel[, c("canonicalName", "gbif_status", "gbif_key", "sp_nameMatch")]
+tax_rel <- get_status("Panthera tigris", level = "all")
+tax_rel
 
-# --- 4. Full picture ---
-tax_all <- get_status("Panthera tigris", children = TRUE, related = TRUE)
-table(tax_all$gbif_status)
-
-# --- 5. Cross-check get_status() keys against get_gbif() output ---
+# --- 4. Cross-check get_status() keys against get_gbif() output ---
 occ <- get_gbif("Panthera tigris", has_xy = TRUE, verbose = FALSE)
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status %in% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
@@ -38,20 +34,15 @@ extra_keys
 occ[occ$acceptedTaxonKey %in% extra_keys,
     c("acceptedTaxonKey", "scientificName", "basisOfRecord")]
 
-# Note: not all valid_keys need appear in returned_keys — some subspecies
+# Note: not all valid_keys need to appear in returned_keys — some subspecies
 # may have no records in GBIF at all (e.g. extinct taxa) or may have been
 # removed by get_gbif() filtering options (e.g. has_xy, basis, grain)
 
-# --- 6. Input name flagged correctly regardless of how GBIF resolves it ---
+# --- 5. Input name flagged correctly regardless of how GBIF resolves it ---
 # sp_nameMatch = "INPUT" marks the row closest to the submitted name
 tax_ch[tax_ch$sp_nameMatch == "INPUT", ]
 
-# --- 7. Fuzzy matching for uncertain names ---
+# --- 6. Fuzzy matching for uncertain names ---
 # sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
 get_status("Panthera tigri", search = FALSE)
-
-# --- 8. Disambiguate hemihomonyms with family ---
-get_status("Panthera tigris", family = "Felidae")
-
-
 }

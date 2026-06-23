@@ -6,11 +6,11 @@
 #' Divide a study extent into a set of smaller \code{POLYGON()} query strings
 #' that can be used with the GBIF \code{geometry} parameter.
 #'
-#' @param geo Spatial extent or geometry used to define the study area.
+#' @param geo Spatial extent or geometry. Used to define the study area.
 #' Accepted classes are \code{Extent}, \code{SpatExtent},
 #' \code{SpatialPolygon}, \code{SpatialPolygonDataFrame}, \code{SpatVector},
 #' and \code{sf}. If \code{NULL}, the whole globe is used.
-#' @param ntiles Numeric approximate number of tiles to create.
+#' @param ntiles Numeric. Approximate number of tiles to create.
 #' @param sext Logical. Should the corresponding \code{SpatExtent} objects also
 #' be returned?
 #' @details The input extent is converted into a regular grid of smaller query

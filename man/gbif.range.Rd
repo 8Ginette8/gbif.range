@@ -57,7 +57,7 @@ range_obj <- get_range(
 
 # Plot the predicted range and overlay the occurrence points.
 terra::plot(range_obj$rangeOutput, col = 3, main = "Range Map")
-points(occ, pch = 4)
+graphics::points(occ, pch = 4)
 
 \dontrun{ # nolint: error.
 # -------------------------------------------------------------------------
@@ -80,12 +80,12 @@ tiger_range <- get_range(
 )
 
 # Plot the predicted terrestrial range and the GBIF occurrences.
-plot(
+terra::plot(
   tiger_range$rangeOutput,
   col = 3,
   main = paste("Range:", obs$scientificName[1]))
 
-points(
+graphics::points(
   obs$decimalLongitude,
   obs$decimalLatitude,
   pch = 4,
@@ -155,16 +155,16 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   range_one <- read_range_rds(range_summary$range_file[1])
   range_two <- read_range_rds(range_summary$range_file[2])
 
-  terra::plot(
-    range_one$rangeOutput,
-    col = rgb(0.1, 0.6, 0.2, 0.5),
-    main = "Two example ranges"
+  combined_ext <- terra::ext(
+    min(terra::xmin(range_one$rangeOutput), terra::xmin(range_two$rangeOutput)),
+    max(terra::xmax(range_one$rangeOutput), terra::xmax(range_two$rangeOutput)),
+    min(terra::ymin(range_one$rangeOutput), terra::ymin(range_two$rangeOutput)),
+    max(terra::ymax(range_one$rangeOutput), terra::ymax(range_two$rangeOutput))
   )
-  terra::plot(
-    range_two$rangeOutput,
-    add = TRUE,
-    col = rgb(0.8, 0.3, 0.1, 0.5)
-  )
+
+  terra::plot(combined_ext, col = NA, legend = FALSE)
+  terra::plot(range_one$rangeOutput, col = rgb(0.1, 0.6, 0.2, 0.5), add = TRUE)
+  terra::plot(range_two$rangeOutput, col = rgb(0.8, 0.3, 0.1, 0.5), add = TRUE)
 }
 }
 }

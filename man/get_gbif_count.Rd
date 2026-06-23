@@ -19,7 +19,7 @@ get_gbif_count(
 )
 }
 \arguments{
-\item{sp_name}{Character string with the species name. Scientific names at
+\item{sp_name}{Character. String with the species name. Scientific names at
 genus-species level are expected; fuzzy matching is available when
 \code{search = FALSE}.}
 
@@ -29,23 +29,23 @@ search and keep only species-, subspecies-, or variety-level matches. If
 \code{rank}, \code{phylum}, \code{class}, \code{order}, and
 \code{family} to resolve ambiguous matches.}
 
-\item{rank}{Character string giving the preferred rank to keep:
+\item{rank}{Character. String giving the preferred rank to keep:
 \code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
 \code{NULL}, rank priority is inferred from \code{sp_name}.}
 
-\item{phylum}{Optional phylum used to disambiguate alternative GBIF matches.
+\item{phylum}{Optional character. Phylum used to disambiguate alternative GBIF matches.
 Particularly useful for hemihomonyms.}
 
-\item{class}{Optional class used to disambiguate alternative GBIF matches.}
+\item{class}{Optional character. Class used to disambiguate alternative GBIF matches.}
 
-\item{order}{Optional order used to disambiguate alternative GBIF matches.}
+\item{order}{Optional character. Order used to disambiguate alternative GBIF matches.}
 
-\item{family}{Optional family used to disambiguate alternative GBIF matches.}
+\item{family}{Optional character. Family used to disambiguate alternative GBIF matches.}
 
-\item{conf_match}{Numeric confidence threshold between 0 and 100 for the
+\item{conf_match}{Numeric. Confidence threshold between 0 and 100 for the
 GBIF backbone match. Default is \code{80}.}
 
-\item{geo}{Spatial object used to restrict the query extent. Accepted classes
+\item{geo}{Spatial object. Used to restrict the query extent. Accepted classes
 are \code{Extent}, \code{SpatExtent}, \code{SpatialPolygon},
 \code{SpatialPolygonDataFrame}, \code{SpatVector}, and \code{sf}. The
 default \code{NULL} queries the whole globe.}
@@ -91,7 +91,7 @@ obs.pt <- get_gbif_count(
 	geo = NULL
 )
 
-# Example of setting 'geo' (still considered as global)
+# Example of setting global 'geo' (all records are still kept)
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = NULL,

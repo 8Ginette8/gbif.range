@@ -11,7 +11,7 @@
 #' post-download filters can be applied to clean records for spatial analyses
 #' and range mapping.
 #' 
-#' @param sp_name Character string with the species name. Scientific names at
+#' @param sp_name Character. String with the species name. Scientific names at
 #' genus-species level are expected; fuzzy matching is available when
 #' \code{search = FALSE}.
 #' @param search Logical. If \code{TRUE} (default), use a strict GBIF backbone
@@ -19,17 +19,17 @@
 #' \code{FALSE}, use a more permissive search and optionally rely on
 #' \code{rank}, \code{phylum}, \code{class}, \code{order}, and
 #' \code{family} to resolve ambiguous matches.
-#' @param rank Character string giving the preferred rank to keep:
+#' @param rank Character. String giving the preferred rank to keep:
 #' \code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
 #' \code{NULL}, rank priority is inferred from \code{sp_name}.
-#' @param phylum Optional phylum used to disambiguate alternative GBIF matches.
-#' Particularly useful for hemihomonyms.
-#' @param class Optional class used to disambiguate alternative GBIF matches.
-#' @param order Optional order used to disambiguate alternative GBIF matches.
-#' @param family Optional family used to disambiguate alternative GBIF matches.
-#' @param conf_match Numeric confidence threshold between 0 and 100 for the
+#' @param phylum Optional character. Phylum used to disambiguate alternative
+#' GBIF matches. Particularly useful for hemihomonyms.
+#' @param class Optional character. Class used to disambiguate alternative GBIF matches.
+#' @param order Optional character. Order used to disambiguate alternative GBIF matches.
+#' @param family Optional character. Family used to disambiguate alternative GBIF matches.
+#' @param conf_match Numeric. Confidence threshold between 0 and 100 for the
 #' GBIF backbone match. Default is \code{80}.
-#' @param geo Spatial object used to restrict the query extent. Accepted classes
+#' @param geo Spatial object. Used to restrict the query extent. Accepted classes
 #' are \code{Extent}, \code{SpatExtent}, \code{SpatialPolygon},
 #' \code{SpatialPolygonDataFrame}, \code{SpatVector}, and \code{sf}. The
 #' default \code{NULL} queries the whole globe.
@@ -39,24 +39,23 @@
 #' @param spatial_issue Logical. If \code{FALSE} (default), keep only records
 #' without geospatial issues. If \code{TRUE}, keep only records with
 #' geospatial issues. If \code{NULL}, keep all records.
-#' @param grain Numeric study grain in kilometers. Default is \code{100}. The
+#' @param grain Numeric. Study grain in kilometers. Default is \code{100}. The
 #' value is used to filter records by \code{coordinateUncertaintyInMeters} and
 #' by the number of reported coordinate decimals.
 #' @param duplicates Logical. Should duplicate records be kept? Default is
 #' \code{FALSE}.
 #' @param absences Logical. Should absence records be kept? Default is
 #' \code{FALSE}.
-#' @param basis Character vector giving the accepted bases of record. The
+#' @param basis Character. Vector giving the accepted bases of record. The
 #' default keeps commonly used occurrence-oriented record types and excludes
 #' specimen- and unknown-based records.
-#' @param establishment Character vector giving accepted
+#' @param establishment Character. Vector giving accepted
 #' \code{degreeOfEstablishment} values. The default keeps native and broadly
 #' established records, together with records lacking that field.
-#' @param add_infos Optional character vector of additional GBIF occurrence
+#' @param add_infos Optional character. Vector of additional GBIF occurrence
 #' fields to append to the default output.
-#' @param time_period Numeric vector of length two giving the year range to
-#' retain. Default is \code{c(1000, 3000)}. Records with missing years are
-#' kept.
+#' @param time_period Numeric. Year range to retain. Default is
+#' \code{c(1000, 3000)}. Records with missing years are kept.
 #' @param identic_xy Logical. Should records with identical longitude-latitude
 #' pairs be kept? Default is \code{FALSE}.
 #' @param wConverted_xy Logical. Should records that appear to be incorrectly
@@ -66,25 +65,24 @@
 #' @param centroids Logical. Should records located on raster centroids be
 #' kept? Default is \code{FALSE}. If \code{FALSE},
 #' \code{CoordinateCleaner::cd_round()} is used.
-#' @param ntries Numeric number of download attempts before giving up after
+#' @param ntries Numeric. Number of download attempts before giving up after
 #' GBIF or \code{rgbif} errors. Default is \code{10}.
 #' @param error_skip Logical. If \code{TRUE}, return an empty result when all
 #' download attempts fail.
-#' @param occ_samp Numeric maximum number of GBIF occurrences sampled per
+#' @param occ_samp Numeric. Maximum number of GBIF occurrences sampled per
 #' geographic tile. Default is \code{10000}.
 #' @param should_use_occ_download Logical. If \code{TRUE}, use
 #' \code{rgbif::occ_download()} instead of \code{rgbif::occ_search()}.
 #' This requires GBIF credentials. Default is \code{FALSE}.
-#' @param occ_download_user Character GBIF username. Required if
+#' @param occ_download_user Character. GBIF username. Required if
 #' \code{should_use_occ_download = TRUE}.
-#' @param occ_download_pwd Character GBIF password. Required if
+#' @param occ_download_pwd Character. GBIF password. Required if
 #' \code{should_use_occ_download = TRUE}.
-#' @param occ_download_email Character GBIF email address. Required if
+#' @param occ_download_email Character. GBIF email address. Required if
 #' \code{should_use_occ_download = TRUE}.
 #' @param verbose Logical. Should progress messages be printed? Default is
 #' \code{TRUE}.
-#' @param ... Additional arguments passed to
-#' \code{CoordinateCleaner::cd_round()}.
+#' @param ... Additional arguments passed to \code{CoordinateCleaner::cd_round()}.
 #' @details #' @details
 #' The function follows the same taxonomic matching logic used by the GBIF
 #' website. Internally, the input name is first resolved against the GBIF

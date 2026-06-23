@@ -6,11 +6,11 @@
 #' Reduce the spatial density of a \code{getGBIF} object by retaining a single
 #' record per grid cell and, optionally, removing cells with too few records.
 #'
-#' @param gbifs A \code{getGBIF} object containing one or more species.
-#' @param grid Raster defining the target spatial resolution and extent.
+#' @param gbifs \code{getGBIF} object containing one or more species.
+#' @param grid Raster. Defining the target spatial resolution and extent.
 #' Accepted classes are \code{SpatRaster}, \code{RasterLayer},
 #' \code{RasterBrick}, and \code{RasterStack}.
-#' @param threshold Optional integer specifying the minimum number of records a
+#' @param threshold Optional integer. Specifying the minimum number of records a
 #' cell must contain to be retained.
 #' @details The function first collapses each species to one occurrence per grid
 #' cell. If \code{threshold} is supplied, cells with fewer than that many

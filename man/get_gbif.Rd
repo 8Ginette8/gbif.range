@@ -40,7 +40,7 @@ get_gbif(
 )
 }
 \arguments{
-\item{sp_name}{Character string with the species name. Scientific names at
+\item{sp_name}{Character. String with the species name. Scientific names at
 genus-species level are expected; fuzzy matching is available when
 \code{search = FALSE}.}
 
@@ -50,23 +50,23 @@ search and keep only species-, subspecies-, or variety-level matches. If
 \code{rank}, \code{phylum}, \code{class}, \code{order}, and
 \code{family} to resolve ambiguous matches.}
 
-\item{rank}{Character string giving the preferred rank to keep:
+\item{rank}{Character. String giving the preferred rank to keep:
 \code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
 \code{NULL}, rank priority is inferred from \code{sp_name}.}
 
-\item{phylum}{Optional phylum used to disambiguate alternative GBIF matches.
-Particularly useful for hemihomonyms.}
+\item{phylum}{Optional character. Phylum used to disambiguate alternative
+GBIF matches. Particularly useful for hemihomonyms.}
 
-\item{class}{Optional class used to disambiguate alternative GBIF matches.}
+\item{class}{Optional character. Class used to disambiguate alternative GBIF matches.}
 
-\item{order}{Optional order used to disambiguate alternative GBIF matches.}
+\item{order}{Optional character. Order used to disambiguate alternative GBIF matches.}
 
-\item{family}{Optional family used to disambiguate alternative GBIF matches.}
+\item{family}{Optional character. Family used to disambiguate alternative GBIF matches.}
 
-\item{conf_match}{Numeric confidence threshold between 0 and 100 for the
+\item{conf_match}{Numeric. Confidence threshold between 0 and 100 for the
 GBIF backbone match. Default is \code{80}.}
 
-\item{geo}{Spatial object used to restrict the query extent. Accepted classes
+\item{geo}{Spatial object. Used to restrict the query extent. Accepted classes
 are \code{Extent}, \code{SpatExtent}, \code{SpatialPolygon},
 \code{SpatialPolygonDataFrame}, \code{SpatVector}, and \code{sf}. The
 default \code{NULL} queries the whole globe.}
@@ -79,7 +79,7 @@ coordinates. If \code{FALSE}, keep only records without coordinates. If
 without geospatial issues. If \code{TRUE}, keep only records with
 geospatial issues. If \code{NULL}, keep all records.}
 
-\item{grain}{Numeric study grain in kilometers. Default is \code{100}. The
+\item{grain}{Numeric. Study grain in kilometers. Default is \code{100}. The
 value is used to filter records by \code{coordinateUncertaintyInMeters} and
 by the number of reported coordinate decimals.}
 
@@ -89,20 +89,19 @@ by the number of reported coordinate decimals.}
 \item{absences}{Logical. Should absence records be kept? Default is
 \code{FALSE}.}
 
-\item{basis}{Character vector giving the accepted bases of record. The
+\item{basis}{Character. Vector giving the accepted bases of record. The
 default keeps commonly used occurrence-oriented record types and excludes
 specimen- and unknown-based records.}
 
-\item{establishment}{Character vector giving accepted
+\item{establishment}{Character. Vector giving accepted
 \code{degreeOfEstablishment} values. The default keeps native and broadly
 established records, together with records lacking that field.}
 
-\item{add_infos}{Optional character vector of additional GBIF occurrence
+\item{add_infos}{Optional character. Vector of additional GBIF occurrence
 fields to append to the default output.}
 
-\item{time_period}{Numeric vector of length two giving the year range to
-retain. Default is \code{c(1000, 3000)}. Records with missing years are
-kept.}
+\item{time_period}{Numeric. Year range to retain. Default is
+\code{c(1000, 3000)}. Records with missing years are kept.}
 
 \item{identic_xy}{Logical. Should records with identical longitude-latitude
 pairs be kept? Default is \code{FALSE}.}
@@ -116,33 +115,32 @@ converted from degree-minute notation be kept? Default is \code{TRUE}. If
 kept? Default is \code{FALSE}. If \code{FALSE},
 \code{CoordinateCleaner::cd_round()} is used.}
 
-\item{ntries}{Numeric number of download attempts before giving up after
+\item{ntries}{Numeric. Number of download attempts before giving up after
 GBIF or \code{rgbif} errors. Default is \code{10}.}
 
 \item{error_skip}{Logical. If \code{TRUE}, return an empty result when all
 download attempts fail.}
 
-\item{occ_samp}{Numeric maximum number of GBIF occurrences sampled per
+\item{occ_samp}{Numeric. Maximum number of GBIF occurrences sampled per
 geographic tile. Default is \code{10000}.}
 
 \item{should_use_occ_download}{Logical. If \code{TRUE}, use
 \code{rgbif::occ_download()} instead of \code{rgbif::occ_search()}.
 This requires GBIF credentials. Default is \code{FALSE}.}
 
-\item{occ_download_user}{Character GBIF username. Required if
+\item{occ_download_user}{Character. GBIF username. Required if
 \code{should_use_occ_download = TRUE}.}
 
-\item{occ_download_pwd}{Character GBIF password. Required if
+\item{occ_download_pwd}{Character. GBIF password. Required if
 \code{should_use_occ_download = TRUE}.}
 
-\item{occ_download_email}{Character GBIF email address. Required if
+\item{occ_download_email}{Character. GBIF email address. Required if
 \code{should_use_occ_download = TRUE}.}
 
 \item{verbose}{Logical. Should progress messages be printed? Default is
 \code{TRUE}.}
 
-\item{...}{Additional arguments passed to
-\code{CoordinateCleaner::cd_round()}.}
+\item{...}{Additional arguments passed to \code{CoordinateCleaner::cd_round()}.}
 }
 \value{
 A \code{getGBIF} object (a data.frame subclass) containing the
@@ -235,7 +233,7 @@ countries <- rnaturalearth::ne_countries(
        returnclass = "sv"
 )
 terra::plot(countries, col = "#bcbddc")
-terra::points(
+graphics::points(
        obs.pt[, c("decimalLongitude","decimalLatitude")],
        pch = 20,
        col = "#238b4550",
@@ -255,7 +253,7 @@ obs.am <- get_gbif(
 
 # Plot
 terra::plot(countries, col = "#bcbddc")
-terra::points(
+graphics::points(
        obs.am[,c("decimalLongitude","decimalLatitude")],
        pch = 20,
        col = "#238b4550",

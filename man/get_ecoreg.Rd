@@ -7,10 +7,10 @@
 get_ecoreg(ecoreg_name = "all", save_dir = NULL)
 }
 \arguments{
-\item{ecoreg_name}{Character string. Use \code{"all"} to download every
+\item{ecoreg_name}{Character. Use \code{"all"} to download every
 dataset, or supply a single file name listed in \code{ecoreg_list}.}
 
-\item{save_dir}{Directory where the downloaded zip files and extracted
+\item{save_dir}{Character. Directory where the downloaded zip files and extracted
 shapefiles should be stored.}
 }
 \value{

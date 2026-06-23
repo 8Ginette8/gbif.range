@@ -110,6 +110,7 @@ The public pattern for a terrestrial analysis is:
 
 ```{r built-in-ecoregions, eval = FALSE}
 eco_terra <- read_ecoreg("eco_terra")
+obs_tiger <- get_gbif("Panthera tigris")
 
 range_tiger <- get_range(
   occ_coord = obs_tiger,
@@ -123,6 +124,7 @@ In contrast, regional analyses often benefit from custom ecoregions. The package
 ```{r custom-ecoregions, eval = FALSE}
 rst <- terra::rast(ext_file("rst.tif"))
 my_eco <- make_ecoreg(env = rst, nclass = 200)
+obs_arcto <- get_gbif("Arctostaphylos alpinus",my.eco)
 
 range_regional <- get_range(
   occ_coord = obs_regional,

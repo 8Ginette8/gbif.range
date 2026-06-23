@@ -7,14 +7,14 @@
 #' data stored in a \code{getRange} object and evaluate each rebuild against
 #' held-out observations.
 #' 
-#' @param range_object Object of class \code{getRange}, typically returned by
+#' @param range_object \code{getRange} object. Typically returned by
 #' \code{get_range()}.
-#' @param cv Character string specifying the cross-validation strategy:
+#' @param cv Character. String specifying the cross-validation strategy:
 #' \code{"random-cv"} or \code{"block-cv"}.
-#' @param nfolds Numeric number of folds.
-#' @param nblocks Numeric multiplier used when \code{cv = "block-cv"} to define
+#' @param nfolds Numeric. Number of folds.
+#' @param nblocks Numeric. Multiplier used when \code{cv = "block-cv"} to define
 #' the total number of spatial blocks as \code{nfolds * nblocks}.
-#' @param backpoints Numeric number of regularly spaced background points used
+#' @param backpoints Numeric. Number of regularly spaced background points used
 #' as pseudo-absences. Default is \code{10000}.
 #' @details The function rebuilds the range map \code{nfolds} times. In each
 #' iteration, one fold is reserved for evaluation and the remaining folds are

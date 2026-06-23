@@ -7,13 +7,13 @@
 obs_filter(gbifs, grid, threshold = NULL)
 }
 \arguments{
-\item{gbifs}{A \code{getGBIF} object containing one or more species.}
+\item{gbifs}{\code{getGBIF} object containing one or more species.}
 
-\item{grid}{Raster defining the target spatial resolution and extent.
+\item{grid}{Raster. Defining the target spatial resolution and extent.
 Accepted classes are \code{SpatRaster}, \code{RasterLayer},
 \code{RasterBrick}, and \code{RasterStack}.}
 
-\item{threshold}{Optional integer specifying the minimum number of records a
+\item{threshold}{Optional integer. Specifying the minimum number of records a
 cell must contain to be retained.}
 }
 \value{

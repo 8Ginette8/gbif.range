@@ -6,15 +6,15 @@
 #' Create a fold-assignment vector for random or spatially structured
 #' cross-validation.
 #'
-#' @param nfolds Numeric number of folds to create.
-#' @param df Optional \code{data.frame} whose columns define the structure used
+#' @param nfolds Numeric. Number of folds to create.
+#' @param df Optional \code{data.frame}. Columns define the structure used
 #' to build folds. When omitted, random folds are created from
 #' \code{npoints}.
-#' @param nblocks Numeric number of initial clusters used to build the folds.
+#' @param nblocks Numeric. Number of initial clusters used to build the folds.
 #' Must be at least \code{nfolds}.
-#' @param pres Optional binary vector used to restrict CLARA clustering to a
+#' @param pres Optional binary vector. Used to restrict CLARA clustering to a
 #' subset of rows and assign the remainder by nearest neighbours.
-#' @param npoints Optional number of observations to split when \code{df} is
+#' @param npoints Optional numeric. Number of observations to split when \code{df} is
 #' not supplied.
 #' @details If \code{df} has one column, folds are based on quantile bins. If
 #' \code{df} has two or more columns, folds are based on CLARA clustering.

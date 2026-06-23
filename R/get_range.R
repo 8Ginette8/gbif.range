@@ -7,34 +7,34 @@
 #' ecoregion layer. The workflow combines outlier filtering, clustering, convex
 #' hull construction, and intersection with occupied ecoregions.
 #' 
-#' @param occ_coord A \code{getGBIF} object returned by \code{get_gbif()} or a
+#' @param occ_coord \code{getGBIF} object returned by \code{get_gbif()} or a
 #' \code{data.frame} containing the columns \code{decimalLongitude} and
 #' \code{decimalLatitude}.
 #' @param ecoreg Spatial ecoregion layer in WGS84. Accepted classes are
 #' \code{SpatialPolygonsDataFrame}, \code{SpatVector}, and \code{sf}. This can
 #' be a downloaded layer from \code{read_ecoreg()} or a custom layer created by
 #' \code{make_ecoreg()}.
-#' @param ecoreg_name Character string naming the field in \code{ecoreg} that
+#' @param ecoreg_name Character. String naming the field in \code{ecoreg} that
 #' defines ecoregion categories. For \code{eco_terra}, for example,
 #' \code{"ECO_NAME"} is the most detailed level. When \code{ecoreg} comes from
 #' \code{make_ecoreg()}, \code{"EcoRegion"} is used automatically.
-#' @param degrees_outlier Numeric distance threshold in degrees. Points whose
+#' @param degrees_outlier Numeric. Distance threshold in degrees. Points whose
 #' \code{clust_pts_outlier}-th nearest neighbour lies beyond this distance are
 #' treated as outliers. Default is \code{5}.
-#' @param clust_pts_outlier Numeric k-nearest-neighbour order used for outlier
+#' @param clust_pts_outlier Numeric. k-nearest-neighbour order used for outlier
 #' detection. Default is \code{4}.
-#' @param buff_width_point Numeric buffer width in degrees for isolated points.
-#' @param buff_incrmt_pts_line Numeric increment in buffer width for linear
+#' @param buff_width_point Numeric. Buffer width in degrees for isolated points.
+#' @param buff_incrmt_pts_line Numeric. Increment in buffer width for linear
 #' clusters.
-#' @param buff_width_polygon Numeric buffer width in degrees applied to convex
+#' @param buff_width_polygon Numeric. Buffer width in degrees applied to convex
 #' hull polygons.
-#' @param dir_temp Character string giving the directory used for temporary
+#' @param dir_temp Character. String giving the directory used for temporary
 #' convex-hull files. Defaults to \code{tempdir()}.
 #' @param raster Logical. Should the final output be rasterized? Default is
 #' \code{TRUE}.
-#' @param format Output format used when \code{raster = FALSE}. Choose between
-#' \code{"SpatVector"} (default) and \code{"sf"}.
-#' @param res Numeric output resolution in degrees when \code{raster = TRUE}.
+#' @param format \code{"SpatVector"} (default) or \code{"sf"}. Output format
+#' used when \code{raster = FALSE}.
+#' @param res Numeric. Output resolution in degrees when \code{raster = TRUE}.
 #' Default is \code{0.1} (about 11.1 km at the equator). The achievable
 #' resolution is constrained by the spatial precision of \code{ecoreg}.
 #' @param verbose Logical. Should progress messages be printed?
@@ -386,15 +386,14 @@ get_range <- function (occ_coord = NULL,
   if (length(lala) == 0) {
     stop('No occurrences within ecoregions. Empty raster produced...')
   }
-  shp.species <- do.call("rbind", lala)
+  shp.species <- terra::aggregate(do.call("rbind", lala))
 
   # Convert to raster or not
   if (raster) {
     res.use <- 1 / res
     ras.res <- terra::rast(terra::disagg(terra::rast(), res.use))
-    sp.range.u <- terra::aggregate(shp.species)
-    ras <- terra::rasterize(sp.range.u, ras.res)
-    shp.species <- terra::crop(ras, sp.range.u)
+    ras <- terra::rasterize(shp.species, ras.res)
+    shp.species <- terra::crop(ras, shp.species)
     names(shp.species) <- occ_coord$input_search[1]
 
   } else if (format == "sf") {

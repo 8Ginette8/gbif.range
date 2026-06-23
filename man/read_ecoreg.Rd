@@ -7,12 +7,12 @@
 read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL, format = "SpatVector")
 }
 \arguments{
-\item{ecoreg_name}{File name of the ecoregion dataset to load. See
+\item{ecoreg_name}{Character. File name of the ecoregion dataset to load. See
 \code{ecoreg_list} for available options.}
 
-\item{save_dir}{Directory where the downloaded files are stored.}
+\item{save_dir}{Character. irectory where the downloaded files are stored.}
 
-\item{format}{Output format. Use \code{"SpatVector"} (default) or
+\item{format}{\code{"SpatVector"} (default) or
 \code{"sf"}.}
 }
 \value{

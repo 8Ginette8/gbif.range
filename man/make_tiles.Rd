@@ -7,12 +7,12 @@
 make_tiles(geo, ntiles, sext = TRUE)
 }
 \arguments{
-\item{geo}{Spatial extent or geometry used to define the study area.
+\item{geo}{Spatial extent or geometry. Used to define the study area.
 Accepted classes are \code{Extent}, \code{SpatExtent},
 \code{SpatialPolygon}, \code{SpatialPolygonDataFrame}, \code{SpatVector},
 and \code{sf}. If \code{NULL}, the whole globe is used.}
 
-\item{ntiles}{Numeric approximate number of tiles to create.}
+\item{ntiles}{Numeric. Approximate number of tiles to create.}
 
 \item{sext}{Logical. Should the corresponding \code{SpatExtent} objects also
 be returned?}

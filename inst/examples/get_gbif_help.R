@@ -8,7 +8,7 @@ countries <- rnaturalearth::ne_countries(
        returnclass = "sv"
 )
 terra::plot(countries, col = "#bcbddc")
-terra::points(
+graphics::points(
        obs.pt[, c("decimalLongitude","decimalLatitude")],
        pch = 20,
        col = "#238b4550",
@@ -28,7 +28,7 @@ obs.am <- get_gbif(
 
 # Plot
 terra::plot(countries, col = "#bcbddc")
-terra::points(
+graphics::points(
        obs.am[,c("decimalLongitude","decimalLatitude")],
        pch = 20,
        col = "#238b4550",

@@ -7,7 +7,7 @@
 #' same name-matching logic as \code{get_gbif()}, but without downloading the
 #' occurrence table.
 #' 
-#' @param sp_name Character string with the species name. Scientific names at
+#' @param sp_name Character. String with the species name. Scientific names at
 #' genus-species level are expected; fuzzy matching is available when
 #' \code{search = FALSE}.
 #' @param search Logical. If \code{TRUE} (default), use a strict GBIF backbone
@@ -15,17 +15,17 @@
 #' \code{FALSE}, use a more permissive search and optionally rely on
 #' \code{rank}, \code{phylum}, \code{class}, \code{order}, and
 #' \code{family} to resolve ambiguous matches.
-#' @param rank Character string giving the preferred rank to keep:
+#' @param rank Character. String giving the preferred rank to keep:
 #' \code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
 #' \code{NULL}, rank priority is inferred from \code{sp_name}.
-#' @param phylum Optional phylum used to disambiguate alternative GBIF matches.
+#' @param phylum Optional character. Phylum used to disambiguate alternative GBIF matches.
 #' Particularly useful for hemihomonyms.
-#' @param class Optional class used to disambiguate alternative GBIF matches.
-#' @param order Optional order used to disambiguate alternative GBIF matches.
-#' @param family Optional family used to disambiguate alternative GBIF matches.
-#' @param conf_match Numeric confidence threshold between 0 and 100 for the
+#' @param class Optional character. Class used to disambiguate alternative GBIF matches.
+#' @param order Optional character. Order used to disambiguate alternative GBIF matches.
+#' @param family Optional character. Family used to disambiguate alternative GBIF matches.
+#' @param conf_match Numeric. Confidence threshold between 0 and 100 for the
 #' GBIF backbone match. Default is \code{80}.
-#' @param geo Spatial object used to restrict the query extent. Accepted classes
+#' @param geo Spatial object. Used to restrict the query extent. Accepted classes
 #' are \code{Extent}, \code{SpatExtent}, \code{SpatialPolygon},
 #' \code{SpatialPolygonDataFrame}, \code{SpatVector}, and \code{sf}. The
 #' default \code{NULL} queries the whole globe.

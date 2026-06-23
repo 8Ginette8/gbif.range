@@ -13,12 +13,11 @@ get_status(
   order = NULL,
   family = NULL,
   conf_match = 80,
-  children = FALSE,
-  related = FALSE
+  level = c("accepted", "children", "all")
 )
 }
 \arguments{
-\item{sp_name}{Character string with the species name. Scientific names at
+\item{sp_name}{Character. String with the species name. Scientific names at
 genus-species level are expected; fuzzy matching is available when
 \code{search = FALSE}.}
 
@@ -28,33 +27,30 @@ search and keep only species-, subspecies-, or variety-level matches. If
 \code{rank}, \code{phylum}, \code{class}, \code{order}, and
 \code{family} to resolve ambiguous matches.}
 
-\item{rank}{Character string giving the preferred rank to keep:
+\item{rank}{Character. String giving the preferred rank to keep:
 \code{"SPECIES"}, \code{"SUBSPECIES"}, or \code{"VARIETY"}. When
 \code{NULL}, rank priority is inferred from \code{sp_name}.}
 
-\item{phylum}{Optional phylum used to disambiguate alternative GBIF matches.
+\item{phylum}{Optional character. Phylum used to disambiguate alternative GBIF matches.
 Particularly useful for hemihomonyms.}
 
-\item{class}{Optional class used to disambiguate alternative GBIF matches.}
+\item{class}{Optional character. Class used to disambiguate alternative GBIF matches.}
 
-\item{order}{Optional order used to disambiguate alternative GBIF matches.}
+\item{order}{Optional character. Order used to disambiguate alternative GBIF matches.}
 
-\item{family}{Optional family used to disambiguate alternative GBIF matches.}
+\item{family}{Optional character. Family used to disambiguate alternative GBIF matches.}
 
-\item{conf_match}{Numeric confidence threshold between 0 and 100 for the
+\item{conf_match}{Numeric. Confidence threshold between 0 and 100 for the
 GBIF backbone match. Default is \code{80}.}
 
-\item{children}{Logical. If \code{TRUE}, also include subspecies and
-variety-level children of the accepted key as \code{CHILDREN} rows. These
-are the same infra-specific taxa retrieved by \code{get_gbif()}, so this
-flag is useful to mirror exactly what the occurrence download will cover.
-Default is \code{FALSE}.}
-
-\item{related}{Logical. If \code{FALSE} (default), return the accepted name
-and its synonyms (plus children if \code{children = TRUE}). If \code{TRUE},
-also include alternative name string representations (orthographic variants,
-etc.) returned by the GBIF backbone as \code{RELATED} rows. These are not
-used by \code{get_gbif()} and are intended for taxonomic inspection only.}
+\item{level}{Character. Controls how much of the GBIF taxon concept is
+returned. \code{"accepted"} (default) returns the accepted name and its
+synonyms. \code{"children"} additionally includes infra-specific taxa
+(subspecies, varieties) as \code{CHILDREN} rows, mirroring the scope of
+\code{get_gbif()}. \code{"all"} further adds alternative name string
+representations (orthographic variants, etc.) as \code{RELATED} rows,
+which are not used by \code{get_gbif()} and are intended for taxonomic
+inspection only.}
 }
 \value{
 A data frame with the columns \code{canonicalName}, \code{rank},
@@ -65,8 +61,9 @@ A data frame with the columns \code{canonicalName}, \code{rank},
 used by \code{get_gbif()}, while \code{sp_nameMatch} marks the row that most
 closely matches the submitted input name. Additional rows carry
 \code{gbif_status = "CHILDREN"} (infra-specific taxa, when
-\code{children = TRUE}) or \code{gbif_status = "RELATED"} (alternative name
-representations, when \code{related = TRUE}).
+\code{level = "children"} or \code{level = "all"}) or
+\code{gbif_status = "RELATED"} (alternative name representations, when
+\code{level = "all"}).
 }
 \description{
 Query the GBIF backbone taxonomy for a species name, report the matched
@@ -79,40 +76,37 @@ how GBIF resolves an input name, which name is treated as the accepted
 backbone taxon, and which synonyms are included in the taxon concept used
 for occurrence retrieval.
 
-When \code{children = FALSE} and \code{related = FALSE}, the
-returned rows correspond to the accepted name and synonyms linked to the
-accepted GBIF taxon key — the same taxon concept used internally by
-\code{get_gbif()}.
+When \code{level = "accepted"}, the returned rows correspond to
+the accepted name and synonyms linked to the accepted GBIF taxon key.
+When \code{level = "children"}, infra-specific taxa that \code{get_gbif()}
+also retrieves are added, giving a complete picture of the occurrence
+download scope. When \code{level = "all"}, alternative name representations
+are further included for taxonomic review.
 
-Setting \code{children = TRUE} adds infra-specific taxa (subspecies,
-varieties) that \code{get_gbif()} also retrieves, giving a complete picture
-of the occurrence download scope.
-
-Setting \code{related = TRUE} further expands the output with alternative
-name representations useful for taxonomic review but outside the
-\code{get_gbif()} query scope.
+IUCN Red List status is retrieved from GBIF for the accepted taxon key only.
+GBIF does not currently store subspecies-level IUCN assessments, so the
+\code{IUCN_status} column is uniform across all rows. Note that some
+subspecies have independent IUCN assessments (e.g. \emph{Panthera tigris
+sumatrae} is Critically Endangered) that are not reflected here; consult
+the IUCN Red List directly for infra-specific status.
 }
 \examples{
 \dontrun{
 # --- 1. Default: accepted name + synonyms only ---
 tax <- get_status("Panthera tigris")
-tax[, c("canonicalName", "gbif_status", "gbif_key", "IUCN_status", "sp_nameMatch")]
+tax
 
 # --- 2. Include infra-specific taxa (subspecies, varieties) ---
 # These are the same keys retrieved by get_gbif()
-tax_ch <- get_status("Panthera tigris", children = TRUE)
-tax_ch[, c("canonicalName", "gbif_status", "gbif_key", "sp_nameMatch")]
+tax_ch <- get_status("Panthera tigris", level = "children")
+tax_ch
 
 # --- 3. Include alternative name string representations (inspection only) ---
 # RELATED rows are not used by get_gbif()
-tax_rel <- get_status("Panthera tigris", related = TRUE)
-tax_rel[, c("canonicalName", "gbif_status", "gbif_key", "sp_nameMatch")]
+tax_rel <- get_status("Panthera tigris", level = "all")
+tax_rel
 
-# --- 4. Full picture ---
-tax_all <- get_status("Panthera tigris", children = TRUE, related = TRUE)
-table(tax_all$gbif_status)
-
-# --- 5. Cross-check get_status() keys against get_gbif() output ---
+# --- 4. Cross-check get_status() keys against get_gbif() output ---
 occ <- get_gbif("Panthera tigris", has_xy = TRUE, verbose = FALSE)
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status \%in\% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
@@ -133,22 +127,17 @@ extra_keys
 occ[occ$acceptedTaxonKey \%in\% extra_keys,
     c("acceptedTaxonKey", "scientificName", "basisOfRecord")]
 
-# Note: not all valid_keys need appear in returned_keys — some subspecies
+# Note: not all valid_keys need to appear in returned_keys — some subspecies
 # may have no records in GBIF at all (e.g. extinct taxa) or may have been
 # removed by get_gbif() filtering options (e.g. has_xy, basis, grain)
 
-# --- 6. Input name flagged correctly regardless of how GBIF resolves it ---
+# --- 5. Input name flagged correctly regardless of how GBIF resolves it ---
 # sp_nameMatch = "INPUT" marks the row closest to the submitted name
 tax_ch[tax_ch$sp_nameMatch == "INPUT", ]
 
-# --- 7. Fuzzy matching for uncertain names ---
+# --- 6. Fuzzy matching for uncertain names ---
 # sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
 get_status("Panthera tigri", search = FALSE)
-
-# --- 8. Disambiguate hemihomonyms with family ---
-get_status("Panthera tigris", family = "Felidae")
-
-
 }
 }
 \references{

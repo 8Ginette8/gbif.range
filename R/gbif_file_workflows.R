@@ -7,16 +7,16 @@
 #' per species or GBIF taxon key. The function is designed for multi-species
 #' tables that are too large to load fully into memory.
 #'
-#' @param input_file Path to a tabular GBIF export already stored on disk.
-#' @param outdir Directory where one per-species file will be written.
-#' @param chunk_size Number of rows read at a time. Larger values are usually
+#' @param input_file Character. Path to a tabular GBIF export already stored on disk.
+#' @param outdir Chracter. Directory where one per-species file will be written.
+#' @param chunk_size Integer. Number of rows read at a time. Larger values are usually
 #'   faster, whereas smaller values reduce peak memory use.
-#' @param select_cols Character vector of columns to keep from the original
+#' @param select_cols Character. Vector of columns to keep from the original
 #'   file. The defaults retain the taxon key, species labels, and geographic
 #'   coordinates needed by downstream range workflows.
-#' @param sep_in Field separator used by the input file. GBIF downloads are
+#' @param sep_in Character. Field separator Used by the input file. GBIF downloads are
 #'   usually tab-delimited.
-#' @param sep_out Field separator used for the saved species files.
+#' @param sep_out Character. Field separator used for the saved species files.
 #' @param overwrite Logical. If \code{TRUE}, existing batch files created by
 #'   this function in \code{outdir} are removed before writing new ones.
 #' @param verbose Logical. Should progress messages be printed?
@@ -168,24 +168,26 @@ split_gbif_by_species <- function(
 #' Read one occurrence file per species, prepare the minimal coordinate table
 #' needed by \code{\link{get_range}()}, and save one range output per species.
 #'
-#' @param species_dir Directory containing files created by
+#' @param species_dir Character. Directory containing files created by
 #'   \code{\link{split_gbif_by_species}()}.
-#' @param ecoreg Ecoregion input accepted by \code{\link{get_range}()}. This
-#'   can be a spatial object already loaded in memory, or a built-in ecoregion
-#'   name such as \code{"eco_terra"} that will be resolved with
-#'   \code{\link{read_ecoreg}()}.
-#' @param ecoreg_name Name of the categorical field defining the ecoregion
-#'   units. For example, use \code{"ECO_NAME"} with \code{"eco_terra"}.
-#' @param outdir Directory where range files will be saved.
-#' @param occ_outdir Optional directory where the minimal occurrence tables
-#'   passed to \code{\link{get_range}()} will also be saved.
-#' @param occ_save_as File format for minimal occurrence tables. Choose among
-#'   \code{"none"}, \code{"tsv"}, or \code{"rds"}.
-#' @param range_save_as File format for range outputs. Choose among
-#'   \code{"rds"}, \code{"gpkg"}, or \code{"tif"}.
+#' @param ecoreg Spatial ecoregion layer in WGS84. Accepted classes are
+#' \code{SpatialPolygonsDataFrame}, \code{SpatVector}, and \code{sf}. This can
+#' be a downloaded layer from \code{read_ecoreg()} or a custom layer created by
+#' \code{make_ecoreg()}.
+#' @param ecoreg_name Character. String naming the field in \code{ecoreg} that
+#' defines ecoregion categories. For \code{eco_terra}, for example,
+#' \code{"ECO_NAME"} is the most detailed level. When \code{ecoreg} comes from
+#' \code{make_ecoreg()}, \code{"EcoRegion"} is used automatically.
+#' @param outdir Character. Directory where range files will be saved.
+#' @param occ_outdir Optional character. Directory where the minimal occurrence
+#' tables passed to \code{\link{get_range}()} will also be saved.
+#' @param occ_save_as \code{"none"}, \code{"tsv"}, or \code{"rds"}. File format
+#' for minimal occurrence tables.
+#' @param range_save_as \code{"rds"}, \code{"gpkg"}, or \code{"tif"}. File
+#' format for range outputs.
 #' @param deduplicate Logical. Should identical longitude-latitude pairs be
 #'   collapsed before range inference?
-#' @param sep_in Field separator used by the per-species occurrence files.
+#' @param sep_in Character. Field separator used by the per-species occurrence files.
 #' @param overwrite Logical. If \code{TRUE}, existing outputs in
 #'   \code{outdir}/\code{occ_outdir} are replaced.
 #' @param verbose Logical. Should progress messages be printed?
@@ -871,8 +873,11 @@ gbif_save_range_output <- function(
     outfile <- file.path(outdir, paste0(stub, ".rds"))
     # Store a simple list rather than the live reference object so the batch
     # files can be read back safely in a new R session.
+    # ecoreg is excluded — live terra pointers cannot survive serialization.
+    safe_args <- range_obj$init.args
+    safe_args$ecoreg <- NULL
     safe_obj <- list(
-      init.args = range_obj$init.args,
+      init.args = safe_args,
       rangeOutput = gbif_make_rds_safe(range_obj$rangeOutput)
     )
     saveRDS(safe_obj, outfile)

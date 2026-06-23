@@ -20,32 +20,34 @@ species_csvs_to_ranges(
 )
 }
 \arguments{
-\item{species_dir}{Directory containing files created by
+\item{species_dir}{Character. Directory containing files created by
 \code{\link{split_gbif_by_species}()}.}
 
-\item{ecoreg}{Ecoregion input accepted by \code{\link{get_range}()}. This
-can be a spatial object already loaded in memory, or a built-in ecoregion
-name such as \code{"eco_terra"} that will be resolved with
-\code{\link{read_ecoreg}()}.}
+\item{ecoreg}{Spatial ecoregion layer in WGS84. Accepted classes are
+\code{SpatialPolygonsDataFrame}, \code{SpatVector}, and \code{sf}. This can
+be a downloaded layer from \code{read_ecoreg()} or a custom layer created by
+\code{make_ecoreg()}.}
 
-\item{ecoreg_name}{Name of the categorical field defining the ecoregion
-units. For example, use \code{"ECO_NAME"} with \code{"eco_terra"}.}
+\item{ecoreg_name}{Character. String naming the field in \code{ecoreg} that
+defines ecoregion categories. For \code{eco_terra}, for example,
+\code{"ECO_NAME"} is the most detailed level. When \code{ecoreg} comes from
+\code{make_ecoreg()}, \code{"EcoRegion"} is used automatically.}
 
-\item{outdir}{Directory where range files will be saved.}
+\item{outdir}{Character. Directory where range files will be saved.}
 
-\item{occ_outdir}{Optional directory where the minimal occurrence tables
-passed to \code{\link{get_range}()} will also be saved.}
+\item{occ_outdir}{Optional character. Directory where the minimal occurrence
+tables passed to \code{\link{get_range}()} will also be saved.}
 
-\item{occ_save_as}{File format for minimal occurrence tables. Choose among
-\code{"none"}, \code{"tsv"}, or \code{"rds"}.}
+\item{occ_save_as}{\code{"none"}, \code{"tsv"}, or \code{"rds"}. File format
+for minimal occurrence tables.}
 
-\item{range_save_as}{File format for range outputs. Choose among
-\code{"rds"}, \code{"gpkg"}, or \code{"tif"}.}
+\item{range_save_as}{\code{"rds"}, \code{"gpkg"}, or \code{"tif"}. File
+format for range outputs.}
 
 \item{deduplicate}{Logical. Should identical longitude-latitude pairs be
 collapsed before range inference?}
 
-\item{sep_in}{Field separator used by the per-species occurrence files.}
+\item{sep_in}{Character. Field separator used by the per-species occurrence files.}
 
 \item{overwrite}{Logical. If \code{TRUE}, existing outputs in
 \code{outdir}/\code{occ_outdir} are replaced.}

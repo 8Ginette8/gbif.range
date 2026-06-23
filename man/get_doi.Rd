@@ -15,19 +15,19 @@ get_doi(
 )
 }
 \arguments{
-\item{gbifs}{A \code{getGBIF} object or a list of \code{getGBIF} objects.}
+\item{gbifs}{\code{getGBIF} object or a list of \code{getGBIF} objects.}
 
-\item{title}{Character string giving the title of the derived dataset.}
+\item{title}{Character. String giving the title of the derived dataset.}
 
-\item{description}{Character string describing the dataset.}
+\item{description}{Character. String describing the dataset.}
 
-\item{source_url}{Character string pointing to the location where the
+\item{source_url}{Character. String pointing to the location where the
 derived dataset or workflow is documented.}
 
-\item{user}{Character string with the GBIF username used to submit the
+\item{user}{Character. String with the GBIF username used to submit the
 request.}
 
-\item{pwd}{Character string with the GBIF password used to submit the
+\item{pwd}{Character. String with the GBIF password used to submit the
 request.}
 
 \item{...}{Additional arguments passed to

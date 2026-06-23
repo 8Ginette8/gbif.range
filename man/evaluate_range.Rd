@@ -16,16 +16,16 @@ evaluate_range(
 )
 }
 \arguments{
-\item{root_dir}{Character string giving the root directory that contains both
+\item{root_dir}{Character. String giving the root directory that contains both
 the generated range maps and the validation data.}
 
-\item{valData_dir}{Character string giving the directory, relative to
+\item{valData_dir}{Character. String giving the directory, relative to
 \code{root_dir}, containing the validation data.}
 
-\item{ecoRM_dir}{Character string giving the directory, relative to
+\item{ecoRM_dir}{Character. String giving the directory, relative to
 \code{root_dir}, containing range maps generated with \code{get_range()}.}
 
-\item{valData_type}{Character string indicating the expected validation-data
+\item{valData_type}{Character. String indicating the expected validation-data
 format: \code{"SHP"} or \code{"TIFF"}.}
 
 \item{verbose}{Logical. Should progress information be printed while the
@@ -34,10 +34,10 @@ comparison is running?}
 \item{print_map}{Logical. If \code{TRUE}, write a PDF overlay map for each
 evaluated species.}
 
-\item{mask}{Optional \code{SpatRaster} used as a study-area mask and common
+\item{mask}{Optional \code{SpatRaster}. Used as a study-area mask and common
 comparison domain.}
 
-\item{res_fact}{Optional integer aggregation factor used to coarsen the
+\item{res_fact}{Optional integer. Aggregation factor used to coarsen the
 native resolution before comparison.}
 }
 \value{
