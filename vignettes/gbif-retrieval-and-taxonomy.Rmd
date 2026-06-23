@@ -46,11 +46,11 @@ In `gbif.range`, taxonomy is not an afterthought. The package uses the GBIF back
 This is why `get_status()` is often the best first step:
 
 ```{r get-status, eval = FALSE}
-tax <- get_status("Cypripedium calceolus", children = TRUE, related = FALSE)
+tax <- get_status("Cypripedium calceolus", level = "children")
 tax
 ```
 
-When `children = TRUE`, the output is deliberately close to the logic used by `get_gbif()`: it returns the accepted name and the synonyms that are actually used for occurrence retrieval, i.e., including subspecies and variety. While FALSE is only exploratory and strictly keeps species level names. When `related` = FALSE`, additional related names are also included for taxonomic inspection, but those extra names are not used to download occurrences.
+When `level = "children"`, the output is deliberately close to the logic used by `get_gbif()`: it returns the accepted name and the synonyms that are actually used for occurrence retrieval, i.e., including subspecies and variety. While `level = "accepted"` is only exploratory and strictly keeps species level names. When ``level = "all"``, additional related names are also included for taxonomic inspection, but those extra names are not used to download occurrences.
 
 The practical consequence is important: `get_gbif()` harmonizes the query to the accepted GBIF taxon key, but the returned occurrence table still preserves both record-level and accepted-name fields.
 
@@ -92,7 +92,7 @@ In practice, this is the quickest way to decide whether a direct `get_gbif()` ca
 obs_tiger <- get_gbif("Panthera tigris", grain = 100)
 
 # Inspect the accepted name and synonym mapping used internally.
-get_status("Panthera tigris", children = TRUE)
+get_status("Panthera tigris", level = "children")
 
 # Retrieve a terrestrial ecoregion layer and build the range.
 eco_terra <- read_ecoreg("eco_terra")
@@ -124,7 +124,7 @@ obs_delphis <- get_gbif(
 )
 
 # Inspect the internal get_gbif() logic and all related names.
-get_status("Delphinus delphis", children = TRUE, related = TRUE)
+get_status("Delphinus delphis", level = "all")
 
 # Build a marine range from the packaged ecoregions.
 eco_marine <- read_ecoreg("eco_marine")
