@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.height = 5,
   message = FALSE,
-  warning = FALSE
+  warning = FALSE,
+  purl = FALSE
 )
 
 library(gbif.range)
@@ -88,7 +89,7 @@ split_summary <- split_gbif_by_species(
 
 knitr::kable(
   transform(split_summary,
-    species_file = sub(".*speciesKey_", "", basename(species_file))
+    species_file = basename(species_file)
   )[, c("species_name", "n_records", "species_file")],
   align = "l"
 )
