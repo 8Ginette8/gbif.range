@@ -66,7 +66,7 @@ utils::head(utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE))
 
 The first step is to stream the input file in chunks and write one species file per GBIF key.
 
-```{r split-table, eval = has_data_table}
+```{r split-table, eval = has_data_table, warning = FALSE}
 batch_root <- file.path(tempdir(), "gbif-range-batch-vignette")
 split_dir <- file.path(batch_root, "split")
 occ_dir <- file.path(batch_root, "occ_min")
@@ -105,7 +105,7 @@ For this vignette, the ecoregion layer is a single enclosing polygon built from 
 
 In ordinary use, you would typically replace this with `ecoreg = "eco_terra"` or with a spatial object returned by `read_ecoreg("eco_terra")`.
 
-```{r batch-range-build, eval = has_data_table}
+```{r batch-range-build, eval = has_data_table, warning = FALSE}
 occ_example <- utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE)
 
 eco_batch <- sf::st_sf(
