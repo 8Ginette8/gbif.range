@@ -171,6 +171,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 Useful links:
 \itemize{
   \item \url{https://github.com/8Ginette8/gbif.range}
+  \item \url{https://8ginette8.github.io/gbif.range/}
   \item Report bugs at \url{https://github.com/8Ginette8/gbif.range/issues}
 }
 

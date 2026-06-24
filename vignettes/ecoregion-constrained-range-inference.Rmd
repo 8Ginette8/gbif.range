@@ -166,7 +166,7 @@ points(obs_tiger[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
 
 ```{r fig-tiger-workflow, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part1_tiger_workflow.png")
+knitr::include_graphics("../man/figures/Part1_tiger_workflow.png")
 ```
 
 This is the typical continental to global pattern. The ecoregion layer is externally defined and ecologically interpretable, while the occurrence filter is intentionally conservative. In practice, this is the kind of workflow where `gbif.range` is most useful as a transparent alternative to unconstrained geometric envelopes.
@@ -202,7 +202,7 @@ points(obs_arcto[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
 
 ```{r fig-arcto-workflow, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part1_arcto_workflow.png")
+knitr::include_graphics("../man/figures/Part1_arcto_workflow.png")
 ```
 
 This regional example shows why `make_ecoreg()` is part of the main package workflow rather than an auxiliary convenience. At small spatial extents, the ecological realism of the range map often depends more on the choice of ecoregion layer than on minor changes in buffer parameters.

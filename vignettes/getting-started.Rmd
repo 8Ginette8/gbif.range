@@ -114,7 +114,7 @@ points(obs.pt[, c("decimalLongitude", "decimalLatitude")],
 ```
 
 ```{r fig-tiger-occ, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part0_plot1.png")
+knitr::include_graphics("../man/figures/Part0_plot1.png")
 ```
 
 Note that some records of likely captive individuals remain (e.g., in Europe,
@@ -142,7 +142,7 @@ terra::plot(range.tiger$rangeOutput, col = "#238b45",
 ```
 
 ```{r fig-tiger-range, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part0_plot2.png")
+knitr::include_graphics("../man/figures/Part0_plot2.png")
 ```
 
 `degrees_outlier` and `clust_pts_outlier` control how isolated clusters of
@@ -181,7 +181,7 @@ points(obs.dd[, c("decimalLongitude", "decimalLatitude")],
 ```
 
 ```{r fig-dolphin, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part0_plot3.png")
+knitr::include_graphics("../man/figures/Part0_plot3.png")
 ```
 
 Because only a subsample was retrieved, the resulting map closely follows the
@@ -229,7 +229,7 @@ terra::plot(eco.eg, col = rainbow(10))
 ```
 
 ```{r fig-ecoreg, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part0_plot4.png")
+knitr::include_graphics("../man/figures/Part0_plot4.png")
 ```
 
 For a real regional analysis, more classes are appropriate. The full workflow
@@ -272,7 +272,7 @@ points(obs.arcto[, c("decimalLongitude", "decimalLatitude")],
 ```
 
 ```{r fig-arcto, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part0_plot5.png")
+knitr::include_graphics("../man/figures/Part0_plot5.png")
 ```
 
 Two design choices matter here. First, `grain = 1` keeps only records with
@@ -321,7 +321,7 @@ terra::plot(rg$rangeOutput)
 ```
 
 ```{r fig-disk, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("figures/Part0_plot6.png")
+knitr::include_graphics("../man/figures/Part0_plot6.png")
 ```
 
 This workflow is described in full in

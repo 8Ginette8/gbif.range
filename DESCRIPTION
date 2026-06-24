@@ -18,7 +18,7 @@ Description: Provides a workflow to retrieve, filter, and analyze GBIF
  building range maps, and evaluating them against independent
  validation data.
 License: GPL (>= 3) | file LICENCE
-URL: https://github.com/8Ginette8/gbif.range
+URL: https://github.com/8Ginette8/gbif.range, https://8ginette8.github.io/gbif.range/
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
 LazyData: true
