@@ -78,7 +78,7 @@
 # gbif.range 1.1.0
 
 * Added `make_ecoreg()`: build custom ecoregion layers from environmental
-  rasters via k-means clustering (Hagen et al. 2019).
+  rasters via k-means clustering.
 * Moved dependencies from `Depends` to `Imports` for cleaner namespace handling.
 * Added `sf` and `cluster` as dependencies.
 * Expanded `get_range()` with additional ecoregion flexibility and resolution
@@ -109,7 +109,7 @@
 # wsl.gbif 0.1.0
 
 * First release under the name `wsl.gbif` (October 2022), hosted on EnviDat
-  and GitHub (https://github.com/8Ginette8/wsl.gbif).
+  (10.16904/envidat.352) and GitHub (https://github.com/8Ginette8/wsl.gbif).
 * Core functions: `wsl_gbif()` (occurrence download with synonym support),
   `wsl_obs_filter()` (grid-based occurrence thinning), `wsl_taxonomy()`
   (GBIF backbone taxonomy lookup), `wsl_doi()` (GBIF-derived DOI generation),
