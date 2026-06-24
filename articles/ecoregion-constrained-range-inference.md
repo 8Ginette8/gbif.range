@@ -255,9 +255,9 @@ contains obvious anomalies or disjunct stray clusters.
 control how singletons, linear clusters, and polygon hulls are buffered
 before the final ecoregion intersection.
 
-`raster`, `format`, and `res` control the output type. In many
-exploratory workflows a vector output is convenient, whereas gridded
-outputs are useful when later stacking many species maps.
+`format` and `res` control the output type. In many exploratory
+workflows a vector output is convenient, whereas gridded outputs are
+useful when later stacking many species maps.
 
 A useful rule of thumb is this: at broad scale, the defaults for outlier
 detection are often a reasonable starting point because the main goal is

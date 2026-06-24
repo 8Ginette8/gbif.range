@@ -113,7 +113,7 @@
 - Added
   [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md):
   build custom ecoregion layers from environmental rasters via k-means
-  clustering (Hagen et al. 2019).
+  clustering.
 - Moved dependencies from `Depends` to `Imports` for cleaner namespace
   handling.
 - Added `sf` and `cluster` as dependencies.
