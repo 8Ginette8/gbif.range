@@ -2,6 +2,16 @@ url: https://8ginette8.github.io/gbif.range/
 
 template:
   bootstrap: 5
+  bslib:
+    navbar-brand-font-size: 1.5rem
+  includes:
+    in_header: |
+      <style>
+      .navbar-brand img {
+        height: 100px !important;
+        max-height: 100px !important;
+      }
+      </style>
 
 navbar:
   structure:

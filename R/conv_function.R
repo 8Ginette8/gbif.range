@@ -18,7 +18,6 @@
 #' @keywords internal
 #' @importFrom terra crds buffer aggregate vect crs
 #' @importFrom sf st_polygon
-#' @export
 conv_function <- function (sp_coord,
                            bwp,
                            bipl,

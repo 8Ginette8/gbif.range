@@ -20,8 +20,7 @@
 #' \code{species_csvs_to_ranges()}, and \code{read_range_rds()} for very large
 #' downloaded GBIF tables.
 #'
-#' @name gbif.range
-#' @aliases gbif.range gbif.range-package package-gbif.range
+#' @name gbif.range-package
 #' @docType package
 #' @example inst/examples/gbif.range-package_help.R
 #' @keywords package

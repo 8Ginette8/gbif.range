@@ -3,7 +3,6 @@
 S3method(plot,gbifPackedSpatRaster)
 S3method(plot,gbifPackedSpatVector)
 export(check_and_get_ecoreg)
-export(conv_function)
 export(cv_range)
 export(ecoreg_list)
 export(evaluate_range)

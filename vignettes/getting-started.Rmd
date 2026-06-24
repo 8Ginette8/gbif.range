@@ -158,6 +158,10 @@ of *n* observations per geographic tile rather than retrieving all available
 records. This trades completeness for speed and is appropriate for exploratory
 analysis or very broad-extent range inference.
 
+⚠️ Note that the download takes longer without `occ_samp`. Although giving
+**less precise observational distribution**, `occ_samp` allows extracting a
+**subsample of *n* GBIF observations** per created tile over the study area.
+
 ```{r marine-example, eval = FALSE}
 # 1000 observations per tile — faster, but less spatially complete
 obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000)
@@ -184,9 +188,11 @@ points(obs.dd[, c("decimalLongitude", "decimalLatitude")],
 knitr::include_graphics("../man/figures/Part0_plot3.png")
 ```
 
-Because only a subsample was retrieved, the resulting map closely follows the
-GBIF sampling pattern. Increasing or removing `occ_samp` would produce a more
-complete distributional estimate.
+The three range levels (`"ECOREGION"`, `"PROVINCE"`, `"REALM"`) produce similar
+results here because most observations are near the coast. Because only a
+subsample was retrieved, the resulting map closely follows the GBIF sampling
+pattern. Increasing or removing `occ_samp` would produce a more complete
+distributional estimate.
 
 ## Available ecoregions
 
@@ -228,7 +234,7 @@ eco.eg <- make_ecoreg(env = bio, nclass = 10)
 terra::plot(eco.eg, col = rainbow(10))
 ```
 
-```{r fig-ecoreg, echo = FALSE, out.width = "50%"}
+```{r fig-ecoreg, echo = FALSE, out.width = "70%"}
 knitr::include_graphics("../man/figures/Part0_plot4.png")
 ```
 
@@ -271,7 +277,7 @@ points(obs.arcto[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
 ```
 
-```{r fig-arcto, echo = FALSE, out.width = "50%"}
+```{r fig-arcto, echo = FALSE, out.width = "70%"}
 knitr::include_graphics("../man/figures/Part0_plot5.png")
 ```
 
@@ -338,14 +344,24 @@ custom ecoregion options, and the evaluation functions `cv_range()` and
 describes the disk-based batch workflow built around `split_gbif_by_species()`,
 `species_csvs_to_ranges()`, and `read_range_rds()`.
 
+## Citation
+
+Yohann Chauvier, Oskar Hagen, Stefan Pinkert, Camille Albouy, Fabian Fopp,
+Philipp Brun, Patrice Descombes, Florian Altermatt, Loic Pellissier, Katalin
+Csilléry. gbif.range: An R package to generate ecologically-informed species
+range maps from occurrence data with seamless GBIF integration. Authorea.
+June 30, 2025. doi:
+[10.22541/au.175130858.83083354/v1](https://doi.org/10.22541/au.175130858.83083354/v1)
+
 ## References
 
 Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M., Bogutskaya, N., … Petry, P. (2008). Freshwater ecoregions of the world: a new map of biogeographic units for freshwater biodiversity conservation. *BioScience*, 58(5), 403–414. https://doi.org/10.1641/B580507
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global biodiversity information facility API. https://doi.org/10.5281/zenodo.6023735
 
-
 Hagen, O., Vaterlaus, L., Albouy, C., Brown, A., Leugger, F., Onstein, R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019). Mountain building, climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. *Journal of Biogeography*, 46(8), 1792–1807. https://doi.org/10.1111/jbi.13653
+
+Hagen, O. Species_Range_Mapping. GitHub repository. https://github.com/ohagen/Species_Range_Mapping
 
 Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version 1.6-7. https://cran.r-project.org/web/packages/terra/index.html
 
