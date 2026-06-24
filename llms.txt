@@ -1,0 +1,174 @@
+# gbif.range
+
+[![Auto-Version](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml)
+[![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![DOI](https://img.shields.io/badge/DOI-10.16904%2Fenvidat.538-blue)](https://www.envidat.ch/#/metadata/gbif-range-r)
+
+Species ranges can be estimated from expert maps (for example
+[IUCN](https://www.iucnredlist.org/resources/spatial-data-download) and
+[EUFORGEN](https://www.euforgen.org/species/)) or with modelling
+approaches. Expert data, however, remain unavailable for many species,
+whereas modelling workflows often require substantial technical
+expertise and large numbers of occurrence records. When such data are
+unavailable, they can often be approximated from the Global Biodiversity
+Information Facility (GBIF), the largest public repository of
+georeferenced species observations worldwide (<https://www.gbif.org/>).
+Retrieving GBIF records at large scale in R can still be cumbersome,
+especially if users are unfamiliar with the practical limits of the
+*rgbif* package.
+
+**gbif.range** provides a complete workflow to retrieve, clean, and
+analyze GBIF occurrence records and generate ecologically informed
+species range maps. Built around the GBIF backbone taxonomy, the package
+handles synonym-aware downloads, dynamic tiling for large datasets, and
+13 configurable post-processing filters via `CoordinateCleaner`. Range
+maps are constrained by bundled or custom ecoregion layers (terrestrial,
+marine, and freshwater), and can be validated against independent data
+using built-in evaluation and cross-validation functions. A dedicated
+disk-based pipeline allows processing very large multi-species GBIF
+exports without loading them into memory. Additional utilities cover
+GBIF taxonomy inspection, occurrence thinning, geographic tiling, and
+GBIF-derived DOI generation.
+
+For full documentation, workflows, and examples, visit the **[package
+website](https://8ginette8.github.io/gbif.range/)**.
+
+## Installation
+
+``` r
+
+# From GitHub (development version)
+remotes::install_github("8Ginette8/gbif.range", build_vignettes = TRUE)
+library(gbif.range)
+```
+
+> **CRAN submission coming soon.** Once available, the package will also
+> be installable with `install.packages("gbif.range")`.
+
+## Quick example
+
+``` r
+
+# Download Panthera tigris occurrences
+obs.pt <- get_gbif(sp_name = "Panthera tigris")
+
+# Load terrestrial ecoregions and build range map
+eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
+range.tiger <- get_range(occ_coord = obs.pt,
+                         ecoreg = eco.terra,
+                         ecoreg_name = "ECO_NAME",
+                         degrees_outlier = 5,
+                         clust_pts_outlier = 4)
+
+# Plot
+countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
+terra::plot(countries, col = "#bcbddc")
+terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
+```
+
+## Citation
+
+Yohann Chauvier, Oskar Hagen, Stefan Pinkert, Camille Albouy, Fabian
+Fopp, Philipp Brun, Patrice Descombes, Florian Altermatt, Loic
+Pellissier, Katalin Csilléry. gbif.range: An R package to generate
+ecologically-informed species range maps from occurrence data with
+seamless GBIF integration. Authorea. June 30, 2025. doi:
+[10.22541/au.175130858.83083354/v1](https://doi.org/10.22541/au.175130858.83083354/v1)
+
+# Package index
+
+## GBIF retrieval
+
+Download and inspect GBIF occurrences
+
+- [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
+  : Download and Filter GBIF Occurrences for Spatial Analyses
+- [`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md)
+  : Count GBIF Occurrences Before Downloading Data
+- [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
+  : Retrieve Taxonomy and IUCN Status from GBIF
+- [`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md)
+  : Create a DOI for GBIF-derived datasets
+- [`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md)
+  : Create Tiled GBIF Geometry Queries
+
+## Range inference
+
+Build and evaluate ecoregion-constrained range maps
+
+- [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+  : Create Species Range Maps from Occurrences and Ecoregions
+- [`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
+  : Evaluate a Range Map by Cross-Validation
+- [`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md)
+  : Evaluate Range Maps Against Independent Validation Data
+- [`make_blocks()`](https://8ginette8.github.io/gbif.range/reference/make_blocks.md)
+  : Split Data into Approximately Balanced Folds
+
+## Ecoregions
+
+Load, download, or create ecoregion layers
+
+- [`read_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/read_ecoreg.md)
+  : Read an Ecoregion Layer
+- [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
+  : Build Custom Ecoregions from Environmental Layers
+- [`get_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/get_ecoreg.md)
+  : Download Ecoregion Layers
+- [`check_and_get_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/check_and_get_ecoreg.md)
+  : Check for a Local Ecoregion Layer and Download It if Needed
+- [`ecoreg_list`](https://8ginette8.github.io/gbif.range/reference/ecoreg_list.md)
+  : Metadata for Downloadable Ecoregion Layers
+
+## Occurrence filtering
+
+Thin or aggregate occurrence records
+
+- [`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md)
+  : Filter GBIF Records by Grid Cell
+
+## Large-scale batch workflow
+
+Disk-based processing for large GBIF exports
+
+- [`split_gbif_by_species()`](https://8ginette8.github.io/gbif.range/reference/split_gbif_by_species.md)
+  : Split a Downloaded GBIF Table into One File per Species
+
+- [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md)
+  : Build Range Maps from Per-Species GBIF Files Saved on Disk
+
+- [`read_range_rds()`](https://8ginette8.github.io/gbif.range/reference/read_range_rds.md)
+  :
+
+  Read a Range File Saved by
+  [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md)
+
+## Data
+
+Datasets bundled with the package
+
+- [`area_data`](https://8ginette8.github.io/gbif.range/reference/area_data.md)
+  : Range Area Comparison Data
+
+## Package
+
+- [`gbif.range`](https://8ginette8.github.io/gbif.range/reference/gbif.range-package.md)
+  [`gbif.range-package`](https://8ginette8.github.io/gbif.range/reference/gbif.range-package.md)
+  : gbif.range: Tools for GBIF Retrieval and Ecoregion-Based Species
+  Range Mapping
+
+# Articles
+
+### Workflow vignettes
+
+- [Part 0: Getting
+  Started](https://8ginette8.github.io/gbif.range/articles/getting-started.md):
+- [Part 1: Ecoregion-Based Range
+  Inference](https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.md):
+- [Part 2: GBIF Retrieval, Taxonomy, and
+  Filtering](https://8ginette8.github.io/gbif.range/articles/gbif-retrieval-and-taxonomy.md):
+- [Part 3: Large Downloaded GBIF
+  Tables](https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.md):
