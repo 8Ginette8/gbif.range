@@ -5,7 +5,7 @@
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![DOI](https://img.shields.io/badge/DOI-10.16904%2Fenvidat.538-blue)](https://www.envidat.ch/#/metadata/gbif-range-r)
+[![DOI](https://zenodo.org/badge/553057771.svg)](https://doi.org/10.5281/zenodo.20826609)
 
 Species ranges can be estimated from expert maps (for example
 [IUCN](https://www.iucnredlist.org/resources/spatial-data-download) and
