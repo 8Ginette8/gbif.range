@@ -1,49 +1,141 @@
-<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://8ginette8.github.io/gbif.range/404.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/LICENSE-text.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/LICENSE.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/articles/gbif-retrieval-and-taxonomy.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/articles/getting-started.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/articles/index.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/authors.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/index.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/news/index.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/area_data.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/check_and_get_ecoreg.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/check_character_vector.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/check_logical.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/check_null_na.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/check_numeric.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/check_numeric_range.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/conv_function.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/cscl.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/cv_range.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/ecoreg_list.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/evaluate_range.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/fig_label.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/gbif.range-package.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/getGBIF.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/getRange-class.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/get_doi.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/get_ecoreg.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/get_gbif.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/get_gbif_count.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/get_range.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/get_status.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/index.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/log_step.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/make_blocks.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/make_ecoreg.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/make_tiles.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/obs_filter.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/optme.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/plot.gbifPackedSpatRaster.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/plot.gbifPackedSpatVector.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/read_ecoreg.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/read_range_rds.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.html</loc></url>
-<url><loc>https://8ginette8.github.io/gbif.range/reference/split_gbif_by_species.html</loc></url>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/404.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/articles/gbif-retrieval-and-taxonomy.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/articles/getting-started.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/index.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/area_data.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/check_and_get_ecoreg.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/check_character_vector.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/check_logical.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/check_null_na.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/check_numeric.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/check_numeric_range.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/conv_function.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/cscl.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/cv_range.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/ecoreg_list.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/evaluate_range.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/fig_label.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/gbif.range-package.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/getGBIF.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/getRange-class.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/get_doi.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/get_ecoreg.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/get_gbif.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/get_gbif_count.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/get_range.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/get_status.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/log_step.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/make_blocks.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/make_ecoreg.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/make_tiles.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/obs_filter.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/optme.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/plot.gbifPackedSpatRaster.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/plot.gbifPackedSpatVector.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/read_ecoreg.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/read_range_rds.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.html</loc>
+  </url>
+  <url>
+    <loc>https://8ginette8.github.io/gbif.range/reference/split_gbif_by_species.html</loc>
+  </url>
 </urlset>
-
