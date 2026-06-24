@@ -75,8 +75,7 @@ Datasets bundled with the package
 
 ## Package
 
-- [`gbif.range`](https://8ginette8.github.io/gbif.range/reference/gbif.range.md)
-  [`gbif.range-package`](https://8ginette8.github.io/gbif.range/reference/gbif.range.md)
-  [`package-gbif.range`](https://8ginette8.github.io/gbif.range/reference/gbif.range.md)
+- [`gbif.range`](https://8ginette8.github.io/gbif.range/reference/gbif.range-package.md)
+  [`gbif.range-package`](https://8ginette8.github.io/gbif.range/reference/gbif.range-package.md)
   : gbif.range: Tools for GBIF Retrieval and Ecoregion-Based Species
   Range Mapping

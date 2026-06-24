@@ -158,6 +158,11 @@ all available records. This trades completeness for speed and is
 appropriate for exploratory analysis or very broad-extent range
 inference.
 
+⚠️ Note that the download takes longer without `occ_samp`. Although
+giving **less precise observational distribution**, `occ_samp` allows
+extracting a **subsample of *n* GBIF observations** per created tile
+over the study area.
+
 ``` r
 
 # 1000 observations per tile — faster, but less spatially complete
@@ -183,6 +188,8 @@ points(obs.dd[, c("decimalLongitude", "decimalLatitude")],
 
 ![](../reference/figures/Part0_plot3.png)
 
+The three range levels (`"ECOREGION"`, `"PROVINCE"`, `"REALM"`) produce
+similar results here because most observations are near the coast.
 Because only a subsample was retrieved, the resulting map closely
 follows the GBIF sampling pattern. Increasing or removing `occ_samp`
 would produce a more complete distributional estimate.
@@ -354,6 +361,15 @@ workflow built around
 and
 [`read_range_rds()`](https://8ginette8.github.io/gbif.range/reference/read_range_rds.md).
 
+## Citation
+
+Yohann Chauvier, Oskar Hagen, Stefan Pinkert, Camille Albouy, Fabian
+Fopp, Philipp Brun, Patrice Descombes, Florian Altermatt, Loic
+Pellissier, Katalin Csilléry. gbif.range: An R package to generate
+ecologically-informed species range maps from occurrence data with
+seamless GBIF integration. Authorea. June 30, 2025. doi:
+[10.22541/au.175130858.83083354/v1](https://doi.org/10.22541/au.175130858.83083354/v1)
+
 ## References
 
 Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M.,
@@ -371,6 +387,9 @@ R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019).
 Mountain building, climate cooling and the richness of cold-adapted
 plants in the Northern Hemisphere. *Journal of Biogeography*, 46(8),
 1792–1807. <https://doi.org/10.1111/jbi.13653>
+
+Hagen, O. Species_Range_Mapping. GitHub repository.
+<https://github.com/ohagen/Species_Range_Mapping>
 
 Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
 1.6-7. <https://cran.r-project.org/web/packages/terra/index.html>
