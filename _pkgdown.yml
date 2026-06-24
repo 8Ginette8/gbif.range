@@ -1,4 +1,64 @@
 url: https://8ginette8.github.io/gbif.range/
+
 template:
   bootstrap: 5
 
+navbar:
+  structure:
+    left: [intro, articles, reference, news]
+  components:
+    intro:
+      text: Get started
+      href: articles/getting-started.html
+
+articles:
+  - title: "Workflow vignettes"
+    navbar: ~
+    contents:
+      - getting-started
+      - ecoregion-constrained-range-inference
+      - gbif-retrieval-and-taxonomy
+      - large-downloaded-gbif-tables
+
+reference:
+  - title: "GBIF retrieval"
+    desc: "Download and inspect GBIF occurrences"
+    contents:
+      - get_gbif
+      - get_gbif_count
+      - get_status
+      - get_doi
+      - make_tiles
+
+  - title: "Range inference"
+    desc: "Build and evaluate ecoregion-constrained range maps"
+    contents:
+      - get_range
+      - cv_range
+      - evaluate_range
+      - make_blocks
+
+  - title: "Ecoregions"
+    desc: "Load, download, or create ecoregion layers"
+    contents:
+      - read_ecoreg
+      - make_ecoreg
+      - get_ecoreg
+      - check_and_get_ecoreg
+      - ecoreg_list
+
+  - title: "Occurrence filtering"
+    desc: "Thin or aggregate occurrence records"
+    contents:
+      - obs_filter
+
+  - title: "Large-scale batch workflow"
+    desc: "Disk-based processing for large GBIF exports"
+    contents:
+      - split_gbif_by_species
+      - species_csvs_to_ranges
+      - read_range_rds
+
+  - title: "Package"
+    contents:
+      - gbif.range-package
