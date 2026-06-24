@@ -3,8 +3,7 @@
 [![Auto-Version](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml)
 [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![DOI](https://img.shields.io/badge/DOI-10.16904%2Fenvidat.538-blue)](https://www.envidat.ch/#/metadata/gbif-range-r)
-
+[![DOI](https://zenodo.org/badge/553057771.svg)](https://doi.org/10.5281/zenodo.20826609)
 
 Species ranges can be estimated from expert maps (for example <a href="https://www.iucnredlist.org/resources/spatial-data-download">IUCN</a> and <a href="https://www.euforgen.org/species/">EUFORGEN</a>) or with modelling approaches. Expert data, however, remain unavailable for many species, whereas modelling workflows often require substantial technical expertise and large numbers of occurrence records. When such data are unavailable, they can often be approximated from the Global Biodiversity Information Facility (GBIF), the largest public repository of georeferenced species observations worldwide (https://www.gbif.org/). Retrieving GBIF records at large scale in R can still be cumbersome, especially if users are unfamiliar with the practical limits of the *rgbif* package.
 
