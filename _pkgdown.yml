@@ -59,6 +59,11 @@ reference:
       - species_csvs_to_ranges
       - read_range_rds
 
+  - title: "Data"
+    desc: "Datasets bundled with the package"
+    contents:
+      - area_data
+
   - title: "Package"
     contents:
       - gbif.range-package

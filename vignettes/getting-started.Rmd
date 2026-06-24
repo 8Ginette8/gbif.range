@@ -228,7 +228,7 @@ eco.eg <- make_ecoreg(env = bio, nclass = 10)
 terra::plot(eco.eg, col = rainbow(10))
 ```
 
-```{r fig-ecoreg, echo = FALSE, out.width = "100%"}
+```{r fig-ecoreg, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Part0_plot4.png")
 ```
 
@@ -271,7 +271,7 @@ points(obs.arcto[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
 ```
 
-```{r fig-arcto, echo = FALSE, out.width = "100%"}
+```{r fig-arcto, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Part0_plot5.png")
 ```
 
@@ -320,7 +320,7 @@ rg <- read_range_rds(range_summary$range_file[1])
 terra::plot(rg$rangeOutput)
 ```
 
-```{r fig-disk, echo = FALSE, out.width = "100%"}
+```{r fig-disk, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Part0_plot6.png")
 ```
 

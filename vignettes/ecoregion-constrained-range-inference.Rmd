@@ -165,7 +165,7 @@ terra::plot(range_tiger$rangeOutput, col = "#238b45")
 points(obs_tiger[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
 
-```{r fig-tiger-workflow, echo = FALSE, out.width = "100%"}
+```{r fig-tiger-workflow, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Part1_tiger_workflow.png")
 ```
 
@@ -201,7 +201,7 @@ terra::plot(range_arcto$rangeOutput, col = "#3c8d5a")
 points(obs_arcto[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
 
-```{r fig-arcto-workflow, echo = FALSE, out.width = "100%"}
+```{r fig-arcto-workflow, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Part1_arcto_workflow.png")
 ```
 
