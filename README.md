@@ -1,7 +1,7 @@
 
 # gbif.range R package
 
-[<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/blob/main/man/figures/logo_gbif.range.png">](https://www.gbif.org)
+[<img align="right" width="250" height="290" src="https://github.com/8Ginette8/gbif.range/blob/main/man/figures/logo.png">](https://www.gbif.org)
 
 [![Auto-Version](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml)
 [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml)
