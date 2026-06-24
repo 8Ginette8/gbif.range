@@ -21,7 +21,7 @@ library(gbif.range)
 
 ## Scope
 
-This vignette gives a high-level tour of `gbif.range` and covers the two most
+This vignette gives a high-level tour of `gbif.range` and covers the three most
 common single-species workflows end to end:
 
 - a **terrestrial** example (*Panthera tigris*) using `get_status()`,
@@ -212,7 +212,7 @@ The packaged ecoregion layers and their available spatial levels are:
 | `eco_hd_marine` — high-detail marine coastlines (Spalding et al. 2007, 2012; The Nature Conservancy 2012) | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` |
 | `eco_fresh` — freshwater (Abell et al. 2008) | `"ECOREGION"` |
 
-Any suitable polygon shapefile can be supplied to `get_range()` as the
+But, any suitable polygon shapefile can be supplied to `get_range()` as the
 `ecoreg` argument in place of the packaged layers.
 
 ## Local example: custom ecoregions with `make_ecoreg()`
@@ -343,15 +343,6 @@ custom ecoregion options, and the evaluation functions `cv_range()` and
 `make_tiles()`, and `get_doi()`. Part 3 (*Large Downloaded GBIF Tables*)
 describes the disk-based batch workflow built around `split_gbif_by_species()`,
 `species_csvs_to_ranges()`, and `read_range_rds()`.
-
-## Citation
-
-Yohann Chauvier, Oskar Hagen, Stefan Pinkert, Camille Albouy, Fabian Fopp,
-Philipp Brun, Patrice Descombes, Florian Altermatt, Loic Pellissier, Katalin
-Csilléry. gbif.range: An R package to generate ecologically-informed species
-range maps from occurrence data with seamless GBIF integration. Authorea.
-June 30, 2025. doi:
-[10.22541/au.175130858.83083354/v1](https://doi.org/10.22541/au.175130858.83083354/v1)
 
 ## References
 
