@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Part 1: Ecoregion-Based Range Inference • gbif.range</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -29,16 +34,17 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/getting-started.html">Get started</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 1: Ecoregion-Based Range Inference</a></li>
+<li><a class="dropdown-item" href="../articles/getting-started.html">Part 0: Getting Started</a></li>
+    <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 1: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 2: GBIF Retrieval, Taxonomy, and Filtering</a></li>
-    <li><a class="dropdown-item" href="../articles/getting-started.html">Part 0: Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -57,8 +63,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Part 1: Ecoregion-Based Range Inference</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Part 1: Ecoregion-Based Range Inference</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/main/vignettes/ecoregion-constrained-range-inference.Rmd" class="external-link"><code>vignettes/ecoregion-constrained-range-inference.Rmd</code></a></small>
@@ -234,7 +239,7 @@ ecoregional boundaries.</p>
 <span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_tiger</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#238b45"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_tiger</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Part1_tiger_workflow.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Part1_tiger_workflow.png" class="r-plt" alt="" width="50%"></p>
 <p>This is the typical continental to global pattern. The ecoregion
 layer is externally defined and ecologically interpretable, while the
 occurrence filter is intentionally conservative. In practice, this is
@@ -274,7 +279,7 @@ example rasters.</p>
 <span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_arcto</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#3c8d5a"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_arcto</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Part1_arcto_workflow.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Part1_arcto_workflow.png" class="r-plt" alt="" width="50%"></p>
 <p>This regional example shows why <code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code> is part of
 the main package workflow rather than an auxiliary convenience. At small
 spatial extents, the ecological realism of the range map often depends
