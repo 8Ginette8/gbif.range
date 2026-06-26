@@ -29,7 +29,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/8Ginette8/gbif.range/blob/v1.6.3/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/8Ginette8/gbif.range/blob/main/DESCRIPTION)
 
 Chauvier Y, Hagen O, Pinkert S, Albouy C, Fopp F, Brun P, Descombes P,
 Altermatt F, Pellissier L, Csillery K (2026). *gbif.range: Tools for

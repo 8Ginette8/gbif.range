@@ -120,9 +120,9 @@ obs_tiger <- get_gbif(
   "Panthera tigris",
   grain = 100,
   basis = c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
-                        'OCCURRENCE', 'MATERIAL_CITATION', 'MATERIAL_SAMPLE','LITERATURE'),
+    'OCCURRENCE', 'MATERIAL_CITATION', 'MATERIAL_SAMPLE','LITERATURE'),
   establishment = c('native','casual','released','reproducing',
-                        'established','colonising','invasive','widespreadInvasive'),
+    'established','colonising','invasive','widespreadInvasive'),
   time_period = c(1950, 3000)
 )
 
