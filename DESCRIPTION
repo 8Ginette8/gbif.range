@@ -10,17 +10,28 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
-Description: Provides a workflow to retrieve, filter, and analyze GBIF
- occurrence records and to generate ecologically informed species
- range maps using downloaded or custom ecoregions. The package
- includes tools for querying the GBIF backbone taxonomy, counting
- or downloading occurrences, creating custom ecoregion layers,
- building range maps, and evaluating them against independent
- validation data.
+Description: Provides a workflow to retrieve, filter, and analyze 'GBIF'
+ occurrence records and to generate ecologically informed species range maps
+ using downloaded or custom ecoregions. The package includes tools for
+ querying the 'GBIF' backbone taxonomy with get_status(), counting or
+ downloading occurrences with get_gbif_count() and get_gbif(), creating
+ custom ecoregion layers with make_ecoreg(), building range maps with
+ get_range(), and evaluating them against independent validation data with
+ evaluate_range() and cv_range(). A disk-based batch workflow
+ (split_gbif_by_species(), species_csvs_to_ranges(), read_range_rds())
+ supports large multi-species 'GBIF' exports without loading the full table
+ into memory. Bundled ecoregion layers cover terrestrial (Olson et al. 2001
+ <doi:10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2>), marine (Spalding
+ et al. 2007 <doi:10.1641/B570707>), and freshwater (Abell et al. 2008
+ <doi:10.1641/B580507>) realms. The 'GBIF' API is accessed via the
+ 'rgbif' package, and coordinate cleaning uses 'CoordinateCleaner'
+ (Zizka et al. 2019 <doi:10.1111/2041-210X.13152>).
 License: GPL (>= 3) | file LICENCE
-URL: https://github.com/8Ginette8/gbif.range, https://8ginette8.github.io/gbif.range/
+URL: https://github.com/8Ginette8/gbif.range,
+    https://8ginette8.github.io/gbif.range/
 BugReports: https://github.com/8Ginette8/gbif.range/issues
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3

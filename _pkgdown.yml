@@ -26,8 +26,8 @@ articles:
     navbar: ~
     contents:
       - getting-started
-      - ecoregion-constrained-range-inference
       - gbif-retrieval-and-taxonomy
+      - ecoregion-constrained-range-inference
       - large-downloaded-gbif-tables
 
 reference:

@@ -21,8 +21,6 @@
 
 # gbif.range 1.6.0
 
-* Updated `get_gbif()` with new backend support (`method` argument: `"occ_search"`,
-  `"occ_download"`, `"aws"`) and improved print messages.
 * Added disk-based batch workflow for large multi-species GBIF exports:
   `split_gbif_by_species()`, `species_csvs_to_ranges()`, `read_range_rds()`.
 * Added `Collate` field to `DESCRIPTION` for explicit R file load ordering.
@@ -32,6 +30,7 @@
 # gbif.range 1.5.3
 
 * Improved documentation of package and `get_status()`.
+* Updated `get_gbif()` with new backend support (occ_download parameters)
 
 # gbif.range 1.5.2
 
@@ -50,6 +49,8 @@
 * Polished documentation and CI.
 * Updated evaluation functions and examples.
 * Added `get_gbif_count()`: estimate record volume before downloading.
+* Changing functions name to: make_ecoreg(), get_ecoreg(),
+  check_and_get_ecoreg()
 
 # gbif.range 1.4.7
 
@@ -72,12 +73,12 @@
   shared utilities across functions.
 * Introduced formal R5 reference classes `getRange` and `getGBIF` (`classes.R`)
   to store function outputs with their original arguments.
-* Added `check_and_get_ecoreg()` and `get_ecoreg()` as helpers for ecoregion
+* Added `check_and_get_bioreg()` and `get_bioreg()` as helpers for ecoregion
   download and caching.
 
 # gbif.range 1.1.0
 
-* Added `make_ecoreg()`: build custom ecoregion layers from environmental
+* Added `make_ecoregion()`: build custom ecoregion layers from environmental
   rasters via k-means clustering.
 * Moved dependencies from `Depends` to `Imports` for cleaner namespace handling.
 * Added `sf` and `cluster` as dependencies.
@@ -90,14 +91,14 @@
 * Full migration from `raster` to `terra` (SpatRaster/SpatVector compatibility).
 * Renamed `get_taxonomy()` to `get_status()`: added IUCN Red List status
   retrieval and infra-specific taxa (subspecies, varieties) lookup.
-* Introduced formal S4/R5 output objects (`getGBIF`, `getRange`) replacing
-  plain list outputs.
 * Improved `get_gbif()` synonym handling and tiling robustness.
 * Added `read_ecoreg()` and `ecoreg_list` for bundled ecoregion management.
 
 # gbif.range 0.2.0
 
 * Renamed package from `wsl.gbif` to `gbif.range`.
+* Same for function containing 'wsl': wsl_doi() to get_doi(), wsl_gbif() to
+  get_gbif, wsl_obs_filter() to obs_filter()
 * Added `get_range()`: ecoregion-constrained species range inference.
 * Added `conv_function()`: internal polygon builder used by `get_range()`.
 * Added `get_taxonomy()` (later renamed `get_status()`): GBIF backbone
