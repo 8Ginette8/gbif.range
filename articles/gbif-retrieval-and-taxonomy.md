@@ -1,4 +1,4 @@
-# Part 2: GBIF Retrieval, Taxonomy, and Filtering
+# Part 1: GBIF Retrieval, Taxonomy, and Filtering
 
 ## Scope
 
@@ -105,15 +105,26 @@ call remains convenient or whether the project has crossed into the
 
 [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
 is a credential-free wrapper around
-[`rgbif::occ_search()`](https://docs.ropensci.org/rgbif/reference/occ_search.html).
-The main package contribution is that it combines taxonomic
-harmonization, geographic tiling of large extents, and a practical
-sequence of post-download filters in one function.
+[`rgbif::occ_search()`](https://docs.ropensci.org/rgbif/reference/occ_search.html)
+(Chamberlain et al. 2022). The main package contribution is that it
+combines taxonomic harmonization, geographic tiling of large extents,
+and a practical sequence of post-download filters via
+`CoordinateCleaner` (Zizka et al. 2019) in one function. The retrieval
+workflow originates from Chauvier et al. (2021, *Ecological
+Monographs*).
 
 ``` r
 
 # Download global tiger occurrences with the default filters.
-obs_tiger <- get_gbif("Panthera tigris", grain = 100)
+obs_tiger <- get_gbif(
+  "Panthera tigris",
+  grain = 100,
+  basis = c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
+                        'OCCURRENCE', 'MATERIAL_CITATION', 'MATERIAL_SAMPLE','LITERATURE'),
+  establishment = c('native','casual','released','reproducing',
+                        'established','colonising','invasive','widespreadInvasive'),
+  time_period = c(1950, 3000)
+)
 
 # Inspect the accepted name and synonym mapping used internally.
 get_status("Panthera tigris", level = "children")
@@ -141,6 +152,48 @@ spatial-quality filter. `basis`, `establishment`, and related arguments
 define which kinds of records are biologically acceptable. `occ_samp` is
 the pragmatic scaling argument when a full credential-free retrieval
 would be too slow or too large for the immediate task.
+
+## Credential-based retrieval with `occ_download`
+
+For larger or more reproducible downloads,
+[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
+also supports
+[`rgbif::occ_download()`](https://docs.ropensci.org/rgbif/reference/occ_download.html)
+via the `should_use_occ_download` argument. This requires a GBIF
+account. Credentials can be supplied directly as arguments or stored as
+environment variables (`GBIF_USER`, `GBIF_PWD`, `GBIF_EMAIL`):
+
+``` r
+
+# Option 1: pass credentials directly
+obs_tiger <- get_gbif(
+  "Panthera tigris",
+  should_use_occ_download = TRUE,
+  occ_download_user  = "my_gbif_username",
+  occ_download_pwd   = "my_gbif_password",
+  occ_download_email = "my@email.com"
+)
+
+# Option 2: store credentials as environment variables (recommended)
+Sys.setenv(GBIF_USER  = "my_gbif_username")
+Sys.setenv(GBIF_PWD   = "my_gbif_password")
+Sys.setenv(GBIF_EMAIL = "my@email.com")
+
+obs_tiger <- get_gbif(
+  "Panthera tigris",
+  should_use_occ_download = TRUE
+)
+```
+
+The `occ_download` route submits a single formal GBIF download request
+for the full extent, waits for it to complete, and imports the result.
+Unlike the default `occ_search` mode, no tiling is applied — the entire
+query is handled in one request. In practice, `occ_download` tends to be
+slower than `occ_search` for species with few records, since GBIF queues
+the request server-side regardless of size. It however becomes more
+pragmatic for heavy downloads or when processing many species in batch,
+where the overhead of tiling and repeated API calls would otherwise
+dominate.
 
 ## A marine large-extent example
 
@@ -240,21 +293,39 @@ diagnostics of how an extent is being subdivided.
 
 ## Reproducible GBIF citation
 
-Once one or more
-[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
-calls have been made,
 [`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md)
-can be used to generate a GBIF-derived DOI reference for those records:
+wraps
+[`rgbif::derived_dataset()`](https://docs.ropensci.org/rgbif/reference/derived_dataset.html)
+to register a citable GBIF-derived dataset DOI from one or more
+[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
+outputs. It requires GBIF credentials and extracts the `datasetKey`
+column from the `getGBIF` object to identify the source datasets. A
+title, description, and source URL pointing to the workflow
+documentation are also required:
 
 ``` r
 
-doi_url <- get_doi(obs_tiger)
-doi_url
+doi_result <- get_doi(
+  gbifs       = obs_tiger,
+  title       = "Panthera tigris GBIF occurrences for range mapping",
+  description = "GBIF occurrence records for Panthera tigris retrieved with gbif.range.",
+  source_url  = "https://github.com/8Ginette8/gbif.range",
+  user        = "my_gbif_username",
+  pwd         = "my_gbif_password"
+)
+doi_result
 ```
 
+Note that
+[`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md)
+works the same regardless of whether `obs_tiger` was retrieved via
+`occ_search` or `occ_download` — it reads the `datasetKey` column
+present in both outputs, counts records per source dataset, and passes
+that summary to
+[`rgbif::derived_dataset()`](https://docs.ropensci.org/rgbif/reference/derived_dataset.html).
 This is a small function, but it is scientifically important because it
 improves traceability and citation of the exact GBIF-derived datasets
-used in an analysis.
+used in an analysis
 
 ## Take-home message
 
@@ -265,7 +336,9 @@ The GBIF-facing side of `gbif.range` is built around a clear sequence:
 2.  count likely record volume with
     [`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md),
 3.  download filtered occurrences with
-    [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md),
+    [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
+    — credential-free via `occ_search` (default) or credential-based via
+    `should_use_occ_download = TRUE`,
 4.  optionally thin or aggregate them with
     [`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md),
 5.  cite the resulting GBIF-derived datasets with
@@ -273,3 +346,21 @@ The GBIF-facing side of `gbif.range` is built around a clear sequence:
 
 That sequence keeps taxonomic interpretation, record selection, and
 reproducibility visible before range inference begins.
+
+## References
+
+Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
+the global biodiversity information facility API.
+<https://doi.org/10.5281/zenodo.6023735>
+
+Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
+Karger, D. N., Zimmermann, N. E., & Pellissier, L. (2021). Influence of
+climate, soil, and land cover on plant species distribution in the
+European Alps. *Ecological Monographs*, 91(2), e01433.
+<https://doi.org/10.1002/ecm.1433>
+
+Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C.,
+Edler, D., … Antonelli, A. (2019). CoordinateCleaner: Standardized
+cleaning of occurrence records from biological collection databases.
+*Methods in Ecology and Evolution*, 10(5), 744–751.
+<https://doi.org/10.1111/2041-210X.13152>

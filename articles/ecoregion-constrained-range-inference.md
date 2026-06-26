@@ -1,4 +1,4 @@
-# Part 1: Ecoregion-Based Range Inference
+# Part 2: Ecoregion-Based Range Inference
 
 ## Scope
 
@@ -19,7 +19,7 @@ The relevant functions are:
 - [`read_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/read_ecoreg.md)
   and `ecoreg_list` for packaged large-scale ecoregions,
 - [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
-  for custom ecoregions derived from environmental rasters,
+  for custom ecoregions derived from any set of spatial raster layers,
 - [`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
   and
   [`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md)
@@ -28,8 +28,9 @@ The relevant functions are:
 ## How `get_range()` works
 
 [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
-is designed for one focal species at a time. The algorithm can be
-summarized as four linked operations:
+is designed for one focal species at a time. The algorithm originates
+from Hagen et al. (2019) and can be summarized as four linked
+operations:
 
 1.  remove isolated spatial outliers from the occurrence table,
 2.  identify occupied ecoregions and cluster occurrences within them,
@@ -90,10 +91,15 @@ points(occ$decimalLongitude, occ$decimalLatitude, pch = 4)
 
 Three practical points are worth noting here.
 
-First, the occurrence object must contain decimal longitude and
-latitude. In practice it will often be a `getGBIF` object returned by
-[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md),
-but a regular `data.frame` is also valid.
+First,
+[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+accepts any set of occurrence coordinates as input via `occ_coord` — not
+just a `getGBIF` object returned by
+[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md).
+Any `data.frame` with `decimalLongitude`, `decimalLatitude` columns are
+valid. This means museum records, citizen science exports,
+expert-curated datasets, or coordinates from any other source can be
+used directly, as long as they follow that column structure.
 
 Second, custom ecoregions created with
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
@@ -111,7 +117,10 @@ returns a `getRange` object. The spatial output is stored in
 ## Packaged versus custom ecoregions
 
 Large-scale analyses usually rely on one of the packaged ecoregion
-layers:
+layers: terrestrial (*eco_terra*; Olson et al. 2001; The Nature
+Conservancy 2009), marine (*eco_marine*, *eco_hd_marine*; Spalding et
+al. 2007, 2012; The Nature Conservancy 2012), and freshwater
+(*eco_fresh*; Abell et al. 2008).
 
 ``` r
 
@@ -133,10 +142,25 @@ range_tiger <- get_range(
 )
 ```
 
-In contrast, regional analyses often benefit from custom ecoregions. The
-package ships with raster examples under `inst/extdata`, including
-`rst.tif`, which can be used as a starting point for a fine-grained
-environmental classification:
+Beyond the packaged layers,
+[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+accepts any polygon object as the `ecoreg` argument — a `SpatVector`,
+`sf`, or any spatial polygon class — as long as it contains a character
+column whose name is passed to `ecoreg_name`. This meanshabitat maps,
+expert-defined biogeographic units, or bioregions derived from species
+composition data (Denelle et al. 2025) can all serve as the constraining
+layer without any conversion step.
+
+In contrast, regional analyses often benefit from custom ecoregions
+built from raster data with
+[`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
+(Chauvier et al. 2021). Although climate layers are the most common
+input, any spatially structured raster variable can be used — species
+richness surfaces, biodiversity indices, habitat suitability maps, or
+any combination of ecological drivers thought to define meaningful
+spatial units (Denelle et al. 2025). The package ships with raster
+examples under `inst/extdata`, including `rst.tif`, which can be used as
+a starting point:
 
 ``` r
 
@@ -203,7 +227,7 @@ The second workflow is deliberately different. Here the issue is not
 worldwide coverage, but the opposite: the global terrestrial ecoregions
 are too coarse for a mountain system with strong local climatic
 structure. A custom ecoregion layer is therefore built from packaged
-example rasters.
+example CHELSA bioclimatic rasters (Karger et al. 2017).
 
 ``` r
 
@@ -341,3 +365,58 @@ occurrence geometry with eco-geographic structure. The rest of the
 package, including GBIF retrieval and large disk-based workflows, is
 built to feed that core mapping step in a transparent and reproducible
 way.
+
+## References
+
+Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M.,
+Bogutskaya, N., … Petry, P. (2008). Freshwater ecoregions of the world:
+a new map of biogeographic units for freshwater biodiversity
+conservation. *BioScience*, 58(5), 403–414.
+<https://doi.org/10.1641/B580507>
+
+Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P.,
+Thuiller, W., & Qiao, H. (2021). Novel methods to correct for observer
+and sampling bias in presence-only species distribution models. *Global
+Ecology and Biogeography*, 30(11), 2312–2325.
+<https://doi.org/10.1111/geb.13383>
+
+Denelle, P., Leroy, B., & Lenormand, M. (2025). Bioregionalization
+analyses with the bioregion R package. *Methods in Ecology and
+Evolution*, 16, 496–506. <https://doi.org/10.1111/2041-210X.14496>
+
+Hagen, O., Vaterlaus, L., Albouy, C., Brown, A., Leugger, F., Onstein,
+R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019).
+Mountain building, climate cooling and the richness of cold-adapted
+plants in the Northern Hemisphere. *Journal of Biogeography*, 46(8),
+1792–1807. <https://doi.org/10.1111/jbi.13653>
+
+Karger, D. N., Conrad, O., Böhner, J., Kawohl, T., Kreft, H.,
+Soria-Auza, R. W., Zimmermann, N. E., Linder, H. P., & Kessler, M.
+(2017). Climatologies at high resolution for the earth’s land surface
+areas. *Scientific Data*, 4, 170122.
+<https://doi.org/10.1038/sdata.2017.122>
+
+Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
+Powell, G. V. N., Underwood, E. C., … Kassem, K. R. (2001). Terrestrial
+ecoregions of the world: a new map of life on Earth. *BioScience*,
+51(11), 933–938.
+<https://doi.org/10.1641/0006-3568(2001)051%5B0933:TEOTWA%5D2.0.CO;2>
+
+Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdaña, Z. A.,
+Finlayson, M., … Robertson, J. (2007). Marine ecoregions of the world: a
+bioregionalization of coastal and shelf areas. *BioScience*, 57(7),
+573–583. <https://doi.org/10.1641/B570707>
+
+Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
+Pelagic provinces of the world: a biogeographic classification of the
+world’s surface pelagic waters. *Ocean & Coastal Management*, 60, 19–30.
+<https://doi.org/10.1016/j.ocecoaman.2011.12.016>
+
+The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
+Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
+Units. Cambridge (UK): The Nature Conservancy.
+<https://geospatial.tnc.org/datasets/b1636d640ede4d6ca8f5e369f2dc368b/about>
+
+The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
+of the World. Cambridge (UK): The Nature Conservancy.
+<https://habitats.oceanplus.org>

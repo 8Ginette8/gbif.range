@@ -54,7 +54,7 @@ the `terra` package (Hijmans 2022). The main functions are:
 | [`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md) | Grid-based occurrence thinning |
 | [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md) | Ecoregion-constrained range inference |
 | [`read_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/read_ecoreg.md) | Download and read packaged ecoregion files |
-| [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md) | Build a custom ecoregion layer from environmental rasters |
+| [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md) | Build a custom ecoregion layer from any set of spatial raster layers |
 | [`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md) | Generate GBIF-ready `POLYGON()` tiles for explicit tiling workflows |
 | [`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md) | Create a citable GBIF-derived DOI for downloaded records |
 | [`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md) | Validate a range map against user-supplied distribution data |
@@ -101,7 +101,9 @@ works without GBIF credentials. It is built on top of `rgbif`
 taxon key, applies a dynamic moving-window tiling strategy when the
 geographic extent contains more than 100,000 records, and runs 13
 configurable post-processing filters based on custom logic and
-`CoordinateCleaner` (Zizka et al. 2019).
+`CoordinateCleaner` (Zizka et al. 2019). The function originates from
+the occurrence retrieval workflow first introduced in Chauvier et
+al. (2021, *Ecological Monographs*).
 
 ``` r
 
@@ -122,6 +124,12 @@ help page documents the available post-processing arguments for stricter
 cleaning.
 
 ### Build the range map
+
+[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+implements the ecoregion-constrained range inference algorithm
+originally developed by Hagen et al. (2019) and can accept any types of
+observations as long as ’decimalLongitude`,`decimalLatitude\` columns
+are valid:
 
 ``` r
 
@@ -207,32 +215,37 @@ ecoreg_list
 
 The packaged ecoregion layers and their available spatial levels are:
 
-| Layer | `ecoreg_name` values |
-|----|----|
-| `eco_terra` — terrestrial (Olson et al. 2001; The Nature Conservancy 2009) | `"ECO_NAME"`, `"WWF_MHTNAM"`, `"WWF_REALM2"` |
-| `eco_marine` — marine (Spalding et al. 2007; The Nature Conservancy 2012) | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` |
-| `eco_hd_marine` — high-detail marine coastlines (Spalding et al. 2007, 2012; The Nature Conservancy 2012) | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` |
-| `eco_fresh` — freshwater (Abell et al. 2008) | `"ECOREGION"` |
+| Layer | `ecoreg_name` values | References |
+|----|----|----|
+| `eco_terra` — terrestrial | `"ECO_NAME"`, `"WWF_MHTNAM"`, `"WWF_REALM2"` | Olson et al. (2001); The Nature Conservancy (2009) |
+| `eco_marine` — marine | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` | Spalding et al. (2007); The Nature Conservancy (2012) |
+| `eco_hd_marine` — high-detail marine coastlines | `"ECOREGION"`, `"PROVINCE"`, `"REALM"` | Spalding et al. (2007, 2012); The Nature Conservancy (2012) |
+| `eco_fresh` — freshwater | `"ECOREGION"` | Abell et al. (2008) |
 
-But, any suitable polygon shapefile can be supplied to
+Beyond the packaged layers,
 [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
-as the `ecoreg` argument in place of the packaged layers.
+accepts any polygon object as `ecoreg` — including habitat maps,
+expert-defined units, or bioregions from species composition data
+(Denelle et al. 2025) — as long as it has a named character column for
+`ecoreg_name`. Similarly,
+[`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
+accepts any spatially structured raster, not just climate layers. See
+Part 1 for full details on both.
 
 ## Local example: custom ecoregions with `make_ecoreg()`
 
 For regional analyses the packaged ecoregions may be too coarse.
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
 builds a custom ecoregion layer by k-means clustering of one or more
-environmental rasters.
+spatial raster layers (Chauvier et al. 2021, *Global Ecology and
+Biogeography*). Any spatially structured raster variable can be used as
+input — not just climate layers.
 
 The example below first illustrates what a
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
 output looks like with 10 classes over the European Alps, using two
 CHELSA bioclimatic layers (Karger et al. 2017) — mean annual temperature
-(bio1) and annual precipitation (bio12) at 5 × 5 km resolution. The
-[`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
-function applies k-means clustering to derive ecologically coherent
-units from environmental rasters (Hagen et al. 2019):
+(bio1) and annual precipitation (bio12) at 5 × 5 km resolution:
 
 ``` r
 
@@ -373,17 +386,30 @@ Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
 the global biodiversity information facility API.
 <https://doi.org/10.5281/zenodo.6023735>
 
+Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P.,
+Thuiller, W., & Qiao, H. (2021). Novel methods to correct for observer
+and sampling bias in presence-only species distribution models. *Global
+Ecology and Biogeography*, 30(11), 2312–2325.
+<https://doi.org/10.1111/geb.13383>
+
+Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
+Karger, D. N., Zimmermann, N. E., & Pellissier, L. (2021). Influence of
+climate, soil, and land cover on plant species distribution in the
+European Alps. *Ecological Monographs*, 91(2), e01433.
+<https://doi.org/10.1002/ecm.1433>
+
+Denelle, P., Leroy, B., & Lenormand, M. (2025). Bioregionalization
+analyses with the bioregion R package. *Methods in Ecology and
+Evolution*, 16, 496–506. <https://doi.org/10.1111/2041-210X.14496>
+
 Hagen, O., Vaterlaus, L., Albouy, C., Brown, A., Leugger, F., Onstein,
 R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019).
 Mountain building, climate cooling and the richness of cold-adapted
 plants in the Northern Hemisphere. *Journal of Biogeography*, 46(8),
 1792–1807. <https://doi.org/10.1111/jbi.13653>
 
-Hagen, O. Species_Range_Mapping. GitHub repository.
-<https://github.com/ohagen/Species_Range_Mapping>
-
 Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
-1.6-7. <https://cran.r-project.org/web/packages/terra/index.html>
+1.6-7. <https://CRAN.R-project.org/package=terra>
 
 Karger, D. N., Conrad, O., Böhner, J., Kawohl, T., Kreft, H.,
 Soria-Auza, R. W., Zimmermann, N. E., Linder, H. P., & Kessler, M.
@@ -414,7 +440,7 @@ Units. Cambridge (UK): The Nature Conservancy.
 
 The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
 of the World. Cambridge (UK): The Nature Conservancy.
-<http://data.unep-wcmc.org/datasets/38>
+<https://habitats.oceanplus.org>
 
 Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C.,
 Edler, D., … Antonelli, A. (2019). CoordinateCleaner: Standardized

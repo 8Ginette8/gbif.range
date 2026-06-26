@@ -12,13 +12,13 @@ Species ranges can be estimated from expert maps (for example
 [EUFORGEN](https://www.euforgen.org/species/)) or with modelling
 approaches. Expert data, however, remain unavailable for many species,
 whereas modelling workflows often require substantial technical
-expertise and large numbers of occurrence records. When such data are
-unavailable, they can often be approximated from the Global Biodiversity
-Information Facility (GBIF), the largest public repository of
-georeferenced species observations worldwide (<https://www.gbif.org/>).
-Retrieving GBIF records at large scale in R can still be cumbersome,
-especially if users are unfamiliar with the practical limits of the
-*rgbif* package.
+expertise and large numbers of occurrence records. [Global Biodiversity
+Information Facility (GBIF)](https://www.gbif.org/) — the largest public
+repository of georeferenced species observations worldwide — offer a
+practical alternative, yet retrieving them at scale in R remains
+cumbersome and translating raw occurrences into ecologically meaningful
+range maps is not straightforward, as records often contain erroneous
+coordinates that must be identified and removed before spatial analyses.
 
 **gbif.range** provides a complete workflow to retrieve, clean, and
 analyze GBIF occurrence records and generate ecologically informed

@@ -17,8 +17,8 @@ The workflow is built around three functions:
   to read the saved range outputs back from disk.
 
 This workflow is meant for the point where direct credential-free GBIF
-retrieval is no longer the most practical option. For many
-single-species or moderate-volume tasks,
+retrieval via `rgbif` (Chamberlain et al. 2022) is no longer the most
+practical option. For many single-species or moderate-volume tasks,
 [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
 is enough. For very large downloaded exports, working from files on disk
 is usually the better choice.
@@ -134,7 +134,12 @@ range workflow.
 
 In ordinary use, you would typically replace this with
 `ecoreg = "eco_terra"` or with a spatial object returned by
-`read_ecoreg("eco_terra")`.
+`read_ecoreg("eco_terra")` (Olson et al. 2001; The Nature Conservancy
+2009). More generally, any polygon object with a named character column
+works as `ecoreg`, and
+[`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
+accepts any spatially structured raster as input — not only climate
+layers. See Part 1 for full details on both.
 
 ``` r
 
@@ -238,25 +243,25 @@ normally look more like this:
 
 ``` r
 
-#split_summary <- split_gbif_by_species(
-#  input_file = "gbif_download.tsv",
-#  outdir = "species_occurrences",
-#  chunk_size = 1e5,
-#  sep_in = "\t",
-#  sep_out = "\t",
-#  overwrite = TRUE
-#)
+split_summary <- split_gbif_by_species(
+  input_file = "gbif_download.tsv",
+  outdir = "species_occurrences",
+  chunk_size = 1e5,
+  sep_in = "\t",
+  sep_out = "\t",
+  overwrite = TRUE
+)
 
-#range_summary <- species_csvs_to_ranges(
-#  species_dir = "species_occurrences",
-#  ecoreg = "eco_terra",
-#  ecoreg_name = "ECO_NAME",
-#  outdir = "species_ranges",
-#  occ_outdir = "species_occurrences_min",
-#  occ_save_as = "tsv",
-#  range_save_as = "rds",
-#  overwrite = TRUE
-#)
+range_summary <- species_csvs_to_ranges(
+  species_dir = "species_occurrences",
+  ecoreg = "eco_terra",
+  ecoreg_name = "ECO_NAME",
+  outdir = "species_ranges",
+  occ_outdir = "species_occurrences_min",
+  occ_save_as = "tsv",
+  range_save_as = "rds",
+  overwrite = TRUE
+)
 ```
 
 This is the clearest batch version of the main terrestrial workflow: one
@@ -371,6 +376,23 @@ The third point matters scientifically, not just computationally. It
 makes parameter sensitivity analyses much cleaner, because you can rerun
 the same archived species files under alternative ecoregion layers or
 buffering choices without changing the underlying occurrence input.
+
+## References
+
+Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
+the global biodiversity information facility API.
+<https://doi.org/10.5281/zenodo.6023735>
+
+Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
+Powell, G. V. N., Underwood, E. C., … Kassem, K. R. (2001). Terrestrial
+ecoregions of the world: a new map of life on Earth. *BioScience*,
+51(11), 933–938.
+<https://doi.org/10.1641/0006-3568(2001)051%5B0933:TEOTWA%5D2.0.CO;2>
+
+The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
+Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
+Units. Cambridge (UK): The Nature Conservancy.
+<https://geospatial.tnc.org/datasets/b1636d640ede4d6ca8f5e369f2dc368b/about>
 
 ## Take-home message
 
