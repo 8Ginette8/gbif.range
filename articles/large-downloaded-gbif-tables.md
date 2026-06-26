@@ -377,6 +377,15 @@ makes parameter sensitivity analyses much cleaner, because you can rerun
 the same archived species files under alternative ecoregion layers or
 buffering choices without changing the underlying occurrence input.
 
+## Take-home message
+
+The disk-based workflow turns `gbif.range` into a practical bridge
+between very large GBIF exports and species-level range inference.
+Instead of treating file splitting and range building as an external
+preprocessing step, Gbif.range provides a coherent, testable, and
+documented path from a downloaded GBIF table to saved species ranges on
+disk.
+
 ## References
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
@@ -393,12 +402,3 @@ The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
 Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
 Units. Cambridge (UK): The Nature Conservancy.
 <https://geospatial.tnc.org/datasets/b1636d640ede4d6ca8f5e369f2dc368b/about>
-
-## Take-home message
-
-The disk-based workflow turns `gbif.range` into a practical bridge
-between very large GBIF exports and species-level range inference.
-Instead of treating file splitting and range building as an external
-preprocessing step, Gbif.range provides a coherent, testable, and
-documented path from a downloaded GBIF table to saved species ranges on
-disk.
