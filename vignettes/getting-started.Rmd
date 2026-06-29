@@ -347,12 +347,12 @@ This workflow is described in full in
 ## Next steps
 
 The three focused vignettes cover each part of the workflow in depth. Part 1
+(*GBIF Retrieval, Taxonomy, and Filtering*) covers `get_status()`, `get_gbif_count()`,
+`get_gbif()`, `obs_filter()`, `make_tiles()` and `get_doi()`. Part 2
 (*Ecoregion-Based Range Inference*) documents `get_range()`, the packaged and
 custom ecoregion options, and the evaluation functions `cv_range()` and
-`evaluate_range()`. Part 2 (*GBIF Retrieval, Taxonomy, and Filtering*) covers
-`get_status()`, `get_gbif_count()`, `get_gbif()`, `obs_filter()`,
-`make_tiles()`, and `get_doi()`. Part 3 (*Large Downloaded GBIF Tables*)
-describes the disk-based batch workflow built around `split_gbif_by_species()`,
+`evaluate_range()`.Part 3 (*Large Downloaded GBIF Tables*) describes the
+disk-based batch workflow built around `split_gbif_by_species()`,
 `species_csvs_to_ranges()`, and `read_range_rds()`.
 
 ## References
