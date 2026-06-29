@@ -353,21 +353,21 @@ This workflow is described in full in
 ## Next steps
 
 The three focused vignettes cover each part of the workflow in depth.
-Part 1 (*Ecoregion-Based Range Inference*) documents
-[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md),
-the packaged and custom ecoregion options, and the evaluation functions
-[`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
-and
-[`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md).
-Part 2 (*GBIF Retrieval, Taxonomy, and Filtering*) covers
+Part 1 (*GBIF Retrieval, Taxonomy, and Filtering*) covers
 [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md),
 [`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md),
 [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md),
 [`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md),
-[`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md),
+[`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md)
 and
 [`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md).
-Part 3 (*Large Downloaded GBIF Tables*) describes the disk-based batch
+Part 2 (*Ecoregion-Based Range Inference*) documents
+[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md),
+the packaged and custom ecoregion options, and the evaluation functions
+[`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
+and
+[`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md).Part
+3 (*Large Downloaded GBIF Tables*) describes the disk-based batch
 workflow built around
 [`split_gbif_by_species()`](https://8ginette8.github.io/gbif.range/reference/split_gbif_by_species.md),
 [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md),
