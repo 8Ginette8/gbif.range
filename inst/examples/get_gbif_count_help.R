@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{
 # Get number of observations with default filters
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
@@ -29,7 +29,7 @@ obs.pt <- get_gbif_count(
 	search = FALSE
 )
 
-# Example on the European Alps
+# Example on the European Alps (has_xy = TRUE by default)
 shp.lonlat <- terra::vect(
     paste0(
         system.file(package = "gbif.range"),

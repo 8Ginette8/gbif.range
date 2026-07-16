@@ -29,10 +29,11 @@ boundary.}
 \item{...}{Additional arguments passed to \code{graphics::text()}.}
 }
 \value{
-Invisibly returns the plotting coordinates used to position the
-label.
+Invisibly, a numeric vector \code{c(x, y)} giving the x and y
+boundary coordinates of the selected \code{region} used to position the
+label. Called primarily for its side effect of drawing the label on the
+current plot device.
 }
 \description{
 Draw a Figure Label at a Standard Position
 }
-\keyword{internal}

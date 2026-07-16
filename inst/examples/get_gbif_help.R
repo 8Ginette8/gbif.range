@@ -1,20 +1,4 @@
-\dontrun{
-# Download worldwide observations of Panthera tigris
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
-
-# Plot
-countries <- rnaturalearth::ne_countries(
-       type = "countries",
-       returnclass = "sv"
-)
-terra::plot(countries, col = "#bcbddc")
-graphics::points(
-       obs.pt[, c("decimalLongitude","decimalLatitude")],
-       pch = 20,
-       col = "#238b4550",
-       cex = 4
-)
-
+\donttest{
 # Download worldwide observations of Ailuropoda melanoleuca
 # (with a 100km grain, after 1990 and by keeping duplicates and by
 # adding the name of the person who collected the panda records)
@@ -26,6 +10,11 @@ obs.am <- get_gbif(
        add_infos = c("recordedBy","issue")
 )
 
+# Extract borders
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
+)
+
 # Plot
 terra::plot(countries, col = "#bcbddc")
 graphics::points(
@@ -35,6 +24,20 @@ graphics::points(
        cex = 4
 )
 
+# Download worldwide observations of Panthera tigris
+obs.pt <- get_gbif(sp_name = "Panthera tigris")
+
+# Plot
+terra::plot(countries, col = "#bcbddc")
+graphics::points(
+       obs.pt[, c("decimalLongitude","decimalLatitude")],
+       pch = 20,
+       col = "#238b4550",
+       cex = 4
+)
+
+
+
 # Download worldwide observations of Bison bison
 # (with a 1km grain, after 1990, and keeping raster centroids)
 obs.pc <- get_gbif(
@@ -43,4 +46,5 @@ obs.pc <- get_gbif(
        time_period = c(1990,3000),
        centroids = TRUE
 )
+
 }

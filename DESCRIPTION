@@ -1,10 +1,10 @@
 Package: gbif.range
 Version: 1.6.3
-Title: Tools for GBIF Retrieval and Ecoregion-Based Species Range Mapping
+Title: Species Range Mapping from GBIF Using Ecoregion Constraints
 Depends: R (>= 4.0.0)
 Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry,
- cluster, rnaturalearth, mclust, methods, utils, zip, class,
- NMOF
+ cluster, mclust, methods, utils, zip, class, NMOF, stats, tools,
+ graphics, grDevices
 Suggests:
     data.table,
     knitr,
@@ -25,8 +25,9 @@ Description: Provides a workflow to retrieve, filter, and analyze 'GBIF'
  et al. 2007 <doi:10.1641/B570707>), and freshwater (Abell et al. 2008
  <doi:10.1641/B580507>) realms. The 'GBIF' API is accessed via the
  'rgbif' package, and coordinate cleaning uses 'CoordinateCleaner'
- (Zizka et al. 2019 <doi:10.1111/2041-210X.13152>).
-License: GPL (>= 3) | file LICENCE
+ (Zizka et al. 2019 <doi:10.1111/2041-210X.13152>). The 'GBIF' API is
+ described at <https://www.gbif.org/developer/summary>.
+License: GPL (>= 3)
 URL: https://github.com/8Ginette8/gbif.range,
     https://8ginette8.github.io/gbif.range/
 BugReports: https://github.com/8Ginette8/gbif.range/issues

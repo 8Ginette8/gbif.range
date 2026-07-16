@@ -19,7 +19,7 @@ split_gbif_by_species(
 \arguments{
 \item{input_file}{Character. Path to a tabular GBIF export already stored on disk.}
 
-\item{outdir}{Chracter. Directory where one per-species file will be written.}
+\item{outdir}{Character. Directory where one per-species file will be written.}
 
 \item{chunk_size}{Integer. Number of rows read at a time. Larger values are usually
 faster, whereas smaller values reduce peak memory use.}
@@ -54,7 +54,6 @@ Output file names follow the pattern
 \code{.csv} for convenience, even when the file remains tab-delimited.
 }
 \examples{
-\dontrun{
 if (requireNamespace("data.table", quietly = TRUE)) {
   gbif_file <- system.file("extdata", "occ_example_2sps.csv", package = "gbif.range")
   split_dir <- file.path(tempdir(), "gbif_split_help")
@@ -73,7 +72,6 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   )
 
   split_summary[, c("species_name", "n_records", "species_file")]
-}
 }
 }
 \seealso{

@@ -61,61 +61,62 @@
 #' and \code{rangeOutput}, containing the resulting \code{SpatVector},
 #' \code{sf}, or \code{SpatRaster} object.
 #' @references
-#' Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin Leugger,
-#' Renske E. Onstein, Charles Novaes de Santana, Christopher R. Scotese,
-#' Loïc Pellissier. (2019) Mountain building, climate cooling and the
-#' richness of cold-adapted plants in the Northern Hemisphere. Journal of
-#' Biogeography. doi: 10.1111/jbi.13653
-#' 
+#' Hagen, O., Vaterlaus, L., Albouy, C., Brown, A., Leugger, F., Onstein,
+#' R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019).
+#' Mountain building, climate cooling and the richness of cold-adapted
+#' plants in the Northern Hemisphere. Journal of Biogeography.
+#' \doi{10.1111/jbi.13653}
+#'
 #' Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J. S.,
-#' ... &  Pellissier, L. (2022). An integrated high resolution mapping shows
+#' ... & Pellissier, L. (2022). An integrated high resolution mapping shows
 #' congruent biodiversity patterns of Fagales and Pinales. New Phytologist,
-#' 235(2), 759-772 10.1111/nph.18158
-#' 
+#' 235(2), 759-772. \doi{10.1111/nph.18158}
+#'
 #' Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
 #' Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,
 #' Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F.,
 #' Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao,
-#' P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map
-#' of life on Earth. BioScience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
-#' 
+#' P., Kassem, K. R. (2001). Terrestrial ecoregions of the world: a new map
+#' of life on Earth. BioScience, 51(11), 933-938.
+#' \doi{10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2}
+#'
 #' The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
 #' Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
-#' Units. GIS layers developed by The Nature Conservancy with multiple partners,
-#' combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge
-#' (UK): The Nature Conservancy.
-#' 
-#' Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A.
-#' Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana,
-#' Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer Molnar, Cheri
-#' A. Recchia, James Robertson, Marine Ecoregions of the World: A
-#' Bioregionalization of Coastal and Shelf Areas, BioScience, Volume 57,
-#' Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
-#' 
+#' Units. GIS layers developed by The Nature Conservancy with multiple
+#' partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
+#' Cambridge (UK): The Nature Conservancy.
+#'
+#' Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+#' Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
+#' Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
+#' (2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
+#' and Shelf Areas. BioScience, 57(7), 573-583. \doi{10.1641/B570707}
+#'
 #' Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
 #' Pelagic provinces of the world: a biogeographic classification of the
-#' world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
-#' doi: 10.1016/j.ocecoaman.2011.12.016
-#' 
+#' world's surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
+#' \doi{10.1016/j.ocecoaman.2011.12.016}
+#'
 #' The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
 #' of the World. GIS layers developed by The Nature Conservancy with multiple
 #' partners, combined from Spalding et al. (2007) and Spalding et al. (2012).
 #' Cambridge (UK): The Nature Conservancy.
-#' 
-#' Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice
-#' Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras
-#' Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald R.
-#' Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf, James
-#' Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric
-#' Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G.
-#' Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of
-#' the World: A New Map of Biogeographic Units for Freshwater Biodiversity
-#' Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414.
-#' doi: 10.1641/B580507
-#' 
-#' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
-#' (2022). Terra - CRAN
-#' @seealso \code{read_ecoreg()}, \code{make_ecoreg()}, and \code{cv_range()}.
+#'
+#' Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M.,
+#' Bogutskaya, N., Coad, B., Mandrak, N., Contreras Balderas, S., Bussing,
+#' W., Stiassny, M. L. J., Skelton, P., Allen, G. R., Unmack, P., Naseka,
+#' A., Ng, R., Sindorf, N., Robertson, J., Armijo, E., Higgins, J. V.,
+#' Heibel, T. J., Wikramanayake, E., Olson, D., Lopez, H. L., Reis, R. E.,
+#' Lundberg, J. G., Sabaj Perez, M. H., Petry, P. (2008). Freshwater
+#' Ecoregions of the World: A New Map of Biogeographic Units for Freshwater
+#' Biodiversity Conservation. BioScience, 58(5), 403-414.
+#' \doi{10.1641/B580507}
+#'
+#' Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
+#' 1.6-7. \url{https://cran.r-project.org/package=terra}
+#' @seealso \code{\link{read_ecoreg}}() and \code{\link{make_ecoreg}}() to
+#' prepare the ecoregion layer used here; \code{\link{cv_range}}() and
+#' \code{\link{evaluate_range}}() to evaluate the resulting range map.
 #' @example inst/examples/get_range_help.R
 #' @importFrom rnaturalearth ne_countries
 #' @importFrom methods is new
@@ -136,7 +137,7 @@ get_range <- function (occ_coord = NULL,
                        dir_temp = tempdir(),
                        format = c("SpatVector", "sf", "SpatRaster"),
                        res = 0.1,
-                       verbose = TRUE){
+                       verbose = TRUE) {
 
   ######################################################
   ### Stop messages
@@ -222,7 +223,12 @@ get_range <- function (occ_coord = NULL,
   } 
   
   if (verbose){
-    cat("## Start of computation for species: ", sp.name, " ###", "\n") 
+    message(
+      paste0(
+        "## Start of computation for species: ", " ", sp.name, " ", " ###", " ", "\n"
+      ),
+      appendLF = FALSE
+    )
   }
   
 
@@ -245,10 +251,10 @@ get_range <- function (occ_coord = NULL,
   
   # Print info
   if (verbose){
-    cat(
+    message(
       paste0(sum(cond)," outlier's from " ,
         nrow(occ_coord), " | proportion from total points: ",
-        round((sum(cond) / nrow(occ_coord)) * 100,0), "%\n"
+        round((sum(cond) / nrow(occ_coord)) * 100,0), "%"
       )
     )
   }
@@ -285,7 +291,12 @@ get_range <- function (occ_coord = NULL,
     
     # Print
     if (verbose){
-      cat('ecoregion', g, ' of ',length(uniq),": ",uniq[g], '\n')
+      message(
+        paste0(
+          'ecoregion'," ",g," "," of "," ",length(uniq)," ",": "," ",uniq[g]," ",'\n'
+        ),
+        appendLF = FALSE
+      )
     }
 
     # Handle NAsy
@@ -358,7 +369,8 @@ get_range <- function (occ_coord = NULL,
         bipl = buff_incrmt_pts_line,
         bwpo = buff_width_polygon,
         temp_dir = dir_temp,
-        g = g
+        g = g,
+        verbose = verbose
       )
       
       # Intersect polygon with ecoregion (zero buffer to avoid error)
@@ -406,7 +418,12 @@ get_range <- function (occ_coord = NULL,
   
   # Final print
   if (verbose){
-    cat("## End of computation for species: ", sp.name, " ###", "\n")
+    message(
+      paste0(
+        "## End of computation for species: ", " ", sp.name, " ", " ###", " ", "\n"
+      ),
+      appendLF = FALSE
+    )
   }
 
   # Out

@@ -2,7 +2,7 @@
 #'
 #' @param x Argument value.
 #' @param name Argument name used in error messages.
-#' @keywords internal
+#' @noRd
 check_null_na <- function(x, name) {
   if (is.null(x) || (length(x) == 1 && is.na(x))) {
     stop(
@@ -17,7 +17,7 @@ check_null_na <- function(x, name) {
 #'
 #' @param x Argument value.
 #' @param name Argument name used in error messages.
-#' @keywords internal
+#' @noRd
 check_logical <- function(x, name) {
   check_null_na(x, name)
   if (!is.logical(x) || length(x) != 1) {
@@ -33,7 +33,7 @@ check_logical <- function(x, name) {
 #'
 #' @param x Argument value.
 #' @param name Argument name used in error messages.
-#' @keywords internal
+#' @noRd
 check_numeric <- function(x, name) {
   check_null_na(x, name)
   if (!is.numeric(x) || length(x) != 1) {
@@ -49,7 +49,7 @@ check_numeric <- function(x, name) {
 #'
 #' @param x Argument value.
 #' @param name Argument name used in error messages.
-#' @keywords internal
+#' @noRd
 check_character_vector <- function(x, name) {
   check_null_na(x, name)
   if (!is.character(x) || length(x) == 0 || any(is.na(x))) {
@@ -66,7 +66,7 @@ check_character_vector <- function(x, name) {
 #' @param x Argument value.
 #' @param name Argument name used in error messages.
 #' @param len Expected length of the numeric vector.
-#' @keywords internal
+#' @noRd
 check_numeric_range <- function(x, name, len) {
   check_null_na(x, name)
   if (!is.numeric(x) || length(x) != len || any(is.na(x))) {
@@ -86,8 +86,7 @@ check_numeric_range <- function(x, name, len) {
 #' @param step_name Name of the filtering step.
 #' @param before Number of records before filtering.
 #' @param after Number of records after filtering.
-#' @return An updated log data frame.
-#' @keywords internal
+#' @noRd
 log_step <- function(log, step_name, before, after) {
   rbind(
     log,
@@ -122,7 +121,9 @@ log_step <- function(log, step_name, before, after) {
 #' @param cx Numeric text expansion factor.
 #' @param tria Character flag controlling triangular tips at the legend ends.
 #' @importFrom graphics polygon lines text
-#' @keywords internal
+#' @return \code{NULL}, invisibly. Called for its side effect of drawing the
+#' legend bar on the current plot device.
+#' @export
 cscl <- function (colors, crds, horiz = FALSE, zrng = c(0, 100), at = 10 *
     0:10, labs = NA, tickle = 0.2, title = 1, lablag = 1, titlag = 2,
     box = TRUE, breaks, cx = 0.8, tria = "n")
@@ -147,28 +148,28 @@ cscl <- function (colors, crds, horiz = FALSE, zrng = c(0, 100), at = 10 *
                 min(breaks)) + crds[1]
         }
         for (i in 1:(length(colors))) {
-            polygon(c(brks[i], brks[i + 1], brks[i + 1], brks[i],
+            graphics::polygon(c(brks[i], brks[i + 1], brks[i + 1], brks[i],
                 brks[i]), c(crds[3], crds[3], crds[4], crds[4],
                 crds[3]), col = colors[i], border = F)
         }
         if (tria %in% c("b", "l")) {
             tipy <- crds[1] - 0.05 * abs(crds[2] - crds[1])
-            polygon(c(crds[c(1, 1)], tipy, crds[1]), c(crds[3],
+            graphics::polygon(c(crds[c(1, 1)], tipy, crds[1]), c(crds[3],
                 crds[4], mean(crds[3:4]), crds[3]), col = colors[1])
         }
         if (tria %in% c("b", "u")) {
             tipy <- crds[2] + 0.05 * abs(crds[2] - crds[1])
-            polygon(c(crds[c(2, 2)], tipy, crds[2]), c(crds[3],
+            graphics::polygon(c(crds[c(2, 2)], tipy, crds[2]), c(crds[3],
                 crds[4], mean(crds[3:4]), crds[3]), col = rev(colors)[1])
         }
         x.lab <- rel.lab * (crds[2] - crds[1]) + crds[1]
         for (i in 1:length(x.lab)) {
-            lines(c(x.lab[i], x.lab[i]), c(crds[3], crds[3] -
+            graphics::lines(c(x.lab[i], x.lab[i]), c(crds[3], crds[3] -
                 tickle * abs(crds[4] - crds[3])))
         }
-        text(labels = labs, x = x.lab, y = rep(crds[3] - lablag *
+        graphics::text(labels = labs, x = x.lab, y = rep(crds[3] - lablag *
             abs(crds[4] - crds[3]), 10), cex = cx)
-        text(labels = title, x = mean(crds[1:2]), y = crds[3] -
+        graphics::text(labels = title, x = mean(crds[1:2]), y = crds[3] -
             titlag * abs(crds[4] - crds[3]), cex = cx)
     }
     else if (horiz == FALSE) {
@@ -190,32 +191,32 @@ cscl <- function (colors, crds, horiz = FALSE, zrng = c(0, 100), at = 10 *
                 min(breaks)) + crds[3]
         }
         for (i in 1:(length(colors))) {
-            polygon(c(crds[1], crds[1], crds[2], crds[2], crds[1]),
+            graphics::polygon(c(crds[1], crds[1], crds[2], crds[2], crds[1]),
                 c(brks[i], brks[i + 1], brks[i + 1], brks[i],
                   brks[i]), col = rev(colors)[i], border = F)
         }
         if (tria %in% c("b", "l")) {
             tipy <- crds[3] - 0.05 * abs(crds[4] - crds[3])
-            polygon(c(crds[1], crds[2], mean(crds[1:2]), crds[1]),
+            graphics::polygon(c(crds[1], crds[2], mean(crds[1:2]), crds[1]),
                 c(crds[c(3, 3)], tipy, crds[3]), col = colors[1])
         }
         if (tria %in% c("b", "t")) {
             tipy <- crds[4] + 0.05 * abs(crds[4] - crds[3])
-            polygon(c(crds[1], crds[2], mean(crds[1:2]), crds[1]),
+            graphics::polygon(c(crds[1], crds[2], mean(crds[1:2]), crds[1]),
                 c(crds[c(4, 4)], tipy, crds[4]), col = rev(colors)[1])
         }
         x.lab <- rev(rel.lab) * (crds[4] - crds[3]) + crds[3]
         for (i in 1:length(x.lab)) {
-            lines(c(crds[1], crds[1] - tickle * abs(crds[2] -
+            graphics::lines(c(crds[1], crds[1] - tickle * abs(crds[2] -
                 crds[1])), c(x.lab[i], x.lab[i]))
         }
-        text(labels = rev(labs), y = x.lab, x = rep(crds[1] -
+        graphics::text(labels = rev(labs), y = x.lab, x = rep(crds[1] -
             lablag * abs(crds[2] - crds[1]), 10), cex = cx, pos = 2)
-        text(labels = title, y = mean(crds[3:4]), x = crds[1] -
+        graphics::text(labels = title, y = mean(crds[3:4]), x = crds[1] -
             titlag * abs(crds[2] - crds[1]), cex = cx, srt = 90)
     }
     if (box) {
-        polygon(c(crds[1], crds[2], crds[2], crds[1], crds[1]),
+        graphics::polygon(c(crds[1], crds[2], crds[2], crds[1], crds[1]),
             c(crds[3], crds[3], crds[4], crds[4], crds[3]))
     }
 }
@@ -230,11 +231,13 @@ cscl <- function (colors, crds, horiz = FALSE, zrng = c(0, 100), at = 10 *
 #' @param margin Numeric margin used to offset the label from the selected
 #' boundary.
 #' @param ... Additional arguments passed to \code{graphics::text()}.
-#' @return Invisibly returns the plotting coordinates used to position the
-#' label.
 #' @importFrom grDevices dev.size
-#' @importFrom graphics grconvertX grconvertY strheight strwidth
-#' @keywords internal
+#' @importFrom graphics par grconvertX grconvertY strheight strwidth text
+#' @return Invisibly, a numeric vector \code{c(x, y)} giving the x and y
+#' boundary coordinates of the selected \code{region} used to position the
+#' label. Called primarily for its side effect of drawing the label on the
+#' current plot device.
+#' @export
 fig_label <- function(
     text, region="figure",
     pos="topleft", cex=NULL, margin=0.02, ...) {
@@ -243,11 +246,11 @@ fig_label <- function(
                           "left", "center", "right", 
                           "bottomleft", "bottom", "bottomright"))
   if(region %in% c("figure", "device")) {
-    ds <- dev.size("in")
-    x <- grconvertX(c(0, ds[1]), from="in", to="user")
-    y <- grconvertY(c(0, ds[2]), from="in", to="user")
+    ds <- grDevices::dev.size("in")
+    x <- graphics::grconvertX(c(0, ds[1]), from="in", to="user")
+    y <- graphics::grconvertY(c(0, ds[2]), from="in", to="user")
     if(region == "figure") {
-      fig <- par("fig")
+      fig <- graphics::par("fig")
       dx <- (x[2] - x[1])
       dy <- (y[2] - y[1])
       x <- x[1] + dx * fig[1:2]
@@ -255,12 +258,12 @@ fig_label <- function(
     } 
   }
   if(region == "plot") {
-    u <- par("usr")
+    u <- graphics::par("usr")
     x <- u[1:2]
     y <- u[3:4]
   }
-  sw <- strwidth(text, cex=cex) * 60/100
-  sh <- strheight(text, cex=cex) * 60/100
+  sw <- graphics::strwidth(text, cex=cex) * 60/100
+  sh <- graphics::strheight(text, cex=cex) * 60/100
   x_margin <- (x[2] - x[1]) * margin
   y_margin <- (y[2] - y[1]) * margin
   x1 <- switch(pos,
@@ -283,8 +286,8 @@ fig_label <- function(
     bottomleft  = y[1] + sh + y_margin,
     bottom      = y[1] + sh + y_margin,
     bottomright = y[1] + sh + y_margin)
-  old.par <- par(xpd=NA)
-  on.exit(par(old.par))
-  text(x1, y1, text, cex=cex, ...)
+  old.par <- graphics::par(xpd=NA)
+  on.exit(graphics::par(old.par))
+  graphics::text(x1, y1, text, cex=cex, ...)
   return(invisible(c(x, y)))
 }

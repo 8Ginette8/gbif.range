@@ -60,12 +60,11 @@ coarser resolutions before calculating evaluation metrics, which is useful
 when comparing products with different native resolutions.
 }
 \examples{
-\dontrun{
 ###########################################
 ### Example plot
 ###########################################
 
-## EcoRM evaluation at different resolutions (>4min runtime)
+## EcoRM evaluation at different resolutions (<10sec runtime)
 root.dir  <- list.files(
     system.file(package = "gbif.range"),
     pattern = "extdata",
@@ -77,7 +76,7 @@ res5km <- evaluate_range(
     valData_dir = "SDM", 
     ecoRM_dir = "EcoRM",
     verbose = TRUE, 
-    print_map = TRUE,
+    print_map = FALSE,
     valData_type = "TIFF", 
     mask = NULL, 
     res_fact = NULL
@@ -88,7 +87,7 @@ res10km <- evaluate_range(
     valData_dir = "SDM", 
     ecoRM_dir = "EcoRM",
     verbose = TRUE, 
-    print_map = TRUE,
+    print_map = FALSE,
     valData_type = "TIFF", 
     mask = NULL, 
     res_fact = 2
@@ -110,7 +109,7 @@ terra::plot(
     las = 1
 )
 
-legend(
+graphics::legend(
     "bottomright",
     legend = c(
       "Abs in both (TA)",
@@ -146,7 +145,7 @@ long_df <- data.frame(
 )
 
   # Plot boxplots using base R
-boxplot(
+graphics::boxplot(
     Value ~ Variable + Resolution,
     data = long_df, 
     col = c("#FFC300", "#619CFF"), 
@@ -158,7 +157,7 @@ boxplot(
 )
 
   # Adding legend for colors
-legend(
+graphics::legend(
     "bottomright",
     legend = c("5km", "10km"),
     fill = c("#FFC300", "#619CFF"),
@@ -166,21 +165,15 @@ legend(
     bty = "n"
 )
 
+\donttest{
 ###########################################
 ### Package manuscript plot (Fig 2c-d)
 ###########################################
 
 # Root and package
-root_dir <- list.files(
-    system.file(package = "gbif.range"),
-    pattern = "extdata",
-    full.names = TRUE
-)
+root_dir <- tempdir()
 if (!dir.exists(file.path(root_dir, "fig_plots"))) {
     dir.create(file.path(root_dir, "fig_plots"))
-}
-if (!requireNamespace("colorspace", quietly = TRUE)) {
-  install.packages("colorspace")
 }
 
 # -------------------------------------
@@ -209,13 +202,15 @@ range.arcto <- get_range(
 ext.temp <- terra::ext(range.arcto$rangeOutput)
 ext.temp <- c(ext.temp[1]-0.6, ext.temp[2]+0.05,
                 ext.temp[3]-0.05, ext.temp[4]+0.05)
-spdf.world <- rnaturalearth::ne_countries(type = "countries",returnclass = "sv")
+spdf.world <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
+)
 world.local <- terra::crop(spdf.world,ext.temp)
 world.local.ar <- terra::aggregate(world.local)
 r.arcto <- terra::mask(range.arcto$rangeOutput, world.local.ar)
 
 # Plot plant
-png(
+grDevices::png(
    paste0(
         root_dir,
         "/fig_plots/fig2_arcto_ind.png"
@@ -226,7 +221,7 @@ png(
   res = 100,
   pointsize = 110
 )
-par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
+oldpar <- graphics::par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
 terra::plot(world.local.ar, col = "#dce8dc", axes = FALSE, lwd = 2)
 terra::plot(
   terra::as.polygons(
@@ -245,13 +240,13 @@ terra::plot(
   las = 1,
   add = TRUE
 )
-text(
+graphics::text(
   6.6,43.2,
   paste("Mean TSS =", round(res5km$df_eval[1,"TSS_ecoRM"],2)),
   cex = 1.5,
   font = 2
 )
-text(
+graphics::text(
   7.2,42.8,
   paste("Mean Precision =", round(res5km$df_eval[1,"Prec_ecoRM"],2)),
   cex = 1.5,
@@ -264,7 +259,8 @@ terra::plot(
   lwd = 2,
   add = TRUE
 )
-dev.off()
+grDevices::dev.off()
+graphics::par(oldpar)
 
 # -------------------------------------
 # Tiger
@@ -272,7 +268,10 @@ dev.off()
 
 # Preliminary
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
-eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_ecoreg(
+  ecoreg_name = "eco_terra",
+  save_dir = tempdir()
+)
 range.tiger <- get_range(
     occ_coord = obs.pt,
     ecoreg = eco.terra,
@@ -285,7 +284,7 @@ world.local <- terra::crop(spdf.world, ext.temp)
 world.local.ti <- terra::aggregate(world.local)
 
 # Plot tiger
-png(
+grDevices::png(
   paste0(
         root_dir,
         "/fig_plots/fig2_tiger_ind.png"
@@ -296,7 +295,7 @@ png(
   res = 100,
   pointsize = 110
 )
-par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
+oldpar <- graphics::par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
 terra::plot(world.local.ti, col = "#dce8dc", axes = FALSE, lwd = 2)
 toPlot = terra::mask(res5km$overlay_list[[6]], world.local.ti)
 terra::plot(
@@ -308,13 +307,13 @@ terra::plot(
   las = 1,
   add = TRUE
 )
-text(
+graphics::text(
   86,49,
   paste("Mean TSS =",round(res5km$df_eval[6,"TSS_ecoRM"],2)),
   cex = 1.5,
   font = 2
 )
-text(
+graphics::text(
   90.4,45.4,
   paste("Mean Precision =",round(res5km$df_eval[6,"Prec_ecoRM"],2)),
   cex = 1.5,
@@ -326,7 +325,7 @@ terra::plot(world.local.ti,
   lwd = 2,
   add = TRUE
 )
-legend(
+graphics::legend(
   "bottomleft",
   legend = c(
     "True Presences",
@@ -341,12 +340,18 @@ legend(
   cex = 1.1,
   x.intersp = 0.2
 )
-dev.off()
+grDevices::dev.off()
+graphics::par(oldpar)
 
 }
 }
 \references{
 Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of
 ecoregional range maps for boosting taxonomic coverage in ecology and
-conservation. Ecography, 12, e06794.
+conservation. Ecography, 12, e06794. \doi{10.1111/ecog.06794}
+}
+\seealso{
+\code{\link{get_range}}() to generate the range maps being
+evaluated, and \code{\link{cv_range}}() for cross-validation against the
+original occurrence data instead of external validation data.
 }

@@ -10,9 +10,9 @@
 #' @param nms Named vector of cluster sizes.
 #' @param grps Current fold assignments built before optimization.
 #' @param tot Total number of observations across all clusters.
-#' @keywords internal
 #' @importFrom stats aggregate
-optme <- function(x, nms, grps, tot){
+#' @noRd
+optme <- function(x, nms, grps, tot) {
 
   # determine number of observations in each groups from initial step
   grp <- vapply(grps, sum, FUN.VALUE = numeric(1))

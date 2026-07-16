@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{
 # Downloading worldwide the observations of Panthera tigris
 obs.pt <- get_gbif(
     sp_name = "Panthera tigris",
@@ -14,9 +14,8 @@ block.pt <- make_blocks(
 )
 
 # Plot one colour per fold
-countries <- rnaturalearth::ne_countries(
-    type = "countries",
-    returnclass = "sv"
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
 countries.focus <- terra::crop(
     countries,
@@ -29,4 +28,5 @@ graphics::points(
     col = block.pt,
     cex = 1
 )
+
 }

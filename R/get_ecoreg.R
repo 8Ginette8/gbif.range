@@ -1,7 +1,9 @@
 #' Metadata for Downloadable Ecoregion Layers
 #'
-#' A list describing the ecoregion layers that can be downloaded with
-#' \code{get_ecoreg()}.
+#' A named list describing the ecoregion layers that can be downloaded with
+#' \code{get_ecoreg()}. Each element is itself a list with three character
+#' fields: \code{filename} (the local save name), \code{link} (the download
+#' URL), and \code{description} (a short label).
 #'
 #' @format A list with each element containing:
 #' \describe{
@@ -9,10 +11,14 @@
 #'   \item{link}{The URL to download the file.}
 #'   \item{description}{A short description of the file.}
 #' }
+#' @return A named list of length 4, one element per available ecoregion
+#' dataset, each with \code{filename}, \code{link}, and \code{description}
+#' fields as described in \code{Format}.
+#' @docType data
+#' @seealso \code{\link{get_ecoreg}}() to download the datasets listed here,
+#' and \code{\link{read_ecoreg}}() to load one directly.
 #' @examples
-#' \dontrun{
 #' ecoreg_list
-#' }
 #' @export
 ecoreg_list <- list(
   list(
@@ -58,16 +64,23 @@ ecoreg_list <- list(
 #' Determine the directory used to store downloaded ecoregion data.
 #'
 #' @param save_dir Optional character. Directory where downloaded files should be stored.
-#' Defaults to \code{inst/extdata/downloads} in the installed package, or to
-#' the same relative path in the working directory when running from source.
+#' If \code{NULL} (the default), the directory is resolved in this order:
+#' (1) the \code{gbif.range.save_dir} R option, (2) the
+#' \code{GBIF_RANGE_SAVE_DIR} environment variable, (3) \code{tempdir()}.
+#' No files are written outside \code{tempdir()} unless the user has
+#' explicitly configured a persistent location via one of these two settings.
 #' @return A character string giving the target directory.
 #' @noRd
 get_save_dir <- function(save_dir = NULL) {
   if (is.null(save_dir)) {
-    save_dir <- system.file("extdata/downloads", package = "gbif.range")
-    if (save_dir == "") {
-      save_dir <- file.path(getwd(), "inst", "extdata", "downloads")
-    }
+    save_dir <- getOption("gbif.range.save_dir")   # (1)
+  }
+  if (is.null(save_dir)) {
+    env_dir <- Sys.getenv("GBIF_RANGE_SAVE_DIR", unset = "")
+    if (nzchar(env_dir)) save_dir <- env_dir       # (2)
+  }
+  if (is.null(save_dir)) {
+    save_dir <- tempdir()                          # (3)
   }
   return(save_dir)
 }
@@ -81,12 +94,16 @@ get_save_dir <- function(save_dir = NULL) {
 #' @param ecoreg_name Character. Use \code{"all"} to download every
 #' dataset, or supply a single file name listed in \code{ecoreg_list}.
 #' @param save_dir Character. Directory where the downloaded zip files and extracted
-#' shapefiles should be stored.
+#' shapefiles should be stored. Defaults to \code{tempdir()} unless the
+#' \code{gbif.range.save_dir} option or \code{GBIF_RANGE_SAVE_DIR} environment
+#' variable is set, in which case that location is used instead.
 #' @return \code{NULL}. Files are downloaded and unpacked for side effects.
+#' @seealso \code{\link{ecoreg_list}} for the list of available datasets, and
+#' \code{\link{read_ecoreg}}() to download and load a layer in one step.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Download every ecoregion dataset listed in ecoreg_list
-#' get_ecoreg()
+#' get_ecoreg(save_dir = tempdir())
 #' }
 #' @export
 get_ecoreg <- function(ecoreg_name = "all", save_dir = NULL) {
@@ -183,10 +200,16 @@ get_ecoreg <- function(ecoreg_name = "all", save_dir = NULL) {
 #' @param ecoreg_name Character. File name of the ecoregion dataset to check. See
 #' \code{ecoreg_list} for valid values.
 #' @param save_dir Character. Directory where downloaded files should be stored.
+#' Defaults to \code{tempdir()} unless the \code{gbif.range.save_dir} option or
+#' \code{GBIF_RANGE_SAVE_DIR} environment variable is set, in which case that
+#' location is used instead.
 #' @return \code{NULL}. The function downloads data only when required.
+#' @seealso \code{\link{get_ecoreg}}() to force a download, and
+#' \code{\link{read_ecoreg}}() which calls this function internally before
+#' loading the layer.
 #' @examples
-#' \dontrun{
-#' check_and_get_ecoreg("eco_terra")
+#' \donttest{
+#' check_and_get_ecoreg("eco_terra", save_dir = tempdir())
 #' }
 #' @export
 check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
@@ -218,7 +241,10 @@ check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
 #'
 #' @param ecoreg_name Character. File name of the ecoregion dataset to load. See
 #' \code{ecoreg_list} for available options.
-#' @param save_dir Character. irectory where the downloaded files are stored.
+#' @param save_dir Character. Directory where the downloaded files are stored.
+#' Defaults to \code{tempdir()} unless the \code{gbif.range.save_dir} option or
+#' \code{GBIF_RANGE_SAVE_DIR} environment variable is set, in which case that
+#' location is used instead.
 #' @param format \code{"SpatVector"} (default) or
 #' \code{"sf"}.
 #' @details Four datasets are currently available:
@@ -240,7 +266,8 @@ check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
 #' Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F.,
 #' Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao,
 #' P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map
-#' of life on Earth. BioScience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+#' of life on Earth. BioScience 51(11):933-938.
+#' \doi{10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2}
 #' 
 #' The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
 #' Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
@@ -248,42 +275,43 @@ check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
 #' combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge
 #' (UK): The Nature Conservancy.
 #' 
-#' Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A.
-#' Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana,
-#' Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer Molnar, Cheri
-#' A. Recchia, James Robertson, Marine Ecoregions of the World: A
-#' Bioregionalization of Coastal and Shelf Areas, BioScience, Volume 57,
-#' Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+#' Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+#' Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
+#' Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
+#' (2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
+#' and Shelf Areas. BioScience, 57(7), 573-583. \doi{10.1641/B570707}
 #' 
 #' Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
 #' Pelagic provinces of the world: a biogeographic classification of the
-#' world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
-#' doi: 10.1016/j.ocecoaman.2011.12.016
+#' world's surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
+#' \doi{10.1016/j.ocecoaman.2011.12.016}
 #' 
 #' The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
 #' of the World. GIS layers developed by The Nature Conservancy with multiple
 #' partners, combined from Spalding et al. (2007) and Spalding et al. (2012).
 #' Cambridge (UK): The Nature Conservancy.
 #' 
-#' Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice
-#' Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras
-#' Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald R.
-#' Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf, James
-#' Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric
-#' Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G.
-#' Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of
-#' the World: A New Map of Biogeographic Units for Freshwater Biodiversity
-#' Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414.
-#' doi: 10.1641/B580507
-#' @export
+#' Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M.,
+#' Bogutskaya, N., Coad, B., Mandrak, N., Contreras Balderas, S., Bussing,
+#' W., Stiassny, M. L. J., Skelton, P., Allen, G. R., Unmack, P., Naseka,
+#' A., Ng, R., Sindorf, N., Robertson, J., Armijo, E., Higgins, J. V.,
+#' Heibel, T. J., Wikramanayake, E., Olson, D., Lopez, H. L., Reis, R. E.,
+#' Lundberg, J. G., Sabaj Perez, M. H., Petry, P. (2008). Freshwater
+#' Ecoregions of the World: A New Map of Biogeographic Units for Freshwater
+#' Biodiversity Conservation. BioScience, 58(5), 403-414.
+#' \doi{10.1641/B580507}
+#' @seealso \code{\link{ecoreg_list}} for the list of available datasets,
+#' \code{\link{get_ecoreg}}() to force a fresh download, and
+#' \code{\link{check_and_get_ecoreg}}() for the underlying download check.
 #' @examples
-#' \dontrun{
-#' shp_eco_terra <- read_ecoreg("eco_terra")
-#' plot(shp_eco_terra)
+#' \donttest{
+#' shp_eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
+#' terra::plot(shp_eco_terra)
 #' }
+#' @export
 read_ecoreg <- function(ecoreg_name = "eco_terra",
                         save_dir = NULL,
-                        format = "SpatVector"){
+                        format = "SpatVector") {
     # First function
     save_dir <- get_save_dir(save_dir)
   

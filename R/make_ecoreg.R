@@ -6,7 +6,7 @@
 #' Cluster multi-layer environmental data to create a custom ecoregion map that
 #' can be used directly in \code{get_range()}.
 #'
-#' @param env Raster stack. Can be any aboitic or biotic factors thought of
+#' @param env Raster stack. Can be any abiotic or biotic factors thought of
 #' defining ecoregions boundaries. Accepted classes are
 #' \code{SpatRaster}, \code{RasterBrick}, and \code{RasterStack}.
 #' @param nclass Numeric. Number of environmental classes to create.
@@ -16,6 +16,8 @@
 #' @param format Output format. One of \code{"SpatVector"} (default),
 #' \code{"sf"}, or \code{"SpatRaster"}. \code{"SpatRaster"} returns the
 #' raw cluster raster instead of converting to polygons.
+#' @param verbose Logical. Should progress messages be printed? Default is
+#' \code{TRUE}.
 #' @param ... Additional arguments passed to \code{cluster::clara()}.
 #' @details This function is useful when the packaged ecoregion layers are too
 #' coarse for a study area or when a custom environmental regionalization is
@@ -26,24 +28,25 @@
 #' @references
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
 #' Thuiller, W. (2021). Novel methods to correct for observer and sampling bias
-#' in presence‐only species distribution models. Global Ecology and
-#' Biogeography, 30(11), 2312-2325.
-#' 
+#' in presence-only species distribution models. Global Ecology and
+#' Biogeography, 30(11), 2312-2325. \doi{10.1111/geb.13383}
+#'
 #' Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., & Hornik, K. (2021).
-#' cluster: Cluster Analysis Basics and Extensions. R package version 2.1.2 —
-#' For new features, see the 'Changelog' file (in the package source).
-#' https://CRAN.R-project.org/package=cluster
-#' 
+#' cluster: Cluster Analysis Basics and Extensions. R package version 2.1.2.
+#' \url{https://CRAN.R-project.org/package=cluster}
+#'
 #' Reynolds, A. P., Richards, G., de la Iglesia, B., & Rayward-Smith, V. J.
 #' (2006). Clustering rules: A comparison of partitioning and hierarchical
 #' clustering algorithms. Journal of Mathematical Modelling and Algorithms,
-#' 5(4), 475–504. doi: 10.1007/s10852-005-9022-1
-#' 
+#' 5(4), 475-504. \doi{10.1007/s10852-005-9022-1}
+#'
 #' Schubert, E., & Rousseeuw, P. J. (2019). Faster k-Medoids clustering:
 #' Improving the PAM, CLARA, and CLARANS algorithms. In G. Amato, C. Gennaro,
-#' V. Oria, & M. Radovanović (Eds.), Similarity search and applications.
-#' SISAP 2019. Lecture Notes in Computer Science (Vol. 11807, pp. 171–187).
-#' Springer. 
+#' V. Oria, & M. Radovanovi\enc{ć}{c} (Eds.), Similarity search and applications.
+#' SISAP 2019. Lecture Notes in Computer Science (Vol. 11807, pp. 171-187).
+#' Springer.
+#' @seealso \code{\link{get_range}}() to build a range map using the
+#' ecoregion layer produced here.
 #' @example inst/examples/make_ecoreg_help.R
 #' @importFrom terra rast nlyr writeRaster as.polygons vect buffer writeVector
 #' @importFrom sf st_make_valid st_as_sf
@@ -55,8 +58,9 @@ make_ecoreg <- function(env = NULL,
                           path = "",
                           name = "",
                           format = c("SpatVector", "sf", "SpatRaster"),
-                          ...)
-{
+                          verbose = TRUE,
+                          ...) {
+  
     ######################################################
     ### Stop messages
     ######################################################
@@ -66,6 +70,7 @@ make_ecoreg <- function(env = NULL,
     check_numeric(nclass, "nclass")
     check_character_vector(path, "path")
     check_character_vector(name, "name")
+    check_logical(verbose, "verbose")
     format <- match.arg(format)
 
     # env must be of a specific class
@@ -98,7 +103,7 @@ make_ecoreg <- function(env = NULL,
 
 
     # First info message
-    cat("CLARA algorithm processing...","\n")
+    if (isTRUE(verbose)) message("CLARA algorithm processing... ")
   
     # Convert raster in the right CLARA format
     id.toReplace <- stats::complete.cases(env[])
@@ -129,7 +134,7 @@ make_ecoreg <- function(env = NULL,
       topoly <- terra::as.polygons(toNew.ras, dissolve = TRUE)
 
       # For now, because get_range not yet compatible with Spatvect
-      cat("Generating polygons...","\n")
+      if (isTRUE(verbose)) message("Generating polygons... ")
       names(topoly) <- "CLARA"
       topoly$EcoRegion <- as.character(seq_len(nrow(data.frame(topoly))))
 

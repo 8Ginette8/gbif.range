@@ -1,4 +1,4 @@
-\dontrun{
+\dontrun{ # unknown credentials
 # Download worldwide observations of Panthera tigris
 # and Ailuropoda melanoleuca
 obspt <- get_gbif("Panthera tigris")

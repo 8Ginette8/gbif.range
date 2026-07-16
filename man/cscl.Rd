@@ -53,7 +53,10 @@ by the legend.}
 
 \item{tria}{Character flag controlling triangular tips at the legend ends.}
 }
+\value{
+\code{NULL}, invisibly. Called for its side effect of drawing the
+legend bar on the current plot device.
+}
 \description{
 Internal plotting helper adapted from Philipp Brun.
 }
-\keyword{internal}

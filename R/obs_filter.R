@@ -17,6 +17,8 @@
 #' original records are then discarded.
 #' @return A data frame with the columns \code{Species}, \code{x}, and
 #' \code{y}, representing the filtered coordinates.
+#' @seealso \code{\link{get_gbif}}() to produce the \code{getGBIF} object
+#' filtered by this function.
 #' @example inst/examples/obs_filter_help.R
 #' @importFrom terra rast cellFromXY xyFromCell
 #' @export

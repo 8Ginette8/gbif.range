@@ -15,7 +15,8 @@ get_gbif_count(
   conf_match = 80,
   geo = NULL,
   has_xy = TRUE,
-  spatial_issue = FALSE
+  spatial_issue = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -57,11 +58,14 @@ coordinates. If \code{FALSE}, count only records without coordinates. If
 \item{spatial_issue}{Logical. If \code{FALSE} (default), count only records
 without geospatial issues. If \code{TRUE}, count only records with
 geospatial issues. If \code{NULL}, count all records.}
+
+\item{verbose}{Logical. Should the formatted summary be printed to the
+console? Default is \code{TRUE}.}
 }
 \value{
 A numeric vector of length two giving the total number of GBIF
-records and the number retained by the requested filters. A formatted summary
-is also printed to the console.
+records and the number retained by the requested filters. If
+\code{verbose = TRUE}, a formatted summary is also printed to the console.
 }
 \description{
 Query GBIF and return the number of available records for a taxon using the
@@ -74,7 +78,7 @@ The function mirrors the taxonomic matching strategy used by
 the number retained after applying the chosen filters.
 }
 \examples{
-\dontrun{
+\donttest{
 # Get number of observations with default filters
 obs.pt <- get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
@@ -105,7 +109,7 @@ obs.pt <- get_gbif_count(
 	search = FALSE
 )
 
-# Example on the European Alps
+# Example on the European Alps (has_xy = TRUE by default)
 shp.lonlat <- terra::vect(
     paste0(
         system.file(package = "gbif.range"),
@@ -123,5 +127,9 @@ obs.pt <- get_gbif_count(
 }
 \references{
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735
+global biodiversity information facility API. \doi{10.5281/zenodo.6023735}
+}
+\seealso{
+\code{\link{get_gbif}}() to download the occurrence records
+counted by this function.
 }

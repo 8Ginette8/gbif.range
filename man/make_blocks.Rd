@@ -43,7 +43,7 @@ Remaining clusters are assigned to folds with an optimization step that
 tries to balance fold sizes as evenly as possible.
 }
 \examples{
-\dontrun{
+\donttest{
 # Downloading worldwide the observations of Panthera tigris
 obs.pt <- get_gbif(
     sp_name = "Panthera tigris",
@@ -59,9 +59,8 @@ block.pt <- make_blocks(
 )
 
 # Plot one colour per fold
-countries <- rnaturalearth::ne_countries(
-    type = "countries",
-    returnclass = "sv"
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
 countries.focus <- terra::crop(
     countries,
@@ -74,11 +73,16 @@ graphics::points(
     col = block.pt,
     cex = 1
 )
+
 }
 }
 \references{
-Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O.,
+Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., W\enc{ü}{u}est, R. O.,
 Wang, Z., & Zimmermann, N. E. (2020). Model complexity affects species
 distribution projections under climate change. Journal of Biogeography,
-47(1), 130-142.
+47(1), 130-142. \doi{10.1111/jbi.13700}
+}
+\seealso{
+\code{\link{cv_range}}() which uses this function internally to
+create cross-validation folds.
 }

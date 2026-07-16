@@ -25,7 +25,7 @@ test_that("obs_filter threshold removes sparsely occupied cells", {
   occ_raw$decimalLongitude <- c(10.1, 10.2, 10.3, 30.1)
   occ_raw$decimalLatitude <- c(-5.1, -5.2, -5.3, 5.1)
   occ_raw$input_search <- "Crocuta crocuta"
-  occ <- gbif.range:::getGBIF(occ_raw)
+  occ <- getGBIF(occ_raw)
 
   grid <- terra::rast(
     xmin = 0,

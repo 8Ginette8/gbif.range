@@ -16,6 +16,7 @@
 #' the total number of spatial blocks as \code{nfolds * nblocks}.
 #' @param backpoints Numeric. Number of regularly spaced background points used
 #' as pseudo-absences. Default is \code{10000}.
+#' @param verbose Logical. Should fold progress messages be printed?
 #' @details The function rebuilds the range map \code{nfolds} times. In each
 #' iteration, one fold is reserved for evaluation and the remaining folds are
 #' used for training.
@@ -31,15 +32,17 @@
 #' columns \code{TP}, \code{FA}, \code{TA}, \code{FP}, \code{Precision},
 #' \code{Sensitivity}, \code{Specificity}, and \code{TSS}.
 #' @references
-#' Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera‐
-#' Arroita, G., ... & Dormann, C. F. (2017). Cross‐validation strategies
+#' Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-
+#' Arroita, G., ... & Dormann, C. F. (2017). Cross-validation strategies
 #' for data with temporal, spatial, hierarchical, or phylogenetic structure.
-#' Ecography, 40(8), 913-929.
-#' 
+#' Ecography, 40(8), 913-929. \doi{10.1111/ecog.02881}
+#'
 #' Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P.,
 #' & Thuiller, W. (2021). Novel methods to correct for observer and sampling
-#' bias in presence‐only species distribution models. Global Ecology and
-#' Biogeography, 30(11), 2312-2325.
+#' bias in presence-only species distribution models. Global Ecology and
+#' Biogeography, 30(11), 2312-2325. \doi{10.1111/geb.13383}
+#' @seealso \code{\link{get_range}}() to build the range map being evaluated,
+#' and \code{\link{make_blocks}}() for the underlying fold-assignment logic.
 #' @example inst/examples/cv_range_help.R
 #' @importFrom terra ext extract
 #' @export
@@ -47,7 +50,8 @@ cv_range <- function(range_object = NULL,
                      cv = 'random-cv',
                      nfolds = 5,
                      nblocks = 2,
-                     backpoints = 1e4){
+                     backpoints = 1e4,
+                     verbose = TRUE) {
 
   ######################################################
   ### Stop messages
@@ -64,6 +68,7 @@ cv_range <- function(range_object = NULL,
   check_numeric(nfolds, "nfolds")
   check_numeric(nblocks, "nblocks")
   check_numeric(backpoints, "backpoints")
+  check_logical(verbose, "verbose")
 
 
   ######################################################
@@ -132,7 +137,7 @@ cv_range <- function(range_object = NULL,
   # Run nfolds time the get_range function + evaluation
   for (i in 1:nfolds)
   {
-    cat("...fold", i, sep="")
+    if (isTRUE(verbose)) message("...fold", i, appendLF = FALSE)
 
     # Extract all but %nfolds
     xy.fit <- all.xy[!cv.strat %in% i,]
@@ -182,7 +187,7 @@ cv_range <- function(range_object = NULL,
       cv.df[i, "Sensitivity"] + cv.df[i, "Specificity"] - 1
   }
 
-  cat("","\n")
+  if (isTRUE(verbose)) message("")
   
   # Finalize average
   cv.df[nfolds+1, ] <- apply(cv.df[1:nfolds, ], 2, mean, na.rm = TRUE)

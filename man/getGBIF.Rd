@@ -10,10 +10,9 @@ getGBIF(df)
 \item{df}{A data frame containing GBIF occurrence records.}
 }
 \value{
-An object of class \code{getGBIF}.
+An object of class \code{c("getGBIF", "data.frame")}.
 }
 \description{
 Wrap a data frame in the \code{getGBIF} class used by downstream functions
 in the package.
 }
-\keyword{internal}

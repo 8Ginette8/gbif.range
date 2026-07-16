@@ -5,9 +5,14 @@
 \alias{getRange-class}
 \alias{getRange}
 \title{Reference Class for \code{get_range()} Results}
+\value{
+A generator object of reference class \code{"getRange"}, used to
+instantiate objects with two fields: \code{init.args} (the original
+arguments used to build the range map) and \code{rangeOutput} (the
+resulting spatial output).
+}
 \description{
 Stores the original arguments used to build a range map and the resulting
 spatial output.
 }
 
-\keyword{internal}

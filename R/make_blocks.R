@@ -23,10 +23,12 @@
 #' @return An integer vector of length \code{nrow(df)} or \code{npoints},
 #' giving the fold assignment for each observation.
 #' @references
-#' Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O.,
+#' Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., W\enc{ü}{u}est, R. O.,
 #' Wang, Z., & Zimmermann, N. E. (2020). Model complexity affects species
 #' distribution projections under climate change. Journal of Biogeography,
-#' 47(1), 130-142.
+#' 47(1), 130-142. \doi{10.1111/jbi.13700}
+#' @seealso \code{\link{cv_range}}() which uses this function internally to
+#' create cross-validation folds.
 #' @example inst/examples/make_blocks_help.R
 #' @importFrom cluster clara
 #' @importFrom class knn
@@ -37,7 +39,7 @@ make_blocks <- function(nfolds = 5,
                       df = data.frame(),
                       nblocks = nfolds*2,
                       npoints = NA,
-                      pres = numeric()){
+                      pres = numeric()) {
 
   ###########################################
   ### Check input data

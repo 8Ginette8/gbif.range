@@ -166,7 +166,6 @@ post-download filters can be applied to clean records for spatial analyses
 and range mapping.
 }
 \details{
-#' @details
 The function follows the same taxonomic matching logic used by the GBIF
 website. Internally, the input name is first resolved against the GBIF
 backbone taxonomy. If the matched name is a synonym, the download uses the
@@ -225,23 +224,7 @@ Decimal filtering follows these thresholds:\cr
 }
 }
 \examples{
-\dontrun{
-# Download worldwide observations of Panthera tigris
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
-
-# Plot
-countries <- rnaturalearth::ne_countries(
-       type = "countries",
-       returnclass = "sv"
-)
-terra::plot(countries, col = "#bcbddc")
-graphics::points(
-       obs.pt[, c("decimalLongitude","decimalLatitude")],
-       pch = 20,
-       col = "#238b4550",
-       cex = 4
-)
-
+\donttest{
 # Download worldwide observations of Ailuropoda melanoleuca
 # (with a 100km grain, after 1990 and by keeping duplicates and by
 # adding the name of the person who collected the panda records)
@@ -253,6 +236,11 @@ obs.am <- get_gbif(
        add_infos = c("recordedBy","issue")
 )
 
+# Extract borders
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
+)
+
 # Plot
 terra::plot(countries, col = "#bcbddc")
 graphics::points(
@@ -262,6 +250,20 @@ graphics::points(
        cex = 4
 )
 
+# Download worldwide observations of Panthera tigris
+obs.pt <- get_gbif(sp_name = "Panthera tigris")
+
+# Plot
+terra::plot(countries, col = "#bcbddc")
+graphics::points(
+       obs.pt[, c("decimalLongitude","decimalLatitude")],
+       pch = 20,
+       col = "#238b4550",
+       cex = 4
+)
+
+
+
 # Download worldwide observations of Bison bison
 # (with a 1km grain, after 1990, and keeping raster centroids)
 obs.pc <- get_gbif(
@@ -270,27 +272,30 @@ obs.pc <- get_gbif(
        time_period = c(1990,3000),
        centroids = TRUE
 )
+
 }
 }
 \references{
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger,
 D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and
 land cover on plant species distribution in the European Alps. Ecological
-monographs, 91(2), e01433. 10.1002/ecm.1433
+Monographs, 91(2), e01433. \doi{10.1002/ecm.1433}
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735
+global biodiversity information facility API. \doi{10.5281/zenodo.6023735}
 
 Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C.,
 Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized
 cleaning of occurrence records from biological collection databases.
-Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152
+Methods in Ecology and Evolution, 10(5), 744-751.
+\doi{10.1111/2041-210X.13152}
 
-Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
-(2022). Terra - CRAN
+Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
+1.6-7. \url{https://cran.r-project.org/package=terra}
 }
 \seealso{
-\code{get_status()} to inspect the accepted name and synonym mapping
-returned by GBIF; \code{rgbif} for more general GBIF retrieval workflows;
-and \code{CoordinateCleaner} for more extensive occurrence cleaning.
+\code{\link{get_status}}() to inspect the accepted name and synonym
+mapping returned by GBIF; the \pkg{rgbif} package for more general GBIF
+retrieval workflows; and the \pkg{CoordinateCleaner} package for more
+extensive occurrence cleaning.
 }

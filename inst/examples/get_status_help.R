@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{
 # --- 1. Default: accepted name + synonyms only ---
 tax <- get_status("Panthera tigris")
 tax
@@ -13,7 +13,11 @@ tax_ch
 tax_rel <- get_status("Panthera tigris", level = "all")
 tax_rel
 
-# --- 4. Cross-check get_status() keys against get_gbif() output ---
+# --- 4. Fuzzy matching for uncertain names ---
+# sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
+get_status("Panthera tigri", search = FALSE)
+
+# --- 5. Cross-check get_status() keys against get_gbif() output ---
 occ <- get_gbif("Panthera tigris", has_xy = TRUE, verbose = FALSE)
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status %in% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
@@ -38,11 +42,8 @@ occ[occ$acceptedTaxonKey %in% extra_keys,
 # may have no records in GBIF at all (e.g. extinct taxa) or may have been
 # removed by get_gbif() filtering options (e.g. has_xy, basis, grain)
 
-# --- 5. Input name flagged correctly regardless of how GBIF resolves it ---
+# --- 6. Input name flagged correctly regardless of how GBIF resolves it ---
 # sp_nameMatch = "INPUT" marks the row closest to the submitted name
 tax_ch[tax_ch$sp_nameMatch == "INPUT", ]
 
-# --- 6. Fuzzy matching for uncertain names ---
-# sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
-get_status("Panthera tigri", search = FALSE)
 }

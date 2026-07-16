@@ -30,7 +30,7 @@ cell. If \code{threshold} is supplied, cells with fewer than that many
 original records are then discarded.
 }
 \examples{
-\dontrun{
+\donttest{
 # Load data
 shp.path <- paste0(
 	system.file(package = "gbif.range"),
@@ -88,5 +88,10 @@ graphics::points(
 	col = "#99000d50",
 	cex = 1
 )
+
 }
+}
+\seealso{
+\code{\link{get_gbif}}() to produce the \code{getGBIF} object
+filtered by this function.
 }

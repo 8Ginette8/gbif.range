@@ -83,7 +83,7 @@
 #' @param verbose Logical. Should progress messages be printed? Default is
 #' \code{TRUE}.
 #' @param ... Additional arguments passed to \code{CoordinateCleaner::cd_round()}.
-#' @details #' @details
+#' @details
 #' The function follows the same taxonomic matching logic used by the GBIF
 #' website. Internally, the input name is first resolved against the GBIF
 #' backbone taxonomy. If the matched name is a synonym, the download uses the
@@ -154,21 +154,23 @@
 #' Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger,
 #' D. N., ... & Zimmermann, N. E. (2021). Influence of climate, soil, and
 #' land cover on plant species distribution in the European Alps. Ecological
-#' monographs, 91(2), e01433. 10.1002/ecm.1433
+#' Monographs, 91(2), e01433. \doi{10.1002/ecm.1433}
 #'
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
-#' global biodiversity information facility API. 10.5281/zenodo.6023735
+#' global biodiversity information facility API. \doi{10.5281/zenodo.6023735}
 #'
 #' Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C.,
 #' Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized
 #' cleaning of occurrence records from biological collection databases.
-#' Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152
+#' Methods in Ecology and Evolution, 10(5), 744-751.
+#' \doi{10.1111/2041-210X.13152}
 #'
-#' Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
-#' (2022). Terra - CRAN
-#' @seealso \code{get_status()} to inspect the accepted name and synonym mapping
-#' returned by GBIF; \code{rgbif} for more general GBIF retrieval workflows;
-#' and \code{CoordinateCleaner} for more extensive occurrence cleaning.
+#' Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
+#' 1.6-7. \url{https://cran.r-project.org/package=terra}
+#' @seealso \code{\link{get_status}}() to inspect the accepted name and synonym
+#' mapping returned by GBIF; the \pkg{rgbif} package for more general GBIF
+#' retrieval workflows; and the \pkg{CoordinateCleaner} package for more
+#' extensive occurrence cleaning.
 #' @example inst/examples/get_gbif_help.R
 #' @importFrom terra ext vect
 #' @importFrom rgbif name_backbone occ_search
@@ -299,8 +301,19 @@ get_gbif <- function(sp_name = NULL,
 		stringsAsFactors = FALSE
 	)
 
-	# Print helper
-	vcat <- function(..., sep = "") {
+	# Print helper for one-shot status messages (suppressible via message()/verbose)
+	# NOTE: message() inserts a space between separate arguments (it calls
+	# paste(..., collapse = "") internally, sep defaults to " "), unlike
+	# cat(..., sep = ""). paste0() here pre-concatenates with no separator so
+	# every existing vcat() call site reproduces the original cat() output
+	# exactly, character for character.
+	vcat <- function(...) {
+		if (isTRUE(verbose)) message(paste0(...), appendLF = FALSE)
+	}
+
+	# Print helper for the in-place "\r" progress bar: message() cannot cleanly
+	# overwrite a line in place across terminals/IDEs, so this stays on cat().
+	vcat_progress <- function(..., sep = "") {
 		if (isTRUE(verbose)) cat(..., sep = sep)
 	}
 
@@ -372,7 +385,7 @@ get_gbif <- function(sp_name = NULL,
 		# Continue with or without the supplied criteria
 		if (nrow(bsearch) > 1) {
 			if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))) {
-				cat("Not match found...\n")
+				if (isTRUE(verbose)) message("Not match found...")
 				return(e.output)
 
 			} else {
@@ -380,7 +393,7 @@ get_gbif <- function(sp_name = NULL,
 					c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
 				s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
 				if (nrow(s.keep) == 0) {
-					cat("Not match found...\n")
+					if (isTRUE(verbose)) message("Not match found...")
 					return(e.output)
 
 				} else if (nrow(s.keep) > 1) {
@@ -416,8 +429,11 @@ get_gbif <- function(sp_name = NULL,
 				# If not the same species overall return empty
 				s.usp <- length(unique(bsearch$speciesKey)) == 1
 				if (!s.usp) {
-					cat("No synonyms distinction could be made.",
-						"Consider using phylum/class/order/family...\n")
+					if (isTRUE(verbose)) {
+						message(
+							"No synonyms distinction could be made. Consider using phylum/class/order/family..."
+						)
+					}
 					return(e.output)
 
 				} else {
@@ -428,12 +444,12 @@ get_gbif <- function(sp_name = NULL,
 	}
 
 	if (bsearch$matchType %in% "NONE") {
-		cat("No species name found...\n")
+		if (isTRUE(verbose)) message("No species name found...")
 		return(e.output)
 	}
 
 	if (bsearch$confidence[1] < conf_match) {
-		cat("Confidence match not high enough...\n")
+		if (isTRUE(verbose)) message("Confidence match not high enough...")
 		return(e.output)
 	}  
 
@@ -493,40 +509,47 @@ get_gbif <- function(sp_name = NULL,
 	)
 	w <- max(nchar(l)) + 4
 
-	if (verbose) {
-		cat(
-			"|",strrep("-",w-2),"|\n| ",
-			paste(l,collapse=" |\n| "),
-			" |\n|",strrep("-",w-2),
-			"|\n",sep=""
+	if (isTRUE(verbose)) {
+		message(
+			paste0(
+				"|",strrep("-",w-2),"|\n| ",
+				paste(l,collapse=" |\n| "),
+				" |\n|",strrep("-",w-2),
+				"|\n"
+			),
+			appendLF = FALSE
 		)
 
 		fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
-		cat("| Kept records according to parameters:\n")
+		message("| Kept records according to parameters:")
 
 		# Print additional information depending if global or regional
 		if (is.null(geo.ref[[1]])) {
-			cat(sprintf(
+			message(
+				sprintf(
 					"| spatial_issue = %s, has_xy = %s",
 					fmt(spatial_issue),
 					fmt(has_xy)
-				)
+				),
+				appendLF = FALSE
 			)
 		} else {
-			cat(sprintf(
+			message(
+				sprintf(
 					paste0(
 						"| spatial_issue = %s, has_xy = TRUE by default ",
 						"('geo' was set)"
 					),
 					fmt(spatial_issue)
-				)
+				),
+				appendLF = FALSE
 			)
 		}
 	}
 
 	# Cancel request if n==0
 	if (gbif.records == 0 ) {
-		cat("\nNo species records found...\n")
+		if (isTRUE(verbose)) message("\nNo species records found...")
 		return(e.output)
 	}
 
@@ -732,7 +755,7 @@ get_gbif <- function(sp_name = NULL,
 			try(rgbif::occ_download_import(download), silent = FALSE)
 		
 		} else {
-			vcat(
+			vcat_progress(
 			    "\r",
 			    formatC(
 			        paste0(
@@ -758,7 +781,7 @@ get_gbif <- function(sp_name = NULL,
 
 		# If problems, just rerun with while with n attempts, otherwise return NULL
 		if (!should_use_occ_download && class(gbif.search) %in% "try-error") {
-			print(gbif.search[1])
+			if (isTRUE(verbose)) message(gbif.search[1])
 			warning(
 				"\nGBIF query overload or rgbif package error [taxonKey=",
 				sp.key,"]...\n",sep=""
@@ -786,7 +809,9 @@ get_gbif <- function(sp_name = NULL,
 
 				if (class(gbif.search) %in% "try-error") {
 					if (error_skip){
-						cat("Attempts to download failed...Returning no results...\n")
+						if (isTRUE(verbose)) {
+							message("Attempts to download failed...Returning no results...")
+						}
 						return(e.output)
 
 					} else {
@@ -1126,8 +1151,8 @@ get_gbif <- function(sp_name = NULL,
 
 	if (nrow(gbif.correct) == 0) {
 	    if (nrow(gbif.no_xy) > 0) {
-	        if (verbose) {
-	            cat("No spatial records left after filtering...\n")
+	        if (isTRUE(verbose)) {
+	            message("No spatial records left after filtering...")
 	        }
 
 	        proper.output <- getGBIF(
@@ -1142,13 +1167,13 @@ get_gbif <- function(sp_name = NULL,
 	        return(proper.output)
 
 	    } else {
-	        cat("No records left after filtering...\n")
+	        if (isTRUE(verbose)) message("No records left after filtering...")
 	        return(e.output)
 	    }
 	}
 
 	# ---- FINAL SUMMARY PRINT ----
-	if (verbose) {
+	if (isTRUE(verbose)) {
 		if (nrow(summary_log) > 0) {
 			max_step_width <- max(nchar(summary_log$step))
 			max_num_width <- max(

@@ -35,15 +35,19 @@
 #' @param spatial_issue Logical. If \code{FALSE} (default), count only records
 #' without geospatial issues. If \code{TRUE}, count only records with
 #' geospatial issues. If \code{NULL}, count all records.
+#' @param verbose Logical. Should the formatted summary be printed to the
+#' console? Default is \code{TRUE}.
 #' @details The function mirrors the taxonomic matching strategy used by
 #' \code{get_gbif()}, then reports both the total number of GBIF records and
 #' the number retained after applying the chosen filters.
 #' @return A numeric vector of length two giving the total number of GBIF
-#' records and the number retained by the requested filters. A formatted summary
-#' is also printed to the console.
+#' records and the number retained by the requested filters. If
+#' \code{verbose = TRUE}, a formatted summary is also printed to the console.
 #' @references
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
-#' global biodiversity information facility API. 10.5281/zenodo.6023735
+#' global biodiversity information facility API. \doi{10.5281/zenodo.6023735}
+#' @seealso \code{\link{get_gbif}}() to download the occurrence records
+#' counted by this function.
 #' @example inst/examples/get_gbif_count_help.R
 #' @importFrom terra ext vect
 #' @importFrom rgbif name_backbone occ_search
@@ -59,7 +63,8 @@ get_gbif_count <- function(sp_name = NULL,
 					conf_match = 80,
 					geo = NULL,
 					has_xy = TRUE,
-          spatial_issue = FALSE) {
+          spatial_issue = FALSE,
+          verbose = TRUE) {
 	
 	######################################################
 	### Stop messages
@@ -70,6 +75,7 @@ get_gbif_count <- function(sp_name = NULL,
   	check_character_vector(sp_name, "sp_name")
     check_logical(search, "search")
     check_numeric(conf_match, "conf_match")
+    check_logical(verbose, "verbose")
 
     # Geo class
     spatial.class <- c("Extent", "SpatExtent", "SpatialPolygon",
@@ -172,7 +178,7 @@ get_gbif_count <- function(sp_name = NULL,
       # Continue with or without the supplied criteria
       if (nrow(bsearch) > 1){
         if (all(!bsearch$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
-          cat("Not match found...", "\n")
+          if (isTRUE(verbose)) message("Not match found... ")
           return(NULL)
 
         } else {
@@ -180,7 +186,7 @@ get_gbif_count <- function(sp_name = NULL,
           								c("SPECIES" ,"SUBSPECIES" ,"VARIETY"),]
           s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
           if (nrow(s.keep) == 0){
-            cat("Not match found...", "\n")
+            if (isTRUE(verbose)) message("Not match found... ")
             return(NULL)
 
           } else if (nrow(s.keep) > 1){
@@ -216,8 +222,11 @@ get_gbif_count <- function(sp_name = NULL,
           # If not the same species overall return empty
           s.usp <- length(unique(bsearch$speciesKey)) == 1
           if (!s.usp){
-            cat("No synonyms distinction could be made.",
-            	"Consider using phylum/class/order/family...","\n")
+            if (isTRUE(verbose)) {
+              message(
+                "No synonyms distinction could be made. Consider using phylum/class/order/family... "
+              )
+            }
             return(NULL)
 
           } else {
@@ -228,12 +237,12 @@ get_gbif_count <- function(sp_name = NULL,
     }
 
     if (bsearch$matchType %in% "NONE") {
-      cat("No species name found...","\n")
+      if (isTRUE(verbose)) message("No species name found... ")
       return(NULL)
     }
 
     if (bsearch$confidence[1] < conf_match) {
-      cat("Confidence match not high enough...","\n")
+      if (isTRUE(verbose)) message("Confidence match not high enough... ")
       return(NULL)
     }  
 
@@ -267,30 +276,38 @@ get_gbif_count <- function(sp_name = NULL,
       c(gbif.total, gbif.records)
     )
     w <- max(nchar(l)) + 4
-    cat("|",strrep("-",w-2),"|\n| ",
-        paste(l,collapse=" |\n| ")," |\n|",strrep("-",w-2),"|\n",sep="")
 
-    fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
-    cat("| Kept records according to parameters:\n")
-
-    # Print additional information depending if global or regional
-    if (is.null(geo.ref)) {
-      cat(sprintf("| spatial_issue = %s, has_xy = %s\n",
-                  fmt(spatial_issue), fmt(has_xy)))
-    } else {
-      cat(sprintf(
+    if (isTRUE(verbose)) {
+      message(
         paste0(
-          "| spatial_issue = %s, has_xy = TRUE by default ",
-          "('geo' was set)\n"
+          "|",strrep("-",w-2),"|\n| ",
+          paste(l,collapse=" |\n| ")," |\n|",strrep("-",w-2),"|\n"
         ),
-        fmt(spatial_issue)
-        )
+        appendLF = FALSE
       )
+
+      fmt <- function(x) if (is.null(x)) "NULL" else as.character(x)
+      message("| Kept records according to parameters:")
+
+      # Print additional information depending if global or regional
+      if (is.null(geo.ref)) {
+        message(sprintf("| spatial_issue = %s, has_xy = %s",
+                    fmt(spatial_issue), fmt(has_xy)))
+      } else {
+        message(sprintf(
+          paste0(
+            "| spatial_issue = %s, has_xy = TRUE by default ",
+            "('geo' was set)"
+          ),
+          fmt(spatial_issue)
+          )
+        )
+      }
     }
 
   	# Cancel request if n==0
   	if (gbif.records == 0 ) {
-  		cat("No species records found...","\n")
+  		if (isTRUE(verbose)) message("No species records found... ")
   		return(NULL)
   	}
   	return(c(gbif.total, gbif.records))

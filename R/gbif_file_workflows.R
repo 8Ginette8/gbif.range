@@ -8,7 +8,7 @@
 #' tables that are too large to load fully into memory.
 #'
 #' @param input_file Character. Path to a tabular GBIF export already stored on disk.
-#' @param outdir Chracter. Directory where one per-species file will be written.
+#' @param outdir Character. Directory where one per-species file will be written.
 #' @param chunk_size Integer. Number of rows read at a time. Larger values are usually
 #'   faster, whereas smaller values reduce peak memory use.
 #' @param select_cols Character. Vector of columns to keep from the original
@@ -372,6 +372,8 @@ species_csvs_to_ranges <- function(
 #'   \code{\link{species_csvs_to_ranges}()}.
 #' @return A list with \code{init.args} and \code{rangeOutput}, matching the
 #'   structure written by the batch workflow.
+#' @seealso \code{\link{species_csvs_to_ranges}}() which creates the files
+#' read by this function.
 #' @example inst/examples/read_range_rds_help.R
 #' @export
 read_range_rds <- function(file) {
@@ -404,35 +406,35 @@ read_range_rds <- function(file) {
 #' @method plot gbifPackedSpatVector
 #' @param x Object of class \code{gbifPackedSpatVector}.
 #' @param ... Additional arguments passed to \code{terra::plot()}.
-#' @keywords internal
+#' @return \code{x}, invisibly. Called for its side effect of plotting.
 #' @export
 plot.gbifPackedSpatVector <- function(x, ...) {
   terra::plot(terra::unwrap(x$packed), ...)
+  invisible(x)
 }
-
 
 #' Plot a Packed Raster Range Saved by \code{species_csvs_to_ranges()}
 #'
 #' @method plot gbifPackedSpatRaster
 #' @param x Object of class \code{gbifPackedSpatRaster}.
 #' @param ... Additional arguments passed to \code{terra::plot()}.
-#' @keywords internal
+#' @return \code{x}, invisibly. Called for its side effect of plotting.
 #' @export
 plot.gbifPackedSpatRaster <- function(x, ...) {
   terra::plot(terra::unwrap(x$packed), ...)
+  invisible(x)
 }
 
 
 #' Check for an Optional \code{data.table} Dependency
 #'
 #' @param caller Character string naming the calling function.
-#' @keywords internal
 #' @noRd
 gbif_require_data_table <- function(caller) {
   if (!requireNamespace("data.table", quietly = TRUE)) {
     stop(
       "Package 'data.table' is required for ", caller, "(). ",
-      "Please install it with install.packages('data.table')."
+      "Please install it via CRAN..."
     )
   }
 }
@@ -444,7 +446,6 @@ gbif_require_data_table <- function(caller) {
 #' @param pattern File pattern to clear when \code{overwrite = TRUE}.
 #' @param overwrite Logical. Should existing matching files be removed?
 #' @param label Human-readable output label for error messages.
-#' @keywords internal
 #' @noRd
 gbif_prepare_output_dir <- function(outdir, pattern, overwrite, label) {
   dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
@@ -465,7 +466,6 @@ gbif_prepare_output_dir <- function(outdir, pattern, overwrite, label) {
 #' @param select_idx Integer indices of the columns to keep.
 #' @param rows_read Number of data rows already processed.
 #' @param chunk_size Number of rows to read.
-#' @keywords internal
 #' @noRd
 gbif_fread_chunk <- function(
     input_file,
@@ -520,7 +520,6 @@ gbif_fread_chunk <- function(
 #' Convert GBIF Taxon Keys to Stable Character Strings
 #'
 #' @param x Taxon key values.
-#' @keywords internal
 #' @noRd
 gbif_key_to_string <- function(x) {
   out <- trimws(format(x, scientific = FALSE, trim = TRUE))
@@ -532,7 +531,6 @@ gbif_key_to_string <- function(x) {
 #' Sanitize Species Labels for File Names
 #'
 #' @param x Character vector of species labels.
-#' @keywords internal
 #' @noRd
 gbif_safe_file_name <- function(x) {
   x <- trimws(x)
@@ -550,7 +548,6 @@ gbif_safe_file_name <- function(x) {
 #'
 #' @param species Vector from the GBIF \code{species} column.
 #' @param scientific_name Vector from the GBIF \code{scientificName} column.
-#' @keywords internal
 #' @noRd
 gbif_choose_species_name <- function(species, scientific_name) {
   species <- if (is.null(species)) rep(NA_character_, length(scientific_name)) else species
@@ -570,7 +567,6 @@ gbif_choose_species_name <- function(species, scientific_name) {
 #'
 #' @param candidates Character vector of possible species labels.
 #' @param fallback Fallback label if all candidates are empty.
-#' @keywords internal
 #' @noRd
 gbif_choose_name_from_chunk <- function(candidates, fallback) {
   candidates <- unique(trimws(as.character(candidates)))
@@ -586,7 +582,6 @@ gbif_choose_name_from_chunk <- function(candidates, fallback) {
 #'
 #' @param key GBIF taxon key.
 #' @param species_name Species label used in the file name.
-#' @keywords internal
 #' @noRd
 gbif_split_file_name <- function(key, species_name) {
   paste0(
@@ -602,7 +597,6 @@ gbif_split_file_name <- function(key, species_name) {
 #' Parse Metadata Back from a Per-Species File Name
 #'
 #' @param path File path created by \code{split_gbif_by_species()}.
-#' @keywords internal
 #' @noRd
 gbif_parse_split_filename <- function(path) {
   file_stub <- tools::file_path_sans_ext(basename(path))
@@ -628,7 +622,6 @@ gbif_parse_split_filename <- function(path) {
 #' @param x Data frame to write.
 #' @param file Output file path.
 #' @param sep Field separator.
-#' @keywords internal
 #' @noRd
 gbif_write_delim <- function(x, file, sep) {
   utils::write.table(
@@ -650,7 +643,6 @@ gbif_write_delim <- function(x, file, sep) {
 #' @param pattern File-name pattern to match.
 #' @param overwrite Logical. Should existing files be removed?
 #' @param label Human-readable file label used in error messages.
-#' @keywords internal
 #' @noRd
 gbif_remove_existing_files <- function(outdir, pattern, overwrite, label) {
   existing <- list.files(outdir, pattern = pattern, full.names = TRUE)
@@ -675,7 +667,6 @@ gbif_remove_existing_files <- function(outdir, pattern, overwrite, label) {
 #' @param species_name Species label.
 #' @param outfile Output file path.
 #' @param n_records Number of rows appended in the current chunk.
-#' @keywords internal
 #' @noRd
 gbif_record_split_summary <- function(summary_map, key, species_name, outfile, n_records) {
   if (!exists(key, envir = summary_map, inherits = FALSE)) {
@@ -703,7 +694,6 @@ gbif_record_split_summary <- function(summary_map, key, species_name, outfile, n
 #' Convert an Accumulator Environment to a Summary Data Frame
 #'
 #' @param summary_map Environment used to store split-file metadata.
-#' @keywords internal
 #' @noRd
 gbif_split_summary_df <- function(summary_map) {
   keys <- ls(summary_map, all.names = TRUE)
@@ -728,7 +718,6 @@ gbif_split_summary_df <- function(summary_map) {
 #' Resolve the Ecoregion Input for Batch Range Building
 #'
 #' @param ecoreg Ecoregion object or single built-in name.
-#' @keywords internal
 #' @noRd
 gbif_resolve_ecoreg_input <- function(ecoreg) {
   if (inherits(ecoreg, c("SpatVector", "sf", "SpatialPolygonsDataFrame", "SpatialPolygons"))) {
@@ -754,7 +743,6 @@ gbif_resolve_ecoreg_input <- function(ecoreg) {
 #' @param occ Data frame of per-species occurrences.
 #' @param species_name Single species label assigned to every row.
 #' @param deduplicate Logical. Should identical coordinates be collapsed?
-#' @keywords internal
 #' @noRd
 gbif_prepare_occ_min <- function(occ, species_name, deduplicate) {
   keep <- c("decimalLongitude", "decimalLatitude")
@@ -772,7 +760,6 @@ gbif_prepare_occ_min <- function(occ, species_name, deduplicate) {
 #' Bind Non-Empty Per-Species Summaries into One Data Frame
 #'
 #' @param summary_list List of optional summary rows.
-#' @keywords internal
 #' @noRd
 gbif_bind_batch_summary <- function(summary_list) {
   keep <- !vapply(summary_list, is.null, logical(1))
@@ -797,7 +784,6 @@ gbif_bind_batch_summary <- function(summary_list) {
 #' @param species_key Species key.
 #' @param species_name Species label.
 #' @param save_as Output format.
-#' @keywords internal
 #' @noRd
 gbif_save_occ_min <- function(occ_min, outdir, species_key, species_name, save_as) {
   stub <- paste0(
@@ -829,7 +815,6 @@ gbif_save_occ_min <- function(occ_min, outdir, species_key, species_name, save_a
 #' Make a Range Output Safe for \code{saveRDS()}
 #'
 #' @param x Range output object.
-#' @keywords internal
 #' @noRd
 gbif_make_rds_safe <- function(x) {
   if (inherits(x, c("SpatVector", "SpatRaster"))) {
@@ -852,7 +837,6 @@ gbif_make_rds_safe <- function(x) {
 #' @param species_name Species label.
 #' @param save_as Output format.
 #' @param overwrite Logical. Passed to the spatial writer when relevant.
-#' @keywords internal
 #' @noRd
 gbif_save_range_output <- function(
     range_obj,

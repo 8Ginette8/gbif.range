@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{
 if (requireNamespace("data.table", quietly = TRUE)) {
   gbif_file <- system.file("extdata", "occ_example_2sps.csv", package = "gbif.range")
   split_dir <- file.path(tempdir(), "gbif_species_help")
@@ -22,7 +22,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   # Crop the packaged terrestrial ecoregions to the extent of the example
   # occurrences so the help example stays lightweight.
   occ_example <- utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE)
-  eco_terra <- read_ecoreg("eco_terra")
+  eco_terra <- read_ecoreg(
+    "eco_terra",
+    save_dir = tempdir()
+    )
   eco_crop <- terra::crop(
     eco_terra,
     terra::ext(
@@ -55,6 +58,15 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   range_summary[, c("species_name", "n_points", "range_file")]
 
   # The same batch call can also resolve the built-in layer internally:
-  # species_csvs_to_ranges(species_dir = split_dir, ecoreg = "eco_terra", ...)
+  range_summary_builtin <- species_csvs_to_ranges(
+    species_dir = split_dir,
+    ecoreg = "eco_terra",
+    ecoreg_name = "ECO_NAME",
+    outdir = range_dir,
+    overwrite = TRUE
+  )
+
+  range_summary_builtin[, c("species_name", "n_points", "range_file")]
 }
+
 }

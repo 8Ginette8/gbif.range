@@ -11,7 +11,9 @@
 
 \item{...}{Additional arguments passed to \code{terra::plot()}.}
 }
+\value{
+\code{x}, invisibly. Called for its side effect of plotting.
+}
 \description{
 Plot a Packed Vector Range Saved by \code{species_csvs_to_ranges()}
 }
-\keyword{internal}

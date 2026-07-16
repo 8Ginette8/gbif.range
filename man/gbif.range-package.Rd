@@ -58,7 +58,7 @@ range_obj <- get_range(
 terra::plot(range_obj$rangeOutput, col = 3, main = "Range Map")
 graphics::points(occ, pch = 4)
 
-\dontrun{ # nolint: error.
+\donttest{
 # -------------------------------------------------------------------------
 # 2. Typical online workflow with GBIF data
 # -------------------------------------------------------------------------
@@ -88,12 +88,12 @@ graphics::points(
   obs$decimalLongitude,
   obs$decimalLatitude,
   pch = 4,
-  col = rgb(1, 0, 1, 0.2)
+  col = grDevices::rgb(1, 0, 1, 0.2)
 )
+
 }
 
-
-\dontrun{
+\donttest{
 # -------------------------------------------------------------------------
 # 3. Large downloaded GBIF table already stored on disk
 # -------------------------------------------------------------------------
@@ -161,9 +161,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   )
 
   terra::plot(combined_ext, col = NA, legend = FALSE)
-  terra::plot(range_one$rangeOutput, col = rgb(0.1, 0.6, 0.2, 0.5), add = TRUE)
-  terra::plot(range_two$rangeOutput, col = rgb(0.8, 0.3, 0.1, 0.5), add = TRUE)
+  terra::plot(range_one$rangeOutput, col = grDevices::rgb(0.1, 0.6, 0.2, 0.5), add = TRUE)
+  terra::plot(range_two$rangeOutput, col = grDevices::rgb(0.8, 0.3, 0.1, 0.5), add = TRUE)
 }
+
 }
 }
 \seealso{

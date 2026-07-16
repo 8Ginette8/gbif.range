@@ -9,7 +9,8 @@ cv_range(
   cv = "random-cv",
   nfolds = 5,
   nblocks = 2,
-  backpoints = 10000
+  backpoints = 10000,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ the total number of spatial blocks as \code{nfolds * nblocks}.}
 
 \item{backpoints}{Numeric. Number of regularly spaced background points used
 as pseudo-absences. Default is \code{10000}.}
+
+\item{verbose}{Logical. Should fold progress messages be printed?}
 }
 \value{
 A data frame with one row per fold plus a \code{Mean} row, and the
@@ -51,7 +54,7 @@ regular grid of background points as pseudo-absences and reports precision,
 sensitivity, specificity, and TSS.
 }
 \examples{
-\dontrun{
+\donttest{
 ###########################################
 ### Example plot
 ###########################################
@@ -59,7 +62,7 @@ sensitivity, specificity, and TSS.
 # Load available ecoregions
 eco.terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
-    save_dir = NULL,
+    save_dir = tempdir(),
     format = "sf"
 )
 
@@ -73,7 +76,6 @@ range.tiger <- get_range(
     ecoreg_name = "ECO_NAME",
     format = "sf"
 )
-
 pt.test <- cv_range(
     range_object = range.tiger,
     cv = "block-cv",
@@ -81,30 +83,24 @@ pt.test <- cv_range(
     nblocks = 2
 );pt.test
 
-
 ###########################################
 ### Package manuscript plot (Fig 2a-b)
 ###########################################
 
 # Root and package
-root_dir <- list.files(
-    system.file(package = "gbif.range"),
-    pattern = "extdata",
-    full.names = TRUE
-)
+root_dir <- tempdir()
 if (!dir.exists(file.path(root_dir, "fig_plots"))) {
     dir.create(file.path(root_dir, "fig_plots"))
 }
-if (!requireNamespace("colorspace", quietly = TRUE)) {
-  install.packages("colorspace")
-}
 
-###########
-##### Plant #########
-###########
+# -------------------------------------
+# Plant
+# -------------------------------------
 
 # Preliminary
-spdf.world <- rnaturalearth::ne_countries(type = "countries",returnclass = "sv")
+spdf.world <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
+)
 shp.lonlat <- terra::vect(
     paste0(
         system.file(package = "gbif.range"),
@@ -167,9 +163,9 @@ all.xy[all.xy$bcv\%in\%2, "col"] <- "#377eb8"
 all.xy[all.xy$bcv\%in\%3, "col"] <- "#4daf4a"
 all.xy[all.xy$bcv\%in\%4, "col"] <- "#984ea3"
 all.xy[all.xy$bcv\%in\%5, "col"] <- "#ff7f00"
-all.xy[all.xy$Pres\%in\%1, "col"] <- colorspace::darken(
-    all.xy[all.xy$Pres\%in\%1, "col"],
-    amount = 0.5
+all.xy[all.xy$Pres\%in\%1, "col"] <- substr(
+  grDevices::adjustcolor(all.xy[all.xy$Pres\%in\%1, "col"],
+    red.f = 0.5, green.f = 0.5, blue.f = 0.5), 1, 7
 )
 
 # Plot
@@ -181,7 +177,7 @@ ar.test <- cv_range(
     nblocks = 2
 )
 
-    # First extract the world at the arcto extent and divide
+# First extract the world at the arcto extent and divide
     # presences/absences/outliers
 world.local <- terra::crop(spdf.world, ext.temp)
 world.local.ar <- terra::aggregate(world.local)
@@ -192,7 +188,7 @@ id.in <- terra::extract(range.arcto$rangeOutput, pres_coords)
 pres <- pres[!is.na(id.in[,2]), ]
 
     # Continue plotting
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig2_arcto_cv.png"
@@ -203,7 +199,7 @@ png(
     res = 100,
     pointsize = 110
 )
-par(
+oldpar <- graphics::par(
     mfrow = c(1,1),
     mar = c(5,5,5,20),
     lwd = 1,
@@ -219,24 +215,24 @@ terra::plot(
     add = TRUE
 )
 graphics::points(pres, col = paste0(pres$col,"90"), pch = 16, cex = 1.5)
-text(
+graphics::text(
     6.6,43.2,
     paste("Mean TSS =", round(tail(ar.test[,"TSS"],1),2)),
     cex = 1.5,
     font = 2
 )
-text(
+graphics::text(
     7.2,42.8,
     paste("Mean Precision =", round(tail(ar.test[,"Precision"],1),2)),
     cex = 1.5,
     font = 2
 )
-dev.off()
+grDevices::dev.off()
+graphics::par(oldpar)
 
-###########
-##### Tiger #########
-###########
-
+# -------------------------------------
+# Tiger
+# -------------------------------------
 
 # Convert the range polygon to raster
 tiger_rast <- terra::rasterize(
@@ -289,9 +285,9 @@ all.xy[all.xy$bcv\%in\%2,"col"] <- "#377eb8"
 all.xy[all.xy$bcv\%in\%3,"col"] <- "#4daf4a"
 all.xy[all.xy$bcv\%in\%4,"col"] <- "#984ea3"
 all.xy[all.xy$bcv\%in\%5,"col"] <- "#ff7f00"
-all.xy[all.xy$Pres\%in\%1,"col"] <- colorspace::darken(
-    all.xy[all.xy$Pres\%in\%1, "col"],
-    amount = 0.5
+all.xy[all.xy$Pres\%in\%1, "col"] <- substr(
+  grDevices::adjustcolor(all.xy[all.xy$Pres\%in\%1, "col"],
+    red.f = 0.5, green.f = 0.5, blue.f = 0.5), 1, 7
 )
 
 # Plot
@@ -306,7 +302,7 @@ id.in <- terra::extract(tiger_rast, pres_coords)
 pres <- pres[!is.na(id.in[,2]),]
 
     # Continue plotting
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig2_tiger_cv.png"
@@ -317,7 +313,7 @@ png(
     res = 100,
     pointsize = 110
 )
-par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
+oldpar <- graphics::par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 1, cex = 0.5)
 terra::plot(world.local.ti, col = "#bcd1bc", axes = FALSE, lwd = 2)
 graphics::points(abs, col = paste0(abs$col,"50"), pch = 16, cex = 0.6)
 terra::plot(
@@ -328,27 +324,32 @@ terra::plot(
     add = TRUE
 )
 graphics::points(pres, col = paste0(pres$col,"80"), pch = 16, cex = 1.6)
-text(86,49,
+graphics::text(86,49,
     paste("Mean TSS =", round(tail(pt.test[,"TSS"],1),2)),
     cex = 1.5,
     font = 2
 )
-text(90.4,45.4,
+graphics::text(90.4,45.4,
     paste("Mean Precision =", round(tail(pt.test[,"Precision"],1),2)),
     cex = 1.5, font = 2
 )
-dev.off()
+grDevices::dev.off()
+graphics::par(oldpar)
 
 }
 }
 \references{
-Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera‐
-Arroita, G., ... & Dormann, C. F. (2017). Cross‐validation strategies
+Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-
+Arroita, G., ... & Dormann, C. F. (2017). Cross-validation strategies
 for data with temporal, spatial, hierarchical, or phylogenetic structure.
-Ecography, 40(8), 913-929.
+Ecography, 40(8), 913-929. \doi{10.1111/ecog.02881}
 
 Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P.,
 & Thuiller, W. (2021). Novel methods to correct for observer and sampling
-bias in presence‐only species distribution models. Global Ecology and
-Biogeography, 30(11), 2312-2325.
+bias in presence-only species distribution models. Global Ecology and
+Biogeography, 30(11), 2312-2325. \doi{10.1111/geb.13383}
+}
+\seealso{
+\code{\link{get_range}}() to build the range map being evaluated,
+and \code{\link{make_blocks}}() for the underlying fold-assignment logic.
 }

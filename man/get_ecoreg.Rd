@@ -11,7 +11,9 @@ get_ecoreg(ecoreg_name = "all", save_dir = NULL)
 dataset, or supply a single file name listed in \code{ecoreg_list}.}
 
 \item{save_dir}{Character. Directory where the downloaded zip files and extracted
-shapefiles should be stored.}
+shapefiles should be stored. Defaults to \code{tempdir()} unless the
+\code{gbif.range.save_dir} option or \code{GBIF_RANGE_SAVE_DIR} environment
+variable is set, in which case that location is used instead.}
 }
 \value{
 \code{NULL}. Files are downloaded and unpacked for side effects.
@@ -21,8 +23,12 @@ Download one or more ecoregion datasets listed in \code{ecoreg_list()} and
 unpack them into a local directory.
 }
 \examples{
-\dontrun{
+\donttest{
 # Download every ecoregion dataset listed in ecoreg_list
-get_ecoreg()
+get_ecoreg(save_dir = tempdir())
 }
+}
+\seealso{
+\code{\link{ecoreg_list}} for the list of available datasets, and
+\code{\link{read_ecoreg}}() to download and load a layer in one step.
 }

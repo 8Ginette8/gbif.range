@@ -15,15 +15,17 @@
 #' @param temp_dir Character string giving the temporary directory used for
 #' intermediate convex-hull files.
 #' @param g Optional ecoregion identifier used in status messages.
-#' @keywords internal
+#' @param verbose Logical. Should status messages be printed?
 #' @importFrom terra crds buffer aggregate vect crs
 #' @importFrom sf st_polygon
+#' @noRd
 conv_function <- function (sp_coord,
                            bwp,
                            bipl,
                            bwpo,
                            temp_dir,
-                           g = NULL){
+                           g = NULL,
+                           verbose = TRUE) {
   
   # Preps and convert degrees to meters
   x <- terra::crds(sp_coord)
@@ -55,12 +57,14 @@ conv_function <- function (sp_coord,
     if (all(abs(is.line) == 0)) { 
       
       # Print
-      cat(
-        '\n[ecoreg =',g,nrow(x),
-        'points lying on one line. Using buffer width of ',
-        bwp.bipl.m/1000,
-        'km]\n'
-      )
+      if (isTRUE(verbose)) {
+        message(
+          "[ecoreg = ", g, "] ", nrow(x),
+          " points lying on one line. Using buffer width of ",
+          bwp.bipl.m / 1000,
+          " km"
+        )
+      }
 
       # Buffer
       rtn <- terra::buffer(

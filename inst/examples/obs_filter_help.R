@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{
 # Load data
 shp.path <- paste0(
 	system.file(package = "gbif.range"),
@@ -56,4 +56,5 @@ graphics::points(
 	col = "#99000d50",
 	cex = 1
 )
+
 }

@@ -19,7 +19,7 @@ Convenience wrapper around \code{readRDS()} for range files saved with
 \code{range_save_as = "rds"}.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("data.table", quietly = TRUE)) {
   gbif_file <- system.file("extdata", "occ_example_2sps.csv", package = "gbif.range")
   split_dir <- file.path(tempdir(), "gbif_read_range_split")
@@ -39,7 +39,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   )
 
   occ_example <- utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE)
-  eco_terra <- read_ecoreg("eco_terra")
+  eco_terra <- read_ecoreg(
+    "eco_terra",
+    save_dir = tempdir()
+  )
   eco_crop <- terra::crop(
     eco_terra,
     terra::ext(
@@ -70,5 +73,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   rg <- read_range_rds(range_summary$range_file[1])
   terra::plot(rg$rangeOutput)
 }
+
 }
+}
+\seealso{
+\code{\link{species_csvs_to_ranges}}() which creates the files
+read by this function.
 }

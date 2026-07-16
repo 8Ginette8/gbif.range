@@ -24,7 +24,7 @@ load_occ_fixture <- function() {
 make_test_gbif <- function(x = load_occ_fixture()) {
   # Mimic the structure returned by get_gbif() without making web requests.
   x$input_search <- x$species
-  gbif.range:::getGBIF(x)
+  getGBIF(x)
 }
 
 single_species_occ <- function(species = "Crocuta crocuta", n = 15) {
@@ -35,7 +35,7 @@ single_species_occ <- function(species = "Crocuta crocuta", n = 15) {
     x <- utils::head(x, n)
   }
   x$input_search <- species
-  gbif.range:::getGBIF(x)
+  getGBIF(x)
 }
 
 make_test_ecoreg <- function(occ, field = "ECO_NAME", label = "fixture_ecoreg") {

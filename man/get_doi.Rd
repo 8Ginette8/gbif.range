@@ -46,7 +46,7 @@ See \code{rgbif::derived_dataset()} for GBIF requirements and the
 structure of the returned metadata.
 }
 \examples{
-\dontrun{
+\dontrun{ # unknown credentials
 # Download worldwide observations of Panthera tigris
 # and Ailuropoda melanoleuca
 obspt <- get_gbif("Panthera tigris")
@@ -76,9 +76,11 @@ get_doi(
 }
 \references{
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735
+global biodiversity information facility API.
+\doi{10.5281/zenodo.6023735}
 }
 \seealso{
-The \code{rgbif} package for more general workflows to create GBIF
-derived datasets and DOIs.
+\code{\link{get_gbif}}() to produce the \code{getGBIF} objects
+used as input here; the \pkg{rgbif} package for more general workflows to
+create GBIF derived datasets and DOIs.
 }

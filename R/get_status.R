@@ -38,6 +38,8 @@
 #' representations (orthographic variants, etc.) as \code{RELATED} rows,
 #' which are not used by \code{get_gbif()} and are intended for taxonomic
 #' inspection only.
+#' @param verbose Logical. Should status messages be printed to the console
+#' when no match is found? Default is \code{TRUE}.
 #' @details When \code{level = "accepted"}, the returned rows correspond to
 #' the accepted name and synonyms linked to the accepted GBIF taxon key.
 #' When \code{level = "children"}, infra-specific taxa that \code{get_gbif()}
@@ -64,10 +66,10 @@
 #' \code{level = "all"}).
 #' @references 
 #' Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
-#' global biodiversity information facility API. 10.5281/zenodo.6023735
-#' @seealso \code{get_gbif()} to download occurrences for the accepted taxon
-#' concept returned here; the \code{rgbif} package for more general approaches
-#' to querying the GBIF backbone taxonomy.
+#' global biodiversity information facility API. \doi{10.5281/zenodo.6023735}
+#' @seealso \code{\link{get_gbif}}() to download occurrences for the accepted
+#' taxon concept returned here; the \pkg{rgbif} package for more general
+#' approaches to querying the GBIF backbone taxonomy.
 #' @example inst/examples/get_status_help.R
 #' @importFrom rgbif name_backbone name_usage
 #' @export
@@ -79,8 +81,8 @@ get_status <- function(sp_name = NULL,
                     order = NULL,
                     family = NULL,
                     conf_match = 80,
-                    level = c("accepted", "children", "all"))
-{
+                    level = c("accepted", "children", "all"),
+                    verbose = TRUE) {
 
   ######################################################
   ### Stop messages
@@ -91,6 +93,7 @@ get_status <- function(sp_name = NULL,
   check_character_vector(sp_name, "sp_name")
   check_logical(search, "search")
   check_numeric(conf_match, "conf_match")
+  check_logical(verbose, "verbose")
   level <- match.arg(level)
   children <- level %in% c("children", "all")
   related  <- level %in% "all"
@@ -129,7 +132,7 @@ get_status <- function(sp_name = NULL,
   } else {
     # Search input name via strict match and refined search
     bone.search <- rgbif::name_backbone(sp_name,
-                                       verbose = TRUE,
+                                       verbose = verbose,
                                        strict = TRUE)
 
     q.crit <- !vapply(
@@ -178,7 +181,7 @@ get_status <- function(sp_name = NULL,
     if (nrow(bone.search) > 1){
 
       if (base::all(!bone.search$rank %in% c("SPECIES", "SUBSPECIES", "VARIETY"))){
-        cat("Not match found...", "\n")
+        if (isTRUE(verbose)) message("Not match found... ")
         return(e.output)
 
       } else {
@@ -188,7 +191,7 @@ get_status <- function(sp_name = NULL,
         # If multiple matches, keep only those with ACCEPTED or SYNONYM status
         s.keep <- s.keep[s.keep$status %in% c("ACCEPTED", "SYNONYM"),]
         if (nrow(s.keep) == 0){
-          cat("Not match found...","\n")
+          if (isTRUE(verbose)) message("Not match found... ")
           return(e.output)
 
         } else if (nrow(s.keep) > 1){
@@ -233,12 +236,11 @@ get_status <- function(sp_name = NULL,
         s.usp <- length(unique(bone.search$speciesKey)) == 1
 
         if (!s.usp){
-          cat(
-            paste(
-              "No synonyms distinction could be made.",
-              "Consider using phylum/class/order/family..."
-            ),
-          "\n")
+          if (isTRUE(verbose)) {
+            message(
+              "No synonyms distinction could be made. Consider using phylum/class/order/family... "
+            )
+          }
           return(e.output)
 
         } else {
@@ -249,12 +251,12 @@ get_status <- function(sp_name = NULL,
   }
 
   if (bone.search$matchType %in% "NONE") {
-    cat("No species name found...", "\n")
+    if (isTRUE(verbose)) message("No species name found... ")
     return(e.output)
   }
 
   if (bone.search$confidence[1] < conf_match) {
-    cat("Confidence match not high enough...", "\n")
+    if (isTRUE(verbose)) message("Confidence match not high enough... ")
     return(e.output)
   }  
 

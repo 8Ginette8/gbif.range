@@ -10,7 +10,10 @@ read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL, format = "SpatVector")
 \item{ecoreg_name}{Character. File name of the ecoregion dataset to load. See
 \code{ecoreg_list} for available options.}
 
-\item{save_dir}{Character. irectory where the downloaded files are stored.}
+\item{save_dir}{Character. Directory where the downloaded files are stored.
+Defaults to \code{tempdir()} unless the \code{gbif.range.save_dir} option or
+\code{GBIF_RANGE_SAVE_DIR} environment variable is set, in which case that
+location is used instead.}
 
 \item{format}{\code{"SpatVector"} (default) or
 \code{"sf"}.}
@@ -37,9 +40,9 @@ Conservancy version adapted from Olson et al. (2001).
 (4) \code{eco_fresh} for freshwater species, based on Abell et al. (2008).
 }
 \examples{
-\dontrun{
-shp_eco_terra <- read_ecoreg("eco_terra")
-plot(shp_eco_terra)
+\donttest{
+shp_eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
+terra::plot(shp_eco_terra)
 }
 }
 \references{
@@ -48,7 +51,8 @@ Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I.,
 Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F.,
 Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao,
 P., Kassem, K. R. 2001. Terrestrial ecoregions of the world: a new map
-of life on Earth. BioScience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+of life on Earth. BioScience 51(11):933-938.
+\doi{10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2}
 
 The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
 Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
@@ -56,31 +60,34 @@ Units. GIS layers developed by The Nature Conservancy with multiple partners,
 combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge
 (UK): The Nature Conservancy.
 
-Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A.
-Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al Lombana,
-Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer Molnar, Cheri
-A. Recchia, James Robertson, Marine Ecoregions of the World: A
-Bioregionalization of Coastal and Shelf Areas, BioScience, Volume 57,
-Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
+Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
+(2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
+and Shelf Areas. BioScience, 57(7), 573-583. \doi{10.1641/B570707}
 
 Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
 Pelagic provinces of the world: a biogeographic classification of the
-world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
-doi: 10.1016/j.ocecoaman.2011.12.016
+world's surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
+\doi{10.1016/j.ocecoaman.2011.12.016}
 
 The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
 of the World. GIS layers developed by The Nature Conservancy with multiple
 partners, combined from Spalding et al. (2007) and Spalding et al. (2012).
 Cambridge (UK): The Nature Conservancy.
 
-Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice
-Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras
-Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald R.
-Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf, James
-Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel, Eric
-Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G.
-Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of
-the World: A New Map of Biogeographic Units for Freshwater Biodiversity
-Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414.
-doi: 10.1641/B580507
+Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M.,
+Bogutskaya, N., Coad, B., Mandrak, N., Contreras Balderas, S., Bussing,
+W., Stiassny, M. L. J., Skelton, P., Allen, G. R., Unmack, P., Naseka,
+A., Ng, R., Sindorf, N., Robertson, J., Armijo, E., Higgins, J. V.,
+Heibel, T. J., Wikramanayake, E., Olson, D., Lopez, H. L., Reis, R. E.,
+Lundberg, J. G., Sabaj Perez, M. H., Petry, P. (2008). Freshwater
+Ecoregions of the World: A New Map of Biogeographic Units for Freshwater
+Biodiversity Conservation. BioScience, 58(5), 403-414.
+\doi{10.1641/B580507}
+}
+\seealso{
+\code{\link{ecoreg_list}} for the list of available datasets,
+\code{\link{get_ecoreg}}() to force a fresh download, and
+\code{\link{check_and_get_ecoreg}}() for the underlying download check.
 }

@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{
 ###########################################
 ### Example plot
 ###########################################
@@ -6,7 +6,7 @@
 # Load available ecoregions
 eco.terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
-    save_dir = NULL
+    save_dir = tempdir()
 )
 
 # First download the worldwide observations of Panthera tigris from GBIF
@@ -22,9 +22,8 @@ range.tiger <- get_range(
 
 # Plot
     # Plot political world boundaries
-countries <- rnaturalearth::ne_countries(
-    type = "countries",
-    returnclass = "sv"
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
 terra::plot(
     terra::crop(countries, terra::ext(range.tiger$rangeOutput)),
@@ -54,19 +53,9 @@ graphics::points(
 ###########################################
 
 # Root and package
-root_dir <- list.files(
-    system.file(package = "gbif.range"),
-    pattern = "extdata",
-    full.names = TRUE
-)
+root_dir <- tempdir()
 if (!dir.exists(file.path(root_dir, "fig_plots"))) {
     dir.create(file.path(root_dir, "fig_plots"))
-}
-if (!requireNamespace("colorspace", quietly = TRUE)) {
-    install.packages("colorspace")
-}
-if (!requireNamespace("DescTools", quietly = TRUE)) {
-    install.packages("DescTools")
 }
 
 # CRS
@@ -85,7 +74,7 @@ ext.temp <- c(ext.temp[1]-2, ext.temp[2]+2, ext.temp[3]-2, ext.temp[4]+2)
 
 # Assign colors to ecoregions
 eco.local <- terra::crop(eco.terra, ext.temp)
-col.palette <- colorRampPalette(
+col.palette <- grDevices::colorRampPalette(
     c("#a6cee3", "#1f78b4", "#b2df8a",
     "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6",
     "#6a3d9a", "#ffff99", "#b15928")
@@ -106,7 +95,7 @@ pt.col <- terra::extract(
 pt.plot = obs.pt[!is.na(pt.col$color),
     c("decimalLongitude","decimalLatitude")]
 pt.col2 = pt.col[!is.na(pt.col$color), "color"]
-pt.col3 = colorspace::darken(pt.col2, amount=0.6)
+pt.col3 = grDevices::adjustcolor(pt.col2, red.f = 0.6, green.f = 0.6, blue.f = 0.6)
 
 # Out points
 out.plot <- terra::extract(
@@ -117,7 +106,7 @@ op.na <- is.na(out.plot[,2])
 out.plot <- obs.pt[op.na, c("decimalLongitude","decimalLatitude")]
 
 # Plot
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig1_tiger.png"
@@ -128,7 +117,7 @@ png(
     res = 100,
     pointsize = 110
 )
-par(mfrow = c(1, 1), mar = c(5, 5, 5, 20), lwd = 10, cex = 0.5)
+oldpar <- graphics::par(mfrow = c(1, 1), mar = c(5, 5, 5, 20), lwd = 10, cex = 0.5)
 terra::plot(
     eco.local,
     col = eco.local$color,
@@ -145,7 +134,8 @@ terra::plot(
 graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 1)
 graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.6)
 graphics::points(out.plot, col = "black", pch = 4, cex = 1, lwd = 10)
-dev.off()
+grDevices::dev.off()
+graphics::par(oldpar)
 
 # ------------------------------------------------
 # Package manuscript plot (Fig 3, world maps)
@@ -167,18 +157,16 @@ gf.robin <- terra::rast(gf.path)
 countries.robin <- terra::project(countries, robin)
 
 # Boundary box
-bb <- terra::vect(
-    rnaturalearth::ne_download(
-        type = "wgs84_bounding_box",
-        returnclass = "sf",
-        category = "physical"
-    )
+bb <- terra::as.polygons(
+  terra::ext(-180, 180, -90, 90),
+  crs = "EPSG:4326"
 )
+bb <- terra::densify(bb, interval = 1)
 bb.robin <- terra::project(bb, robin)
 
 # Plot IUCN map
 max.iucn <- round(terra::minmax(iucn.robin)[2])
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig3_div_iucn.png"
@@ -189,8 +177,8 @@ png(
     res = 80,
     pointsize = 80
 )
-par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
-col = colorRampPalette(
+oldpar <- graphics::par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
+col = grDevices::colorRampPalette(
     c("#67a9cf", "#f7f7f7", "#ef8a62")
 )
 terra::plot(
@@ -203,8 +191,8 @@ terra::plot(
 )
 terra::plot(countries.robin, add = TRUE, lwd = 5)
 terra::plot(bb.robin, add = TRUE, lwd = 8)
-par(xpd = NA)
-gbif.range:::cscl(
+graphics::par(xpd = NA)
+cscl(
     colors = col(10),
     crds = c(-9501111, 9734033, -11800000, -13000000),
     zrng = c(0, max.iucn),
@@ -218,12 +206,12 @@ gbif.range:::cscl(
     labs = seq(0, max.iucn, 10),
     titlag = 2
 )
-par(xpd = FALSE)
-dev.off()
+grDevices::dev.off()
+graphics::par(oldpar)
 
 # Plot GBIF.RANGE map
 max.gf <- round(terra::minmax(gf.robin)[2])
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig3_div_gf.png"
@@ -234,8 +222,8 @@ png(
     res = 80,
     pointsize = 80
 )
-par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
-col = colorRampPalette(
+oldpar <- graphics::par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
+col = grDevices::colorRampPalette(
     c("#67a9cf", "#f7f7f7", "#ef8a62")
 )
 terra::plot(
@@ -248,8 +236,8 @@ terra::plot(
 )
 terra::plot(countries.robin, add = TRUE, lwd = 5)
 terra::plot(bb.robin, add = TRUE, lwd = 8)
-par(xpd = NA)
-gbif.range:::cscl(
+graphics::par(xpd = NA)
+cscl(
     colors = col(10),
     crds = c(-9501111, 9734033, -11800000, -13000000),
     zrng = c(0, max.gf),
@@ -263,8 +251,8 @@ gbif.range:::cscl(
     labs = seq(0, max.gf, 10),
     titlag = 2
 )
-par(xpd = FALSE)
-dev.off()
+grDevices::dev.off()
+graphics::par(oldpar)
 
 # ------------------------------------------------
 # Package manuscript plot (Fig 3, scatter plots)
@@ -305,11 +293,11 @@ lapply(1:length(dat.plot), function(x) {
         strings[x],
         "_gbifrange_cor.pdf"
     )
-    pdf(pdf.path, width = 6.3, height = 6)
-    par(mfrow = c(1, 1), mar = c(5, 5, 5, 5), lwd = 2)
+    grDevices::pdf(pdf.path, width = 6.3, height = 6)
+    oldpar <- graphics::par(mfrow = c(1, 1), mar = c(5, 5, 5, 5), lwd = 2)
 
     # Plot points
-    plot(
+    graphics::plot(
         xy[, 2], xy[, 1],
         cex.axis = 1.7,
         cex = sex,
@@ -323,15 +311,24 @@ lapply(1:length(dat.plot), function(x) {
     )
 
     # Run Linear Models and spearman's correlation
-    lm.div <- lm(xy[, 1] ~ xy[, 2])
-    ccc.div <- DescTools::CCC(xy[, 2], xy[, 1])$rho.c$est
-    cor.div <- cor(xy[, 2],xy[, 1])
+    lm.div <- stats::lm(xy[, 1] ~ xy[, 2])
+
+    # Lin's concordance correlation coefficient (population covariance/variance)
+    ccc_lin <- function(x, y) {
+      mx <- mean(x); my <- mean(y)
+      vx <- mean((x - mx)^2)
+      vy <- mean((y - my)^2)
+      sxy <- mean((x - mx) * (y - my))
+      2 * sxy / (vx + vy + (mx - my)^2)
+    }
+    ccc.div <- ccc_lin(xy[, 2], xy[, 1])
+    cor.div <- stats::cor(xy[, 2],xy[, 1])
     adj.r2 <- summary(lm.div)[[9]]
 
     # Plot text
     text_cor1 <- bquote("ccc"==.(round(ccc.div,2)))
     text_cor2 <- bquote("r"==.(round(cor.div,2)))
-    gbif.range:::fig_label(
+    fig_label(
         text_cor1,
         region = "plot",
         pos = "topleft",
@@ -341,7 +338,7 @@ lapply(1:length(dat.plot), function(x) {
         cex = 2,
         margin = 0.02
     )
-    gbif.range:::fig_label(
+    fig_label(
         text_cor2,
         region = "plot",
         pos = "bottomright",
@@ -353,11 +350,12 @@ lapply(1:length(dat.plot), function(x) {
     )
 
     # Plot relationship
-    lines(xy[, 2], lm.div$fit, lwd = 7, col = "#7570b3")
-    abline(a = 0, b = 1, col = "#252525", lwd = 5, lty = 2)
+    graphics::lines(xy[, 2], lm.div$fit, lwd = 7, col = "#7570b3")
+    graphics::abline(a = 0, b = 1, col = "#252525", lwd = 5, lty = 2)
 
     # Save
-    dev.off()
+    grDevices::dev.off()
+    graphics::par(oldpar)
 })
 
 }

@@ -34,14 +34,17 @@
 #' per-species evaluation statistics, and \code{overlay_list}, a list of raster
 #' overlays used for plotting and inspection.
 #' @references
-#' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of 
-#' ecoregional range maps for boosting taxonomic coverage in ecology and 
-#' conservation. Ecography, 12, e06794.
+#' Pinkert, S., Sica, Y. V., Winner, K., & Jetz, W. (2023). The potential of
+#' ecoregional range maps for boosting taxonomic coverage in ecology and
+#' conservation. Ecography, 12, e06794. \doi{10.1111/ecog.06794}
+#' @seealso \code{\link{get_range}}() to generate the range maps being
+#' evaluated, and \code{\link{cv_range}}() for cross-validation against the
+#' original occurrence data instead of external validation data.
 #' @example inst/examples/evaluate_range_help.R
 #' @importFrom terra rast ext crs project aggregate rasterize crop extend resample values classify ncol nrow plot
 #' @importFrom sf st_read st_as_sf st_union st_drop_geometry st_transform
 #' @importFrom grDevices dev.off pdf
-#' @importFrom graphics legend par
+#' @importFrom graphics legend
 #' @export
 evaluate_range <- function(root_dir = NULL,
                        valData_dir = NULL,
@@ -143,35 +146,33 @@ evaluate_range <- function(root_dir = NULL,
     ))
   }
   
-  cat("-Note-", "\n")
   if (valData_type == "TIFF") {
     f.list.matches <- intersect(f.list.eco, basename(f.list.valRM))
-    cat(
-      sprintf(
-        paste(
-          "%.2f%% (%d) of the species names of ecoregions",
-          "match with names of the validation data files"
-        ),
-        100 * length(f.list.matches) / length(f.list.valRM),
-        length(f.list.matches)
-      )
+    match_msg <- sprintf(
+      paste(
+        "%.2f%% (%d) of the species names of ecoregions",
+        "match with names of the validation data files"
+      ),
+      100 * length(f.list.matches) / length(f.list.valRM),
+      length(f.list.matches)
     )
-
   } else {
     f.list.matches <- intersect(f.list.eco, f.list.valRM)
-    cat(
-      sprintf(
-        paste(
-          "%.2f%% (%d) of the species names of ecoregions",
-          "match with those in the validation data column 'sci_name'"
-        ),
-        100 * length(f.list.matches) / length(f.list.valRM),
-        length(f.list.matches)
-      )
+    match_msg <- sprintf(
+      paste(
+        "%.2f%% (%d) of the species names of ecoregions",
+        "match with those in the validation data column 'sci_name'"
+      ),
+      100 * length(f.list.matches) / length(f.list.valRM),
+      length(f.list.matches)
     )
   }
 
-  cat("------", "\n")
+  if (isTRUE(verbose)) {
+    message("-Note-")
+    message(match_msg)
+    message("------")
+  }
   
   df.eval <- data.frame(
     species = f.list.matches,
@@ -188,7 +189,7 @@ evaluate_range <- function(root_dir = NULL,
   
   # Process each species
   for (i in seq_along(f.list.matches)) {
-    if (verbose) cat(i, " Species: ", f.list.matches[i], "\n")
+    if (isTRUE(verbose)) message(i, " Species: ", f.list.matches[i])
     
     if (is.null(mask)) {
       domain.raster <- NULL
@@ -321,7 +322,7 @@ evaluate_range <- function(root_dir = NULL,
       df.eval$Sen_ecoRM[i] + df.eval$Spec_ecoRM[i] - 1
     
     # Plot the overlay raster
-    if (verbose && print_map) {
+    if (isTRUE(verbose) && print_map) {
       
       if (!dir.exists(file.path(root_dir, "eval_output"))) {
         dir.create(file.path(root_dir, "eval_output"))
@@ -331,11 +332,10 @@ evaluate_range <- function(root_dir = NULL,
       colors <- c("gray", "red", "blue", "purple")
       breaks <- c(-0.5, 0.5, 1.5, 2.5, 3.5)
       
-      pdf(file = file.path(root_dir,"eval_output",
+      grDevices::pdf(file = file.path(root_dir,"eval_output",
         paste0("Evaluation_map_", f.list.matches[i], ".pdf")),
         height = (11 * aspect.r)+3, width = 11
       )
-      par(mfrow = c(1, 1))
       terra::plot(
         overlay.raster,
         col = colors,
@@ -352,7 +352,7 @@ evaluate_range <- function(root_dir = NULL,
       )
       
       # Adding a legend
-      legend("bottomright",
+      graphics::legend("bottomright",
         legend = c(
           "Abs in both (TA)",
           "Pres in ecoRM only (FP)",
@@ -364,22 +364,22 @@ evaluate_range <- function(root_dir = NULL,
         box.col = NA,
         inset = c(0,0.1)
       )
-      dev.off()
+      grDevices::dev.off()
     }
   }
   
-  if (verbose) {
-    cat("Cross-species mean Prec & Sensitivity:",
+  if (isTRUE(verbose)) {
+    message(
+      "Cross-species mean Prec & Sensitivity: ",
       round(
-        mean(rowMeans(df.eval[, c("Prec_ecoRM", "Sen_ecoRM")],na.rm = TRUE)),
-        digits = 2),
-      "\n"
+        mean(rowMeans(df.eval[, c("Prec_ecoRM", "Sen_ecoRM")], na.rm = TRUE)),
+        digits = 2)
     )
   }
   
-  if (print_map) {
-    cat("### Maps have been saved to:",
-      file.path(root_dir, "eval_output"), "###\n")
+  if (isTRUE(verbose) && print_map) {
+    message("### Maps have been saved to: ",
+      file.path(root_dir, "eval_output"), " ###")
   }
   
   output <- list(df_eval = df.eval, overlay_list = overlay.list)

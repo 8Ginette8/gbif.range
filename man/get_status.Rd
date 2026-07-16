@@ -13,7 +13,8 @@ get_status(
   order = NULL,
   family = NULL,
   conf_match = 80,
-  level = c("accepted", "children", "all")
+  level = c("accepted", "children", "all"),
+  verbose = TRUE
 )
 }
 \arguments{
@@ -51,6 +52,9 @@ synonyms. \code{"children"} additionally includes infra-specific taxa
 representations (orthographic variants, etc.) as \code{RELATED} rows,
 which are not used by \code{get_gbif()} and are intended for taxonomic
 inspection only.}
+
+\item{verbose}{Logical. Should status messages be printed to the console
+when no match is found? Default is \code{TRUE}.}
 }
 \value{
 A data frame with the columns \code{canonicalName}, \code{rank},
@@ -91,7 +95,7 @@ sumatrae} is Critically Endangered) that are not reflected here; consult
 the IUCN Red List directly for infra-specific status.
 }
 \examples{
-\dontrun{
+\donttest{
 # --- 1. Default: accepted name + synonyms only ---
 tax <- get_status("Panthera tigris")
 tax
@@ -106,7 +110,11 @@ tax_ch
 tax_rel <- get_status("Panthera tigris", level = "all")
 tax_rel
 
-# --- 4. Cross-check get_status() keys against get_gbif() output ---
+# --- 4. Fuzzy matching for uncertain names ---
+# sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
+get_status("Panthera tigri", search = FALSE)
+
+# --- 5. Cross-check get_status() keys against get_gbif() output ---
 occ <- get_gbif("Panthera tigris", has_xy = TRUE, verbose = FALSE)
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status \%in\% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
@@ -131,21 +139,18 @@ occ[occ$acceptedTaxonKey \%in\% extra_keys,
 # may have no records in GBIF at all (e.g. extinct taxa) or may have been
 # removed by get_gbif() filtering options (e.g. has_xy, basis, grain)
 
-# --- 5. Input name flagged correctly regardless of how GBIF resolves it ---
+# --- 6. Input name flagged correctly regardless of how GBIF resolves it ---
 # sp_nameMatch = "INPUT" marks the row closest to the submitted name
 tax_ch[tax_ch$sp_nameMatch == "INPUT", ]
 
-# --- 6. Fuzzy matching for uncertain names ---
-# sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
-get_status("Panthera tigri", search = FALSE)
 }
 }
 \references{
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735
+global biodiversity information facility API. \doi{10.5281/zenodo.6023735}
 }
 \seealso{
-\code{get_gbif()} to download occurrences for the accepted taxon
-concept returned here; the \code{rgbif} package for more general approaches
-to querying the GBIF backbone taxonomy.
+\code{\link{get_gbif}}() to download occurrences for the accepted
+taxon concept returned here; the \pkg{rgbif} package for more general
+approaches to querying the GBIF backbone taxonomy.
 }

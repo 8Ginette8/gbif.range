@@ -1,4 +1,3 @@
-\dontrun{
 if (requireNamespace("data.table", quietly = TRUE)) {
   gbif_file <- system.file("extdata", "occ_example_2sps.csv", package = "gbif.range")
   split_dir <- file.path(tempdir(), "gbif_split_help")
@@ -17,5 +16,4 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   )
 
   split_summary[, c("species_name", "n_records", "species_file")]
-}
 }
