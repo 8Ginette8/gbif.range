@@ -118,7 +118,6 @@
 #' prepare the ecoregion layer used here; \code{\link{cv_range}}() and
 #' \code{\link{evaluate_range}}() to evaluate the resulting range map.
 #' @example inst/examples/get_range_help.R
-#' @importFrom rnaturalearth ne_countries
 #' @importFrom methods is new
 #' @importFrom terra vect crds intersect simplifyGeom buffer rast disagg aggregate rasterize crop
 #' @importFrom FNN knn.dist
