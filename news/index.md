@@ -142,9 +142,7 @@
 - Added
   [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md):
   ecoregion-constrained species range inference.
-- Added
-  [`conv_function()`](https://8ginette8.github.io/gbif.range/reference/conv_function.md):
-  internal polygon builder used by
+- Added `conv_function()`: internal polygon builder used by
   [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md).
 - Added `get_taxonomy()` (later renamed
   [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)):

@@ -59,17 +59,50 @@ Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O.,
 Wang, Z., & Zimmermann, N. E. (2020). Model complexity affects species
 distribution projections under climate change. Journal of Biogeography,
 47(1), 130-142.
+[doi:10.1111/jbi.13700](https://doi.org/10.1111/jbi.13700)
+
+## See also
+
+[`cv_range`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)()
+which uses this function internally to create cross-validation folds.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Downloading worldwide the observations of Panthera tigris
 obs.pt <- get_gbif(
     sp_name = "Panthera tigris",
     basis = c("OBSERVATION","HUMAN_OBSERVATION",
         "MACHINE_OBSERVATION","OCCURRENCE")
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :       8007 |
+#> | Kept records                  :       5457 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
+#> 
+#> ...GBIF records of Panthera tigris: download starting...
+#> ------------- #1 (100%..)               
+#> 
+#> ...Records (XY) filtering summary:
+#> -----------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering     117      5340
+#>       Duplicated records    2587      2753
+#>          Absence records       0      2753
+#>          Basis selection     351      2402
+#>  Establishment selection       0      2402
+#>               Time frame       0      2402
+#>        Identical records       0      2402
+#>         Raster centroids       0      2402
+#> 
+#> Initial records         : 5457
+#> Total removed           : 3055
+#> Final records (XY)      : 2402
+#> -----------------------------------------------
+#> Final records (no XY)   : 0
 
 # Create a vector of folds (n = 5) spatially blocked (n = 10)
 block.pt <- make_blocks(
@@ -77,11 +110,11 @@ block.pt <- make_blocks(
     df = obs.pt[, c("decimalLatitude","decimalLongitude")],
     nblocks = 10
 )
+#> 6 variables with 5, 5, 5, 5, ... levels: 15625 function evaluations required.
 
 # Plot one colour per fold
-countries <- rnaturalearth::ne_countries(
-    type = "countries",
-    returnclass = "sv"
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
 countries.focus <- terra::crop(
     countries,
@@ -94,5 +127,7 @@ graphics::points(
     col = block.pt,
     cex = 1
 )
-} # }
+
+
+# }
 ```

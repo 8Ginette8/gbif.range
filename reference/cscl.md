@@ -83,3 +83,8 @@ cscl(
 - tria:
 
   Character flag controlling triangular tips at the legend ends.
+
+## Value
+
+`NULL`, invisibly. Called for its side effect of drawing the legend bar
+on the current plot device.

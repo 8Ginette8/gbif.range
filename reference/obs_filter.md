@@ -38,10 +38,15 @@ The function first collapses each species to one occurrence per grid
 cell. If `threshold` is supplied, cells with fewer than that many
 original records are then discarded.
 
+## See also
+
+[`get_gbif`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)()
+to produce the `getGBIF` object filtered by this function.
+
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Load data
 shp.path <- paste0(
   system.file(package = "gbif.range"),
@@ -59,10 +64,64 @@ obs.arcto <- get_gbif(
   sp_name = "Arctostaphylos alpinus",
   geo = shp.lonlat
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :      42972 |
+#> | Kept records                  :       6340 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
+#> 
+#> ...GBIF records of Arctostaphylos alpinus: download starting...
+#> ------------- #1 (100%..)               
+#> 
+#> ...Records (XY) filtering summary:
+#> -----------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering       4      6336
+#>       Duplicated records    4176      2160
+#>          Absence records       0      2160
+#>          Basis selection     152      2008
+#>  Establishment selection       0      2008
+#>               Time frame       0      2008
+#>        Identical records       0      2008
+#>         Raster centroids     194      1814
+#> 
+#> Initial records         : 6340
+#> Total removed           : 4526
+#> Final records (XY)      : 1814
+#> -----------------------------------------------
+#> Final records (no XY)   : 0
 obs.saxi <- get_gbif(
   sp_name = "Saxifraga cernua",
   geo = shp.lonlat
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :      20257 |
+#> | Kept records                  :        407 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
+#> 
+#> ...GBIF records of Saxifraga cernua: download starting...
+#> ------------- #1 (100%..)               
+#> 
+#> ...Records (XY) filtering summary:
+#> ----------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering       5       402
+#>       Duplicated records     286       116
+#>          Absence records       0       116
+#>          Basis selection      61        55
+#>  Establishment selection       0        55
+#>               Time frame       0        55
+#>        Identical records       0        55
+#>         Raster centroids       0        55
+#> 
+#> Initial records         : 407
+#> Total removed           : 352
+#> Final records (XY)      : 55
+#> ----------------------------------------------
+#> Final records (no XY)   : 0
 
 # Test plot
 terra::plot(shp.lonlat)
@@ -78,6 +137,7 @@ graphics::points(
   col = "#99000d50",
   cex = 1
 )
+
 
 # Combine both datasets
 both.sp <- rbind(obs.arcto,obs.saxi)
@@ -99,5 +159,7 @@ graphics::points(
   col = "#99000d50",
   cex = 1
 )
-} # }
+
+
+# }
 ```

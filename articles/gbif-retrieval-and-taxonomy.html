@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -195,7 +195,7 @@ Chauvier et al. (2021, <em>Ecological Monographs</em>).</p>
 <span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Retrieve a terrestrial ecoregion layer and build the range.</span></span>
-<span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span><span class="op">)</span></span>
+<span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">range_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
 <span>  occ_coord <span class="op">=</span> <span class="va">obs_tiger</span>,</span>
 <span>  ecoreg <span class="op">=</span> <span class="va">eco_terra</span>,</span>
@@ -280,7 +280,7 @@ require more deliberate choices about sampling and ecoregions.</p>
 <span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Delphinus delphis"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Build a marine range from the packaged ecoregions.</span></span>
-<span><span class="va">eco_marine</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_marine"</span><span class="op">)</span></span>
+<span><span class="va">eco_marine</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_marine"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">range_delphis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
 <span>  occ_coord <span class="op">=</span> <span class="va">obs_delphis</span>,</span>
 <span>  ecoreg <span class="op">=</span> <span class="va">eco_marine</span>,</span>
@@ -303,7 +303,7 @@ rather than a live web query.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">occ_raw</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="fu">ext_file</span><span class="op">(</span><span class="st">"occ_example_4sps.csv"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">occ_raw</span><span class="op">$</span><span class="va">input_search</span> <span class="op">&lt;-</span> <span class="va">occ_raw</span><span class="op">$</span><span class="va">species</span></span>
-<span><span class="va">occ_gbif</span> <span class="op">&lt;-</span> <span class="fu">gbif.range</span><span class="fu">:::</span><span class="fu"><a href="../reference/getGBIF.html">getGBIF</a></span><span class="op">(</span><span class="va">occ_raw</span><span class="op">)</span></span>
+<span><span class="va">occ_gbif</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getGBIF.html">getGBIF</a></span><span class="op">(</span><span class="va">occ_raw</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Build a coarse grid that spans the example records.</span></span>
 <span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span></span>
@@ -419,7 +419,7 @@ cleaning of occurrence records from biological collection databases.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

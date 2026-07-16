@@ -231,11 +231,11 @@ expose the accepted GBIF interpretation used by the query.
 
 ## Details
 
-\#' @details The function follows the same taxonomic matching logic used
-by the GBIF website. Internally, the input name is first resolved
-against the GBIF backbone taxonomy. If the matched name is a synonym,
-the download uses the corresponding accepted GBIF taxon key rather than
-the synonym key itself.
+The function follows the same taxonomic matching logic used by the GBIF
+website. Internally, the input name is first resolved against the GBIF
+backbone taxonomy. If the matched name is a synonym, the download uses
+the corresponding accepted GBIF taxon key rather than the synonym key
+itself.
 
 Querying by accepted taxon key means that occurrence records linked to
 infra-specific taxa (subspecies, varieties) under that accepted name are
@@ -297,47 +297,33 @@ Decimal filtering follows these thresholds:
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
 Karger, D. N., ... & Zimmermann, N. E. (2021). Influence of climate,
 soil, and land cover on plant species distribution in the European Alps.
-Ecological monographs, 91(2), e01433. 10.1002/ecm.1433
+Ecological Monographs, 91(2), e01433.
+[doi:10.1002/ecm.1433](https://doi.org/10.1002/ecm.1433)
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
-the global biodiversity information facility API. 10.5281/zenodo.6023735
+the global biodiversity information facility API.
+[doi:10.5281/zenodo.6023735](https://doi.org/10.5281/zenodo.6023735)
 
 Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C.,
 Edler, D., ... & Antonelli, A. (2019). CoordinateCleaner: Standardized
 cleaning of occurrence records from biological collection databases.
 Methods in Ecology and Evolution, 10(5), 744-751.
-10.1111/2041-210X.13152
+[doi:10.1111/2041-210X.13152](https://doi.org/10.1111/2041-210X.13152)
 
-Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version
-1.6-7." (2022). Terra - CRAN
+Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
+1.6-7. <https://cran.r-project.org/package=terra>
 
 ## See also
 
-[`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
-to inspect the accepted name and synonym mapping returned by GBIF;
-`rgbif` for more general GBIF retrieval workflows; and
-`CoordinateCleaner` for more extensive occurrence cleaning.
+[`get_status`](https://8ginette8.github.io/gbif.range/reference/get_status.md)()
+to inspect the accepted name and synonym mapping returned by GBIF; the
+rgbif package for more general GBIF retrieval workflows; and the
+CoordinateCleaner package for more extensive occurrence cleaning.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Download worldwide observations of Panthera tigris
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
-
-# Plot
-countries <- rnaturalearth::ne_countries(
-       type = "countries",
-       returnclass = "sv"
-)
-terra::plot(countries, col = "#bcbddc")
-graphics::points(
-       obs.pt[, c("decimalLongitude","decimalLatitude")],
-       pch = 20,
-       col = "#238b4550",
-       cex = 4
-)
-
+# \donttest{
 # Download worldwide observations of Ailuropoda melanoleuca
 # (with a 100km grain, after 1990 and by keeping duplicates and by
 # adding the name of the person who collected the panda records)
@@ -347,6 +333,37 @@ obs.am <- get_gbif(
        duplicates = TRUE,
        time_period = c(1990,3000),
        add_infos = c("recordedBy","issue")
+)
+#> |--------------------------------------------|
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :         66 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
+#> 
+#> ...GBIF records of Ailuropoda melanoleuca: download starting...
+#> ------------- #1 (100%..)               
+#> 
+#> ...Records (XY) filtering summary:
+#> ---------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering       6        60
+#>          Absence records       0        60
+#>          Basis selection      16        44
+#>  Establishment selection       0        44
+#>               Time frame       0        44
+#>        Identical records       0        44
+#>         Raster centroids       0        44
+#> 
+#> Initial records         : 66
+#> Total removed           : 22
+#> Final records (XY)      : 44
+#> ---------------------------------------------
+#> Final records (no XY)   : 0
+
+# Extract borders
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
 
 # Plot
@@ -358,6 +375,49 @@ graphics::points(
        cex = 4
 )
 
+
+# Download worldwide observations of Panthera tigris
+obs.pt <- get_gbif(sp_name = "Panthera tigris")
+#> |--------------------------------------------|
+#> | Total number (all records)    :       8007 |
+#> | Kept records                  :       5457 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
+#> 
+#> ...GBIF records of Panthera tigris: download starting...
+#> ------------- #1 (100%..)               
+#> 
+#> ...Records (XY) filtering summary:
+#> -----------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering     117      5340
+#>       Duplicated records    2587      2753
+#>          Absence records       0      2753
+#>          Basis selection      82      2671
+#>  Establishment selection       0      2671
+#>               Time frame       0      2671
+#>        Identical records       0      2671
+#>         Raster centroids       0      2671
+#> 
+#> Initial records         : 5457
+#> Total removed           : 2786
+#> Final records (XY)      : 2671
+#> -----------------------------------------------
+#> Final records (no XY)   : 0
+
+# Plot
+terra::plot(countries, col = "#bcbddc")
+graphics::points(
+       obs.pt[, c("decimalLongitude","decimalLatitude")],
+       pch = 20,
+       col = "#238b4550",
+       cex = 4
+)
+
+
+
+
 # Download worldwide observations of Bison bison
 # (with a 1km grain, after 1990, and keeping raster centroids)
 obs.pc <- get_gbif(
@@ -366,5 +426,34 @@ obs.pc <- get_gbif(
        time_period = c(1990,3000),
        centroids = TRUE
 )
-} # }
+#> |--------------------------------------------|
+#> | Total number (all records)    :      31282 |
+#> | Kept records                  :      27478 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
+#> 
+#> ...(> 10'000 records) retrieving tiles...
+#> 
+#> ...GBIF records of Bison bison: download starting...
+#> ------------- #1 (5.26%..)              ------------- #2 (10.53%..)             ------------- #3 (15.79%..)             ------------- #4 (21.05%..)             ------------- #5 (26.32%..)             ------------- #6 (31.58%..)             ------------- #7 (36.84%..)             ------------- #8 (42.11%..)             ------------- #9 (47.37%..)             ------------- #10 (52.63%..)            ------------- #11 (57.89%..)            ------------- #12 (63.16%..)            ------------- #13 (68.42%..)            ------------- #14 (73.68%..)            ------------- #15 (78.95%..)            ------------- #16 (84.21%..)            ------------- #17 (89.47%..)            ------------- #18 (94.74%..)            ------------- #19 (100%..)              
+#> 
+#> ...Records (XY) filtering summary:
+#> ------------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering   14538     12940
+#>       Duplicated records    1135     11805
+#>          Absence records       0     11805
+#>          Basis selection     227     11578
+#>  Establishment selection       0     11578
+#>               Time frame      19     11559
+#>        Identical records       0     11559
+#> 
+#> Initial records         : 27478
+#> Total removed           : 15919
+#> Final records (XY)      : 11559
+#> ------------------------------------------------
+#> Final records (no XY)   : 0
+
+# }
 ```

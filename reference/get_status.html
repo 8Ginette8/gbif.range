@@ -16,7 +16,7 @@ available."><meta property="og:image" content="https://8ginette8.github.io/gbif.
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,8 @@ available.</p>
 <span>  order <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  family <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conf_match <span class="op">=</span> <span class="fl">80</span>,</span>
-<span>  level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"accepted"</span>, <span class="st">"children"</span>, <span class="st">"all"</span><span class="op">)</span></span>
+<span>  level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"accepted"</span>, <span class="st">"children"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -126,6 +127,11 @@ representations (orthographic variants, etc.) as <code>RELATED</code> rows,
 which are not used by <code><a href="get_gbif.html">get_gbif()</a></code> and are intended for taxonomic
 inspection only.</p></dd>
 
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>Logical. Should status messages be printed to the console
+when no match is found? Default is <code>TRUE</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -163,65 +169,279 @@ the IUCN Red List directly for infra-specific status.</p>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Chamberlain, S., Oldoni, D., &amp; Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735</p>
+global biodiversity information facility API. <a href="https://doi.org/10.5281/zenodo.6023735" class="external-link">doi:10.5281/zenodo.6023735</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get_gbif.html">get_gbif()</a></code> to download occurrences for the accepted taxon
-concept returned here; the <code>rgbif</code> package for more general approaches
-to querying the GBIF backbone taxonomy.</p></div>
+    <div class="dont-index"><p><code><a href="get_gbif.html">get_gbif</a></code>() to download occurrences for the accepted
+taxon concept returned here; the <span class="pkg">rgbif</span> package for more general
+approaches to querying the GBIF backbone taxonomy.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># --- 1. Default: accepted name + synonyms only ---</span></span></span>
 <span class="r-in"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigris"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tax</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           canonicalName    rank gbif_key                   scientificName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819        EXACT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- 2. Include infra-specific taxa (subspecies, varieties) ---</span></span></span>
 <span class="r-in"><span><span class="co"># These are the same keys retrieved by get_gbif()</span></span></span>
 <span class="r-in"><span><span class="va">tax_ch</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tax_ch</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     canonicalName       rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416           Panthera tigris    SPECIES  5219416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819              Felis tigris    SPECIES  4969819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219420   Panthera tigris altaica SUBSPECIES  5219420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219425 Panthera tigris amoyensis SUBSPECIES  5219425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219419    Panthera tigris balica SUBSPECIES  5219419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219424  Panthera tigris corbetti SUBSPECIES  5219424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219422  Panthera tigris sondaica SUBSPECIES  5219422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219418  Panthera tigris sumatrae SUBSPECIES  5219418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7059276    Panthera tigris tigris SUBSPECIES  7059276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219423   Panthera tigris virgata SUBSPECIES  5219423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       scientificName gbif_status    Genus</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416             Panthera tigris (Linnaeus, 1758)    ACCEPTED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819                  Felis tigris Linnaeus, 1758     SYNONYM Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219420       Panthera tigris altaica Temminck, 1844    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219425 Panthera tigris amoyensis (Hilzheimer, 1905)    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219419         Panthera tigris balica Schwarz, 1912    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219424         Panthera tigris corbetti Mazak, 1968    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219422      Panthera tigris sondaica Temminck, 1844    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219418        Panthera tigris sumatrae Pocock, 1929    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7059276                       Panthera tigris tigris    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219423      Panthera tigris virgata (Illiger, 1815)    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Family     Order    Class   Phylum IUCN_status sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Felidae Carnivora Mammalia Chordata  ENDANGERED        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219420 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219425 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219419 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219424 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219422 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219418 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7059276 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219423 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- 3. Include alternative name string representations (inspection only) ---</span></span></span>
 <span class="r-in"><span><span class="co"># RELATED rows are not used by get_gbif()</span></span></span>
 <span class="r-in"><span><span class="va">tax_rel</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tax_rel</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                canonicalName       rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            Panthera tigris    SPECIES  5219416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               Felis tigris    SPECIES  4969819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Panthera tigris altaica SUBSPECIES  5219420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Panthera tigris amoyensis SUBSPECIES  5219425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     Panthera tigris balica SUBSPECIES  5219419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   Panthera tigris corbetti SUBSPECIES  5219424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   Panthera tigris sondaica SUBSPECIES  5219422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Panthera tigris sumatrae SUBSPECIES  5219418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     Panthera tigris tigris SUBSPECIES  7059276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   Panthera tigris virgata SUBSPECIES  5219423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11           Panthera tigris    SPECIES  5219416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13           Panthera tigris    SPECIES  5219416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14           Panthera tigris    SPECIES  5219416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15           Panthera tigris    SPECIES  5219416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17              Felis tigris    SPECIES  4969819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18              Felis tigris    SPECIES  4969819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19              Felis tigris    SPECIES  4969819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   Panthera tigris altaica SUBSPECIES  5219420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   Panthera tigris altaica SUBSPECIES  5219420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  Panthera tigris altaicus SUBSPECIES  5219420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   Panthera tigris altaica SUBSPECIES  5219420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   Panthera tigris altaica SUBSPECIES  5219420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 Panthera tigris amoyensis SUBSPECIES  5219425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 Panthera tigris amoyensis SUBSPECIES  5219425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 Panthera tigris amoyensis SUBSPECIES  5219425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 Panthera tigris amoyensis SUBSPECIES  5219425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 Panthera tigris amoyensis SUBSPECIES  5219425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    Panthera tigris balica SUBSPECIES  5219419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34    Panthera tigris balica SUBSPECIES  5219419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35  Panthera tigris corbetti SUBSPECIES  5219424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36  Panthera tigris corbetti SUBSPECIES  5219424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37  Panthera tigris corbetti SUBSPECIES  5219424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39  Panthera tigris sondaica SUBSPECIES  5219422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40  Panthera tigris sondaica SUBSPECIES  5219422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42  Panthera tigris sondaica SUBSPECIES  5219422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43  Panthera tigris sondaica SUBSPECIES  5219422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44  Panthera tigris sumatrae SUBSPECIES  5219418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45  Panthera tigris sumatrae SUBSPECIES  5219418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47  Panthera tigris sumatrae SUBSPECIES  5219418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48    Panthera tigris tigris SUBSPECIES  7059276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49    Panthera tigris tigris SUBSPECIES  7059276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51    Panthera tigris tigris SUBSPECIES  7059276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   Panthera tigris virgata SUBSPECIES  5219423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   Panthera tigris virgata SUBSPECIES  5219423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   Panthera tigris virgata SUBSPECIES  5219423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   Panthera tigris virgata SUBSPECIES  5219423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   Panthera tigris virgata SUBSPECIES  5219423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                         scientificName gbif_status    Genus</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     Panthera tigris (Linnaeus, 1758)    ACCEPTED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Felis tigris Linnaeus, 1758     SYNONYM Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               Panthera tigris altaica Temminck, 1844    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         Panthera tigris amoyensis (Hilzheimer, 1905)    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 Panthera tigris balica Schwarz, 1912    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 Panthera tigris corbetti Mazak, 1968    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7              Panthera tigris sondaica Temminck, 1844    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                Panthera tigris sumatrae Pocock, 1929    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                               Panthera tigris tigris    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10             Panthera tigris virgata (Illiger, 1815)    CHILDREN Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                     Panthera tigris (Linnaeus 1758)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                    Panthera tigris (‎Linnaeus‎, ‎1758‎)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                     Panthera tigris     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                      Panthera tigris Linnaeus, 1758     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                                        Felis tigris     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                          Felis tigris Linnaeus 1758     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                       Felis tigris (Linnaeus, 1758)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20       Panthera tigris subsp. altaica Temminck, 1844     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21            Panthera tigris altaica (Temminck, 1844)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22             Panthera tigris altaicus Temminck, 1844     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23        Panthera tigris subsp. altaica Temminck 1844     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24                             Panthera tigris altaica     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 Panthera tigris subsp. amoyensis (Hilzheimer, 1905)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27          Panthera tigris amoyensis Hilzheimer, 1905     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28    Panthera tigris subsp. amoyensis Hilzheimer 1905     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29                           Panthera tigris amoyensis     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   Panthera tigris subsp. amoyensis Hilzheimer, 1905     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32         Panthera tigris subsp. balica Schwarz, 1912     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34               Panthera tigris balica Schwarz, 1912.     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35         Panthera tigris subsp. corbetti Mazák, 1968     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36                            Panthera tigris corbetti     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37         Panthera tigris subsp. corbetti Mazak, 1968     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39      Panthera tigris subsp. sondaica Temminck, 1844     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40                            Panthera tigris sondaica     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42            Panthera tigris sondaica Temminck, 1844.     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43    Panthera tigris subsp. sondaica (Temminck, 1844)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44                            Panthera tigris sumatrae     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45        Panthera tigris subsp. sumatrae Pocock, 1929     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47                Panthera tigris sumatrae Pocock 1929     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48                       Panthera tigris subsp. tigris     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49         Panthera tigris subsp. tigris Linnaeus 1758     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51             Panthera tigris tigris (Linnaeus, 1758)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52      Panthera tigris subsp. virgata (Illiger, 1815)     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53               Panthera tigris virgata Illiger, 1815     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54         Panthera tigris subsp. virgata Illiger 1815     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55        Panthera tigris subsp. virgata Illiger, 1815     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56                             Panthera tigris virgata     RELATED Panthera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Family     Order    Class   Phylum IUCN_status sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Felidae Carnivora Mammalia Chordata  ENDANGERED        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># --- 4. Cross-check get_status() keys against get_gbif() output ---</span></span></span>
+<span class="r-in"><span><span class="co"># --- 4. Fuzzy matching for uncertain names ---</span></span></span>
+<span class="r-in"><span><span class="co"># sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches</span></span></span>
+<span class="r-in"><span><span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigri"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           canonicalName    rank gbif_key                   scientificName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819      VARIANT</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># --- 5. Cross-check get_status() keys against get_gbif() output ---</span></span></span>
 <span class="r-in"><span><span class="va">occ</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, has_xy <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">valid_keys</span>    <span class="op">&lt;-</span> <span class="va">tax_ch</span><span class="op">$</span><span class="va">gbif_key</span><span class="op">[</span><span class="va">tax_ch</span><span class="op">$</span><span class="va">gbif_status</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ACCEPTED"</span>, <span class="st">"CHILDREN"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">returned_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">occ</span><span class="op">$</span><span class="va">acceptedTaxonKey</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Keys in get_status() — backbone taxa (ACCEPTED + CHILDREN)</span></span></span>
 <span class="r-in"><span><span class="va">valid_keys</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5219416" "5219420" "5219425" "5219419" "5219424" "5219422" "5219418"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8] "7059276" "5219423"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Keys returned by get_gbif()</span></span></span>
 <span class="r-in"><span><span class="va">returned_keys</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  7059276  5219416  5219420  5219422  5219418 10568627 10604898</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Are all occurrence keys known backbone keys?</span></span></span>
 <span class="r-in"><span><span class="co"># FALSE indicates non-backbone entries (e.g. BOLD sequences) are present</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">returned_keys</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">valid_keys</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect non-backbone records — typically MATERIAL_SAMPLE, excluded by default</span></span></span>
 <span class="r-in"><span><span class="va">extra_keys</span> <span class="op">&lt;-</span> <span class="va">returned_keys</span><span class="op">[</span><span class="op">!</span><span class="va">returned_keys</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">valid_keys</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">extra_keys</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10568627 10604898</span>
 <span class="r-in"><span><span class="va">occ</span><span class="op">[</span><span class="va">occ</span><span class="op">$</span><span class="va">acceptedTaxonKey</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">extra_keys</span>,</span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"acceptedTaxonKey"</span>, <span class="st">"scientificName"</span>, <span class="st">"basisOfRecord"</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      acceptedTaxonKey scientificName   basisOfRecord</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4307         10568627   BOLD:AAD6820 MATERIAL_SAMPLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4557         10568627   BOLD:AAD6820 MATERIAL_SAMPLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4573         10568627   BOLD:AAD6820 MATERIAL_SAMPLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5292         10604898   BOLD:AAC3048 MATERIAL_SAMPLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5302         10604898   BOLD:AAC3048 MATERIAL_SAMPLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5303         10604898   BOLD:AAC3048 MATERIAL_SAMPLE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Note: not all valid_keys need to appear in returned_keys — some subspecies</span></span></span>
 <span class="r-in"><span><span class="co"># may have no records in GBIF at all (e.g. extinct taxa) or may have been</span></span></span>
 <span class="r-in"><span><span class="co"># removed by get_gbif() filtering options (e.g. has_xy, basis, grain)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># --- 5. Input name flagged correctly regardless of how GBIF resolves it ---</span></span></span>
+<span class="r-in"><span><span class="co"># --- 6. Input name flagged correctly regardless of how GBIF resolves it ---</span></span></span>
 <span class="r-in"><span><span class="co"># sp_nameMatch = "INPUT" marks the row closest to the submitted name</span></span></span>
 <span class="r-in"><span><span class="va">tax_ch</span><span class="op">[</span><span class="va">tax_ch</span><span class="op">$</span><span class="va">sp_nameMatch</span> <span class="op">==</span> <span class="st">"INPUT"</span>, <span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           canonicalName    rank gbif_key                   scientificName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416        INPUT</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># --- 6. Fuzzy matching for uncertain names ---</span></span></span>
-<span class="r-in"><span><span class="co"># sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches</span></span></span>
-<span class="r-in"><span><span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigri"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -233,7 +453,7 @@ to querying the GBIF backbone taxonomy.</p></div>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

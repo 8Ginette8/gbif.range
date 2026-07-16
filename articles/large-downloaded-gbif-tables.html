@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -441,10 +441,10 @@ This is a useful diagnostic pattern when checking whether a batch run
 produced geometries with the expected extent and shape.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">range_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.10</span>, <span class="fl">0.40</span>, <span class="fl">0.75</span>, <span class="fl">0.30</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.35</span>, <span class="fl">0.10</span>, <span class="fl">0.30</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.20</span>, <span class="fl">0.65</span>, <span class="fl">0.30</span>, <span class="fl">0.30</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.70</span>, <span class="fl">0.65</span>, <span class="fl">0.10</span>, <span class="fl">0.30</span><span class="op">)</span></span>
+<span>  <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.10</span>, <span class="fl">0.40</span>, <span class="fl">0.75</span>, <span class="fl">0.30</span><span class="op">)</span>,</span>
+<span>  <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.35</span>, <span class="fl">0.10</span>, <span class="fl">0.30</span><span class="op">)</span>,</span>
+<span>  <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.20</span>, <span class="fl">0.65</span>, <span class="fl">0.30</span>, <span class="fl">0.30</span><span class="op">)</span>,</span>
+<span>  <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.70</span>, <span class="fl">0.65</span>, <span class="fl">0.10</span>, <span class="fl">0.30</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">combined_ext</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="va">first_range</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span></span>
@@ -523,7 +523,7 @@ Assessment Units. Cambridge (UK): The Nature Conservancy. <a href="https://geosp
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

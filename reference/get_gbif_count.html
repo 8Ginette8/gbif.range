@@ -16,7 +16,7 @@ occurrence table."><meta property="og:image" content="https://8ginette8.github.i
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,8 @@ occurrence table.</p>
 <span>  conf_match <span class="op">=</span> <span class="fl">80</span>,</span>
 <span>  geo <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  has_xy <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  spatial_issue <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  spatial_issue <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -136,12 +137,17 @@ coordinates. If <code>FALSE</code>, count only records without coordinates. If
 without geospatial issues. If <code>TRUE</code>, count only records with
 geospatial issues. If <code>NULL</code>, count all records.</p></dd>
 
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>Logical. Should the formatted summary be printed to the
+console? Default is <code>TRUE</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A numeric vector of length two giving the total number of GBIF
-records and the number retained by the requested filters. A formatted summary
-is also printed to the console.</p>
+records and the number retained by the requested filters. If
+<code>verbose = TRUE</code>, a formatted summary is also printed to the console.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -152,12 +158,17 @@ the number retained after applying the chosen filters.</p>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Chamberlain, S., Oldoni, D., &amp; Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735</p>
+global biodiversity information facility API. <a href="https://doi.org/10.5281/zenodo.6023735" class="external-link">doi:10.5281/zenodo.6023735</a></p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="get_gbif.html">get_gbif</a></code>() to download the occurrence records
+counted by this function.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Get number of observations with default filters</span></span></span>
 <span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanoleuca"</span>,</span></span>
@@ -165,6 +176,12 @@ global biodiversity information facility API. 10.5281/zenodo.6023735</p>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  geo <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :         66 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get the total number of observations</span></span></span>
 <span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
@@ -173,6 +190,12 @@ global biodiversity information facility API. 10.5281/zenodo.6023735</p>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  geo <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = NULL, has_xy = NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example of setting global 'geo' (all records are still kept)</span></span></span>
 <span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
@@ -181,14 +204,26 @@ global biodiversity information facility API. 10.5281/zenodo.6023735</p>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  geo <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = NULL, has_xy = NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example of fuzzy matching when search is set to FALSE</span></span></span>
 <span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanolca"</span>,</span></span>
 <span class="r-in"><span>  search <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :         66 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example on the European Alps</span></span></span>
+<span class="r-in"><span><span class="co"># Example on the European Alps (has_xy = TRUE by default)</span></span></span>
 <span class="r-in"><span><span class="va">shp.lonlat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span>,</span></span>
@@ -201,8 +236,14 @@ global biodiversity information facility API. 10.5281/zenodo.6023735</p>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  geo <span class="op">=</span> <span class="va">shp.lonlat</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :      42972 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :       6340 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -214,7 +255,7 @@ global biodiversity information facility API. 10.5281/zenodo.6023735</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

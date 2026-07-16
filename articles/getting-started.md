@@ -107,9 +107,11 @@ al. (2021, *Ecological Monographs*).
 
 ``` r
 
-countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
+)
 terra::plot(countries, col = "#bcbddc")
-points(obs.pt[, c("decimalLongitude", "decimalLatitude")],
+graphics::points(obs.pt[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1.5)
 ```
 
@@ -134,7 +136,7 @@ are valid:
 ``` r
 
 # Download and read the packaged terrestrial ecoregions (The Nature Conservancy 2009)
-eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = tempdir())
 
 range.tiger <- get_range(
   occ_coord        = obs.pt,
@@ -180,7 +182,7 @@ obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000)
 get_status("Delphinus delphis", level = "all")
 
 # Build range maps at three levels of ecoregion detail
-eco.marine <- read_ecoreg(ecoreg_name = "eco_marine", save_dir = NULL)
+eco.marine <- read_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
 
 range.dd1 <- get_range(obs.dd, eco.marine, "ECOREGION")
 range.dd2 <- get_range(obs.dd, eco.marine, "PROVINCE")
@@ -190,7 +192,7 @@ range.dd3 <- get_range(obs.dd, eco.marine, "REALM")
 terra::plot(countries, col = "#bcbddc")
 terra::plot(range.dd3$rangeOutput, col = "#238b45",
             add = TRUE, axes = FALSE, legend = FALSE)
-points(obs.dd[, c("decimalLongitude", "decimalLatitude")],
+graphics::points(obs.dd[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
 ```
 
@@ -251,7 +253,7 @@ CHELSA bioclimatic layers (Karger et al. 2017) — mean annual temperature
 
 bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
 eco.eg <- make_ecoreg(env = bio, nclass = 10)
-terra::plot(eco.eg, col = rainbow(10))
+terra::plot(eco.eg, col = grDevices::rainbow(10))
 ```
 
 ![](../reference/figures/Part0_plot4.png)
@@ -292,7 +294,7 @@ alps.shp <- terra::crop(countries, terra::ext(bio))
 r.arcto  <- terra::mask(range.arcto$rangeOutput, alps.shp)
 terra::plot(alps.shp, col = "#bcbddc")
 terra::plot(r.arcto, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
-points(obs.arcto[, c("decimalLongitude", "decimalLatitude")],
+graphics::points(obs.arcto[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
 ```
 

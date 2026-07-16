@@ -24,7 +24,7 @@ and range mapping."><meta property="og:image" content="https://8ginette8.github.
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -287,8 +287,7 @@ query.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>#' @details
-The function follows the same taxonomic matching logic used by the GBIF
+    <p>The function follows the same taxonomic matching logic used by the GBIF
 website. Internally, the input name is first resolved against the GBIF
 backbone taxonomy. If the matched name is a synonym, the download uses the
 corresponding accepted GBIF taxon key rather than the synonym key itself.</p>
@@ -341,42 +340,28 @@ reported.</p>
     <p>Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P., Karger,
 D. N., ... &amp; Zimmermann, N. E. (2021). Influence of climate, soil, and
 land cover on plant species distribution in the European Alps. Ecological
-monographs, 91(2), e01433. 10.1002/ecm.1433</p>
+Monographs, 91(2), e01433. <a href="https://doi.org/10.1002/ecm.1433" class="external-link">doi:10.1002/ecm.1433</a></p>
 <p>Chamberlain, S., Oldoni, D., &amp; Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735</p>
+global biodiversity information facility API. <a href="https://doi.org/10.5281/zenodo.6023735" class="external-link">doi:10.5281/zenodo.6023735</a></p>
 <p>Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter, C.,
 Edler, D., ... &amp; Antonelli, A. (2019). CoordinateCleaner: Standardized
 cleaning of occurrence records from biological collection databases.
-Methods in Ecology and Evolution, 10(5), 744-751. 10.1111/2041-210X.13152</p>
-<p>Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version 1.6-7."
-(2022). Terra - CRAN</p>
+Methods in Ecology and Evolution, 10(5), 744-751.
+<a href="https://doi.org/10.1111/2041-210X.13152" class="external-link">doi:10.1111/2041-210X.13152</a></p>
+<p>Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
+1.6-7. <a href="https://cran.r-project.org/package=terra" class="external-link">https://cran.r-project.org/package=terra</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get_status.html">get_status()</a></code> to inspect the accepted name and synonym mapping
-returned by GBIF; <code>rgbif</code> for more general GBIF retrieval workflows;
-and <code>CoordinateCleaner</code> for more extensive occurrence cleaning.</p></div>
+    <div class="dont-index"><p><code><a href="get_status.html">get_status</a></code>() to inspect the accepted name and synonym
+mapping returned by GBIF; the <span class="pkg">rgbif</span> package for more general GBIF
+retrieval workflows; and the <span class="pkg">CoordinateCleaner</span> package for more
+extensive occurrence cleaning.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Download worldwide observations of Panthera tigris</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif</span><span class="op">(</span>sp_name <span class="op">=</span> <span class="st">"Panthera tigris"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot</span></span></span>
-<span class="r-in"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>       type <span class="op">=</span> <span class="st">"countries"</span>,</span></span>
-<span class="r-in"><span>       returnclass <span class="op">=</span> <span class="st">"sv"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>       <span class="va">obs.pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>       pch <span class="op">=</span> <span class="fl">20</span>,</span></span>
-<span class="r-in"><span>       col <span class="op">=</span> <span class="st">"#238b4550"</span>,</span></span>
-<span class="r-in"><span>       cex <span class="op">=</span> <span class="fl">4</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Download worldwide observations of Ailuropoda melanoleuca</span></span></span>
 <span class="r-in"><span><span class="co"># (with a 100km grain, after 1990 and by keeping duplicates and by</span></span></span>
 <span class="r-in"><span><span class="co"># adding the name of the person who collected the panda records)</span></span></span>
@@ -387,6 +372,37 @@ and <code>CoordinateCleaner</code> for more extensive occurrence cleaning.</p></
 <span class="r-in"><span>       time_period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1990</span>,<span class="fl">3000</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>       add_infos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"recordedBy"</span>,<span class="st">"issue"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :         66 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Ailuropoda melanoleuca: download starting...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       6        60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0        60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      16        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        44</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 66</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 22</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 44</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract borders</span></span></span>
+<span class="r-in"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"world_countries.shp"</span>, package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span></span>
@@ -396,6 +412,49 @@ and <code>CoordinateCleaner</code> for more extensive occurrence cleaning.</p></
 <span class="r-in"><span>       col <span class="op">=</span> <span class="st">"#238b4550"</span>,</span></span>
 <span class="r-in"><span>       cex <span class="op">=</span> <span class="fl">4</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="get_gbif-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Download worldwide observations of Panthera tigris</span></span></span>
+<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif</span><span class="op">(</span>sp_name <span class="op">=</span> <span class="st">"Panthera tigris"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       8007 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :       5457 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Panthera tigris: download starting...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering     117      5340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records    2587      2753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0      2753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      82      2671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0      2671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0      2671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0      2671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0      2671</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 5457</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 2786</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 2671</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Plot</span></span></span>
+<span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>       <span class="va">obs.pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>       pch <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>       col <span class="op">=</span> <span class="st">"#238b4550"</span>,</span></span>
+<span class="r-in"><span>       cex <span class="op">=</span> <span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="get_gbif-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Download worldwide observations of Bison bison</span></span></span>
 <span class="r-in"><span><span class="co"># (with a 1km grain, after 1990, and keeping raster centroids)</span></span></span>
@@ -405,7 +464,36 @@ and <code>CoordinateCleaner</code> for more extensive occurrence cleaning.</p></
 <span class="r-in"><span>       time_period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1990</span>,<span class="fl">3000</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>       centroids <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :      31282 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :      27478 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...(&gt; 10'000 records) retrieving tiles...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Bison bison: download starting...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (5.26%..)              ------------- #2 (10.53%..)             ------------- #3 (15.79%..)             ------------- #4 (21.05%..)             ------------- #5 (26.32%..)             ------------- #6 (31.58%..)             ------------- #7 (36.84%..)             ------------- #8 (42.11%..)             ------------- #9 (47.37%..)             ------------- #10 (52.63%..)            ------------- #11 (57.89%..)            ------------- #12 (63.16%..)            ------------- #13 (68.42%..)            ------------- #14 (73.68%..)            ------------- #15 (78.95%..)            ------------- #16 (84.21%..)            ------------- #17 (89.47%..)            ------------- #18 (94.74%..)            ------------- #19 (100%..)              </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering   14538     12940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records    1135     11805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0     11805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection     227     11578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0     11578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame      19     11559</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0     11559</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 27478</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 15919</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 11559</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -417,7 +505,7 @@ and <code>CoordinateCleaner</code> for more extensive occurrence cleaning.</p></
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

@@ -61,7 +61,7 @@ env <- c(r1, r2)
 
 # Derive four custom ecoregions from the environmental layers.
 eco <- make_ecoreg(env = env, nclass = 4)
-#> CLARA algorithm processing... 
+#> CLARA algorithm processing...
 #> Generating polygons...
 
 # Define one species as an occurrence table in the format expected by get_range().
@@ -84,7 +84,7 @@ terra::plot(
   col = "#3c8d5a",
   main = "A minimal ecoregion-constrained range"
 )
-points(occ$decimalLongitude, occ$decimalLatitude, pch = 4)
+graphics::points(occ$decimalLongitude, occ$decimalLatitude, pch = 4)
 ```
 
 ![](ecoregion-constrained-range-inference_files/figure-html/minimal-example-1.png)
@@ -132,7 +132,7 @@ The public pattern for a terrestrial analysis is:
 
 ``` r
 
-eco_terra <- read_ecoreg("eco_terra")
+eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
 obs_tiger <- get_gbif("Panthera tigris")
 
 range_tiger <- get_range(
@@ -197,7 +197,7 @@ obs_tiger <- get_gbif(
 )
 
 # Step 2: load the packaged terrestrial ecoregion layer.
-eco_terra <- read_ecoreg("eco_terra")
+eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
 
 # Step 3: infer the range at the default 0.1 degree output resolution.
 range_tiger <- get_range(
@@ -210,7 +210,7 @@ range_tiger <- get_range(
 )
 
 terra::plot(range_tiger$rangeOutput, col = "#238b45")
-points(obs_tiger[, c("decimalLongitude", "decimalLatitude")], pch = 20)
+graphics::points(obs_tiger[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
 
 ![](../reference/figures/Part1_tiger_workflow.png)
@@ -253,7 +253,7 @@ range_arcto <- get_range(
 )
 
 terra::plot(range_arcto$rangeOutput, col = "#3c8d5a")
-points(obs_arcto[, c("decimalLongitude", "decimalLatitude")], pch = 20)
+graphics::points(obs_arcto[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
 
 ![](../reference/figures/Part1_arcto_workflow.png)

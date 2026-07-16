@@ -17,4 +17,4 @@ getGBIF(df)
 
 ## Value
 
-An object of class `getGBIF`.
+An object of class `c("getGBIF", "data.frame")`.

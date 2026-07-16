@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -141,7 +141,7 @@ short occurrence table is passed to <code><a href="../reference/get_range.html">
 <span></span>
 <span><span class="co"># Derive four custom ecoregions from the environmental layers.</span></span>
 <span><span class="va">eco</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ecoreg.html">make_ecoreg</a></span><span class="op">(</span>env <span class="op">=</span> <span class="va">env</span>, nclass <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; CLARA algorithm processing... </span></span>
+<span><span class="co">#&gt; CLARA algorithm processing...</span></span>
 <span><span class="co">#&gt; Generating polygons...</span></span>
 <span></span>
 <span><span class="co"># Define one species as an occurrence table in the format expected by get_range().</span></span>
@@ -164,7 +164,7 @@ short occurrence table is passed to <code><a href="../reference/get_range.html">
 <span>  col <span class="op">=</span> <span class="st">"#3c8d5a"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"A minimal ecoregion-constrained range"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">occ</span><span class="op">$</span><span class="va">decimalLongitude</span>, <span class="va">occ</span><span class="op">$</span><span class="va">decimalLatitude</span>, pch <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">occ</span><span class="op">$</span><span class="va">decimalLongitude</span>, <span class="va">occ</span><span class="op">$</span><span class="va">decimalLatitude</span>, pch <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ecoregion-constrained-range-inference_files/figure-html/minimal-example-1.png" class="r-plt" alt="" width="672"></p>
 <p>Three practical points are worth noting here.</p>
 <p>First, <code><a href="../reference/get_range.html">get_range()</a></code> accepts any set of occurrence
@@ -196,7 +196,7 @@ Spalding et al. 2007, 2012; The Nature Conservancy 2012), and freshwater
 <span><span class="co">#&gt; [1] "eco_terra"     "eco_fresh"     "eco_marine"    "eco_hd_marine"</span></span></code></pre></div>
 <p>The public pattern for a terrestrial analysis is:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">obs_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">range_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
@@ -253,7 +253,7 @@ ecoregional boundaries.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Step 2: load the packaged terrestrial ecoregion layer.</span></span>
-<span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span><span class="op">)</span></span>
+<span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Step 3: infer the range at the default 0.1 degree output resolution.</span></span>
 <span><span class="va">range_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
@@ -266,7 +266,7 @@ ecoregional boundaries.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_tiger</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#238b45"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_tiger</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_tiger</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../reference/figures/Part1_tiger_workflow.png" class="r-plt" alt="" width="50%"></p>
 <p>This is the typical continental to global pattern. The ecoregion
 layer is externally defined and ecologically interpretable, while the
@@ -306,7 +306,7 @@ example CHELSA bioclimatic rasters (Karger et al. 2017).</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_arcto</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#3c8d5a"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_arcto</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_arcto</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../reference/figures/Part1_arcto_workflow.png" class="r-plt" alt="" width="50%"></p>
 <p>This regional example shows why <code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code> is part of
 the main package workflow rather than an auxiliary convenience. At small
@@ -450,7 +450,7 @@ Provinces of the World. Cambridge (UK): The Nature Conservancy. <a href="https:/
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -14,7 +14,7 @@ cross-validation."><meta property="og:image" content="https://8ginette8.github.i
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,18 +109,50 @@ tries to balance fold sizes as evenly as possible.</p>
     <p>Brun, P., Thuiller, W., Chauvier, Y., Pellissier, L., Wüest, R. O.,
 Wang, Z., &amp; Zimmermann, N. E. (2020). Model complexity affects species
 distribution projections under climate change. Journal of Biogeography,
-47(1), 130-142.</p>
+47(1), 130-142. <a href="https://doi.org/10.1111/jbi.13700" class="external-link">doi:10.1111/jbi.13700</a></p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="cv_range.html">cv_range</a></code>() which uses this function internally to
+create cross-validation folds.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Downloading worldwide the observations of Panthera tigris</span></span></span>
 <span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    sp_name <span class="op">=</span> <span class="st">"Panthera tigris"</span>,</span></span>
 <span class="r-in"><span>    basis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OBSERVATION"</span>,<span class="st">"HUMAN_OBSERVATION"</span>,</span></span>
 <span class="r-in"><span>        <span class="st">"MACHINE_OBSERVATION"</span>,<span class="st">"OCCURRENCE"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       8007 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :       5457 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Panthera tigris: download starting...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering     117      5340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records    2587      2753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0      2753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection     351      2402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0      2402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0      2402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0      2402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0      2402</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 5457</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 3055</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 2402</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a vector of folds (n = 5) spatially blocked (n = 10)</span></span></span>
 <span class="r-in"><span><span class="va">block.pt</span> <span class="op">&lt;-</span> <span class="fu">make_blocks</span><span class="op">(</span></span></span>
@@ -128,11 +160,11 @@ distribution projections under climate change. Journal of Biogeography,
 <span class="r-in"><span>    df <span class="op">=</span> <span class="va">obs.pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLatitude"</span>,<span class="st">"decimalLongitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>    nblocks <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 6 variables with 5, 5, 5, 5, ... levels: 15625 function evaluations required.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot one colour per fold</span></span></span>
-<span class="r-in"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    type <span class="op">=</span> <span class="st">"countries"</span>,</span></span>
-<span class="r-in"><span>    returnclass <span class="op">=</span> <span class="st">"sv"</span></span></span>
+<span class="r-in"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"world_countries.shp"</span>, package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">countries.focus</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="va">countries</span>,</span></span>
@@ -145,7 +177,9 @@ distribution projections under climate change. Journal of Biogeography,
 <span class="r-in"><span>    col <span class="op">=</span> <span class="va">block.pt</span>,</span></span>
 <span class="r-in"><span>    cex <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-plt img"><img src="make_blocks-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -157,7 +191,7 @@ distribution projections under climate change. Journal of Biogeography,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

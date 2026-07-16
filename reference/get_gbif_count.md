@@ -19,7 +19,8 @@ get_gbif_count(
   conf_match = 80,
   geo = NULL,
   has_xy = TRUE,
-  spatial_issue = FALSE
+  spatial_issue = FALSE,
+  verbose = TRUE
 )
 ```
 
@@ -88,11 +89,16 @@ get_gbif_count(
   issues. If `TRUE`, count only records with geospatial issues. If
   `NULL`, count all records.
 
+- verbose:
+
+  Logical. Should the formatted summary be printed to the console?
+  Default is `TRUE`.
+
 ## Value
 
 A numeric vector of length two giving the total number of GBIF records
-and the number retained by the requested filters. A formatted summary is
-also printed to the console.
+and the number retained by the requested filters. If `verbose = TRUE`, a
+formatted summary is also printed to the console.
 
 ## Details
 
@@ -104,12 +110,18 @@ retained after applying the chosen filters.
 ## References
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
-the global biodiversity information facility API. 10.5281/zenodo.6023735
+the global biodiversity information facility API.
+[doi:10.5281/zenodo.6023735](https://doi.org/10.5281/zenodo.6023735)
+
+## See also
+
+[`get_gbif`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)()
+to download the occurrence records counted by this function.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Get number of observations with default filters
 obs.pt <- get_gbif_count(
   sp_name = "Ailuropoda melanoleuca",
@@ -117,6 +129,12 @@ obs.pt <- get_gbif_count(
   spatial_issue = FALSE,
   geo = NULL
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :         66 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
 
 # Get the total number of observations
 obs.pt <- get_gbif_count(
@@ -125,6 +143,12 @@ obs.pt <- get_gbif_count(
   spatial_issue = NULL,
   geo = NULL
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :        300 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = NULL, has_xy = NULL
 
 # Example of setting global 'geo' (all records are still kept)
 obs.pt <- get_gbif_count(
@@ -133,14 +157,26 @@ obs.pt <- get_gbif_count(
   spatial_issue = NULL,
   geo = terra::ext()
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :        300 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = NULL, has_xy = NULL
 
 # Example of fuzzy matching when search is set to FALSE
 obs.pt <- get_gbif_count(
   sp_name = "Ailuropoda melanolca",
   search = FALSE
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :         66 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
 
-# Example on the European Alps
+# Example on the European Alps (has_xy = TRUE by default)
 shp.lonlat <- terra::vect(
     paste0(
         system.file(package = "gbif.range"),
@@ -153,6 +189,12 @@ obs.pt <- get_gbif_count(
   spatial_issue = FALSE,
   geo = shp.lonlat
 )
+#> |--------------------------------------------|
+#> | Total number (all records)    :      42972 |
+#> | Kept records                  :       6340 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
 
-} # }
+# }
 ```

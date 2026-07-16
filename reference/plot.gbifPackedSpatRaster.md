@@ -20,3 +20,7 @@ plot(x, ...)
 
   Additional arguments passed to
   [`terra::plot()`](https://rspatial.github.io/terra/reference/plot.html).
+
+## Value
+
+`x`, invisibly. Called for its side effect of plotting.

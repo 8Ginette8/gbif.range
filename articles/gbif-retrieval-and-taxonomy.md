@@ -130,7 +130,7 @@ obs_tiger <- get_gbif(
 get_status("Panthera tigris", level = "children")
 
 # Retrieve a terrestrial ecoregion layer and build the range.
-eco_terra <- read_ecoreg("eco_terra")
+eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
 range_tiger <- get_range(
   occ_coord = obs_tiger,
   ecoreg = eco_terra,
@@ -214,7 +214,7 @@ obs_delphis <- get_gbif(
 get_status("Delphinus delphis", level = "all")
 
 # Build a marine range from the packaged ecoregions.
-eco_marine <- read_ecoreg("eco_marine")
+eco_marine <- read_ecoreg("eco_marine", save_dir = tempdir())
 range_delphis <- get_range(
   occ_coord = obs_delphis,
   ecoreg = eco_marine,
@@ -242,7 +242,7 @@ rather than a live web query.
 
 occ_raw <- utils::read.delim(ext_file("occ_example_4sps.csv"), sep = "\t", stringsAsFactors = FALSE)
 occ_raw$input_search <- occ_raw$species
-occ_gbif <- gbif.range:::getGBIF(occ_raw)
+occ_gbif <- getGBIF(occ_raw)
 
 # Build a coarse grid that spans the example records.
 grid <- terra::rast(

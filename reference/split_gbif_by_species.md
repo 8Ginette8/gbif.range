@@ -28,7 +28,7 @@ split_gbif_by_species(
 
 - outdir:
 
-  Chracter. Directory where one per-species file will be written.
+  Character. Directory where one per-species file will be written.
 
 - chunk_size:
 
@@ -80,7 +80,6 @@ to process the written species files sequentially with
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 if (requireNamespace("data.table", quietly = TRUE)) {
   gbif_file <- system.file("extdata", "occ_example_2sps.csv", package = "gbif.range")
   split_dir <- file.path(tempdir(), "gbif_split_help")
@@ -100,5 +99,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 
   split_summary[, c("species_name", "n_records", "species_file")]
 }
-} # }
+#>      species_name n_records
+#> 2 Crocuta crocuta        20
+#> 1   Hyaena hyaena        20
+#>                                                                         species_file
+#> 2 /tmp/RtmpXgHW0u/gbif_split_help/occurrences_speciesKey_5218781_Crocuta_crocuta.csv
+#> 1   /tmp/RtmpXgHW0u/gbif_split_help/occurrences_speciesKey_5218777_Hyaena_hyaena.csv
 ```

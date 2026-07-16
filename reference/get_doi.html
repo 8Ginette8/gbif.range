@@ -14,7 +14,7 @@ one or more get_gbif() outputs into a citable derived dataset."><meta property="
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,21 +114,50 @@ structure of the returned metadata.</p>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Chamberlain, S., Oldoni, D., &amp; Waller, J. (2022). rgbif: interface to the
-global biodiversity information facility API. 10.5281/zenodo.6023735</p>
+global biodiversity information facility API.
+<a href="https://doi.org/10.5281/zenodo.6023735" class="external-link">doi:10.5281/zenodo.6023735</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>The <code>rgbif</code> package for more general workflows to create GBIF
-derived datasets and DOIs.</p></div>
+    <div class="dont-index"><p><code><a href="get_gbif.html">get_gbif</a></code>() to produce the <code>getGBIF</code> objects
+used as input here; the <span class="pkg">rgbif</span> package for more general workflows to
+create GBIF derived datasets and DOIs.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>  <span class="co"># unknown credentials</span></span></span>
 <span class="r-in"><span><span class="co"># Download worldwide observations of Panthera tigris</span></span></span>
 <span class="r-in"><span><span class="co"># and Ailuropoda melanoleuca</span></span></span>
 <span class="r-in"><span><span class="va">obspt</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">obsam</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :         66 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Ailuropoda melanoleuca: download starting...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       6        60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records      13        47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0        47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection       8        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        39</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 66</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 27</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 39</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Retrieve a DOI for one get_gbif() output</span></span></span>
 <span class="r-in"><span><span class="fu">get_doi</span><span class="op">(</span></span></span>
@@ -139,6 +168,7 @@ derived datasets and DOIs.</p></div>
 <span class="r-in"><span>       user <span class="op">=</span> <span class="st">""</span>,</span></span>
 <span class="r-in"><span>       pwd <span class="op">=</span> <span class="st">""</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="co"># Use your own GBIF credentials here</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'obspt' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Retrieve a DOI for several get_gbif() outputs</span></span></span>
 <span class="r-in"><span><span class="fu">get_doi</span><span class="op">(</span></span></span>
@@ -149,8 +179,9 @@ derived datasets and DOIs.</p></div>
 <span class="r-in"><span>       user <span class="op">=</span> <span class="st">""</span>,</span></span>
 <span class="r-in"><span>       pwd <span class="op">=</span> <span class="st">""</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="co"># Use your own GBIF credentials here</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'obspt' not found</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span> <span class="co"># \dontrun{}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -162,7 +193,7 @@ derived datasets and DOIs.</p></div>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

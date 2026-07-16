@@ -32,14 +32,14 @@ Source:
 [`DESCRIPTION`](https://github.com/8Ginette8/gbif.range/blob/main/DESCRIPTION)
 
 Chauvier Y, Hagen O, Pinkert S, Albouy C, Fopp F, Brun P, Descombes P,
-Altermatt F, Pellissier L, Csillery K (2026). *gbif.range: Tools for
-GBIF Retrieval and Ecoregion-Based Species Range Mapping*. R package
-version 1.6.3, <https://github.com/8Ginette8/gbif.range>.
+Altermatt F, Pellissier L, Csillery K (2026). *gbif.range: Species Range
+Mapping from GBIF Using Ecoregion Constraints*. R package version 1.7.0,
+<https://github.com/8Ginette8/gbif.range>.
 
     @Manual{,
-      title = {gbif.range: Tools for GBIF Retrieval and Ecoregion-Based Species Range Mapping},
+      title = {gbif.range: Species Range Mapping from GBIF Using Ecoregion Constraints},
       author = {Yohann Chauvier and Oskar Hagen and Stefan Pinkert and Camille Albouy and Fabian Fopp and Philipp Brun and Patrice Descombes and Florian Altermatt and Loïc Pellissier and Katalin Csillery},
       year = {2026},
-      note = {R package version 1.6.3},
+      note = {R package version 1.7.0},
       url = {https://github.com/8Ginette8/gbif.range},
     }

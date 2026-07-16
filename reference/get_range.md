@@ -112,8 +112,7 @@ using a combination of Gaussian mixture modeling and k-means clustering.
 
 Third, each cluster is converted into a polygon. Single points receive
 circular buffers, collinear clusters receive line-based buffers, and
-other clusters receive buffered convex hulls through
-[`conv_function()`](https://8ginette8.github.io/gbif.range/reference/conv_function.md).
+other clusters receive buffered convex hulls through `conv_function()`.
 
 Fourth, cluster polygons are intersected with their parent ecoregions
 and merged into a final range layer.
@@ -124,23 +123,25 @@ species, `eco_fresh` for freshwater species, and `eco_marine` or
 
 ## References
 
-Oskar Hagen, Lisa Vaterlaus, Camille Albouy, Andrew Brown, Flurin
-Leugger, Renske E. Onstein, Charles Novaes de Santana, Christopher R.
-Scotese, Loïc Pellissier. (2019) Mountain building, climate cooling and
-the richness of cold-adapted plants in the Northern Hemisphere. Journal
-of Biogeography. doi: 10.1111/jbi.13653
+Hagen, O., Vaterlaus, L., Albouy, C., Brown, A., Leugger, F., Onstein,
+R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019).
+Mountain building, climate cooling and the richness of cold-adapted
+plants in the Northern Hemisphere. Journal of Biogeography.
+[doi:10.1111/jbi.13653](https://doi.org/10.1111/jbi.13653)
 
 Lyu, L., Leugger, F., Hagen, O., Fopp, F., Boschman, L. M., Strijk, J.
 S., ... & Pellissier, L. (2022). An integrated high resolution mapping
 shows congruent biodiversity patterns of Fagales and Pinales. New
-Phytologist, 235(2), 759-772 10.1111/nph.18158
+Phytologist, 235(2), 759-772.
+[doi:10.1111/nph.18158](https://doi.org/10.1111/nph.18158)
 
 Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D.,
 Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I., Strand,
 H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F., Ricketts, T. H.,
 Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem, K. R.
-2001. Terrestrial ecoregions of the world: a new map of life on Earth.
-BioScience 51(11):933-938. doi: 10.1641/0006-3568(2001)051
+(2001). Terrestrial ecoregions of the world: a new map of life on Earth.
+BioScience, 51(11), 933-938.
+[doi:10.1641/0006-3568(2001)051\[0933:TEOTWA\]2.0.CO;2](https://doi.org/10.1641/0006-3568%282001%29051%5B0933%3ATEOTWA%5D2.0.CO%3B2)
 
 The Nature Conservancy (2009). Global Ecoregions, Major Habitat Types,
 Biogeographical Realms and The Nature Conservancy Terrestrial Assessment
@@ -148,48 +149,51 @@ Units. GIS layers developed by The Nature Conservancy with multiple
 partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
 Cambridge (UK): The Nature Conservancy.
 
-Mark D. Spalding, Helen E. Fox, Gerald R. Allen, Nick Davidson, Zach A.
-Ferdaña, Max Finlayson, Benjamin S. Halpern, Miguel A. Jorge, Al
-Lombana, Sara A. Lourie, Kirsten D. Martin, Edmund McManus, Jennifer
-Molnar, Cheri A. Recchia, James Robertson, Marine Ecoregions of the
-World: A Bioregionalization of Coastal and Shelf Areas, BioScience,
-Volume 57, Issue 7, July 2007, Pages 573–583. doi: 10.1641/B570707
+Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
+Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
+(2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
+and Shelf Areas. BioScience, 57(7), 573-583.
+[doi:10.1641/B570707](https://doi.org/10.1641/B570707)
 
 Spalding, M. D., Agostini, V. N., Rice, J., & Grant, S. M. (2012).
 Pelagic provinces of the world: a biogeographic classification of the
-world’s surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
-doi: 10.1016/j.ocecoaman.2011.12.016
+world's surface pelagic waters. Ocean & Coastal Management, 60, 19-30.
+[doi:10.1016/j.ocecoaman.2011.12.016](https://doi.org/10.1016/j.ocecoaman.2011.12.016)
 
 The Nature Conservancy (2012). Marine Ecoregions and Pelagic Provinces
 of the World. GIS layers developed by The Nature Conservancy with
 multiple partners, combined from Spalding et al. (2007) and Spalding et
 al. (2012). Cambridge (UK): The Nature Conservancy.
 
-Robin Abell, Michele L. Thieme, Carmen Revenga, Mark Bryer, Maurice
-Kottelat, Nina Bogutskaya, Brian Coad, Nick Mandrak, Salvador Contreras
-Balderas, William Bussing, Melanie L. J. Stiassny, Paul Skelton, Gerald
-R. Allen, Peter Unmack, Alexander Naseka, Rebecca Ng, Nikolai Sindorf,
-James Robertson, Eric Armijo, Jonathan V. Higgins, Thomas J. Heibel,
-Eric Wikramanayake, David Olson, Hugo L. López, Roberto E. Reis, John G.
-Lundberg, Mark H. Sabaj Pérez, Paulo Petry, Freshwater Ecoregions of the
-World: A New Map of Biogeographic Units for Freshwater Biodiversity
-Conservation, BioScience, Volume 58, Issue 5, May 2008, Pages 403–414.
-doi: 10.1641/B580507
+Abell, R., Thieme, M. L., Revenga, C., Bryer, M., Kottelat, M.,
+Bogutskaya, N., Coad, B., Mandrak, N., Contreras Balderas, S., Bussing,
+W., Stiassny, M. L. J., Skelton, P., Allen, G. R., Unmack, P., Naseka,
+A., Ng, R., Sindorf, N., Robertson, J., Armijo, E., Higgins, J. V.,
+Heibel, T. J., Wikramanayake, E., Olson, D., Lopez, H. L., Reis, R. E.,
+Lundberg, J. G., Sabaj Perez, M. H., Petry, P. (2008). Freshwater
+Ecoregions of the World: A New Map of Biogeographic Units for Freshwater
+Biodiversity Conservation. BioScience, 58(5), 403-414.
+[doi:10.1641/B580507](https://doi.org/10.1641/B580507)
 
-Hijmans, Robert J. "terra: Spatial Data Analysis. R Package Version
-1.6-7." (2022). Terra - CRAN
+Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
+1.6-7. <https://cran.r-project.org/package=terra>
 
 ## See also
 
-[`read_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/read_ecoreg.md),
-[`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md),
+[`read_ecoreg`](https://8ginette8.github.io/gbif.range/reference/read_ecoreg.md)()
 and
-[`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md).
+[`make_ecoreg`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)()
+to prepare the ecoregion layer used here;
+[`cv_range`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)()
+and
+[`evaluate_range`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md)()
+to evaluate the resulting range map.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 ###########################################
 ### Example plot
 ###########################################
@@ -197,11 +201,38 @@ if (FALSE) { # \dontrun{
 # Load available ecoregions
 eco.terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
-    save_dir = NULL
+    save_dir = tempdir()
 )
 
 # First download the worldwide observations of Panthera tigris from GBIF
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
+#> |--------------------------------------------|
+#> | Total number (all records)    :       8007 |
+#> | Kept records                  :       5457 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
+#> 
+#> ...GBIF records of Panthera tigris: download starting...
+#> ------------- #1 (100%..)               
+#> 
+#> ...Records (XY) filtering summary:
+#> -----------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering     117      5340
+#>       Duplicated records    2587      2753
+#>          Absence records       0      2753
+#>          Basis selection      82      2671
+#>  Establishment selection       0      2671
+#>               Time frame       0      2671
+#>        Identical records       0      2671
+#>         Raster centroids       0      2671
+#> 
+#> Initial records         : 5457
+#> Total removed           : 2786
+#> Final records (XY)      : 2671
+#> -----------------------------------------------
+#> Final records (no XY)   : 0
 
 # Build a range map from occurrence points
 range.tiger <- get_range(
@@ -210,12 +241,58 @@ range.tiger <- get_range(
     ecoreg_name = "ECO_NAME",
     format = "SpatRaster"
 )
+#> ## Start of computation for species:  Panthera tigris  ### 
+#> 27 outlier's from 2666 | proportion from total points: 1%
+#> ecoregion 1  of  44 :  Amur Meadow Steppe 
+#> ecoregion 2  of  44 :  Brahmaputra Valley Semi-Evergreen Forests 
+#> ecoregion 3  of  44 :  Central Deccan Plateau Dry Deciduous Forests 
+#> ecoregion 4  of  44 :  Central Indochina Dry Forests 
+#> ecoregion 5  of  44 :  Chao Phraya Freshwater Swamp Forests 
+#> ecoregion 6  of  44 :  Chhota-Nagpur Dry Deciduous Forests 
+#> ecoregion 7  of  44 :  Deccan Thorn Scrub Forests 
+#> ecoregion 8  of  44 :  Eastern Highlands Moist Deciduous Forests 
+#> ecoregion 9  of  44 :  Eastern Himalayan Alpine Shrub And Meadows 
+#> ecoregion 10  of  44 :  Eastern Himalayan Broadleaf Forests 
+#> ecoregion 11  of  44 :  Eastern Himalayan Subalpine Conifer Forests 
+#> ecoregion 12  of  44 :  Eastern Java-Bali Rain Forests 
+#> ecoregion 13  of  44 :  Himalayan Subtropical Broadleaf Forests 
+#> ecoregion 14  of  44 :  Himalayan Subtropical Pine Forests 
+#> ecoregion 15  of  44 :  Kayah-Karen Montane Rain Forests 
+#> ecoregion 16  of  44 :  Khathiar-Gir Dry Deciduous Forests 
+#> ecoregion 17  of  44 :  Lower Gangetic Plains Moist Deciduous Forests 
+#> ecoregion 18  of  44 :  Luang Prabang Montane Rain Forests 
+#> ecoregion 19  of  44 :  Manchurian Mixed Forests 
+#> ecoregion 20  of  44 :  Meghalaya Subtropical Forests 
+#> ecoregion 21  of  44 :  Mizoram-Manipur-Kachin Rain Forests 
+#> ecoregion 22  of  44 :  Narmada Valley Dry Deciduous Forests 
+#> ecoregion 23  of  44 :  North Western Ghats Moist Deciduous Forests 
+#> ecoregion 24  of  44 :  North Western Ghats Montane Rain Forests 
+#> ecoregion 25  of  44 :  Northwestern Thorn Scrub Forests 
+#> ecoregion 26  of  44 :  Okhotsk-Manchurian Taiga 
+#> ecoregion 27  of  44 :  Orissa Semi-Evergreen Forests 
+#> ecoregion 28  of  44 :  Peninsular Malaysian Montane Rain Forests 
+#> ecoregion 29  of  44 :  Peninsular Malaysian Rain Forests 
+#> ecoregion 30  of  44 :  South Deccan Plateau Dry Deciduous Forests 
+#> ecoregion 31  of  44 :  South Western Ghats Moist Deciduous Forests 
+#> ecoregion 32  of  44 :  South Western Ghats Montane Rain Forests 
+#> ecoregion 33  of  44 :  Southeastern Indochina Dry Evergreen Forests 
+#> ecoregion 34  of  44 :  Suiphun-Khanka Meadows And Forest Meadows 
+#> ecoregion 35  of  44 :  Sumatran Freshwater Swamp Forests 
+#> ecoregion 36  of  44 :  Sumatran Lowland Rain Forests 
+#> ecoregion 37  of  44 :  Sumatran Montane Rain Forests 
+#> ecoregion 38  of  44 :  Sumatran Peat Swamp Forests 
+#> ecoregion 39  of  44 :  Sunda Shelf Mangroves 
+#> ecoregion 40  of  44 :  Sundarbans Mangroves 
+#> ecoregion 41  of  44 :  Tenasserim-South Thailand Semi-Evergreen Rain Forests 
+#> ecoregion 42  of  44 :  Terai-Duar Savanna And Grasslands 
+#> ecoregion 43  of  44 :  Upper Gangetic Plains Moist Deciduous Forests 
+#> ecoregion 44  of  44 :  Ussuri Broadleaf And Mixed Forests 
+#> ## End of computation for species:  Panthera tigris  ### 
 
 # Plot
     # Plot political world boundaries
-countries <- rnaturalearth::ne_countries(
-    type = "countries",
-    returnclass = "sv"
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
 terra::plot(
     terra::crop(countries, terra::ext(range.tiger$rangeOutput)),
@@ -240,24 +317,15 @@ graphics::points(
     cex = 1.5
 )
 
+
 ###########################################
 ### Manuscript plot
 ###########################################
 
 # Root and package
-root_dir <- list.files(
-    system.file(package = "gbif.range"),
-    pattern = "extdata",
-    full.names = TRUE
-)
+root_dir <- tempdir()
 if (!dir.exists(file.path(root_dir, "fig_plots"))) {
     dir.create(file.path(root_dir, "fig_plots"))
-}
-if (!requireNamespace("colorspace", quietly = TRUE)) {
-    install.packages("colorspace")
-}
-if (!requireNamespace("DescTools", quietly = TRUE)) {
-    install.packages("DescTools")
 }
 
 # CRS
@@ -276,7 +344,7 @@ ext.temp <- c(ext.temp[1]-2, ext.temp[2]+2, ext.temp[3]-2, ext.temp[4]+2)
 
 # Assign colors to ecoregions
 eco.local <- terra::crop(eco.terra, ext.temp)
-col.palette <- colorRampPalette(
+col.palette <- grDevices::colorRampPalette(
     c("#a6cee3", "#1f78b4", "#b2df8a",
     "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6",
     "#6a3d9a", "#ffff99", "#b15928")
@@ -297,7 +365,7 @@ pt.col <- terra::extract(
 pt.plot = obs.pt[!is.na(pt.col$color),
     c("decimalLongitude","decimalLatitude")]
 pt.col2 = pt.col[!is.na(pt.col$color), "color"]
-pt.col3 = colorspace::darken(pt.col2, amount=0.6)
+pt.col3 = grDevices::adjustcolor(pt.col2, red.f = 0.6, green.f = 0.6, blue.f = 0.6)
 
 # Out points
 out.plot <- terra::extract(
@@ -308,7 +376,7 @@ op.na <- is.na(out.plot[,2])
 out.plot <- obs.pt[op.na, c("decimalLongitude","decimalLatitude")]
 
 # Plot
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig1_tiger.png"
@@ -319,7 +387,7 @@ png(
     res = 100,
     pointsize = 110
 )
-par(mfrow = c(1, 1), mar = c(5, 5, 5, 20), lwd = 10, cex = 0.5)
+oldpar <- graphics::par(mfrow = c(1, 1), mar = c(5, 5, 5, 20), lwd = 10, cex = 0.5)
 terra::plot(
     eco.local,
     col = eco.local$color,
@@ -336,7 +404,10 @@ terra::plot(
 graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 1)
 graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.6)
 graphics::points(out.plot, col = "black", pch = 4, cex = 1, lwd = 10)
-dev.off()
+grDevices::dev.off()
+#> agg_record_1debf4e24f0 
+#>                      2 
+graphics::par(oldpar)
 
 # ------------------------------------------------
 # Package manuscript plot (Fig 3, world maps)
@@ -358,18 +429,16 @@ gf.robin <- terra::rast(gf.path)
 countries.robin <- terra::project(countries, robin)
 
 # Boundary box
-bb <- terra::vect(
-    rnaturalearth::ne_download(
-        type = "wgs84_bounding_box",
-        returnclass = "sf",
-        category = "physical"
-    )
+bb <- terra::as.polygons(
+  terra::ext(-180, 180, -90, 90),
+  crs = "EPSG:4326"
 )
+bb <- terra::densify(bb, interval = 1)
 bb.robin <- terra::project(bb, robin)
 
 # Plot IUCN map
 max.iucn <- round(terra::minmax(iucn.robin)[2])
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig3_div_iucn.png"
@@ -380,8 +449,8 @@ png(
     res = 80,
     pointsize = 80
 )
-par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
-col = colorRampPalette(
+oldpar <- graphics::par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
+col = grDevices::colorRampPalette(
     c("#67a9cf", "#f7f7f7", "#ef8a62")
 )
 terra::plot(
@@ -394,8 +463,8 @@ terra::plot(
 )
 terra::plot(countries.robin, add = TRUE, lwd = 5)
 terra::plot(bb.robin, add = TRUE, lwd = 8)
-par(xpd = NA)
-gbif.range:::cscl(
+graphics::par(xpd = NA)
+cscl(
     colors = col(10),
     crds = c(-9501111, 9734033, -11800000, -13000000),
     zrng = c(0, max.iucn),
@@ -409,12 +478,14 @@ gbif.range:::cscl(
     labs = seq(0, max.iucn, 10),
     titlag = 2
 )
-par(xpd = FALSE)
-dev.off()
+grDevices::dev.off()
+#> agg_record_1debf4e24f0 
+#>                      2 
+graphics::par(oldpar)
 
 # Plot GBIF.RANGE map
 max.gf <- round(terra::minmax(gf.robin)[2])
-png(
+grDevices::png(
     paste0(
         root_dir,
         "/fig_plots/fig3_div_gf.png"
@@ -425,8 +496,8 @@ png(
     res = 80,
     pointsize = 80
 )
-par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
-col = colorRampPalette(
+oldpar <- graphics::par(mfrow = c(1, 1), lwd = 14, cex = 1.1)
+col = grDevices::colorRampPalette(
     c("#67a9cf", "#f7f7f7", "#ef8a62")
 )
 terra::plot(
@@ -439,8 +510,8 @@ terra::plot(
 )
 terra::plot(countries.robin, add = TRUE, lwd = 5)
 terra::plot(bb.robin, add = TRUE, lwd = 8)
-par(xpd = NA)
-gbif.range:::cscl(
+graphics::par(xpd = NA)
+cscl(
     colors = col(10),
     crds = c(-9501111, 9734033, -11800000, -13000000),
     zrng = c(0, max.gf),
@@ -454,8 +525,10 @@ gbif.range:::cscl(
     labs = seq(0, max.gf, 10),
     titlag = 2
 )
-par(xpd = FALSE)
-dev.off()
+grDevices::dev.off()
+#> agg_record_1debf4e24f0 
+#>                      2 
+graphics::par(oldpar)
 
 # ------------------------------------------------
 # Package manuscript plot (Fig 3, scatter plots)
@@ -496,11 +569,11 @@ lapply(1:length(dat.plot), function(x) {
         strings[x],
         "_gbifrange_cor.pdf"
     )
-    pdf(pdf.path, width = 6.3, height = 6)
-    par(mfrow = c(1, 1), mar = c(5, 5, 5, 5), lwd = 2)
+    grDevices::pdf(pdf.path, width = 6.3, height = 6)
+    oldpar <- graphics::par(mfrow = c(1, 1), mar = c(5, 5, 5, 5), lwd = 2)
 
     # Plot points
-    plot(
+    graphics::plot(
         xy[, 2], xy[, 1],
         cex.axis = 1.7,
         cex = sex,
@@ -514,15 +587,24 @@ lapply(1:length(dat.plot), function(x) {
     )
 
     # Run Linear Models and spearman's correlation
-    lm.div <- lm(xy[, 1] ~ xy[, 2])
-    ccc.div <- DescTools::CCC(xy[, 2], xy[, 1])$rho.c$est
-    cor.div <- cor(xy[, 2],xy[, 1])
+    lm.div <- stats::lm(xy[, 1] ~ xy[, 2])
+
+    # Lin's concordance correlation coefficient (population covariance/variance)
+    ccc_lin <- function(x, y) {
+      mx <- mean(x); my <- mean(y)
+      vx <- mean((x - mx)^2)
+      vy <- mean((y - my)^2)
+      sxy <- mean((x - mx) * (y - my))
+      2 * sxy / (vx + vy + (mx - my)^2)
+    }
+    ccc.div <- ccc_lin(xy[, 2], xy[, 1])
+    cor.div <- stats::cor(xy[, 2],xy[, 1])
     adj.r2 <- summary(lm.div)[[9]]
 
     # Plot text
     text_cor1 <- bquote("ccc"==.(round(ccc.div,2)))
     text_cor2 <- bquote("r"==.(round(cor.div,2)))
-    gbif.range:::fig_label(
+    fig_label(
         text_cor1,
         region = "plot",
         pos = "topleft",
@@ -532,7 +614,7 @@ lapply(1:length(dat.plot), function(x) {
         cex = 2,
         margin = 0.02
     )
-    gbif.range:::fig_label(
+    fig_label(
         text_cor2,
         region = "plot",
         pos = "bottomright",
@@ -544,12 +626,35 @@ lapply(1:length(dat.plot), function(x) {
     )
 
     # Plot relationship
-    lines(xy[, 2], lm.div$fit, lwd = 7, col = "#7570b3")
-    abline(a = 0, b = 1, col = "#252525", lwd = 5, lty = 2)
+    graphics::lines(xy[, 2], lm.div$fit, lwd = 7, col = "#7570b3")
+    graphics::abline(a = 0, b = 1, col = "#252525", lwd = 5, lty = 2)
 
     # Save
-    dev.off()
+    grDevices::dev.off()
+    graphics::par(oldpar)
 })
+#> [[1]]
+#> [[1]]$mfrow
+#> [1] 1 1
+#> 
+#> [[1]]$mar
+#> [1] 5.1 4.1 4.1 2.1
+#> 
+#> [[1]]$lwd
+#> [1] 1
+#> 
+#> 
+#> [[2]]
+#> [[2]]$mfrow
+#> [1] 1 1
+#> 
+#> [[2]]$mar
+#> [1] 5.1 4.1 4.1 2.1
+#> 
+#> [[2]]$lwd
+#> [1] 1
+#> 
+#> 
 
-} # }
+# }
 ```

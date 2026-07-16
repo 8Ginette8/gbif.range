@@ -115,7 +115,7 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 if (requireNamespace("data.table", quietly = TRUE)) {
   gbif_file <- system.file("extdata", "occ_example_2sps.csv", package = "gbif.range")
   split_dir <- file.path(tempdir(), "gbif_species_help")
@@ -139,7 +139,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   # Crop the packaged terrestrial ecoregions to the extent of the example
   # occurrences so the help example stays lightweight.
   occ_example <- utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE)
-  eco_terra <- read_ecoreg("eco_terra")
+  eco_terra <- read_ecoreg(
+    "eco_terra",
+    save_dir = tempdir()
+    )
   eco_crop <- terra::crop(
     eco_terra,
     terra::ext(
@@ -172,7 +175,38 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   range_summary[, c("species_name", "n_points", "range_file")]
 
   # The same batch call can also resolve the built-in layer internally:
-  # species_csvs_to_ranges(species_dir = split_dir, ecoreg = "eco_terra", ...)
+  range_summary_builtin <- species_csvs_to_ranges(
+    species_dir = split_dir,
+    ecoreg = "eco_terra",
+    ecoreg_name = "ECO_NAME",
+    outdir = range_dir,
+    overwrite = TRUE
+  )
+
+  range_summary_builtin[, c("species_name", "n_points", "range_file")]
 }
-} # }
+#> ## Start of computation for species:  Hyaena hyaena hyaena (Linnaeus, 1758)  ### 
+#> 4 outlier's from 20 | proportion from total points: 20%
+#> ecoregion 1  of  3 :  Arabian Desert And East Sahero-Arabian Xeric Shrublands 
+#> ecoregion 2  of  3 :  Eastern Mediterranean Conifer-Sclerophyllous-Broadleaf Forests 
+#> ecoregion 3  of  3 :  Mesopotamian Shrub Desert 
+#> ## End of computation for species:  Hyaena hyaena hyaena (Linnaeus, 1758)  ### 
+#> Saved range for Hyaena hyaena hyaena (Linnaeus, 1758) to range_speciesKey_5218777_Hyaena_hyaena_hyaena_Linnaeus_1758.rds.
+#> ## Start of computation for species:  Crocuta crocuta (Erxleben, 1777)  ### 
+#> 6 outlier's from 20 | proportion from total points: 30%
+#> ecoregion 1  of  5 :  Drakensberg Montane Grasslands, Woodlands And Forests 
+#> ecoregion 2  of  5 :  Northern Acacia-Commiphora Bushlands And Thickets 
+#> ecoregion 3  of  5 :  Serengeti Volcanic Grasslands 
+#> ecoregion 4  of  5 :  Southern Acacia-Commiphora Bushlands And Thickets 
+#> ecoregion 5  of  5 :  Zambezian And Mopane Woodlands 
+#> ## End of computation for species:  Crocuta crocuta (Erxleben, 1777)  ### 
+#> Saved range for Crocuta crocuta (Erxleben, 1777) to range_speciesKey_5218781_Crocuta_crocuta_Erxleben_1777.rds.
+#>                            species_name n_points
+#> 1 Hyaena hyaena hyaena (Linnaeus, 1758)       20
+#> 2      Crocuta crocuta (Erxleben, 1777)       20
+#>                                                                                        range_file
+#> 1 /tmp/RtmpXgHW0u/gbif_range_help/range_speciesKey_5218777_Hyaena_hyaena_hyaena_Linnaeus_1758.rds
+#> 2      /tmp/RtmpXgHW0u/gbif_range_help/range_speciesKey_5218781_Crocuta_crocuta_Erxleben_1777.rds
+
+# }
 ```

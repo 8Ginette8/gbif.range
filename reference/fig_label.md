@@ -45,4 +45,7 @@ fig_label(
 
 ## Value
 
-Invisibly returns the plotting coordinates used to position the label.
+Invisibly, a numeric vector `c(x, y)` giving the x and y boundary
+coordinates of the selected `region` used to position the label. Called
+primarily for its side effect of drawing the label on the current plot
+device.

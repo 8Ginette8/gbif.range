@@ -67,21 +67,50 @@ for GBIF requirements and the structure of the returned metadata.
 ## References
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
-the global biodiversity information facility API. 10.5281/zenodo.6023735
+the global biodiversity information facility API.
+[doi:10.5281/zenodo.6023735](https://doi.org/10.5281/zenodo.6023735)
 
 ## See also
 
-The `rgbif` package for more general workflows to create GBIF derived
-datasets and DOIs.
+[`get_gbif`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)()
+to produce the `getGBIF` objects used as input here; the rgbif package
+for more general workflows to create GBIF derived datasets and DOIs.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE)  # unknown credentials
 # Download worldwide observations of Panthera tigris
 # and Ailuropoda melanoleuca
 obspt <- get_gbif("Panthera tigris")
 obsam <- get_gbif("Ailuropoda melanoleuca")
+#> |--------------------------------------------|
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :         66 |
+#> |--------------------------------------------|
+#> | Kept records according to parameters:
+#> | spatial_issue = FALSE, has_xy = TRUE
+#> 
+#> ...GBIF records of Ailuropoda melanoleuca: download starting...
+#> ------------- #1 (100%..)               
+#> 
+#> ...Records (XY) filtering summary:
+#> ---------------------------------------------
+#>                     step removed remaining
+#>          Grain filtering       6        60
+#>       Duplicated records      13        47
+#>          Absence records       0        47
+#>          Basis selection       8        39
+#>  Establishment selection       0        39
+#>               Time frame       0        39
+#>        Identical records       0        39
+#>         Raster centroids       0        39
+#> 
+#> Initial records         : 66
+#> Total removed           : 27
+#> Final records (XY)      : 39
+#> ---------------------------------------------
+#> Final records (no XY)   : 0
 
 # Retrieve a DOI for one get_gbif() output
 get_doi(
@@ -92,6 +121,7 @@ get_doi(
        user = "",
        pwd = ""
 ) # Use your own GBIF credentials here
+#> Error: object 'obspt' not found
 
 # Retrieve a DOI for several get_gbif() outputs
 get_doi(
@@ -102,6 +132,7 @@ get_doi(
        user = "",
        pwd = ""
 ) # Use your own GBIF credentials here
+#> Error: object 'obspt' not found
 
-} # }
+ # \dontrun{}
 ```

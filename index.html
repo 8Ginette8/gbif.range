@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Tools for GBIF Retrieval and Ecoregion-Based Species Range Mapping • gbif.range</title>
+<title>Species Range Mapping from GBIF Using Ecoregion Constraints • gbif.range</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -15,9 +15,9 @@
 <link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Tools for GBIF Retrieval and Ecoregion-Based Species Range Mapping">
-<meta name="description" content="Provides a workflow to retrieve, filter, and analyze GBIF occurrence records and to generate ecologically informed species range maps using downloaded or custom ecoregions. The package includes tools for querying the GBIF backbone taxonomy with get_status(), counting or downloading occurrences with get_gbif_count() and get_gbif(), creating custom ecoregion layers with make_ecoreg(), building range maps with get_range(), and evaluating them against independent validation data with evaluate_range() and cv_range(). A disk-based batch workflow (split_gbif_by_species(), species_csvs_to_ranges(), read_range_rds()) supports large multi-species GBIF exports without loading the full table into memory. Bundled ecoregion layers cover terrestrial (Olson et al. 2001 &lt;doi:10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2&gt;), marine (Spalding et al. 2007 &lt;doi:10.1641/B570707&gt;), and freshwater (Abell et al. 2008 &lt;doi:10.1641/B580507&gt;) realms. The GBIF API is accessed via the rgbif package, and coordinate cleaning uses CoordinateCleaner (Zizka et al. 2019 &lt;doi:10.1111/2041-210X.13152&gt;).">
-<meta property="og:description" content="Provides a workflow to retrieve, filter, and analyze GBIF occurrence records and to generate ecologically informed species range maps using downloaded or custom ecoregions. The package includes tools for querying the GBIF backbone taxonomy with get_status(), counting or downloading occurrences with get_gbif_count() and get_gbif(), creating custom ecoregion layers with make_ecoreg(), building range maps with get_range(), and evaluating them against independent validation data with evaluate_range() and cv_range(). A disk-based batch workflow (split_gbif_by_species(), species_csvs_to_ranges(), read_range_rds()) supports large multi-species GBIF exports without loading the full table into memory. Bundled ecoregion layers cover terrestrial (Olson et al. 2001 &lt;doi:10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2&gt;), marine (Spalding et al. 2007 &lt;doi:10.1641/B570707&gt;), and freshwater (Abell et al. 2008 &lt;doi:10.1641/B580507&gt;) realms. The GBIF API is accessed via the rgbif package, and coordinate cleaning uses CoordinateCleaner (Zizka et al. 2019 &lt;doi:10.1111/2041-210X.13152&gt;).">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Species Range Mapping from GBIF Using Ecoregion Constraints">
+<meta name="description" content="Provides a workflow to retrieve, filter, and analyze GBIF occurrence records and to generate ecologically informed species range maps using downloaded or custom ecoregions. The package includes tools for querying the GBIF backbone taxonomy with get_status(), counting or downloading occurrences with get_gbif_count() and get_gbif(), creating custom ecoregion layers with make_ecoreg(), building range maps with get_range(), and evaluating them against independent validation data with evaluate_range() and cv_range(). A disk-based batch workflow (split_gbif_by_species(), species_csvs_to_ranges(), read_range_rds()) supports large multi-species GBIF exports without loading the full table into memory. Bundled ecoregion layers cover terrestrial (Olson et al. 2001 &lt;doi:10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2&gt;), marine (Spalding et al. 2007 &lt;doi:10.1641/B570707&gt;), and freshwater (Abell et al. 2008 &lt;doi:10.1641/B580507&gt;) realms. The GBIF API is accessed via the rgbif package, and coordinate cleaning uses CoordinateCleaner (Zizka et al. 2019 &lt;doi:10.1111/2041-210X.13152&gt;). The GBIF API is described at &lt;https://www.gbif.org/developer/summary&gt;.">
+<meta property="og:description" content="Provides a workflow to retrieve, filter, and analyze GBIF occurrence records and to generate ecologically informed species range maps using downloaded or custom ecoregions. The package includes tools for querying the GBIF backbone taxonomy with get_status(), counting or downloading occurrences with get_gbif_count() and get_gbif(), creating custom ecoregion layers with make_ecoreg(), building range maps with get_range(), and evaluating them against independent validation data with evaluate_range() and cv_range(). A disk-based batch workflow (split_gbif_by_species(), species_csvs_to_ranges(), read_range_rds()) supports large multi-species GBIF exports without loading the full table into memory. Bundled ecoregion layers cover terrestrial (Olson et al. 2001 &lt;doi:10.1641/0006-3568(2001)051[0933:TEOTWA]2.0.CO;2&gt;), marine (Spalding et al. 2007 &lt;doi:10.1641/B570707&gt;), and freshwater (Abell et al. 2008 &lt;doi:10.1641/B580507&gt;) realms. The GBIF API is accessed via the rgbif package, and coordinate cleaning uses CoordinateCleaner (Zizka et al. 2019 &lt;doi:10.1111/2041-210X.13152&gt;). The GBIF API is described at &lt;https://www.gbif.org/developer/summary&gt;.">
 <meta property="og:image" content="https://8ginette8.github.io/gbif.range/logo.png">
 <style>
 .navbar-brand img {
@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,7 +127,7 @@
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small>GPL (&gt;= 3) | file <a href="LICENSE-text.html">LICENCE</a></small></li>
+<li><small>GPL (&gt;= 3)</small></li>
 </ul>
 </div>
 
@@ -166,7 +166,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -322,10 +322,10 @@ produced geometries with the expected extent and shape.
 ``` r
 
 range_colors <- c(
-  rgb(0.10, 0.40, 0.75, 0.30),
-  rgb(0.85, 0.35, 0.10, 0.30),
-  rgb(0.20, 0.65, 0.30, 0.30),
-  rgb(0.70, 0.65, 0.10, 0.30)
+  grDevices::rgb(0.10, 0.40, 0.75, 0.30),
+  grDevices::rgb(0.85, 0.35, 0.10, 0.30),
+  grDevices::rgb(0.20, 0.65, 0.30, 0.30),
+  grDevices::rgb(0.70, 0.65, 0.10, 0.30)
 )
 
 combined_ext <- terra::ext(first_range$rangeOutput)

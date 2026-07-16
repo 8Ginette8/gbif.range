@@ -14,7 +14,7 @@ unpack them into a local directory."><meta property="og:image" content="https://
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,20 +68,49 @@ dataset, or supply a single file name listed in <code>ecoreg_list</code>.</p></d
 
 <dt id="arg-save-dir">save_dir<a class="anchor" aria-label="anchor" href="#arg-save-dir"></a></dt>
 <dd><p>Character. Directory where the downloaded zip files and extracted
-shapefiles should be stored.</p></dd>
+shapefiles should be stored. Defaults to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> unless the
+<code>gbif.range.save_dir</code> option or <code>GBIF_RANGE_SAVE_DIR</code> environment
+variable is set, in which case that location is used instead.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><code>NULL</code>. Files are downloaded and unpacked for side effects.</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="ecoreg_list.html">ecoreg_list</a></code> for the list of available datasets, and
+<code><a href="read_ecoreg.html">read_ecoreg</a></code>() to download and load a layer in one step.</p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Download every ecoregion dataset listed in ecoreg_list</span></span></span>
-<span class="r-in"><span><span class="fu">get_ecoreg</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu">get_ecoreg</span><span class="op">(</span>save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Preparing to download all listed ecoregions: eco_terra ; eco_fresh ; eco_marine ; eco_hd_marine </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  data files to: /tmp/RtmpXgHW0u</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloaded: eco_terra</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Description: Terrestrial Ecoregions of the World</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Unzipped: eco_terra </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  saved to: /tmp/RtmpXgHW0u/eco_terra </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  removed:  eco_terra.zip</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloaded: eco_fresh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Description: Freshwater Ecoregions of the World</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Unzipped: eco_fresh </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  saved to: /tmp/RtmpXgHW0u/eco_fresh </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  removed:  eco_fresh.zip</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloaded: eco_marine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Description: Marine Ecoregions of the World</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Unzipped: eco_marine </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  saved to: /tmp/RtmpXgHW0u/eco_marine </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  removed:  eco_marine.zip</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloaded: eco_hd_marine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Description: High Definition Marine Ecoregions and Pelagic Provinces of the World (2007, 2012)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Unzipped: eco_hd_marine </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  saved to: /tmp/RtmpXgHW0u/eco_hd_marine </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  removed:  eco_hd_marine.zip</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -93,7 +122,7 @@ shapefiles should be stored.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

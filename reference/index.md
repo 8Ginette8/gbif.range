@@ -6,14 +6,23 @@ Download and inspect GBIF occurrences
 
 - [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
   : Download and Filter GBIF Occurrences for Spatial Analyses
+
 - [`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md)
   : Count GBIF Occurrences Before Downloading Data
+
 - [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
   : Retrieve Taxonomy and IUCN Status from GBIF
+
 - [`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md)
   : Create a DOI for GBIF-derived datasets
+
 - [`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md)
   : Create Tiled GBIF Geometry Queries
+
+- [`getGBIF()`](https://8ginette8.github.io/gbif.range/reference/getGBIF.md)
+  :
+
+  Constructor for `getGBIF` Objects
 
 ## Range inference
 
@@ -21,12 +30,23 @@ Build and evaluate ecoregion-constrained range maps
 
 - [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
   : Create Species Range Maps from Occurrences and Ecoregions
+
 - [`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
   : Evaluate a Range Map by Cross-Validation
+
 - [`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md)
   : Evaluate Range Maps Against Independent Validation Data
+
 - [`make_blocks()`](https://8ginette8.github.io/gbif.range/reference/make_blocks.md)
   : Split Data into Approximately Balanced Folds
+
+- [`getRange-class`](https://8ginette8.github.io/gbif.range/reference/getRange-class.md)
+  [`getRange`](https://8ginette8.github.io/gbif.range/reference/getRange-class.md)
+  :
+
+  Reference Class for
+  [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+  Results
 
 ## Ecoregions
 
@@ -65,6 +85,27 @@ Disk-based processing for large GBIF exports
 
   Read a Range File Saved by
   [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md)
+
+- [`plot(`*`<gbifPackedSpatRaster>`*`)`](https://8ginette8.github.io/gbif.range/reference/plot.gbifPackedSpatRaster.md)
+  :
+
+  Plot a Packed Raster Range Saved by
+  [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md)
+
+- [`plot(`*`<gbifPackedSpatVector>`*`)`](https://8ginette8.github.io/gbif.range/reference/plot.gbifPackedSpatVector.md)
+  :
+
+  Plot a Packed Vector Range Saved by
+  [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md)
+
+## Plotting utilities
+
+Helper functions used in the package’s manuscript-style plots
+
+- [`cscl()`](https://8ginette8.github.io/gbif.range/reference/cscl.md) :
+  Draw a Custom Legend Bar
+- [`fig_label()`](https://8ginette8.github.io/gbif.range/reference/fig_label.md)
+  : Draw a Figure Label at a Standard Position
 
 ## Data
 
