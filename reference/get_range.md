@@ -405,8 +405,8 @@ graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 1)
 graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.6)
 graphics::points(out.plot, col = "black", pch = 4, cex = 1, lwd = 10)
 grDevices::dev.off()
-#> agg_record_1debf4e24f0 
-#>                      2 
+#> agg_record_1dda4f03cd3c 
+#>                       2 
 graphics::par(oldpar)
 
 # ------------------------------------------------
@@ -479,8 +479,8 @@ cscl(
     titlag = 2
 )
 grDevices::dev.off()
-#> agg_record_1debf4e24f0 
-#>                      2 
+#> agg_record_1dda4f03cd3c 
+#>                       2 
 graphics::par(oldpar)
 
 # Plot GBIF.RANGE map
@@ -526,8 +526,8 @@ cscl(
     titlag = 2
 )
 grDevices::dev.off()
-#> agg_record_1debf4e24f0 
-#>                      2 
+#> agg_record_1dda4f03cd3c 
+#>                       2 
 graphics::par(oldpar)
 
 # ------------------------------------------------

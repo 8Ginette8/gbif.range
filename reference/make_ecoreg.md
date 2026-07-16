@@ -340,7 +340,7 @@ terra::plot(
 graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
 graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
 grDevices::dev.off()
-#> agg_record_1deb3edc2311 
+#> agg_record_1dda794560e5 
 #>                       2 
 graphics::par(oldpar)
 

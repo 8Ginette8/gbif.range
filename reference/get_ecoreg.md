@@ -41,28 +41,13 @@ to download and load a layer in one step.
 ``` r
 # \donttest{
 # Download every ecoregion dataset listed in ecoreg_list
-get_ecoreg(save_dir = tempdir())
-#> Preparing to download all listed ecoregions: eco_terra ; eco_fresh ; eco_marine ; eco_hd_marine 
-#>  data files to: /tmp/RtmpXgHW0u
-#> Downloaded: eco_terra
-#> Description: Terrestrial Ecoregions of the World
-#> Unzipped: eco_terra 
-#>  saved to: /tmp/RtmpXgHW0u/eco_terra 
-#>  removed:  eco_terra.zip
-#> Downloaded: eco_fresh
-#> Description: Freshwater Ecoregions of the World
-#> Unzipped: eco_fresh 
-#>  saved to: /tmp/RtmpXgHW0u/eco_fresh 
-#>  removed:  eco_fresh.zip
+get_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
+#> Preparing to download ecoregion eco_marine 
+#>  data file to: /tmp/RtmpJmpxpm
 #> Downloaded: eco_marine
 #> Description: Marine Ecoregions of the World
 #> Unzipped: eco_marine 
-#>  saved to: /tmp/RtmpXgHW0u/eco_marine 
+#>  saved to: /tmp/RtmpJmpxpm/eco_marine 
 #>  removed:  eco_marine.zip
-#> Downloaded: eco_hd_marine
-#> Description: High Definition Marine Ecoregions and Pelagic Provinces of the World (2007, 2012)
-#> Unzipped: eco_hd_marine 
-#>  saved to: /tmp/RtmpXgHW0u/eco_hd_marine 
-#>  removed:  eco_hd_marine.zip
 # }
 ```

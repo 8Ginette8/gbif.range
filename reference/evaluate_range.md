@@ -450,7 +450,7 @@ terra::plot(
   add = TRUE
 )
 grDevices::dev.off()
-#> agg_record_1deb30eb4df9 
+#> agg_record_1dda34f653d0 
 #>                       2 
 graphics::par(oldpar)
 
@@ -607,7 +607,7 @@ graphics::legend(
   x.intersp = 0.2
 )
 grDevices::dev.off()
-#> agg_record_1deb30eb4df9 
+#> agg_record_1dda34f653d0 
 #>                       2 
 graphics::par(oldpar)
 

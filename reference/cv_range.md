@@ -482,7 +482,7 @@ graphics::text(
     font = 2
 )
 grDevices::dev.off()
-#> agg_record_1deb5ee2a233 
+#> agg_record_1dda294a5142 
 #>                       2 
 graphics::par(oldpar)
 
@@ -591,7 +591,7 @@ graphics::text(90.4,45.4,
     cex = 1.5, font = 2
 )
 grDevices::dev.off()
-#> agg_record_1deb5ee2a233 
+#> agg_record_1dda294a5142 
 #>                       2 
 graphics::par(oldpar)
 
