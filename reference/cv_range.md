@@ -245,6 +245,8 @@ obs.arcto <- get_gbif("Arctostaphylos alpinus", geo = shp.lonlat, grain = 1)
 #> 
 #> ...GBIF records of Arctostaphylos alpinus: download starting...
 #> ------------- #1 (100%..)               
+#> Too many requests! To download GBIF occurrence data in bulk, please use occ_download().
+#> Waiting [=    ] 1/5 secWaiting [==   ] 2/5 secWaiting [===  ] 3/5 secWaiting [==== ] 4/5 secWaiting [=====] 5/5 sec
 #> 
 #> ...Records (XY) filtering summary:
 #> -----------------------------------------------
@@ -482,7 +484,7 @@ graphics::text(
     font = 2
 )
 grDevices::dev.off()
-#> agg_record_1dda294a5142 
+#> agg_record_1ded4df2731d 
 #>                       2 
 graphics::par(oldpar)
 
@@ -591,7 +593,7 @@ graphics::text(90.4,45.4,
     cex = 1.5, font = 2
 )
 grDevices::dev.off()
-#> agg_record_1dda294a5142 
+#> agg_record_1ded4df2731d 
 #>                       2 
 graphics::par(oldpar)
 
