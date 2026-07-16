@@ -39,6 +39,7 @@ reference:
       - get_status
       - get_doi
       - make_tiles
+      - getGBIF
 
   - title: "Range inference"
     desc: "Build and evaluate ecoregion-constrained range maps"
@@ -47,6 +48,7 @@ reference:
       - cv_range
       - evaluate_range
       - make_blocks
+      - getRange-class
 
   - title: "Ecoregions"
     desc: "Load, download, or create ecoregion layers"
@@ -68,6 +70,14 @@ reference:
       - split_gbif_by_species
       - species_csvs_to_ranges
       - read_range_rds
+      - plot.gbifPackedSpatRaster
+      - plot.gbifPackedSpatVector
+
+  - title: "Plotting utilities"
+    desc: "Helper functions used in the package's manuscript-style plots"
+    contents:
+      - cscl
+      - fig_label
 
   - title: "Data"
     desc: "Datasets bundled with the package"
@@ -77,3 +87,4 @@ reference:
   - title: "Package"
     contents:
       - gbif.range-package
+      
