@@ -262,8 +262,6 @@ graphics::points(
        cex = 4
 )
 
-
-
 # Download worldwide observations of Bison bison
 # (with a 1km grain, after 1990, and keeping raster centroids)
 obs.pc <- get_gbif(
