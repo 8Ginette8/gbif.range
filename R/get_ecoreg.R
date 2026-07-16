@@ -103,7 +103,7 @@ get_save_dir <- function(save_dir = NULL) {
 #' @examples
 #' \donttest{
 #' # Download every ecoregion dataset listed in ecoreg_list
-#' get_ecoreg(save_dir = tempdir())
+#' get_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
 #' }
 #' @export
 get_ecoreg <- function(ecoreg_name = "all", save_dir = NULL) {
@@ -160,23 +160,29 @@ get_ecoreg <- function(ecoreg_name = "all", save_dir = NULL) {
   
   # Download each file
   for (data in data_list) {
-    # data <- data_list[[1]]
     url <- data$link
     destfile <- file.path(save_dir, paste0(data$filename, ".zip"))
-    
+
     # Download the file
-    tryCatch({
+    download_ok <- tryCatch({
       utils::download.file(url, destfile, mode = "wb")
-      message(paste("Downloaded:", data$filename))
-      if (!is.null(data$description)) {
-        message(paste("Description:", data$description))
-      }
+      TRUE
     }, error = function(e) {
       message(
         paste("Failed to download:", data$filename, "\nError:", e$message)
       )
+      FALSE
     })
-    
+
+    if (!isTRUE(download_ok) || !file.exists(destfile)) {
+      next
+    }
+
+    message(paste("Downloaded:", data$filename))
+    if (!is.null(data$description)) {
+      message(paste("Description:", data$description))
+    }
+
     # Unzip to folder named after filename
     zip::unzip(destfile, exdir = file.path(save_dir, data$filename))
     # Remove the zip file
