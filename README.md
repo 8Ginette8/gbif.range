@@ -36,7 +36,9 @@ range.tiger <- get_range(occ_coord = obs.pt,
                          clust_pts_outlier = 4)
 
 # Plot
-countries <- rnaturalearth::ne_countries(type = "countries", returnclass = "sv")
+countries <- terra::vect(
+  system.file("extdata", "world_countries.shp", package = "gbif.range")
+)
 terra::plot(countries, col = "#bcbddc")
 terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
 ```
