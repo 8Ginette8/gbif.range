@@ -33,13 +33,13 @@ Source:
 
 Chauvier Y, Hagen O, Pinkert S, Albouy C, Fopp F, Brun P, Descombes P,
 Altermatt F, Pellissier L, Csillery K (2026). *gbif.range: Species Range
-Mapping from GBIF Using Ecoregion Constraints*. R package version 1.7.0,
+Mapping from GBIF Using Ecoregion Constraints*. R package version 1.7.1,
 <https://github.com/8Ginette8/gbif.range>.
 
     @Manual{,
       title = {gbif.range: Species Range Mapping from GBIF Using Ecoregion Constraints},
       author = {Yohann Chauvier and Oskar Hagen and Stefan Pinkert and Camille Albouy and Fabian Fopp and Philipp Brun and Patrice Descombes and Florian Altermatt and Loïc Pellissier and Katalin Csillery},
       year = {2026},
-      note = {R package version 1.7.0},
+      note = {R package version 1.7.1},
       url = {https://github.com/8Ginette8/gbif.range},
     }
