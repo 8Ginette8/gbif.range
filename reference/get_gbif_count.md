@@ -190,7 +190,7 @@ obs.pt <- get_gbif_count(
   geo = shp.lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      42972 |
+#> | Total number (all records)    :      43042 |
 #> | Kept records                  :       6340 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

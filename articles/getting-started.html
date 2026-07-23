@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -434,9 +435,12 @@ workflow with 200 classes and <em>Arctostaphylos alpinus</em>:</p>
 <span>  occ_coord         <span class="op">=</span> <span class="va">obs.arcto</span>,</span>
 <span>  ecoreg            <span class="op">=</span> <span class="va">my.eco</span>,</span>
 <span>  ecoreg_name       <span class="op">=</span> <span class="st">"EcoRegion"</span>,</span>
+<span>  res               <span class="op">=</span> <span class="fl">0.05</span>,        <span class="co"># 5 x 5 km output resolution</span></span>
 <span>  degrees_outlier   <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  clust_pts_outlier <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  res               <span class="op">=</span> <span class="fl">0.05</span>        <span class="co"># 5 x 5 km output resolution</span></span>
+<span>  buff_width_point <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  buff_incrmt_pts_line <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  buff_width_polygon <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot</span></span>
@@ -452,7 +456,15 @@ only records with coordinate uncertainty ≤ 1 km; at larger scales the
 default 100 km grain is appropriate, but for a small alpine extent it
 would retain too many imprecise records. Second, the <code>res</code>
 argument sets the output raster resolution, which can be as fine as the
-input environmental layers allow.</p>
+input environmental layers allow. Third, the outlier and buffer
+parameters above were left at their defaults, which is appropriate here
+because <em>Arctostaphylos alpinus</em> occurs broadly across the Alps
+and Europe wherever conditions are suitable. For species with a more
+spatially restricted or biogeo-constrained distribution, these
+parameters often need tightening — see the <em>“Tuning the main range
+arguments”</em> section of
+<code><a href="../articles/ecoregion-constrained-range-inference.html">vignette("ecoregion-constrained-range-inference")</a></code> for a
+worked example.</p>
 </div>
 <div class="section level2">
 <h2 id="large-downloaded-gbif-tables">Large downloaded GBIF tables<a class="anchor" aria-label="anchor" href="#large-downloaded-gbif-tables"></a>

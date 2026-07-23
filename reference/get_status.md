@@ -139,250 +139,156 @@ backbone taxonomy.
 ``` r
 # \donttest{
 # --- 1. Default: accepted name + synonyms only ---
-tax <- get_status("Panthera tigris")
+tax <- get_status("Ailuropoda melanoleuca")
 tax
-#>           canonicalName    rank gbif_key                   scientificName
-#> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)
-#> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758
-#>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status
-#> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED
-#> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED
-#>         sp_nameMatch
-#> 5219416        INPUT
-#> 4969819        EXACT
+#>                  canonicalName    rank gbif_key
+#> 2433399 Ailuropoda melanoleuca SPECIES  2433399
+#> 9387176 Aeluropus melanoleucus SPECIES  9387176
+#> 9379787 Ailuropus melanoleucus SPECIES  9379787
+#> 7888034     Ursus melanoleucus SPECIES  7888034
+#>                               scientificName gbif_status      Genus  Family
+#> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae
+#> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae
+#>             Order    Class   Phylum IUCN_status sp_nameMatch
+#> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT
+#> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT
 
 # --- 2. Include infra-specific taxa (subspecies, varieties) ---
 # These are the same keys retrieved by get_gbif()
-tax_ch <- get_status("Panthera tigris", level = "children")
+tax_ch <- get_status("Ailuropoda melanoleuca", level = "children")
 tax_ch
-#>                     canonicalName       rank gbif_key
-#> 5219416           Panthera tigris    SPECIES  5219416
-#> 4969819              Felis tigris    SPECIES  4969819
-#> 5219420   Panthera tigris altaica SUBSPECIES  5219420
-#> 5219425 Panthera tigris amoyensis SUBSPECIES  5219425
-#> 5219419    Panthera tigris balica SUBSPECIES  5219419
-#> 5219424  Panthera tigris corbetti SUBSPECIES  5219424
-#> 5219422  Panthera tigris sondaica SUBSPECIES  5219422
-#> 5219418  Panthera tigris sumatrae SUBSPECIES  5219418
-#> 7059276    Panthera tigris tigris SUBSPECIES  7059276
-#> 5219423   Panthera tigris virgata SUBSPECIES  5219423
-#>                                       scientificName gbif_status    Genus
-#> 5219416             Panthera tigris (Linnaeus, 1758)    ACCEPTED Panthera
-#> 4969819                  Felis tigris Linnaeus, 1758     SYNONYM Panthera
-#> 5219420       Panthera tigris altaica Temminck, 1844    CHILDREN Panthera
-#> 5219425 Panthera tigris amoyensis (Hilzheimer, 1905)    CHILDREN Panthera
-#> 5219419         Panthera tigris balica Schwarz, 1912    CHILDREN Panthera
-#> 5219424         Panthera tigris corbetti Mazak, 1968    CHILDREN Panthera
-#> 5219422      Panthera tigris sondaica Temminck, 1844    CHILDREN Panthera
-#> 5219418        Panthera tigris sumatrae Pocock, 1929    CHILDREN Panthera
-#> 7059276                       Panthera tigris tigris    CHILDREN Panthera
-#> 5219423      Panthera tigris virgata (Illiger, 1815)    CHILDREN Panthera
-#>          Family     Order    Class   Phylum IUCN_status sp_nameMatch
-#> 5219416 Felidae Carnivora Mammalia Chordata  ENDANGERED        INPUT
-#> 4969819 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5219420 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5219425 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5219419 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5219424 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5219422 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5219418 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 7059276 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5219423 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
+#>                                  canonicalName       rank gbif_key
+#> 2433399                 Ailuropoda melanoleuca    SPECIES  2433399
+#> 9387176                 Aeluropus melanoleucus    SPECIES  9387176
+#> 9379787                 Ailuropus melanoleucus    SPECIES  9379787
+#> 7888034                     Ursus melanoleucus    SPECIES  7888034
+#> 9087131     Ailuropoda melanoleuca melanoleuca SUBSPECIES  9087131
+#> 9460321 Ailuropoda melanoleuca wulingshanensis SUBSPECIES  9460321
+#>                                                     scientificName gbif_status
+#> 2433399                       Ailuropoda melanoleuca (David, 1869)    ACCEPTED
+#> 9387176                       Aeluropus melanoleucus (David, 1869)     SYNONYM
+#> 9379787                       Ailuropus melanoleucus (David, 1869)     SYNONYM
+#> 7888034                             Ursus melanoleucus David, 1869     SYNONYM
+#> 9087131                         Ailuropoda melanoleuca melanoleuca    CHILDREN
+#> 9460321 Ailuropoda melanoleuca wulingshanensis (Wang et al., 1982)    CHILDREN
+#>              Genus  Family     Order    Class   Phylum IUCN_status sp_nameMatch
+#> 2433399 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        INPUT
+#> 9387176 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 9379787 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 7888034 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 9087131 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 9460321 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT
 
 # --- 3. Include alternative name string representations (inspection only) ---
 # RELATED rows are not used by get_gbif()
-tax_rel <- get_status("Panthera tigris", level = "all")
+tax_rel <- get_status("Ailuropoda melanoleuca", level = "all")
 tax_rel
-#>                canonicalName       rank gbif_key
-#> 1            Panthera tigris    SPECIES  5219416
-#> 2               Felis tigris    SPECIES  4969819
-#> 3    Panthera tigris altaica SUBSPECIES  5219420
-#> 4  Panthera tigris amoyensis SUBSPECIES  5219425
-#> 5     Panthera tigris balica SUBSPECIES  5219419
-#> 6   Panthera tigris corbetti SUBSPECIES  5219424
-#> 7   Panthera tigris sondaica SUBSPECIES  5219422
-#> 8   Panthera tigris sumatrae SUBSPECIES  5219418
-#> 9     Panthera tigris tigris SUBSPECIES  7059276
-#> 10   Panthera tigris virgata SUBSPECIES  5219423
-#> 11           Panthera tigris    SPECIES  5219416
-#> 13           Panthera tigris    SPECIES  5219416
-#> 14           Panthera tigris    SPECIES  5219416
-#> 15           Panthera tigris    SPECIES  5219416
-#> 17              Felis tigris    SPECIES  4969819
-#> 18              Felis tigris    SPECIES  4969819
-#> 19              Felis tigris    SPECIES  4969819
-#> 20   Panthera tigris altaica SUBSPECIES  5219420
-#> 21   Panthera tigris altaica SUBSPECIES  5219420
-#> 22  Panthera tigris altaicus SUBSPECIES  5219420
-#> 23   Panthera tigris altaica SUBSPECIES  5219420
-#> 24   Panthera tigris altaica SUBSPECIES  5219420
-#> 26 Panthera tigris amoyensis SUBSPECIES  5219425
-#> 27 Panthera tigris amoyensis SUBSPECIES  5219425
-#> 28 Panthera tigris amoyensis SUBSPECIES  5219425
-#> 29 Panthera tigris amoyensis SUBSPECIES  5219425
-#> 30 Panthera tigris amoyensis SUBSPECIES  5219425
-#> 32    Panthera tigris balica SUBSPECIES  5219419
-#> 34    Panthera tigris balica SUBSPECIES  5219419
-#> 35  Panthera tigris corbetti SUBSPECIES  5219424
-#> 36  Panthera tigris corbetti SUBSPECIES  5219424
-#> 37  Panthera tigris corbetti SUBSPECIES  5219424
-#> 39  Panthera tigris sondaica SUBSPECIES  5219422
-#> 40  Panthera tigris sondaica SUBSPECIES  5219422
-#> 42  Panthera tigris sondaica SUBSPECIES  5219422
-#> 43  Panthera tigris sondaica SUBSPECIES  5219422
-#> 44  Panthera tigris sumatrae SUBSPECIES  5219418
-#> 45  Panthera tigris sumatrae SUBSPECIES  5219418
-#> 47  Panthera tigris sumatrae SUBSPECIES  5219418
-#> 48    Panthera tigris tigris SUBSPECIES  7059276
-#> 49    Panthera tigris tigris SUBSPECIES  7059276
-#> 51    Panthera tigris tigris SUBSPECIES  7059276
-#> 52   Panthera tigris virgata SUBSPECIES  5219423
-#> 53   Panthera tigris virgata SUBSPECIES  5219423
-#> 54   Panthera tigris virgata SUBSPECIES  5219423
-#> 55   Panthera tigris virgata SUBSPECIES  5219423
-#> 56   Panthera tigris virgata SUBSPECIES  5219423
-#>                                         scientificName gbif_status    Genus
-#> 1                     Panthera tigris (Linnaeus, 1758)    ACCEPTED Panthera
-#> 2                          Felis tigris Linnaeus, 1758     SYNONYM Panthera
-#> 3               Panthera tigris altaica Temminck, 1844    CHILDREN Panthera
-#> 4         Panthera tigris amoyensis (Hilzheimer, 1905)    CHILDREN Panthera
-#> 5                 Panthera tigris balica Schwarz, 1912    CHILDREN Panthera
-#> 6                 Panthera tigris corbetti Mazak, 1968    CHILDREN Panthera
-#> 7              Panthera tigris sondaica Temminck, 1844    CHILDREN Panthera
-#> 8                Panthera tigris sumatrae Pocock, 1929    CHILDREN Panthera
-#> 9                               Panthera tigris tigris    CHILDREN Panthera
-#> 10             Panthera tigris virgata (Illiger, 1815)    CHILDREN Panthera
-#> 11                     Panthera tigris (Linnaeus 1758)     RELATED Panthera
-#> 13                    Panthera tigris (‎Linnaeus‎, ‎1758‎)     RELATED Panthera
-#> 14                                     Panthera tigris     RELATED Panthera
-#> 15                      Panthera tigris Linnaeus, 1758     RELATED Panthera
-#> 17                                        Felis tigris     RELATED Panthera
-#> 18                          Felis tigris Linnaeus 1758     RELATED Panthera
-#> 19                       Felis tigris (Linnaeus, 1758)     RELATED Panthera
-#> 20       Panthera tigris subsp. altaica Temminck, 1844     RELATED Panthera
-#> 21            Panthera tigris altaica (Temminck, 1844)     RELATED Panthera
-#> 22             Panthera tigris altaicus Temminck, 1844     RELATED Panthera
-#> 23        Panthera tigris subsp. altaica Temminck 1844     RELATED Panthera
-#> 24                             Panthera tigris altaica     RELATED Panthera
-#> 26 Panthera tigris subsp. amoyensis (Hilzheimer, 1905)     RELATED Panthera
-#> 27          Panthera tigris amoyensis Hilzheimer, 1905     RELATED Panthera
-#> 28    Panthera tigris subsp. amoyensis Hilzheimer 1905     RELATED Panthera
-#> 29                           Panthera tigris amoyensis     RELATED Panthera
-#> 30   Panthera tigris subsp. amoyensis Hilzheimer, 1905     RELATED Panthera
-#> 32         Panthera tigris subsp. balica Schwarz, 1912     RELATED Panthera
-#> 34               Panthera tigris balica Schwarz, 1912.     RELATED Panthera
-#> 35         Panthera tigris subsp. corbetti Mazák, 1968     RELATED Panthera
-#> 36                            Panthera tigris corbetti     RELATED Panthera
-#> 37         Panthera tigris subsp. corbetti Mazak, 1968     RELATED Panthera
-#> 39      Panthera tigris subsp. sondaica Temminck, 1844     RELATED Panthera
-#> 40                            Panthera tigris sondaica     RELATED Panthera
-#> 42            Panthera tigris sondaica Temminck, 1844.     RELATED Panthera
-#> 43    Panthera tigris subsp. sondaica (Temminck, 1844)     RELATED Panthera
-#> 44                            Panthera tigris sumatrae     RELATED Panthera
-#> 45        Panthera tigris subsp. sumatrae Pocock, 1929     RELATED Panthera
-#> 47                Panthera tigris sumatrae Pocock 1929     RELATED Panthera
-#> 48                       Panthera tigris subsp. tigris     RELATED Panthera
-#> 49         Panthera tigris subsp. tigris Linnaeus 1758     RELATED Panthera
-#> 51             Panthera tigris tigris (Linnaeus, 1758)     RELATED Panthera
-#> 52      Panthera tigris subsp. virgata (Illiger, 1815)     RELATED Panthera
-#> 53               Panthera tigris virgata Illiger, 1815     RELATED Panthera
-#> 54         Panthera tigris subsp. virgata Illiger 1815     RELATED Panthera
-#> 55        Panthera tigris subsp. virgata Illiger, 1815     RELATED Panthera
-#> 56                             Panthera tigris virgata     RELATED Panthera
-#>     Family     Order    Class   Phylum IUCN_status sp_nameMatch
-#> 1  Felidae Carnivora Mammalia Chordata  ENDANGERED        INPUT
-#> 2  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 3  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 4  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 5  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 6  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 7  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 8  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 9  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 10 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 11 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 13 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 14 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 15 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 17 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 18 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 19 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 20 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 21 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 22 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 23 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 24 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 26 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 27 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 28 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 29 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 30 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 32 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 34 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 35 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 36 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 37 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 39 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 40 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 42 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 43 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 44 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 45 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 47 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 48 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 49 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 51 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 52 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 53 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 54 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 55 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
-#> 56 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT
+#>                             canonicalName       rank gbif_key
+#> 1                  Ailuropoda melanoleuca    SPECIES  2433399
+#> 2                  Aeluropus melanoleucus    SPECIES  9387176
+#> 3                  Ailuropus melanoleucus    SPECIES  9379787
+#> 4                      Ursus melanoleucus    SPECIES  7888034
+#> 5      Ailuropoda melanoleuca melanoleuca SUBSPECIES  9087131
+#> 6  Ailuropoda melanoleuca wulingshanensis SUBSPECIES  9460321
+#> 8                  Ailuropoda melanoleuca    SPECIES  2433399
+#> 9                  Ailuropoda melanoleuca    SPECIES  2433399
+#> 10                 Ailuropoda melanoleuca    SPECIES  2433399
+#> 14                      Ursus melanoleuca    SPECIES  7888034
+#> 15                     Ursus melanoleucus    SPECIES  7888034
+#> 16                     Ursus melanoleucus    SPECIES  7888034
+#> 18 Ailuropoda melanoleuca wulingshanensis SUBSPECIES  9460321
+#>                                                       scientificName
+#> 1                               Ailuropoda melanoleuca (David, 1869)
+#> 2                               Aeluropus melanoleucus (David, 1869)
+#> 3                               Ailuropus melanoleucus (David, 1869)
+#> 4                                     Ursus melanoleucus David, 1869
+#> 5                                 Ailuropoda melanoleuca melanoleuca
+#> 6         Ailuropoda melanoleuca wulingshanensis (Wang et al., 1982)
+#> 8                                Ailuropoda melanoleuca (David 1869)
+#> 9                                 Ailuropoda melanoleuca David, 1869
+#> 10                                            Ailuropoda melanoleuca
+#> 14                                                 Ursus melanoleuca
+#> 15                                     Ursus melanoleucus David 1869
+#> 16                                  Ursus melanoleucus (David, 1869)
+#> 18 Ailuropoda melanoleuca subsp. wulingshanensis (Wang et al., 1982)
+#>    gbif_status      Genus  Family     Order    Class   Phylum IUCN_status
+#> 1     ACCEPTED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 2      SYNONYM Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 3      SYNONYM Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 4      SYNONYM Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 5     CHILDREN Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 6     CHILDREN Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 8      RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 9      RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 10     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 14     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 15     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 16     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#> 18     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE
+#>    sp_nameMatch
+#> 1         INPUT
+#> 2         EXACT
+#> 3         EXACT
+#> 4         EXACT
+#> 5         EXACT
+#> 6         EXACT
+#> 8         EXACT
+#> 9         EXACT
+#> 10        EXACT
+#> 14        EXACT
+#> 15        EXACT
+#> 16        EXACT
+#> 18        EXACT
 
 # --- 4. Fuzzy matching for uncertain names ---
 # sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
-get_status("Panthera tigri", search = FALSE)
-#>           canonicalName    rank gbif_key                   scientificName
-#> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)
-#> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758
-#>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status
-#> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED
-#> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED
-#>         sp_nameMatch
-#> 5219416        INPUT
-#> 4969819      VARIANT
+get_status("Ailuropoda melanoleuca", search = FALSE)
+#>                  canonicalName    rank gbif_key
+#> 2433399 Ailuropoda melanoleuca SPECIES  2433399
+#> 9387176 Aeluropus melanoleucus SPECIES  9387176
+#> 9379787 Ailuropus melanoleucus SPECIES  9379787
+#> 7888034     Ursus melanoleucus SPECIES  7888034
+#>                               scientificName gbif_status      Genus  Family
+#> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae
+#> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae
+#>             Order    Class   Phylum IUCN_status sp_nameMatch
+#> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT
+#> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT
 
 # --- 5. Cross-check get_status() keys against get_gbif() output ---
-occ <- get_gbif("Panthera tigris", has_xy = TRUE, verbose = FALSE)
+occ <- get_gbif("Ailuropoda melanoleuca", has_xy = TRUE, verbose = FALSE)
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status %in% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
 
 # Keys in get_status() — backbone taxa (ACCEPTED + CHILDREN)
 valid_keys
-#> [1] "5219416" "5219420" "5219425" "5219419" "5219424" "5219422" "5219418"
-#> [8] "7059276" "5219423"
+#> [1] "2433399" "9087131" "9460321"
 
 # Keys returned by get_gbif()
 returned_keys
-#> [1]  7059276  5219416  5219420  5219422  5219418 10568627 10604898
+#> [1] 9087131 2433399 9460321
 
 # Are all occurrence keys known backbone keys?
 # FALSE indicates non-backbone entries (e.g. BOLD sequences) are present
 all(returned_keys %in% valid_keys)
-#> [1] FALSE
+#> [1] TRUE
 
 # Inspect non-backbone records — typically MATERIAL_SAMPLE, excluded by default
 extra_keys <- returned_keys[!returned_keys %in% valid_keys]
 extra_keys
-#> [1] 10568627 10604898
+#> integer(0)
 occ[occ$acceptedTaxonKey %in% extra_keys,
     c("acceptedTaxonKey", "scientificName", "basisOfRecord")]
-#>      acceptedTaxonKey scientificName   basisOfRecord
-#> 4307         10568627   BOLD:AAD6820 MATERIAL_SAMPLE
-#> 4557         10568627   BOLD:AAD6820 MATERIAL_SAMPLE
-#> 4573         10568627   BOLD:AAD6820 MATERIAL_SAMPLE
-#> 5292         10604898   BOLD:AAC3048 MATERIAL_SAMPLE
-#> 5302         10604898   BOLD:AAC3048 MATERIAL_SAMPLE
-#> 5303         10604898   BOLD:AAC3048 MATERIAL_SAMPLE
+#> [1] acceptedTaxonKey scientificName   basisOfRecord   
+#> <0 rows> (or 0-length row.names)
 
 # Note: not all valid_keys need to appear in returned_keys — some subspecies
 # may have no records in GBIF at all (e.g. extinct taxa) or may have been
@@ -391,12 +297,12 @@ occ[occ$acceptedTaxonKey %in% extra_keys,
 # --- 6. Input name flagged correctly regardless of how GBIF resolves it ---
 # sp_nameMatch = "INPUT" marks the row closest to the submitted name
 tax_ch[tax_ch$sp_nameMatch == "INPUT", ]
-#>           canonicalName    rank gbif_key                   scientificName
-#> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)
-#>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status
-#> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED
-#>         sp_nameMatch
-#> 5219416        INPUT
+#>                  canonicalName    rank gbif_key
+#> 2433399 Ailuropoda melanoleuca SPECIES  2433399
+#>                               scientificName gbif_status      Genus  Family
+#> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae
+#>             Order    Class   Phylum IUCN_status sp_nameMatch
+#> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT
 
 # }
 ```

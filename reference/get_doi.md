@@ -82,7 +82,7 @@ for more general workflows to create GBIF derived datasets and DOIs.
 if (FALSE)  # unknown credentials
 # Download worldwide observations of Panthera tigris
 # and Ailuropoda melanoleuca
-obspt <- get_gbif("Panthera tigris")
+obsps <- get_gbif("Phocoena sinus")
 obsam <- get_gbif("Ailuropoda melanoleuca")
 #> |--------------------------------------------|
 #> | Total number (all records)    :        300 |
@@ -100,39 +100,39 @@ obsam <- get_gbif("Ailuropoda melanoleuca")
 #>          Grain filtering       6        60
 #>       Duplicated records      13        47
 #>          Absence records       0        47
-#>          Basis selection       8        39
-#>  Establishment selection       0        39
-#>               Time frame       0        39
-#>        Identical records       0        39
-#>         Raster centroids       0        39
+#>          Basis selection      10        37
+#>  Establishment selection       0        37
+#>               Time frame       0        37
+#>        Identical records       0        37
+#>         Raster centroids       0        37
 #> 
 #> Initial records         : 66
-#> Total removed           : 27
-#> Final records (XY)      : 39
+#> Total removed           : 29
+#> Final records (XY)      : 37
 #> ---------------------------------------------
 #> Final records (no XY)   : 0
 
 # Retrieve a DOI for one get_gbif() output
 get_doi(
-       gbifs = obspt,
+       gbifs = obsps,
        title = "GBIF_test1",
        description = "A small example 1",
        source_url = "https://example.com/",
        user = "",
        pwd = ""
 ) # Use your own GBIF credentials here
-#> Error: object 'obspt' not found
+#> Error: object 'obsps' not found
 
 # Retrieve a DOI for several get_gbif() outputs
 get_doi(
-       gbifs = list(obspt,obsam),
+       gbifs = list(obsps,obsam),
        title = "GBIF_test2",
        description = "A small example 2",
        source_url = "https://example.com/",
        user = "",
        pwd = ""
 ) # Use your own GBIF credentials here
-#> Error: object 'obspt' not found
+#> Error: object 'obsps' not found
 
  # \dontrun{}
 ```

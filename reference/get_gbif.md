@@ -27,7 +27,7 @@ get_gbif(
   duplicates = FALSE,
   absences = FALSE,
   basis = c("OBSERVATION", "HUMAN_OBSERVATION", "MACHINE_OBSERVATION", "OCCURRENCE",
-    "MATERIAL_CITATION", "MATERIAL_SAMPLE", "LITERATURE"),
+    "MATERIAL_CITATION", "LITERATURE"),
   establishment = c("native", "casual", "released", "reproducing", "established",
     "colonising", "invasive", "widespreadInvasive"),
   add_infos = NULL,
@@ -128,20 +128,24 @@ get_gbif(
 
 - basis:
 
-  Character. Vector giving the accepted bases of record. The default
-  keeps commonly used occurrence-oriented record types and excludes
-  specimen- and unknown-based records.
+  Character. Vector of accepted `basisOfRecord` values. Default excludes
+  specimen-based records (e.g. herbarium sheets, museum specimens),
+  `"MATERIAL_SAMPLE"` records, and records of unknown basis. See
+  **Details** for the full list of accepted values, and a note on why
+  `"MATERIAL_SAMPLE"` is excluded by default.
 
 - establishment:
 
-  Character. Vector giving accepted `degreeOfEstablishment` values. The
-  default keeps native and broadly established records, together with
-  records lacking that field.
+  Character. Vector of accepted `degreeOfEstablishment` values. Default
+  keeps native and broadly established records; records lacking this
+  field are always kept regardless of the selected values. See
+  **Details** for the full list of accepted values.
 
 - add_infos:
 
-  Optional character. Vector of additional GBIF occurrence fields to
-  append to the default output.
+  Optional character. Additional GBIF occurrence fields to append to the
+  default output columns. See **Details** for the default columns and
+  where to find all available GBIF field names.
 
 - time_period:
 
@@ -252,16 +256,46 @@ rather than rewriting them to a single accepted name. In particular,
 `acceptedScientificName`, `acceptedTaxonKey`, and `taxonomicStatus`
 reflect the harmonized taxon concept used for the query.
 
+**basis**: available values (old and new GBIF vocabulary) are
+`"OBSERVATION"`, `"HUMAN_OBSERVATION"`, `"MACHINE_OBSERVATION"`,
+`"MATERIAL_CITATION"`, `"MATERIAL_SAMPLE"`, `"PRESERVED_SPECIMEN"`,
+`"FOSSIL_SPECIMEN"`, `"LIVING_SPECIMEN"`, `"LITERATURE"`, `"UNKNOWN"`,
+and `"OCCURRENCE"`. The default setting removes specimen-based records
+and records of unknown basis. See
+([here](https://docs.gbif.org/course-data-use/en/basis-of-record.html))
+for a description of each category.
+
 Records linked to non-taxonomic backbone entries (e.g. BOLD barcode
-sequences) may also appear in the output, since GBIF associates them
-with the accepted taxon key. These records typically carry
-`basisOfRecord = "MATERIAL_SAMPLE"`. Note however that `MATERIAL_SAMPLE`
-is not a reliable proxy for sequence-based records across all taxonomic
-groups. Users can cross-check returned `acceptedTaxonKey` values against
-`get_status(children = TRUE)` to identify any records linked to
-non-backbone entries; see
+sequences) are typically registered under
+`basisOfRecord = "MATERIAL_SAMPLE"`. Because `MATERIAL_SAMPLE` is not a
+reliable proxy for sequence-based records across all taxonomic groups,
+and can also include unrelated bulk or environmental samples, it is
+excluded from the default `basis` selection. Users who deliberately
+include `"MATERIAL_SAMPLE"` in `basis` should cross-check returned
+`acceptedTaxonKey` values against `get_status(children = TRUE)` to
+identify any records linked to non-backbone entries; see
 [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
 examples.
+
+**establishment**: available `degreeOfEstablishment` values are
+`"native"`, `"casual"`, `"released"`, `"reproducing"`, `"established"`,
+`"colonising"`, `"invasive"`, `"widespreadInvasive"`, `"managed"`,
+`"captive"`, `"cultivated"`, `"unestablished"`, and `"failing"`. The
+default keeps native and broadly established records; records with no
+`degreeOfEstablishment` information are always kept regardless of the
+selected values. See
+([here](https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment)) for a
+description of each category.
+
+**add_infos**: the default output always includes `"taxonKey"`,
+`"scientificName"`, `"acceptedTaxonKey"`, `"acceptedScientificName"`,
+`"individualCount"`, `"decimalLatitude"`, `"decimalLongitude"`,
+`"basisOfRecord"`, `"coordinateUncertaintyInMeters"`, `"countryCode"`,
+`"country"`, `"year"`, `"datasetKey"`, `"institutionCode"`,
+`"publishingOrgKey"`, `"taxonomicStatus"`, `"taxonRank"`, and
+`"degreeOfEstablishment"`. Any additional field name accepted by the
+GBIF occurrence API can be requested via `add_infos`; see the full list
+([here](https://www.gbif.org/developer/occurrence)).
 
 If the requested extent contains many records, the query is fragmented
 into spatial tiles so that individual API calls remain manageable. Tiles
@@ -324,9 +358,11 @@ CoordinateCleaner package for more extensive occurrence cleaning.
 
 ``` r
 # \donttest{
-# Download worldwide observations of Ailuropoda melanoleuca
-# (with a 100km grain, after 1990 and by keeping duplicates and by
-# adding the name of the person who collected the panda records)
+# Download all worldwide observations of Ailuropoda melanoleuca, with:
+# - 100km grain
+# - after 1990
+# - keeping duplicates and by
+# - adding the name of the person who collected the panda records
 obs.am <- get_gbif(
        sp_name = "Ailuropoda melanoleuca",
        grain = 100 ,
@@ -349,15 +385,15 @@ obs.am <- get_gbif(
 #>                     step removed remaining
 #>          Grain filtering       6        60
 #>          Absence records       0        60
-#>          Basis selection      16        44
-#>  Establishment selection       0        44
-#>               Time frame       0        44
-#>        Identical records       0        44
-#>         Raster centroids       0        44
+#>          Basis selection      22        38
+#>  Establishment selection       0        38
+#>               Time frame       0        38
+#>        Identical records       0        38
+#>         Raster centroids       0        38
 #> 
 #> Initial records         : 66
-#> Total removed           : 22
-#> Final records (XY)      : 44
+#> Total removed           : 28
+#> Final records (XY)      : 38
 #> ---------------------------------------------
 #> Final records (no XY)   : 0
 
@@ -375,85 +411,6 @@ graphics::points(
        cex = 4
 )
 
-
-# Download worldwide observations of Panthera tigris
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
-#> |--------------------------------------------|
-#> | Total number (all records)    :       8007 |
-#> | Kept records                  :       5457 |
-#> |--------------------------------------------|
-#> | Kept records according to parameters:
-#> | spatial_issue = FALSE, has_xy = TRUE
-#> 
-#> ...GBIF records of Panthera tigris: download starting...
-#> ------------- #1 (100%..)               
-#> 
-#> ...Records (XY) filtering summary:
-#> -----------------------------------------------
-#>                     step removed remaining
-#>          Grain filtering     117      5340
-#>       Duplicated records    2587      2753
-#>          Absence records       0      2753
-#>          Basis selection      82      2671
-#>  Establishment selection       0      2671
-#>               Time frame       0      2671
-#>        Identical records       0      2671
-#>         Raster centroids       0      2671
-#> 
-#> Initial records         : 5457
-#> Total removed           : 2786
-#> Final records (XY)      : 2671
-#> -----------------------------------------------
-#> Final records (no XY)   : 0
-
-# Plot
-terra::plot(countries, col = "#bcbddc")
-graphics::points(
-       obs.pt[, c("decimalLongitude","decimalLatitude")],
-       pch = 20,
-       col = "#238b4550",
-       cex = 4
-)
-
-
-# Download worldwide observations of Bison bison
-# (with a 1km grain, after 1990, and keeping raster centroids)
-obs.pc <- get_gbif(
-       sp_name = "Bison bison",
-       grain = 1,
-       time_period = c(1990,3000),
-       centroids = TRUE
-)
-#> |--------------------------------------------|
-#> | Total number (all records)    :      31282 |
-#> | Kept records                  :      27478 |
-#> |--------------------------------------------|
-#> | Kept records according to parameters:
-#> | spatial_issue = FALSE, has_xy = TRUE
-#> 
-#> ...(> 10'000 records) retrieving tiles...
-#> 
-#> ...GBIF records of Bison bison: download starting...
-#> ------------- #1 (5.26%..)              ------------- #2 (10.53%..)             ------------- #3 (15.79%..)             ------------- #4 (21.05%..)             ------------- #5 (26.32%..)             ------------- #6 (31.58%..)             ------------- #7 (36.84%..)             ------------- #8 (42.11%..)             ------------- #9 (47.37%..)             ------------- #10 (52.63%..)            ------------- #11 (57.89%..)            ------------- #12 (63.16%..)            
-#> Too many requests! To download GBIF occurrence data in bulk, please use occ_download().
-#> Waiting [=    ] 1/5 secWaiting [==   ] 2/5 secWaiting [===  ] 3/5 secWaiting [==== ] 4/5 secWaiting [=====] 5/5 sec------------- #13 (68.42%..)            ------------- #14 (73.68%..)            ------------- #15 (78.95%..)            ------------- #16 (84.21%..)            ------------- #17 (89.47%..)            ------------- #18 (94.74%..)            ------------- #19 (100%..)              
-#> 
-#> ...Records (XY) filtering summary:
-#> ------------------------------------------------
-#>                     step removed remaining
-#>          Grain filtering   14538     12940
-#>       Duplicated records    1135     11805
-#>          Absence records       0     11805
-#>          Basis selection     227     11578
-#>  Establishment selection       0     11578
-#>               Time frame      19     11559
-#>        Identical records       0     11559
-#> 
-#> Initial records         : 27478
-#> Total removed           : 15919
-#> Final records (XY)      : 11559
-#> ------------------------------------------------
-#> Final records (no XY)   : 0
 
 # }
 ```

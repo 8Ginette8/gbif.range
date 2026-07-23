@@ -14,7 +14,7 @@ record per grid cell and, optionally, removing cells with too few records."><met
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@ record per grid cell and, optionally, removing cells with too few records."><met
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -109,43 +110,43 @@ filtered by this function.</p></div>
 <span class="r-in"><span><span class="va">rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">rst.path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Download observations for two plant species in the European Alps</span></span></span>
-<span class="r-in"><span><span class="va">obs.arcto</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Arctostaphylos alpinus"</span>,</span></span>
+<span class="r-in"><span><span class="va">obs.paed</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Paederota bonarota"</span>,</span></span>
 <span class="r-in"><span>  geo <span class="op">=</span> <span class="va">shp.lonlat</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :      42972 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :       6340 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       1011 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :        585 |</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Arctostaphylos alpinus: download starting...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Paederota bonarota: download starting...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       4      6336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records    4176      2160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0      2160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection     152      2008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0      2008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0      2008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0      2008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids     194      1814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       0       585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records      31       554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0       554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      74       480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0       480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0       480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0       480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0       480</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 6340</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 4526</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 1814</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 585</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 105</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 480</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span><span class="va">obs.saxi</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Saxifraga cernua"</span>,</span></span>
 <span class="r-in"><span>  geo <span class="op">=</span> <span class="va">shp.lonlat</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :      20257 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :      20266 |</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :        407 |</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
@@ -160,22 +161,22 @@ filtered by this function.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       5       402</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records     286       116</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0       116</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      61        55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      62        54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        54</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 407</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 352</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 55</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 353</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 54</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test plot</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">shp.lonlat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">obs.arcto</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>  <span class="va">obs.paed</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>  pch <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  col <span class="op">=</span> <span class="st">"#238b4550"</span>,</span></span>
 <span class="r-in"><span>  cex <span class="op">=</span> <span class="fl">1</span></span></span>
@@ -189,7 +190,7 @@ filtered by this function.</p></div>
 <span class="r-plt img"><img src="obs_filter-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Combine both datasets</span></span></span>
-<span class="r-in"><span><span class="va">both.sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">obs.arcto</span>,<span class="va">obs.saxi</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">both.sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">obs.paed</span>,<span class="va">obs.saxi</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run function</span></span></span>
 <span class="r-in"><span><span class="va">obs.filt</span> <span class="op">&lt;-</span> <span class="fu">obs_filter</span><span class="op">(</span>gbifs <span class="op">=</span> <span class="va">both.sp</span>, grid <span class="op">=</span> <span class="va">rst</span>, threshold <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>

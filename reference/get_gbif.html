@@ -24,7 +24,7 @@ and range mapping."><meta property="og:image" content="https://8ginette8.github.
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,7 @@ and range mapping."><meta property="og:image" content="https://8ginette8.github.
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -85,7 +86,7 @@ and range mapping.</p>
 <span>  duplicates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  absences <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  basis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OBSERVATION"</span>, <span class="st">"HUMAN_OBSERVATION"</span>, <span class="st">"MACHINE_OBSERVATION"</span>, <span class="st">"OCCURRENCE"</span>,</span>
-<span>    <span class="st">"MATERIAL_CITATION"</span>, <span class="st">"MATERIAL_SAMPLE"</span>, <span class="st">"LITERATURE"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"MATERIAL_CITATION"</span>, <span class="st">"LITERATURE"</span><span class="op">)</span>,</span>
 <span>  establishment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"native"</span>, <span class="st">"casual"</span>, <span class="st">"released"</span>, <span class="st">"reproducing"</span>, <span class="st">"established"</span>,</span>
 <span>    <span class="st">"colonising"</span>, <span class="st">"invasive"</span>, <span class="st">"widespreadInvasive"</span><span class="op">)</span>,</span>
 <span>  add_infos <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -187,20 +188,25 @@ by the number of reported coordinate decimals.</p></dd>
 
 
 <dt id="arg-basis">basis<a class="anchor" aria-label="anchor" href="#arg-basis"></a></dt>
-<dd><p>Character. Vector giving the accepted bases of record. The
-default keeps commonly used occurrence-oriented record types and excludes
-specimen- and unknown-based records.</p></dd>
+<dd><p>Character. Vector of accepted <code>basisOfRecord</code> values.
+Default excludes specimen-based records (e.g. herbarium sheets, museum
+specimens), <code>"MATERIAL_SAMPLE"</code> records, and records of unknown
+basis. See <strong>Details</strong> for the full list of accepted values, and a
+note on why <code>"MATERIAL_SAMPLE"</code> is excluded by default.</p></dd>
 
 
 <dt id="arg-establishment">establishment<a class="anchor" aria-label="anchor" href="#arg-establishment"></a></dt>
-<dd><p>Character. Vector giving accepted
-<code>degreeOfEstablishment</code> values. The default keeps native and broadly
-established records, together with records lacking that field.</p></dd>
+<dd><p>Character. Vector of accepted
+<code>degreeOfEstablishment</code> values. Default keeps native and broadly
+established records; records lacking this field are always kept
+regardless of the selected values. See <strong>Details</strong> for the full
+list of accepted values.</p></dd>
 
 
 <dt id="arg-add-infos">add_infos<a class="anchor" aria-label="anchor" href="#arg-add-infos"></a></dt>
-<dd><p>Optional character. Vector of additional GBIF occurrence
-fields to append to the default output.</p></dd>
+<dd><p>Optional character. Additional GBIF occurrence fields to
+append to the default output columns. See <strong>Details</strong> for the
+default columns and where to find all available GBIF field names.</p></dd>
 
 
 <dt id="arg-time-period">time_period<a class="anchor" aria-label="anchor" href="#arg-time-period"></a></dt>
@@ -305,15 +311,46 @@ rather than rewriting them to a single accepted name. In particular,
 <code>acceptedScientificName</code>, <code>acceptedTaxonKey</code>, and
 <code>taxonomicStatus</code> reflect the harmonized taxon concept used for the
 query.</p>
+<p><strong>basis</strong>: available values (old and new GBIF vocabulary) are
+<code>"OBSERVATION"</code>, <code>"HUMAN_OBSERVATION"</code>,
+<code>"MACHINE_OBSERVATION"</code>, <code>"MATERIAL_CITATION"</code>,
+<code>"MATERIAL_SAMPLE"</code>, <code>"PRESERVED_SPECIMEN"</code>,
+<code>"FOSSIL_SPECIMEN"</code>, <code>"LIVING_SPECIMEN"</code>, <code>"LITERATURE"</code>,
+<code>"UNKNOWN"</code>, and <code>"OCCURRENCE"</code>. The default setting removes
+specimen-based records and records of unknown basis. See
+(<a href="https://docs.gbif.org/course-data-use/en/basis-of-record.html" class="external-link">here</a>)
+for a description of each category.</p>
 <p>Records linked to non-taxonomic backbone entries (e.g. BOLD barcode
-sequences) may also appear in the output, since GBIF associates them with
-the accepted taxon key. These records typically carry
-<code>basisOfRecord = "MATERIAL_SAMPLE"</code>. Note however that
-<code>MATERIAL_SAMPLE</code> is not a reliable proxy for sequence-based records
-across all taxonomic groups. Users can cross-check returned
-<code>acceptedTaxonKey</code> values against <code>get_status(children = TRUE)</code>
-to identify any records linked to non-backbone entries; see
-<code><a href="get_status.html">get_status()</a></code> examples.</p>
+sequences) are typically registered under
+<code>basisOfRecord = "MATERIAL_SAMPLE"</code>. Because <code>MATERIAL_SAMPLE</code>
+is not a reliable proxy for sequence-based records across all taxonomic
+groups, and can also include unrelated bulk or environmental samples, it
+is excluded from the default <code>basis</code> selection. Users who
+deliberately include <code>"MATERIAL_SAMPLE"</code> in <code>basis</code> should
+cross-check returned <code>acceptedTaxonKey</code> values against
+<code>get_status(children = TRUE)</code> to identify any records linked to
+non-backbone entries; see <code><a href="get_status.html">get_status()</a></code> examples.</p>
+<p><strong>establishment</strong>: available <code>degreeOfEstablishment</code> values are
+<code>"native"</code>, <code>"casual"</code>, <code>"released"</code>, <code>"reproducing"</code>,
+<code>"established"</code>, <code>"colonising"</code>, <code>"invasive"</code>,
+<code>"widespreadInvasive"</code>, <code>"managed"</code>, <code>"captive"</code>,
+<code>"cultivated"</code>, <code>"unestablished"</code>, and <code>"failing"</code>. The
+default keeps native and broadly established records; records with no
+<code>degreeOfEstablishment</code> information are always kept regardless of
+the selected values. See
+(<a href="https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment" class="external-link">here</a>) for a
+description of each category.</p>
+<p><strong>add_infos</strong>: the default output always includes <code>"taxonKey"</code>,
+<code>"scientificName"</code>, <code>"acceptedTaxonKey"</code>,
+<code>"acceptedScientificName"</code>, <code>"individualCount"</code>,
+<code>"decimalLatitude"</code>, <code>"decimalLongitude"</code>, <code>"basisOfRecord"</code>,
+<code>"coordinateUncertaintyInMeters"</code>, <code>"countryCode"</code>,
+<code>"country"</code>, <code>"year"</code>, <code>"datasetKey"</code>,
+<code>"institutionCode"</code>, <code>"publishingOrgKey"</code>,
+<code>"taxonomicStatus"</code>, <code>"taxonRank"</code>, and
+<code>"degreeOfEstablishment"</code>. Any additional field name accepted by the
+GBIF occurrence API can be requested via <code>add_infos</code>; see the full
+list (<a href="https://www.gbif.org/developer/occurrence" class="external-link">here</a>).</p>
 <p>If the requested extent contains many records, the query is fragmented into
 spatial tiles so that individual API calls remain manageable. Tiles are
 refined until each contains fewer than 10,000 records, which is faster and
@@ -362,9 +399,11 @@ extensive occurrence cleaning.</p></div>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Download worldwide observations of Ailuropoda melanoleuca</span></span></span>
-<span class="r-in"><span><span class="co"># (with a 100km grain, after 1990 and by keeping duplicates and by</span></span></span>
-<span class="r-in"><span><span class="co"># adding the name of the person who collected the panda records)</span></span></span>
+<span class="r-in"><span><span class="co"># Download all worldwide observations of Ailuropoda melanoleuca, with:</span></span></span>
+<span class="r-in"><span><span class="co"># - 100km grain</span></span></span>
+<span class="r-in"><span><span class="co"># - after 1990</span></span></span>
+<span class="r-in"><span><span class="co"># - keeping duplicates and by</span></span></span>
+<span class="r-in"><span><span class="co"># - adding the name of the person who collected the panda records</span></span></span>
 <span class="r-in"><span><span class="va">obs.am</span> <span class="op">&lt;-</span> <span class="fu">get_gbif</span><span class="op">(</span></span></span>
 <span class="r-in"><span>       sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanoleuca"</span>,</span></span>
 <span class="r-in"><span>       grain <span class="op">=</span> <span class="fl">100</span> ,</span></span>
@@ -387,15 +426,15 @@ extensive occurrence cleaning.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       6        60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0        60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      16        44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      22        38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        38</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 66</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 44</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 28</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 38</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
@@ -413,85 +452,6 @@ extensive occurrence cleaning.</p></div>
 <span class="r-in"><span>       cex <span class="op">=</span> <span class="fl">4</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="get_gbif-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Download worldwide observations of Panthera tigris</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif</span><span class="op">(</span>sp_name <span class="op">=</span> <span class="st">"Panthera tigris"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       8007 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :       5457 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Panthera tigris: download starting...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering     117      5340</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records    2587      2753</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0      2753</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      82      2671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0      2671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0      2671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0      2671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0      2671</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 5457</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 2786</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 2671</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot</span></span></span>
-<span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>       <span class="va">obs.pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>       pch <span class="op">=</span> <span class="fl">20</span>,</span></span>
-<span class="r-in"><span>       col <span class="op">=</span> <span class="st">"#238b4550"</span>,</span></span>
-<span class="r-in"><span>       cex <span class="op">=</span> <span class="fl">4</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="get_gbif-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Download worldwide observations of Bison bison</span></span></span>
-<span class="r-in"><span><span class="co"># (with a 1km grain, after 1990, and keeping raster centroids)</span></span></span>
-<span class="r-in"><span><span class="va">obs.pc</span> <span class="op">&lt;-</span> <span class="fu">get_gbif</span><span class="op">(</span></span></span>
-<span class="r-in"><span>       sp_name <span class="op">=</span> <span class="st">"Bison bison"</span>,</span></span>
-<span class="r-in"><span>       grain <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>       time_period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1990</span>,<span class="fl">3000</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>       centroids <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :      31282 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :      27478 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...(&gt; 10'000 records) retrieving tiles...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Bison bison: download starting...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (5.26%..)              ------------- #2 (10.53%..)             ------------- #3 (15.79%..)             ------------- #4 (21.05%..)             ------------- #5 (26.32%..)             ------------- #6 (31.58%..)             ------------- #7 (36.84%..)             ------------- #8 (42.11%..)             ------------- #9 (47.37%..)             ------------- #10 (52.63%..)            ------------- #11 (57.89%..)            ------------- #12 (63.16%..)            </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Too many requests! To download GBIF occurrence data in bulk, please use occ_download().</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Waiting [=    ] 1/5 secWaiting [==   ] 2/5 secWaiting [===  ] 3/5 secWaiting [==== ] 4/5 secWaiting [=====] 5/5 sec------------- #13 (68.42%..)            ------------- #14 (73.68%..)            ------------- #15 (78.95%..)            ------------- #16 (84.21%..)            ------------- #17 (89.47%..)            ------------- #18 (94.74%..)            ------------- #19 (100%..)              </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering   14538     12940</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records    1135     11805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0     11805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection     227     11578</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0     11578</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame      19     11559</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0     11559</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 27478</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 15919</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 11559</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

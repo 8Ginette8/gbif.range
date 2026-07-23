@@ -98,10 +98,6 @@ to build a range map using the ecoregion layer produced here.
 ## Examples
 
 ``` r
-###########################################
-### Example plot
-###########################################
-
 # Open data
 rst.path <- paste0(
   system.file(package = "gbif.range"),
@@ -125,135 +121,126 @@ my.eco <- make_ecoreg(env = rst,
 
 # \donttest{
 # Downloading in the European Alps the observations of one plant species
-obs.arcto <- get_gbif(
-  sp_name = "Arctostaphylos alpinus",
+obs.paed <- get_gbif(
+  sp_name = "Paederota bonarota",
   geo = shp.lonlat,
   grain = 1
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      42972 |
-#> | Kept records                  :       6340 |
+#> | Total number (all records)    :       1011 |
+#> | Kept records                  :        585 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
 #> 
-#> ...GBIF records of Arctostaphylos alpinus: download starting...
+#> ...GBIF records of Paederota bonarota: download starting...
 #> ------------- #1 (100%..)               
-#> Too many requests! To download GBIF occurrence data in bulk, please use occ_download().
-#> Waiting [=    ] 1/5 secWaiting [==   ] 2/5 secWaiting [===  ] 3/5 secWaiting [==== ] 4/5 secWaiting [=====] 5/5 sec
 #> 
 #> ...Records (XY) filtering summary:
-#> -----------------------------------------------
+#> ----------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering    4968      1372
-#>       Duplicated records     448       924
-#>          Absence records       0       924
-#>          Basis selection      87       837
-#>  Establishment selection       0       837
-#>               Time frame       0       837
-#>        Identical records       0       837
-#>         Raster centroids       0       837
+#>          Grain filtering      78       507
+#>       Duplicated records      12       495
+#>          Absence records       0       495
+#>          Basis selection      49       446
+#>  Establishment selection       0       446
+#>               Time frame       0       446
+#>        Identical records       0       446
+#>         Raster centroids       0       446
 #> 
-#> Initial records         : 6340
-#> Total removed           : 5503
-#> Final records (XY)      : 837
-#> -----------------------------------------------
+#> Initial records         : 585
+#> Total removed           : 139
+#> Final records (XY)      : 446
+#> ----------------------------------------------
 #> Final records (no XY)   : 0
 
-# Create the range map based on our custom ecoregion at 5 x 5 km resolution
+# Create the range map based on:
+# - custom ecoregion at 5 x 5 km resolution
+# - smaller buffer because of regional extent
 range.arcto <- get_range(
-  occ_coord = obs.arcto,
+  occ_coord = obs.paed,
   ecoreg = my.eco,
   ecoreg_name = "EcoRegion",
-  res = 0.05
+  res = 0.05,
+  degrees_outlier = 0.5,
+  buff_width_point = 0.5,
+  buff_incrmt_pts_line = 0.5,
+  buff_width_polygon = 0.5
 )
-#> ## Start of computation for species:  Arctostaphylos alpinus  ### 
-#> 0 outlier's from 807 | proportion from total points: 0%
-#> ecoregion 1  of  83 :  101 
-#> ecoregion 2  of  83 :  102 
-#> ecoregion 3  of  83 :  103 
-#> ecoregion 4  of  83 :  104 
-#> ecoregion 5  of  83 :  105 
-#> ecoregion 6  of  83 :  106 
-#> ecoregion 7  of  83 :  107 
-#> ecoregion 8  of  83 :  108 
-#> ecoregion 9  of  83 :  109 
-#> ecoregion 10  of  83 :  110 
-#> ecoregion 11  of  83 :  111 
-#> ecoregion 12  of  83 :  112 
-#> ecoregion 13  of  83 :  113 
-#> ecoregion 14  of  83 :  114 
-#> ecoregion 15  of  83 :  115 
-#> ecoregion 16  of  83 :  116 
-#> ecoregion 17  of  83 :  117 
-#> ecoregion 18  of  83 :  118 
-#> ecoregion 19  of  83 :  119 
-#> ecoregion 20  of  83 :  120 
-#> ecoregion 21  of  83 :  121 
-#> ecoregion 22  of  83 :  122 
-#> ecoregion 23  of  83 :  125 
-#> [ecoreg = 23] 4 points lying on one line. Using buffer width of 611.1105 km
-#> ecoregion 24  of  83 :  126 
-#> ecoregion 25  of  83 :  127 
-#> ecoregion 26  of  83 :  128 
-#> ecoregion 27  of  83 :  129 
-#> ecoregion 28  of  83 :  130 
-#> ecoregion 29  of  83 :  131 
-#> ecoregion 30  of  83 :  132 
-#> ecoregion 31  of  83 :  133 
-#> ecoregion 32  of  83 :  136 
-#> ecoregion 33  of  83 :  138 
-#> ecoregion 34  of  83 :  139 
-#> ecoregion 35  of  83 :  140 
-#> ecoregion 36  of  83 :  142 
-#> ecoregion 37  of  83 :  143 
-#> ecoregion 38  of  83 :  145 
-#> ecoregion 39  of  83 :  146 
-#> ecoregion 40  of  83 :  147 
-#> ecoregion 41  of  83 :  148 
-#> ecoregion 42  of  83 :  151 
-#> ecoregion 43  of  83 :  152 
-#> ecoregion 44  of  83 :  153 
-#> ecoregion 45  of  83 :  155 
-#> ecoregion 46  of  83 :  156 
-#> ecoregion 47  of  83 :  16 
-#> ecoregion 48  of  83 :  191 
-#> ecoregion 49  of  83 :  27 
-#> ecoregion 50  of  83 :  28 
-#> ecoregion 51  of  83 :  29 
-#> ecoregion 52  of  83 :  30 
-#> ecoregion 53  of  83 :  36 
-#> ecoregion 54  of  83 :  40 
-#> ecoregion 55  of  83 :  41 
-#> ecoregion 56  of  83 :  44 
-#> ecoregion 57  of  83 :  56 
-#> ecoregion 58  of  83 :  57 
-#> ecoregion 59  of  83 :  58 
-#> ecoregion 60  of  83 :  59 
-#> ecoregion 61  of  83 :  62 
-#> ecoregion 62  of  83 :  67 
-#> ecoregion 63  of  83 :  68 
-#> ecoregion 64  of  83 :  69 
-#> ecoregion 65  of  83 :  71 
-#> ecoregion 66  of  83 :  72 
-#> ecoregion 67  of  83 :  74 
-#> ecoregion 68  of  83 :  75 
-#> ecoregion 69  of  83 :  76 
-#> ecoregion 70  of  83 :  77 
-#> ecoregion 71  of  83 :  84 
-#> ecoregion 72  of  83 :  85 
-#> ecoregion 73  of  83 :  86 
-#> ecoregion 74  of  83 :  88 
-#> ecoregion 75  of  83 :  89 
-#> ecoregion 76  of  83 :  92 
-#> ecoregion 77  of  83 :  93 
-#> ecoregion 78  of  83 :  94 
-#> ecoregion 79  of  83 :  95 
-#> ecoregion 80  of  83 :  96 
-#> ecoregion 81  of  83 :  97 
-#> ecoregion 82  of  83 :  98 
-#> ecoregion 83  of  83 :  99 
-#> ## End of computation for species:  Arctostaphylos alpinus  ### 
+#> ## Start of computation for species:  Paederota bonarota  ### 
+#> 4 outlier's from 437 | proportion from total points: 1%
+#> ecoregion 1  of  71 :  100 
+#> ecoregion 2  of  71 :  107 
+#> ecoregion 3  of  71 :  108 
+#> ecoregion 4  of  71 :  109 
+#> ecoregion 5  of  71 :  110 
+#> ecoregion 6  of  71 :  113 
+#> ecoregion 7  of  71 :  114 
+#> ecoregion 8  of  71 :  119 
+#> ecoregion 9  of  71 :  12 
+#> ecoregion 10  of  71 :  121 
+#> ecoregion 11  of  71 :  122 
+#> ecoregion 12  of  71 :  127 
+#> ecoregion 13  of  71 :  128 
+#> ecoregion 14  of  71 :  129 
+#> ecoregion 15  of  71 :  130 
+#> ecoregion 16  of  71 :  131 
+#> ecoregion 17  of  71 :  132 
+#> ecoregion 18  of  71 :  133 
+#> ecoregion 19  of  71 :  138 
+#> ecoregion 20  of  71 :  139 
+#> ecoregion 21  of  71 :  14 
+#> ecoregion 22  of  71 :  140 
+#> ecoregion 23  of  71 :  142 
+#> ecoregion 24  of  71 :  145 
+#> ecoregion 25  of  71 :  147 
+#> ecoregion 26  of  71 :  148 
+#> ecoregion 27  of  71 :  15 
+#> ecoregion 28  of  71 :  151 
+#> ecoregion 29  of  71 :  153 
+#> ecoregion 30  of  71 :  155 
+#> ecoregion 31  of  71 :  156 
+#> ecoregion 32  of  71 :  157 
+#> ecoregion 33  of  71 :  16 
+#> ecoregion 34  of  71 :  17 
+#> ecoregion 35  of  71 :  19 
+#> ecoregion 36  of  71 :  2 
+#> ecoregion 37  of  71 :  22 
+#> ecoregion 38  of  71 :  28 
+#> ecoregion 39  of  71 :  29 
+#> ecoregion 40  of  71 :  30 
+#> ecoregion 41  of  71 :  31 
+#> ecoregion 42  of  71 :  32 
+#> ecoregion 43  of  71 :  33 
+#> ecoregion 44  of  71 :  35 
+#> ecoregion 45  of  71 :  40 
+#> ecoregion 46  of  71 :  41 
+#> ecoregion 47  of  71 :  44 
+#> ecoregion 48  of  71 :  5 
+#> ecoregion 49  of  71 :  57 
+#> ecoregion 50  of  71 :  59 
+#> ecoregion 51  of  71 :  60 
+#> ecoregion 52  of  71 :  62 
+#> ecoregion 53  of  71 :  64 
+#> ecoregion 54  of  71 :  68 
+#> ecoregion 55  of  71 :  69 
+#> ecoregion 56  of  71 :  70 
+#> ecoregion 57  of  71 :  71 
+#> ecoregion 58  of  71 :  72 
+#> ecoregion 59  of  71 :  77 
+#> ecoregion 60  of  71 :  79 
+#> ecoregion 61  of  71 :  8 
+#> ecoregion 62  of  71 :  81 
+#> ecoregion 63  of  71 :  84 
+#> ecoregion 64  of  71 :  85 
+#> ecoregion 65  of  71 :  86 
+#> ecoregion 66  of  71 :  9 
+#> ecoregion 67  of  71 :  92 
+#> ecoregion 68  of  71 :  94 
+#> ecoregion 69  of  71 :  95 
+#> ecoregion 70  of  71 :  98 
+#> ecoregion 71  of  71 :  99 
+#> ## End of computation for species:  Paederota bonarota  ### 
 
 # Plot
 countries <- terra::vect(
@@ -270,81 +257,12 @@ terra::plot(
   legend = FALSE
 )
 graphics::points(
-  obs.arcto[, c("decimalLongitude","decimalLatitude")],
+  obs.paed[, c("decimalLongitude","decimalLatitude")],
   pch = 20,
   col = "#99340470",
   cex = 1
 )
 
-
-###########################################
-### Package manuscript plot (Fig 1a, left)
-###########################################
-
-# Root and package
-root_dir <- tempdir()
-if (!dir.exists(file.path(root_dir, "fig_plots"))) {
-    dir.create(file.path(root_dir, "fig_plots"))
-}
-
-# Assign colors to ecoregions
-my.eco = terra::vect(my.eco)
-eco.alps <- terra::crop(my.eco, terra::ext(shp.lonlat))
-eco.alps2 <- terra::intersect(eco.alps, alps.shp)
-col.palette <- grDevices::colorRampPalette(c("#a6cee3", "#1f78b4",
-  "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c",
-  "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a",
-  "#ffff99", "#b15928"))
-colcol <- col.palette(length(my.eco))
-set.seed(7)
-eco.alps2$color <- sample(
-  paste0(colcol, ""),
-  length(eco.alps2),
-  replace = FALSE
-)
-
-# Extract ecoregions values for points
-pt.col <- terra::extract(
-  x = eco.alps2,
-  y = as.data.frame(obs.arcto[, c("decimalLongitude","decimalLatitude")])
-)
-pt.plot <- obs.arcto[!is.na(pt.col$color),
-                      c("decimalLongitude","decimalLatitude")]
-pt.col2 <- pt.col[!is.na(pt.col$color), "color"]
-pt.col3 <- grDevices::adjustcolor(pt.col2, red.f = 0.6, green.f = 0.6, blue.f = 0.6)
-
-# Plot
-grDevices::png(
-  paste0(
-    root_dir,
-    "/fig_plots/fig1_arcto.png"
-  ),
-  width = 100,
-  height = 70,
-  unit = "cm",
-  res = 100,
-  pointsize = 110
-)
-oldpar <- graphics::par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 10, cex = 1)
-terra::plot(
-  eco.alps2,
-  col = paste0(eco.alps2$color, "99"),
-  border = NA,
-  axes = FALSE
-)
-terra::plot(
-  terra::as.polygons(r.arcto),
-  border = "black",
-  lwd = 7,
-  col = "#00000099",
-  add = TRUE
-)
-graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
-graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
-grDevices::dev.off()
-#> agg_record_1ce37d5a93b3 
-#>                       2 
-graphics::par(oldpar)
 
 # }
 ```

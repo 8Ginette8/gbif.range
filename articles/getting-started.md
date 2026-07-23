@@ -284,9 +284,12 @@ range.arcto <- get_range(
   occ_coord         = obs.arcto,
   ecoreg            = my.eco,
   ecoreg_name       = "EcoRegion",
+  res               = 0.05,        # 5 x 5 km output resolution
   degrees_outlier   = 5,
   clust_pts_outlier = 4,
-  res               = 0.05        # 5 x 5 km output resolution
+  buff_width_point = 4,
+  buff_incrmt_pts_line = 0.5,
+  buff_width_polygon = 4
 )
 
 # Plot
@@ -305,7 +308,14 @@ with coordinate uncertainty ≤ 1 km; at larger scales the default 100 km
 grain is appropriate, but for a small alpine extent it would retain too
 many imprecise records. Second, the `res` argument sets the output
 raster resolution, which can be as fine as the input environmental
-layers allow.
+layers allow. Third, the outlier and buffer parameters above were left
+at their defaults, which is appropriate here because *Arctostaphylos
+alpinus* occurs broadly across the Alps and Europe wherever conditions
+are suitable. For species with a more spatially restricted or
+biogeo-constrained distribution, these parameters often need tightening
+— see the *“Tuning the main range arguments”* section of
+[`vignette("ecoregion-constrained-range-inference")`](https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.md)
+for a worked example.
 
 ## Large downloaded GBIF tables
 

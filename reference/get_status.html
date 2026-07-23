@@ -16,7 +16,7 @@ available."><meta property="og:image" content="https://8ginette8.github.io/gbif.
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,7 @@ available."><meta property="og:image" content="https://8ginette8.github.io/gbif.
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -182,250 +183,156 @@ approaches to querying the GBIF backbone taxonomy.</p></div>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># --- 1. Default: accepted name + synonyms only ---</span></span></span>
-<span class="r-in"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigris"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tax</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           canonicalName    rank gbif_key                   scientificName</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sp_nameMatch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416        INPUT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  canonicalName    rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus SPECIES  9387176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus SPECIES  9379787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034     Ursus melanoleucus SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                               scientificName gbif_status      Genus  Family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Order    Class   Phylum IUCN_status sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- 2. Include infra-specific taxa (subspecies, varieties) ---</span></span></span>
 <span class="r-in"><span><span class="co"># These are the same keys retrieved by get_gbif()</span></span></span>
-<span class="r-in"><span><span class="va">tax_ch</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tax_ch</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tax_ch</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     canonicalName       rank gbif_key</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416           Panthera tigris    SPECIES  5219416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819              Felis tigris    SPECIES  4969819</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219420   Panthera tigris altaica SUBSPECIES  5219420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219425 Panthera tigris amoyensis SUBSPECIES  5219425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219419    Panthera tigris balica SUBSPECIES  5219419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219424  Panthera tigris corbetti SUBSPECIES  5219424</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219422  Panthera tigris sondaica SUBSPECIES  5219422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219418  Panthera tigris sumatrae SUBSPECIES  5219418</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7059276    Panthera tigris tigris SUBSPECIES  7059276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219423   Panthera tigris virgata SUBSPECIES  5219423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                       scientificName gbif_status    Genus</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416             Panthera tigris (Linnaeus, 1758)    ACCEPTED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819                  Felis tigris Linnaeus, 1758     SYNONYM Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219420       Panthera tigris altaica Temminck, 1844    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219425 Panthera tigris amoyensis (Hilzheimer, 1905)    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219419         Panthera tigris balica Schwarz, 1912    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219424         Panthera tigris corbetti Mazak, 1968    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219422      Panthera tigris sondaica Temminck, 1844    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219418        Panthera tigris sumatrae Pocock, 1929    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7059276                       Panthera tigris tigris    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219423      Panthera tigris virgata (Illiger, 1815)    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Family     Order    Class   Phylum IUCN_status sp_nameMatch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Felidae Carnivora Mammalia Chordata  ENDANGERED        INPUT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219420 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219425 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219419 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219424 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219422 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219418 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7059276 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219423 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  canonicalName       rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399                 Ailuropoda melanoleuca    SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176                 Aeluropus melanoleucus    SPECIES  9387176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787                 Ailuropus melanoleucus    SPECIES  9379787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034                     Ursus melanoleucus    SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9087131     Ailuropoda melanoleuca melanoleuca SUBSPECIES  9087131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9460321 Ailuropoda melanoleuca wulingshanensis SUBSPECIES  9460321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                     scientificName gbif_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399                       Ailuropoda melanoleuca (David, 1869)    ACCEPTED</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176                       Aeluropus melanoleucus (David, 1869)     SYNONYM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787                       Ailuropus melanoleucus (David, 1869)     SYNONYM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034                             Ursus melanoleucus David, 1869     SYNONYM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9087131                         Ailuropoda melanoleuca melanoleuca    CHILDREN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9460321 Ailuropoda melanoleuca wulingshanensis (Wang et al., 1982)    CHILDREN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              Genus  Family     Order    Class   Phylum IUCN_status sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9087131 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9460321 Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- 3. Include alternative name string representations (inspection only) ---</span></span></span>
 <span class="r-in"><span><span class="co"># RELATED rows are not used by get_gbif()</span></span></span>
-<span class="r-in"><span><span class="va">tax_rel</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tax_rel</span> <span class="op">&lt;-</span> <span class="fu">get_status</span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tax_rel</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                canonicalName       rank gbif_key</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            Panthera tigris    SPECIES  5219416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2               Felis tigris    SPECIES  4969819</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Panthera tigris altaica SUBSPECIES  5219420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Panthera tigris amoyensis SUBSPECIES  5219425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     Panthera tigris balica SUBSPECIES  5219419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   Panthera tigris corbetti SUBSPECIES  5219424</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   Panthera tigris sondaica SUBSPECIES  5219422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Panthera tigris sumatrae SUBSPECIES  5219418</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     Panthera tigris tigris SUBSPECIES  7059276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   Panthera tigris virgata SUBSPECIES  5219423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11           Panthera tigris    SPECIES  5219416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13           Panthera tigris    SPECIES  5219416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14           Panthera tigris    SPECIES  5219416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15           Panthera tigris    SPECIES  5219416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17              Felis tigris    SPECIES  4969819</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18              Felis tigris    SPECIES  4969819</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19              Felis tigris    SPECIES  4969819</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   Panthera tigris altaica SUBSPECIES  5219420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   Panthera tigris altaica SUBSPECIES  5219420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22  Panthera tigris altaicus SUBSPECIES  5219420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   Panthera tigris altaica SUBSPECIES  5219420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   Panthera tigris altaica SUBSPECIES  5219420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 Panthera tigris amoyensis SUBSPECIES  5219425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 Panthera tigris amoyensis SUBSPECIES  5219425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 Panthera tigris amoyensis SUBSPECIES  5219425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 Panthera tigris amoyensis SUBSPECIES  5219425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 Panthera tigris amoyensis SUBSPECIES  5219425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32    Panthera tigris balica SUBSPECIES  5219419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34    Panthera tigris balica SUBSPECIES  5219419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35  Panthera tigris corbetti SUBSPECIES  5219424</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36  Panthera tigris corbetti SUBSPECIES  5219424</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37  Panthera tigris corbetti SUBSPECIES  5219424</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39  Panthera tigris sondaica SUBSPECIES  5219422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40  Panthera tigris sondaica SUBSPECIES  5219422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42  Panthera tigris sondaica SUBSPECIES  5219422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43  Panthera tigris sondaica SUBSPECIES  5219422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44  Panthera tigris sumatrae SUBSPECIES  5219418</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45  Panthera tigris sumatrae SUBSPECIES  5219418</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47  Panthera tigris sumatrae SUBSPECIES  5219418</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48    Panthera tigris tigris SUBSPECIES  7059276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49    Panthera tigris tigris SUBSPECIES  7059276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51    Panthera tigris tigris SUBSPECIES  7059276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52   Panthera tigris virgata SUBSPECIES  5219423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53   Panthera tigris virgata SUBSPECIES  5219423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54   Panthera tigris virgata SUBSPECIES  5219423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55   Panthera tigris virgata SUBSPECIES  5219423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56   Panthera tigris virgata SUBSPECIES  5219423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         scientificName gbif_status    Genus</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     Panthera tigris (Linnaeus, 1758)    ACCEPTED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Felis tigris Linnaeus, 1758     SYNONYM Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               Panthera tigris altaica Temminck, 1844    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         Panthera tigris amoyensis (Hilzheimer, 1905)    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 Panthera tigris balica Schwarz, 1912    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 Panthera tigris corbetti Mazak, 1968    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7              Panthera tigris sondaica Temminck, 1844    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                Panthera tigris sumatrae Pocock, 1929    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                               Panthera tigris tigris    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10             Panthera tigris virgata (Illiger, 1815)    CHILDREN Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                     Panthera tigris (Linnaeus 1758)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                    Panthera tigris (‎Linnaeus‎, ‎1758‎)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                     Panthera tigris     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15                      Panthera tigris Linnaeus, 1758     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17                                        Felis tigris     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                          Felis tigris Linnaeus 1758     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19                       Felis tigris (Linnaeus, 1758)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20       Panthera tigris subsp. altaica Temminck, 1844     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21            Panthera tigris altaica (Temminck, 1844)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22             Panthera tigris altaicus Temminck, 1844     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23        Panthera tigris subsp. altaica Temminck 1844     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24                             Panthera tigris altaica     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 Panthera tigris subsp. amoyensis (Hilzheimer, 1905)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27          Panthera tigris amoyensis Hilzheimer, 1905     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28    Panthera tigris subsp. amoyensis Hilzheimer 1905     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29                           Panthera tigris amoyensis     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   Panthera tigris subsp. amoyensis Hilzheimer, 1905     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32         Panthera tigris subsp. balica Schwarz, 1912     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34               Panthera tigris balica Schwarz, 1912.     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35         Panthera tigris subsp. corbetti Mazák, 1968     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36                            Panthera tigris corbetti     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37         Panthera tigris subsp. corbetti Mazak, 1968     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39      Panthera tigris subsp. sondaica Temminck, 1844     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40                            Panthera tigris sondaica     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42            Panthera tigris sondaica Temminck, 1844.     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43    Panthera tigris subsp. sondaica (Temminck, 1844)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44                            Panthera tigris sumatrae     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45        Panthera tigris subsp. sumatrae Pocock, 1929     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47                Panthera tigris sumatrae Pocock 1929     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48                       Panthera tigris subsp. tigris     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49         Panthera tigris subsp. tigris Linnaeus 1758     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51             Panthera tigris tigris (Linnaeus, 1758)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52      Panthera tigris subsp. virgata (Illiger, 1815)     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53               Panthera tigris virgata Illiger, 1815     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54         Panthera tigris subsp. virgata Illiger 1815     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55        Panthera tigris subsp. virgata Illiger, 1815     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56                             Panthera tigris virgata     RELATED Panthera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Family     Order    Class   Phylum IUCN_status sp_nameMatch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Felidae Carnivora Mammalia Chordata  ENDANGERED        INPUT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56 Felidae Carnivora Mammalia Chordata  ENDANGERED        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             canonicalName       rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  Ailuropoda melanoleuca    SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  Aeluropus melanoleucus    SPECIES  9387176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  Ailuropus melanoleucus    SPECIES  9379787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                      Ursus melanoleucus    SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Ailuropoda melanoleuca melanoleuca SUBSPECIES  9087131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Ailuropoda melanoleuca wulingshanensis SUBSPECIES  9460321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Ailuropoda melanoleuca    SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                  Ailuropoda melanoleuca    SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                 Ailuropoda melanoleuca    SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                      Ursus melanoleuca    SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                     Ursus melanoleucus    SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                     Ursus melanoleucus    SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 Ailuropoda melanoleuca wulingshanensis SUBSPECIES  9460321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                       scientificName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                               Ailuropoda melanoleuca (David, 1869)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                               Aeluropus melanoleucus (David, 1869)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                               Ailuropus melanoleucus (David, 1869)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                     Ursus melanoleucus David, 1869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                 Ailuropoda melanoleuca melanoleuca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         Ailuropoda melanoleuca wulingshanensis (Wang et al., 1982)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                                Ailuropoda melanoleuca (David 1869)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                                 Ailuropoda melanoleuca David, 1869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                            Ailuropoda melanoleuca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                                 Ursus melanoleuca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                                     Ursus melanoleucus David 1869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                                  Ursus melanoleucus (David, 1869)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 Ailuropoda melanoleuca subsp. wulingshanensis (Wang et al., 1982)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    gbif_status      Genus  Family     Order    Class   Phylum IUCN_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     ACCEPTED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      SYNONYM Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      SYNONYM Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      SYNONYM Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     CHILDREN Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     CHILDREN Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     RELATED Ailuropoda Ursidae Carnivora Mammalia Chordata  VULNERABLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8         EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9         EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18        EXACT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- 4. Fuzzy matching for uncertain names ---</span></span></span>
 <span class="r-in"><span><span class="co"># sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches</span></span></span>
-<span class="r-in"><span><span class="fu">get_status</span><span class="op">(</span><span class="st">"Panthera tigri"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           canonicalName    rank gbif_key                   scientificName</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sp_nameMatch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416        INPUT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819      VARIANT</span>
+<span class="r-in"><span><span class="fu">get_status</span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  canonicalName    rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus SPECIES  9387176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus SPECIES  9379787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034     Ursus melanoleucus SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                               scientificName gbif_status      Genus  Family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Order    Class   Phylum IUCN_status sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- 5. Cross-check get_status() keys against get_gbif() output ---</span></span></span>
-<span class="r-in"><span><span class="va">occ</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, has_xy <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">occ</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span>, has_xy <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">valid_keys</span>    <span class="op">&lt;-</span> <span class="va">tax_ch</span><span class="op">$</span><span class="va">gbif_key</span><span class="op">[</span><span class="va">tax_ch</span><span class="op">$</span><span class="va">gbif_status</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ACCEPTED"</span>, <span class="st">"CHILDREN"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">returned_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">occ</span><span class="op">$</span><span class="va">acceptedTaxonKey</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Keys in get_status() — backbone taxa (ACCEPTED + CHILDREN)</span></span></span>
 <span class="r-in"><span><span class="va">valid_keys</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5219416" "5219420" "5219425" "5219419" "5219424" "5219422" "5219418"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [8] "7059276" "5219423"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2433399" "9087131" "9460321"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Keys returned by get_gbif()</span></span></span>
 <span class="r-in"><span><span class="va">returned_keys</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  7059276  5219416  5219420  5219422  5219418 10568627 10604898</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9087131 2433399 9460321</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Are all occurrence keys known backbone keys?</span></span></span>
 <span class="r-in"><span><span class="co"># FALSE indicates non-backbone entries (e.g. BOLD sequences) are present</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">returned_keys</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">valid_keys</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect non-backbone records — typically MATERIAL_SAMPLE, excluded by default</span></span></span>
 <span class="r-in"><span><span class="va">extra_keys</span> <span class="op">&lt;-</span> <span class="va">returned_keys</span><span class="op">[</span><span class="op">!</span><span class="va">returned_keys</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">valid_keys</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">extra_keys</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10568627 10604898</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> integer(0)</span>
 <span class="r-in"><span><span class="va">occ</span><span class="op">[</span><span class="va">occ</span><span class="op">$</span><span class="va">acceptedTaxonKey</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">extra_keys</span>,</span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"acceptedTaxonKey"</span>, <span class="st">"scientificName"</span>, <span class="st">"basisOfRecord"</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      acceptedTaxonKey scientificName   basisOfRecord</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4307         10568627   BOLD:AAD6820 MATERIAL_SAMPLE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4557         10568627   BOLD:AAD6820 MATERIAL_SAMPLE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4573         10568627   BOLD:AAD6820 MATERIAL_SAMPLE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5292         10604898   BOLD:AAC3048 MATERIAL_SAMPLE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5302         10604898   BOLD:AAC3048 MATERIAL_SAMPLE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5303         10604898   BOLD:AAC3048 MATERIAL_SAMPLE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] acceptedTaxonKey scientificName   basisOfRecord   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Note: not all valid_keys need to appear in returned_keys — some subspecies</span></span></span>
 <span class="r-in"><span><span class="co"># may have no records in GBIF at all (e.g. extinct taxa) or may have been</span></span></span>
@@ -434,12 +341,12 @@ approaches to querying the GBIF backbone taxonomy.</p></div>
 <span class="r-in"><span><span class="co"># --- 6. Input name flagged correctly regardless of how GBIF resolves it ---</span></span></span>
 <span class="r-in"><span><span class="co"># sp_nameMatch = "INPUT" marks the row closest to the submitted name</span></span></span>
 <span class="r-in"><span><span class="va">tax_ch</span><span class="op">[</span><span class="va">tax_ch</span><span class="op">$</span><span class="va">sp_nameMatch</span> <span class="op">==</span> <span class="st">"INPUT"</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           canonicalName    rank gbif_key                   scientificName</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sp_nameMatch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  canonicalName    rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                               scientificName gbif_status      Genus  Family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Order    Class   Phylum IUCN_status sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

@@ -14,7 +14,7 @@ cross-validation."><meta property="og:image" content="https://8ginette8.github.i
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@ cross-validation."><meta property="og:image" content="https://8ginette8.github.i
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -120,47 +121,42 @@ create cross-validation folds.</p></div>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Downloading worldwide the observations of Panthera tigris</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    sp_name <span class="op">=</span> <span class="st">"Panthera tigris"</span>,</span></span>
-<span class="r-in"><span>    basis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OBSERVATION"</span>,<span class="st">"HUMAN_OBSERVATION"</span>,</span></span>
-<span class="r-in"><span>        <span class="st">"MACHINE_OBSERVATION"</span>,<span class="st">"OCCURRENCE"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Downloading worldwide all the observations of great panda </span></span></span>
+<span class="r-in"><span><span class="va">obs.pd</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span>sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanoleuca"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       8007 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :       5457 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :         66 |</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Panthera tigris: download starting...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Ailuropoda melanoleuca: download starting...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering     117      5340</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records    2587      2753</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0      2753</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection     351      2402</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0      2402</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0      2402</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0      2402</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0      2402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       6        60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records      13        47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0        47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      10        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        37</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 5457</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 3055</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 2402</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 66</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 37</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a vector of folds (n = 5) spatially blocked (n = 10)</span></span></span>
-<span class="r-in"><span><span class="va">block.pt</span> <span class="op">&lt;-</span> <span class="fu">make_blocks</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">block.pd</span> <span class="op">&lt;-</span> <span class="fu">make_blocks</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    nfolds <span class="op">=</span> <span class="fl">5</span>,</span></span>
-<span class="r-in"><span>    df <span class="op">=</span> <span class="va">obs.pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLatitude"</span>,<span class="st">"decimalLongitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>    nblocks <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span>    df <span class="op">=</span> <span class="va">obs.pd</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLatitude"</span>,<span class="st">"decimalLongitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>    nblocks <span class="op">=</span> <span class="fl">5</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 6 variables with 5, 5, 5, 5, ... levels: 15625 function evaluations required.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot one colour per fold</span></span></span>
 <span class="r-in"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span></span>
@@ -168,13 +164,13 @@ create cross-validation folds.</p></div>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">countries.focus</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="va">countries</span>,</span></span>
-<span class="r-in"><span>    <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="fl">60</span>,<span class="fl">100</span>,<span class="fl">0</span>,<span class="fl">40</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="fl">73.0</span>, <span class="fl">135.0</span>, <span class="fl">18.0</span>, <span class="fl">54.0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries.focus</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="va">obs.pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>    <span class="va">obs.pd</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>    pch <span class="op">=</span> <span class="fl">20</span>,</span></span>
-<span class="r-in"><span>    col <span class="op">=</span> <span class="va">block.pt</span>,</span></span>
+<span class="r-in"><span>    col <span class="op">=</span> <span class="va">block.pd</span>,</span></span>
 <span class="r-in"><span>    cex <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="make_blocks-1.png" alt="" width="700" height="433"></span>

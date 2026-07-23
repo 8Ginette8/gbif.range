@@ -128,14 +128,6 @@ obs_tiger <- get_gbif(
 
 # Inspect the accepted name and synonym mapping used internally.
 get_status("Panthera tigris", level = "children")
-
-# Retrieve a terrestrial ecoregion layer and build the range.
-eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
-range_tiger <- get_range(
-  occ_coord = obs_tiger,
-  ecoreg = eco_terra,
-  ecoreg_name = "ECO_NAME"
-)
 ```
 
 The arguments most often worth adjusting are:
@@ -212,14 +204,6 @@ obs_delphis <- get_gbif(
 
 # Inspect the internal get_gbif() logic and all related names.
 get_status("Delphinus delphis", level = "all")
-
-# Build a marine range from the packaged ecoregions.
-eco_marine <- read_ecoreg("eco_marine", save_dir = tempdir())
-range_delphis <- get_range(
-  occ_coord = obs_delphis,
-  ecoreg = eco_marine,
-  ecoreg_name = "ECOREGION"
-)
 ```
 
 This is exactly the kind of analysis where
@@ -284,7 +268,7 @@ is available when you want to create GBIF-ready geometry tiles yourself:
 
 ``` r
 
-tiles <- make_tiles(terra::ext(-20, 40, 0, 60), nsize = 5)
+tiles <- make_tiles(terra::ext(-20, 40, 0, 60), ntiles = 5)
 tiles[[1]]
 ```
 

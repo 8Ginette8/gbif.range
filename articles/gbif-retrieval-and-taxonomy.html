@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -192,15 +193,7 @@ Chauvier et al. (2021, <em>Ecological Monographs</em>).</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Inspect the accepted name and synonym mapping used internally.</span></span>
-<span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Retrieve a terrestrial ecoregion layer and build the range.</span></span>
-<span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">range_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
-<span>  occ_coord <span class="op">=</span> <span class="va">obs_tiger</span>,</span>
-<span>  ecoreg <span class="op">=</span> <span class="va">eco_terra</span>,</span>
-<span>  ecoreg_name <span class="op">=</span> <span class="st">"ECO_NAME"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span></code></pre></div>
 <p>The arguments most often worth adjusting are:</p>
 <ul>
 <li>
@@ -277,15 +270,7 @@ require more deliberate choices about sampling and ecoregions.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Inspect the internal get_gbif() logic and all related names.</span></span>
-<span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Delphinus delphis"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Build a marine range from the packaged ecoregions.</span></span>
-<span><span class="va">eco_marine</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_marine"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">range_delphis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
-<span>  occ_coord <span class="op">=</span> <span class="va">obs_delphis</span>,</span>
-<span>  ecoreg <span class="op">=</span> <span class="va">eco_marine</span>,</span>
-<span>  ecoreg_name <span class="op">=</span> <span class="st">"ECOREGION"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Delphinus delphis"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
 <p>This is exactly the kind of analysis where
 <code><a href="../reference/get_gbif_count.html">get_gbif_count()</a></code> is useful upstream. If the expected volume
 is extremely large and the project targets many taxa, the disk-based
@@ -340,7 +325,7 @@ doing early.</p>
 <code><a href="../reference/make_tiles.html">make_tiles()</a></code> is available when you want to create
 GBIF-ready geometry tiles yourself:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_tiles.html">make_tiles</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="op">-</span><span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">0</span>, <span class="fl">60</span><span class="op">)</span>, nsize <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_tiles.html">make_tiles</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="op">-</span><span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">0</span>, <span class="fl">60</span><span class="op">)</span>, ntiles <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">tiles</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <p>This is mostly useful for custom <code>rgbif</code> workflows or
 explicit diagnostics of how an extent is being subdivided.</p>

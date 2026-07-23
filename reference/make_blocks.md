@@ -70,47 +70,42 @@ which uses this function internally to create cross-validation folds.
 
 ``` r
 # \donttest{
-# Downloading worldwide the observations of Panthera tigris
-obs.pt <- get_gbif(
-    sp_name = "Panthera tigris",
-    basis = c("OBSERVATION","HUMAN_OBSERVATION",
-        "MACHINE_OBSERVATION","OCCURRENCE")
-)
+# Downloading worldwide all the observations of great panda 
+obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #> |--------------------------------------------|
-#> | Total number (all records)    :       8007 |
-#> | Kept records                  :       5457 |
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE
 #> 
-#> ...GBIF records of Panthera tigris: download starting...
+#> ...GBIF records of Ailuropoda melanoleuca: download starting...
 #> ------------- #1 (100%..)               
 #> 
 #> ...Records (XY) filtering summary:
-#> -----------------------------------------------
+#> ---------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering     117      5340
-#>       Duplicated records    2587      2753
-#>          Absence records       0      2753
-#>          Basis selection     351      2402
-#>  Establishment selection       0      2402
-#>               Time frame       0      2402
-#>        Identical records       0      2402
-#>         Raster centroids       0      2402
+#>          Grain filtering       6        60
+#>       Duplicated records      13        47
+#>          Absence records       0        47
+#>          Basis selection      10        37
+#>  Establishment selection       0        37
+#>               Time frame       0        37
+#>        Identical records       0        37
+#>         Raster centroids       0        37
 #> 
-#> Initial records         : 5457
-#> Total removed           : 3055
-#> Final records (XY)      : 2402
-#> -----------------------------------------------
+#> Initial records         : 66
+#> Total removed           : 29
+#> Final records (XY)      : 37
+#> ---------------------------------------------
 #> Final records (no XY)   : 0
 
 # Create a vector of folds (n = 5) spatially blocked (n = 10)
-block.pt <- make_blocks(
+block.pd <- make_blocks(
     nfolds = 5,
-    df = obs.pt[, c("decimalLatitude","decimalLongitude")],
-    nblocks = 10
+    df = obs.pd[, c("decimalLatitude","decimalLongitude")],
+    nblocks = 5
 )
-#> 6 variables with 5, 5, 5, 5, ... levels: 15625 function evaluations required.
 
 # Plot one colour per fold
 countries <- terra::vect(
@@ -118,13 +113,13 @@ countries <- terra::vect(
 )
 countries.focus <- terra::crop(
     countries,
-    terra::ext(60,100,0,40)
+    terra::ext(73.0, 135.0, 18.0, 54.0)
 )
 terra::plot(countries.focus, col = "#bcbddc")
 graphics::points(
-    obs.pt[, c("decimalLongitude","decimalLatitude")],
+    obs.pd[, c("decimalLongitude","decimalLatitude")],
     pch = 20,
-    col = block.pt,
+    col = block.pd,
     cex = 1
 )
 

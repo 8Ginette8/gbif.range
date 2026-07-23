@@ -18,7 +18,7 @@ evaluate the resulting maps against independent data."><meta property="og:image"
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,7 @@ evaluate the resulting maps against independent data."><meta property="og:image"
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -134,96 +135,83 @@ downloaded GBIF tables.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># -------------------------------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co"># 2. Typical online workflow with GBIF data</span></span></span>
+<span class="r-in"><span><span class="co"># 2. Typical online workflow with recent GBIF data</span></span></span>
 <span class="r-in"><span><span class="co"># -------------------------------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Download GBIF occurrences for one species.</span></span></span>
-<span class="r-in"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, grain <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Download all GBIF occurrences for one species</span></span></span>
+<span class="r-in"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       8007 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :       5457 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :        300 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :         66 |</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Panthera tigris: download starting...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...GBIF records of Ailuropoda melanoleuca: download starting...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------------- #1 (100%..)               </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering    4082      1375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records     793       582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0       582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      72       510</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0       510</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0       510</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0       510</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0       510</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       6        60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records      13        47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0        47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      10        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        37</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 5457</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 4947</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 510</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 66</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 37</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Remove observation without data, i.e.,</span></span></span>
+<span class="r-in"><span><span class="co"># probably outdated for a threatned species such as the panda</span></span></span>
+<span class="r-in"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="va">obs</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">obs</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>,<span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect the GBIF backbone interpretation used by the package.</span></span></span>
-<span class="r-in"><span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">status</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           canonicalName    rank gbif_key                   scientificName</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sp_nameMatch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5219416        INPUT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4969819        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  canonicalName    rank gbif_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca SPECIES  2433399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus SPECIES  9387176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus SPECIES  9379787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034     Ursus melanoleucus SPECIES  7888034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                               scientificName gbif_status      Genus  Family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Order    Class   Phylum IUCN_status sp_nameMatch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load a packaged terrestrial ecoregion layer and build the range.</span></span></span>
-<span class="r-in"><span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tiger_range</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_range.html">get_range</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">panda_range</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_range.html">get_range</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  occ_coord <span class="op">=</span> <span class="va">obs</span>,</span></span>
 <span class="r-in"><span>  ecoreg <span class="op">=</span> <span class="va">eco_terra</span>,</span></span>
 <span class="r-in"><span>  ecoreg_name <span class="op">=</span> <span class="st">"ECO_NAME"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ## Start of computation for species:  Panthera tigris  ### </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 27 outlier's from 508 | proportion from total points: 5%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 1  of  27 :  Brahmaputra Valley Semi-Evergreen Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 2  of  27 :  Central Deccan Plateau Dry Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 3  of  27 :  Chao Phraya Freshwater Swamp Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 4  of  27 :  Eastern Highlands Moist Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 5  of  27 :  Eastern Himalayan Alpine Shrub And Meadows </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 6  of  27 :  Eastern Himalayan Broadleaf Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 7  of  27 :  Eastern Java-Bali Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 8  of  27 :  Himalayan Subtropical Broadleaf Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 9  of  27 :  Himalayan Subtropical Pine Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 10  of  27 :  Kayah-Karen Montane Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 11  of  27 :  Khathiar-Gir Dry Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 12  of  27 :  Luang Prabang Montane Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 13  of  27 :  Meghalaya Subtropical Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 14  of  27 :  Mizoram-Manipur-Kachin Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 15  of  27 :  Narmada Valley Dry Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 16  of  27 :  Orissa Semi-Evergreen Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 17  of  27 :  Peninsular Malaysian Montane Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 18  of  27 :  Peninsular Malaysian Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 19  of  27 :  South Deccan Plateau Dry Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 20  of  27 :  South Western Ghats Moist Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 21  of  27 :  South Western Ghats Montane Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 22  of  27 :  Sumatran Lowland Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 23  of  27 :  Sumatran Montane Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 24  of  27 :  Sundarbans Mangroves </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 25  of  27 :  Tenasserim-South Thailand Semi-Evergreen Rain Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 26  of  27 :  Terai-Duar Savanna And Grasslands </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 27  of  27 :  Upper Gangetic Plains Moist Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ## End of computation for species:  Panthera tigris  ### </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ## Start of computation for species:  Ailuropoda melanoleuca  ### </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 outlier's from 25 | proportion from total points: 8%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 1  of  4 :  Daba Mountains Evergreen Forests </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 2  of  4 :  Qin Ling Mountains Deciduous Forests </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 3  of  4 :  Qionglai-Minshan Conifer Forests </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 4  of  4 :  Southeast Tibet Shrublands And Meadows </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ## End of computation for species:  Ailuropoda melanoleuca  ### </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the predicted terrestrial range and the GBIF occurrences.</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">tiger_range</span><span class="op">$</span><span class="va">rangeOutput</span>,</span></span>
+<span class="r-in"><span>  <span class="va">panda_range</span><span class="op">$</span><span class="va">rangeOutput</span>,</span></span>
 <span class="r-in"><span>  col <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>  main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Range:"</span>, <span class="va">obs</span><span class="op">$</span><span class="va">scientificName</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span>  main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Range:"</span>, <span class="va">obs</span><span class="op">$</span><span class="va">scientificName</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">obs</span><span class="op">$</span><span class="va">decimalLongitude</span>,</span></span>
 <span class="r-in"><span>  <span class="va">obs</span><span class="op">$</span><span class="va">decimalLatitude</span>,</span></span>
@@ -232,9 +220,6 @@ downloaded GBIF tables.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="gbif.range-package-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># -------------------------------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co"># 3. Large downloaded GBIF table already stored on disk</span></span></span>
 <span class="r-in"><span><span class="co"># -------------------------------------------------------------------------</span></span></span>

@@ -56,7 +56,7 @@ library(gbif.range)
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Load terrestrial ecoregions and build range map
-eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = NULL)
+eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = tempdir())
 range.tiger <- get_range(occ_coord = obs.pt,
                          ecoreg = eco.terra,
                          ecoreg_name = "ECO_NAME",

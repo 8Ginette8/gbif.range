@@ -116,96 +116,83 @@ graphics::points(occ, pch = 4)
 
 # \donttest{
 # -------------------------------------------------------------------------
-# 2. Typical online workflow with GBIF data
+# 2. Typical online workflow with recent GBIF data
 # -------------------------------------------------------------------------
 
-# Download GBIF occurrences for one species.
-obs <- get_gbif("Panthera tigris", grain = 25)
+# Download all GBIF occurrences for one species
+obs <- get_gbif("Ailuropoda melanoleuca")
 #> |--------------------------------------------|
-#> | Total number (all records)    :       8007 |
-#> | Kept records                  :       5457 |
+#> | Total number (all records)    :        300 |
+#> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE
 #> 
-#> ...GBIF records of Panthera tigris: download starting...
+#> ...GBIF records of Ailuropoda melanoleuca: download starting...
 #> ------------- #1 (100%..)               
 #> 
 #> ...Records (XY) filtering summary:
-#> -----------------------------------------------
+#> ---------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering    4082      1375
-#>       Duplicated records     793       582
-#>          Absence records       0       582
-#>          Basis selection      72       510
-#>  Establishment selection       0       510
-#>               Time frame       0       510
-#>        Identical records       0       510
-#>         Raster centroids       0       510
+#>          Grain filtering       6        60
+#>       Duplicated records      13        47
+#>          Absence records       0        47
+#>          Basis selection      10        37
+#>  Establishment selection       0        37
+#>               Time frame       0        37
+#>        Identical records       0        37
+#>         Raster centroids       0        37
 #> 
-#> Initial records         : 5457
-#> Total removed           : 4947
-#> Final records (XY)      : 510
-#> -----------------------------------------------
+#> Initial records         : 66
+#> Total removed           : 29
+#> Final records (XY)      : 37
+#> ---------------------------------------------
 #> Final records (no XY)   : 0
 
+# Remove observation without data, i.e.,
+# probably outdated for a threatned species such as the panda
+obs <- obs[!is.na(obs$year),]
+
 # Inspect the GBIF backbone interpretation used by the package.
-status <- get_status("Panthera tigris")
+status <- get_status("Ailuropoda melanoleuca")
 status
-#>           canonicalName    rank gbif_key                   scientificName
-#> 5219416 Panthera tigris SPECIES  5219416 Panthera tigris (Linnaeus, 1758)
-#> 4969819    Felis tigris SPECIES  4969819      Felis tigris Linnaeus, 1758
-#>         gbif_status    Genus  Family     Order    Class   Phylum IUCN_status
-#> 5219416    ACCEPTED Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED
-#> 4969819     SYNONYM Panthera Felidae Carnivora Mammalia Chordata  ENDANGERED
-#>         sp_nameMatch
-#> 5219416        INPUT
-#> 4969819        EXACT
+#>                  canonicalName    rank gbif_key
+#> 2433399 Ailuropoda melanoleuca SPECIES  2433399
+#> 9387176 Aeluropus melanoleucus SPECIES  9387176
+#> 9379787 Ailuropus melanoleucus SPECIES  9379787
+#> 7888034     Ursus melanoleucus SPECIES  7888034
+#>                               scientificName gbif_status      Genus  Family
+#> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae
+#> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae
+#>             Order    Class   Phylum IUCN_status sp_nameMatch
+#> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT
+#> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT
 
 # Load a packaged terrestrial ecoregion layer and build the range.
-eco_terra <- read_ecoreg("eco_terra")
-tiger_range <- get_range(
+eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
+panda_range <- get_range(
   occ_coord = obs,
   ecoreg = eco_terra,
   ecoreg_name = "ECO_NAME"
 )
-#> ## Start of computation for species:  Panthera tigris  ### 
-#> 27 outlier's from 508 | proportion from total points: 5%
-#> ecoregion 1  of  27 :  Brahmaputra Valley Semi-Evergreen Forests 
-#> ecoregion 2  of  27 :  Central Deccan Plateau Dry Deciduous Forests 
-#> ecoregion 3  of  27 :  Chao Phraya Freshwater Swamp Forests 
-#> ecoregion 4  of  27 :  Eastern Highlands Moist Deciduous Forests 
-#> ecoregion 5  of  27 :  Eastern Himalayan Alpine Shrub And Meadows 
-#> ecoregion 6  of  27 :  Eastern Himalayan Broadleaf Forests 
-#> ecoregion 7  of  27 :  Eastern Java-Bali Rain Forests 
-#> ecoregion 8  of  27 :  Himalayan Subtropical Broadleaf Forests 
-#> ecoregion 9  of  27 :  Himalayan Subtropical Pine Forests 
-#> ecoregion 10  of  27 :  Kayah-Karen Montane Rain Forests 
-#> ecoregion 11  of  27 :  Khathiar-Gir Dry Deciduous Forests 
-#> ecoregion 12  of  27 :  Luang Prabang Montane Rain Forests 
-#> ecoregion 13  of  27 :  Meghalaya Subtropical Forests 
-#> ecoregion 14  of  27 :  Mizoram-Manipur-Kachin Rain Forests 
-#> ecoregion 15  of  27 :  Narmada Valley Dry Deciduous Forests 
-#> ecoregion 16  of  27 :  Orissa Semi-Evergreen Forests 
-#> ecoregion 17  of  27 :  Peninsular Malaysian Montane Rain Forests 
-#> ecoregion 18  of  27 :  Peninsular Malaysian Rain Forests 
-#> ecoregion 19  of  27 :  South Deccan Plateau Dry Deciduous Forests 
-#> ecoregion 20  of  27 :  South Western Ghats Moist Deciduous Forests 
-#> ecoregion 21  of  27 :  South Western Ghats Montane Rain Forests 
-#> ecoregion 22  of  27 :  Sumatran Lowland Rain Forests 
-#> ecoregion 23  of  27 :  Sumatran Montane Rain Forests 
-#> ecoregion 24  of  27 :  Sundarbans Mangroves 
-#> ecoregion 25  of  27 :  Tenasserim-South Thailand Semi-Evergreen Rain Forests 
-#> ecoregion 26  of  27 :  Terai-Duar Savanna And Grasslands 
-#> ecoregion 27  of  27 :  Upper Gangetic Plains Moist Deciduous Forests 
-#> ## End of computation for species:  Panthera tigris  ### 
+#> ## Start of computation for species:  Ailuropoda melanoleuca  ### 
+#> 2 outlier's from 25 | proportion from total points: 8%
+#> ecoregion 1  of  4 :  Daba Mountains Evergreen Forests 
+#> ecoregion 2  of  4 :  Qin Ling Mountains Deciduous Forests 
+#> ecoregion 3  of  4 :  Qionglai-Minshan Conifer Forests 
+#> ecoregion 4  of  4 :  Southeast Tibet Shrublands And Meadows 
+#> ## End of computation for species:  Ailuropoda melanoleuca  ### 
 
 # Plot the predicted terrestrial range and the GBIF occurrences.
 terra::plot(
-  tiger_range$rangeOutput,
+  panda_range$rangeOutput,
   col = 3,
-  main = paste("Range:", obs$scientificName[1]))
-
+  main = paste("Range:", obs$scientificName[1])
+)
 graphics::points(
   obs$decimalLongitude,
   obs$decimalLatitude,
@@ -214,9 +201,6 @@ graphics::points(
 )
 
 
-# }
-
-# \donttest{
 # -------------------------------------------------------------------------
 # 3. Large downloaded GBIF table already stored on disk
 # -------------------------------------------------------------------------
