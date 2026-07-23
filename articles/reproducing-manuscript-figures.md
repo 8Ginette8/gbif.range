@@ -5,7 +5,7 @@
 This vignette provides the exact code used to reproduce the figures in
 Chauvier-Mendes et al. (2025), currently under review, included for
 transparency and to let readers and reviewers verify how each figure was
-generated from the functions in this package. All chunks are set to
+generated from the functions of this package. All chunks are set to
 `eval = FALSE`; run them locally to regenerate the figures from GBIF and
 the bundled example data — the figures shown below are cached, static
 images.
