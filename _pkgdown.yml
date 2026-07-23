@@ -29,6 +29,7 @@ articles:
       - gbif-retrieval-and-taxonomy
       - ecoregion-constrained-range-inference
       - large-downloaded-gbif-tables
+      - reproducing-manuscript-figures
 
 reference:
   - title: "GBIF retrieval"
@@ -87,4 +88,3 @@ reference:
   - title: "Package"
     contents:
       - gbif.range-package
-      
