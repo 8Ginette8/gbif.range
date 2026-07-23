@@ -1,12 +1,12 @@
 \dontrun{ # unknown credentials
 # Download worldwide observations of Panthera tigris
 # and Ailuropoda melanoleuca
-obspt <- get_gbif("Panthera tigris")
+obsps <- get_gbif("Phocoena sinus")
 obsam <- get_gbif("Ailuropoda melanoleuca")
 
 # Retrieve a DOI for one get_gbif() output
 get_doi(
-       gbifs = obspt,
+       gbifs = obsps,
        title = "GBIF_test1",
        description = "A small example 1",
        source_url = "https://example.com/",
@@ -16,7 +16,7 @@ get_doi(
 
 # Retrieve a DOI for several get_gbif() outputs
 get_doi(
-       gbifs = list(obspt,obsam),
+       gbifs = list(obsps,obsam),
        title = "GBIF_test2",
        description = "A small example 2",
        source_url = "https://example.com/",

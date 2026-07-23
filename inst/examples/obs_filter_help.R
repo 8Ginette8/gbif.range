@@ -12,8 +12,8 @@ rst.path <- paste0(
 rst <- terra::rast(rst.path)
 
 # Download observations for two plant species in the European Alps
-obs.arcto <- get_gbif(
-	sp_name = "Arctostaphylos alpinus",
+obs.paed <- get_gbif(
+	sp_name = "Paederota bonarota",
 	geo = shp.lonlat
 )
 obs.saxi <- get_gbif(
@@ -24,7 +24,7 @@ obs.saxi <- get_gbif(
 # Test plot
 terra::plot(shp.lonlat)
 graphics::points(
-	obs.arcto[, c("decimalLongitude","decimalLatitude")],
+	obs.paed[, c("decimalLongitude","decimalLatitude")],
 	pch = 20,
 	col = "#238b4550",
 	cex = 1
@@ -37,7 +37,7 @@ graphics::points(
 )
 
 # Combine both datasets
-both.sp <- rbind(obs.arcto,obs.saxi)
+both.sp <- rbind(obs.paed,obs.saxi)
 
 # Run function
 obs.filt <- obs_filter(gbifs = both.sp, grid = rst, threshold = 4)

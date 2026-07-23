@@ -1,7 +1,9 @@
 \donttest{
-# Download worldwide observations of Ailuropoda melanoleuca
-# (with a 100km grain, after 1990 and by keeping duplicates and by
-# adding the name of the person who collected the panda records)
+# Download all worldwide observations of Ailuropoda melanoleuca, with:
+# - 100km grain
+# - after 1990
+# - keeping duplicates and by
+# - adding the name of the person who collected the panda records
 obs.am <- get_gbif(
        sp_name = "Ailuropoda melanoleuca",
        grain = 100 ,
@@ -22,27 +24,6 @@ graphics::points(
        pch = 20,
        col = "#238b4550",
        cex = 4
-)
-
-# Download worldwide observations of Panthera tigris
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
-
-# Plot
-terra::plot(countries, col = "#bcbddc")
-graphics::points(
-       obs.pt[, c("decimalLongitude","decimalLatitude")],
-       pch = 20,
-       col = "#238b4550",
-       cex = 4
-)
-
-# Download worldwide observations of Bison bison
-# (with a 1km grain, after 1990, and keeping raster centroids)
-obs.pc <- get_gbif(
-       sp_name = "Bison bison",
-       grain = 1,
-       time_period = c(1990,3000),
-       centroids = TRUE
 )
 
 }

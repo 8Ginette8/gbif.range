@@ -1,7 +1,3 @@
-###########################################
-### Example plot
-###########################################
-
 # Open data
 rst.path <- paste0(
 	system.file(package = "gbif.range"),
@@ -23,18 +19,24 @@ my.eco <- make_ecoreg(env = rst,
 
 \donttest{
 # Downloading in the European Alps the observations of one plant species
-obs.arcto <- get_gbif(
-	sp_name = "Arctostaphylos alpinus",
-	geo = shp.lonlat,
-	grain = 1
+obs.paed <- get_gbif(
+  sp_name = "Paederota bonarota",
+  geo = shp.lonlat,
+  grain = 1
 )
 
-# Create the range map based on our custom ecoregion at 5 x 5 km resolution
+# Create the range map based on:
+# - custom ecoregion at 5 x 5 km resolution
+# - smaller buffer because of regional extent
 range.arcto <- get_range(
-	occ_coord = obs.arcto,
+	occ_coord = obs.paed,
 	ecoreg = my.eco,
 	ecoreg_name = "EcoRegion",
-	res = 0.05
+	res = 0.05,
+  degrees_outlier = 0.5,
+  buff_width_point = 0.5,
+  buff_incrmt_pts_line = 0.5,
+  buff_width_polygon = 0.5
 )
 
 # Plot
@@ -52,77 +54,10 @@ terra::plot(
 	legend = FALSE
 )
 graphics::points(
-	obs.arcto[, c("decimalLongitude","decimalLatitude")],
+	obs.paed[, c("decimalLongitude","decimalLatitude")],
 	pch = 20,
 	col = "#99340470",
 	cex = 1
 )
-
-###########################################
-### Package manuscript plot (Fig 1a, left)
-###########################################
-
-# Root and package
-root_dir <- tempdir()
-if (!dir.exists(file.path(root_dir, "fig_plots"))) {
-    dir.create(file.path(root_dir, "fig_plots"))
-}
-
-# Assign colors to ecoregions
-my.eco = terra::vect(my.eco)
-eco.alps <- terra::crop(my.eco, terra::ext(shp.lonlat))
-eco.alps2 <- terra::intersect(eco.alps, alps.shp)
-col.palette <- grDevices::colorRampPalette(c("#a6cee3", "#1f78b4",
-  "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c",
-  "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a",
-  "#ffff99", "#b15928"))
-colcol <- col.palette(length(my.eco))
-set.seed(7)
-eco.alps2$color <- sample(
-  paste0(colcol, ""),
-  length(eco.alps2),
-  replace = FALSE
-)
-
-# Extract ecoregions values for points
-pt.col <- terra::extract(
-  x = eco.alps2,
-  y = as.data.frame(obs.arcto[, c("decimalLongitude","decimalLatitude")])
-)
-pt.plot <- obs.arcto[!is.na(pt.col$color),
-                      c("decimalLongitude","decimalLatitude")]
-pt.col2 <- pt.col[!is.na(pt.col$color), "color"]
-pt.col3 <- grDevices::adjustcolor(pt.col2, red.f = 0.6, green.f = 0.6, blue.f = 0.6)
-
-# Plot
-grDevices::png(
-  paste0(
-    root_dir,
-    "/fig_plots/fig1_arcto.png"
-  ),
-  width = 100,
-  height = 70,
-  unit = "cm",
-  res = 100,
-  pointsize = 110
-)
-oldpar <- graphics::par(mfrow = c(1,1), mar = c(5,5,5,20), lwd = 10, cex = 1)
-terra::plot(
-  eco.alps2,
-  col = paste0(eco.alps2$color, "99"),
-  border = NA,
-  axes = FALSE
-)
-terra::plot(
-  terra::as.polygons(r.arcto),
-  border = "black",
-  lwd = 7,
-  col = "#00000099",
-  add = TRUE
-)
-graphics::points(pt.plot, col = pt.col2, pch = 16, cex = 0.7)
-graphics::points(pt.plot, col = pt.col3, pch = 16, cex = 0.4)
-grDevices::dev.off()
-graphics::par(oldpar)
 
 }

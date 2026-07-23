@@ -60,19 +60,23 @@ graphics::points(occ, pch = 4)
 
 \donttest{
 # -------------------------------------------------------------------------
-# 2. Typical online workflow with GBIF data
+# 2. Typical online workflow with recent GBIF data
 # -------------------------------------------------------------------------
 
-# Download GBIF occurrences for one species.
-obs <- get_gbif("Panthera tigris", grain = 25)
+# Download all GBIF occurrences for one species
+obs <- get_gbif("Ailuropoda melanoleuca")
+
+# Remove observation without data, i.e.,
+# probably outdated for a threatned species such as the panda
+obs <- obs[!is.na(obs$year),]
 
 # Inspect the GBIF backbone interpretation used by the package.
-status <- get_status("Panthera tigris")
+status <- get_status("Ailuropoda melanoleuca")
 status
 
 # Load a packaged terrestrial ecoregion layer and build the range.
-eco_terra <- read_ecoreg("eco_terra")
-tiger_range <- get_range(
+eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
+panda_range <- get_range(
   occ_coord = obs,
   ecoreg = eco_terra,
   ecoreg_name = "ECO_NAME"
@@ -80,10 +84,10 @@ tiger_range <- get_range(
 
 # Plot the predicted terrestrial range and the GBIF occurrences.
 terra::plot(
-  tiger_range$rangeOutput,
+  panda_range$rangeOutput,
   col = 3,
-  main = paste("Range:", obs$scientificName[1]))
-
+  main = paste("Range:", obs$scientificName[1])
+)
 graphics::points(
   obs$decimalLongitude,
   obs$decimalLatitude,
@@ -91,9 +95,6 @@ graphics::points(
   col = grDevices::rgb(1, 0, 1, 0.2)
 )
 
-}
-
-\donttest{
 # -------------------------------------------------------------------------
 # 3. Large downloaded GBIF table already stored on disk
 # -------------------------------------------------------------------------

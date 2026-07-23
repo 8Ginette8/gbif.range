@@ -20,7 +20,7 @@ get_gbif(
   duplicates = FALSE,
   absences = FALSE,
   basis = c("OBSERVATION", "HUMAN_OBSERVATION", "MACHINE_OBSERVATION", "OCCURRENCE",
-    "MATERIAL_CITATION", "MATERIAL_SAMPLE", "LITERATURE"),
+    "MATERIAL_CITATION", "LITERATURE"),
   establishment = c("native", "casual", "released", "reproducing", "established",
     "colonising", "invasive", "widespreadInvasive"),
   add_infos = NULL,
@@ -89,16 +89,21 @@ by the number of reported coordinate decimals.}
 \item{absences}{Logical. Should absence records be kept? Default is
 \code{FALSE}.}
 
-\item{basis}{Character. Vector giving the accepted bases of record. The
-default keeps commonly used occurrence-oriented record types and excludes
-specimen- and unknown-based records.}
+\item{basis}{Character. Vector of accepted \code{basisOfRecord} values.
+Default excludes specimen-based records (e.g. herbarium sheets, museum
+specimens), \code{"MATERIAL_SAMPLE"} records, and records of unknown
+basis. See \strong{Details} for the full list of accepted values, and a
+note on why \code{"MATERIAL_SAMPLE"} is excluded by default.}
 
-\item{establishment}{Character. Vector giving accepted
-\code{degreeOfEstablishment} values. The default keeps native and broadly
-established records, together with records lacking that field.}
+\item{establishment}{Character. Vector of accepted
+\code{degreeOfEstablishment} values. Default keeps native and broadly
+established records; records lacking this field are always kept
+regardless of the selected values. See \strong{Details} for the full
+list of accepted values.}
 
-\item{add_infos}{Optional character. Vector of additional GBIF occurrence
-fields to append to the default output.}
+\item{add_infos}{Optional character. Additional GBIF occurrence fields to
+append to the default output columns. See \strong{Details} for the
+default columns and where to find all available GBIF field names.}
 
 \item{time_period}{Numeric. Year range to retain. Default is
 \code{c(1000, 3000)}. Records with missing years are kept.}
@@ -187,15 +192,49 @@ rather than rewriting them to a single accepted name. In particular,
 \code{taxonomicStatus} reflect the harmonized taxon concept used for the
 query.
 
+\strong{basis}: available values (old and new GBIF vocabulary) are
+\code{"OBSERVATION"}, \code{"HUMAN_OBSERVATION"},
+\code{"MACHINE_OBSERVATION"}, \code{"MATERIAL_CITATION"},
+\code{"MATERIAL_SAMPLE"}, \code{"PRESERVED_SPECIMEN"},
+\code{"FOSSIL_SPECIMEN"}, \code{"LIVING_SPECIMEN"}, \code{"LITERATURE"},
+\code{"UNKNOWN"}, and \code{"OCCURRENCE"}. The default setting removes
+specimen-based records and records of unknown basis. See
+(\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here})
+for a description of each category.
+
 Records linked to non-taxonomic backbone entries (e.g. BOLD barcode
-sequences) may also appear in the output, since GBIF associates them with
-the accepted taxon key. These records typically carry
-\code{basisOfRecord = "MATERIAL_SAMPLE"}. Note however that
-\code{MATERIAL_SAMPLE} is not a reliable proxy for sequence-based records
-across all taxonomic groups. Users can cross-check returned
-\code{acceptedTaxonKey} values against \code{get_status(children = TRUE)}
-to identify any records linked to non-backbone entries; see
-\code{get_status()} examples.
+sequences) are typically registered under
+\code{basisOfRecord = "MATERIAL_SAMPLE"}. Because \code{MATERIAL_SAMPLE}
+is not a reliable proxy for sequence-based records across all taxonomic
+groups, and can also include unrelated bulk or environmental samples, it
+is excluded from the default \code{basis} selection. Users who
+deliberately include \code{"MATERIAL_SAMPLE"} in \code{basis} should
+cross-check returned \code{acceptedTaxonKey} values against
+\code{get_status(children = TRUE)} to identify any records linked to
+non-backbone entries; see \code{get_status()} examples.
+
+\strong{establishment}: available \code{degreeOfEstablishment} values are
+\code{"native"}, \code{"casual"}, \code{"released"}, \code{"reproducing"},
+\code{"established"}, \code{"colonising"}, \code{"invasive"},
+\code{"widespreadInvasive"}, \code{"managed"}, \code{"captive"},
+\code{"cultivated"}, \code{"unestablished"}, and \code{"failing"}. The
+default keeps native and broadly established records; records with no
+\code{degreeOfEstablishment} information are always kept regardless of
+the selected values. See
+(\href{https://dwc.tdwg.org/list/#dwc_degreeOfEstablishment}{here}) for a
+description of each category.
+
+\strong{add_infos}: the default output always includes \code{"taxonKey"},
+\code{"scientificName"}, \code{"acceptedTaxonKey"},
+\code{"acceptedScientificName"}, \code{"individualCount"},
+\code{"decimalLatitude"}, \code{"decimalLongitude"}, \code{"basisOfRecord"},
+\code{"coordinateUncertaintyInMeters"}, \code{"countryCode"},
+\code{"country"}, \code{"year"}, \code{"datasetKey"},
+\code{"institutionCode"}, \code{"publishingOrgKey"},
+\code{"taxonomicStatus"}, \code{"taxonRank"}, and
+\code{"degreeOfEstablishment"}. Any additional field name accepted by the
+GBIF occurrence API can be requested via \code{add_infos}; see the full
+list (\href{https://www.gbif.org/developer/occurrence}{here}).
 
 If the requested extent contains many records, the query is fragmented into
 spatial tiles so that individual API calls remain manageable. Tiles are
@@ -225,9 +264,11 @@ Decimal filtering follows these thresholds:\cr
 }
 \examples{
 \donttest{
-# Download worldwide observations of Ailuropoda melanoleuca
-# (with a 100km grain, after 1990 and by keeping duplicates and by
-# adding the name of the person who collected the panda records)
+# Download all worldwide observations of Ailuropoda melanoleuca, with:
+# - 100km grain
+# - after 1990
+# - keeping duplicates and by
+# - adding the name of the person who collected the panda records
 obs.am <- get_gbif(
        sp_name = "Ailuropoda melanoleuca",
        grain = 100 ,
@@ -248,27 +289,6 @@ graphics::points(
        pch = 20,
        col = "#238b4550",
        cex = 4
-)
-
-# Download worldwide observations of Panthera tigris
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
-
-# Plot
-terra::plot(countries, col = "#bcbddc")
-graphics::points(
-       obs.pt[, c("decimalLongitude","decimalLatitude")],
-       pch = 20,
-       col = "#238b4550",
-       cex = 4
-)
-
-# Download worldwide observations of Bison bison
-# (with a 1km grain, after 1990, and keeping raster centroids)
-obs.pc <- get_gbif(
-       sp_name = "Bison bison",
-       grain = 1,
-       time_period = c(1990,3000),
-       centroids = TRUE
 )
 
 }

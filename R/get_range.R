@@ -298,16 +298,14 @@ get_range <- function (occ_coord = NULL,
       )
     }
 
-    # Handle NAsy
+    # Handle NAs
     q1 <- as.data.frame(ecoreg)[, ecoreg_name] == uniq[g]
     q1[is.na(q1)] <- FALSE
 
-    # Continue
-    tmp <- terra::simplifyGeom(
-      x = ecoreg[q1, ],
-      tolerance = 0.001,
-      preserveTopology = TRUE
-    )
+    # Continue (use 'sf', otherwise 'terra' creates artifacts)
+    tmp_sf <- sf::st_make_valid(sf::st_as_sf(ecoreg[q1, ]))
+    tmp_sf <- sf::st_simplify(tmp_sf, dTolerance = 0.001, preserveTopology = TRUE)
+    tmp <- terra::vect(tmp_sf)
     a <- ovo.coord.mod[ovo.coord.mod[[ecoreg_name]][[1]] == uniq[g]]
     
     if (length(a) < 3) {
@@ -397,6 +395,7 @@ get_range <- function (occ_coord = NULL,
     stop('No occurrences within ecoregions. Empty raster produced...')
   }
   shp.species <- terra::aggregate(do.call("rbind", lala))
+  shp.species <- terra::buffer(shp.species, width = 0.0001)
 
   # Convert to requested format
   if (format == "SpatRaster") {

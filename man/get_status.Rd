@@ -97,25 +97,25 @@ the IUCN Red List directly for infra-specific status.
 \examples{
 \donttest{
 # --- 1. Default: accepted name + synonyms only ---
-tax <- get_status("Panthera tigris")
+tax <- get_status("Ailuropoda melanoleuca")
 tax
 
 # --- 2. Include infra-specific taxa (subspecies, varieties) ---
 # These are the same keys retrieved by get_gbif()
-tax_ch <- get_status("Panthera tigris", level = "children")
+tax_ch <- get_status("Ailuropoda melanoleuca", level = "children")
 tax_ch
 
 # --- 3. Include alternative name string representations (inspection only) ---
 # RELATED rows are not used by get_gbif()
-tax_rel <- get_status("Panthera tigris", level = "all")
+tax_rel <- get_status("Ailuropoda melanoleuca", level = "all")
 tax_rel
 
 # --- 4. Fuzzy matching for uncertain names ---
 # sp_nameMatch = "VARIANT" for close but non-identical fuzzy matches
-get_status("Panthera tigri", search = FALSE)
+get_status("Ailuropoda melanoleuca", search = FALSE)
 
 # --- 5. Cross-check get_status() keys against get_gbif() output ---
-occ <- get_gbif("Panthera tigris", has_xy = TRUE, verbose = FALSE)
+occ <- get_gbif("Ailuropoda melanoleuca", has_xy = TRUE, verbose = FALSE)
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status \%in\% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
 

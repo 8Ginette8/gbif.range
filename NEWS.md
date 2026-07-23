@@ -1,3 +1,18 @@
+# gbif.range 1.8.0
+* Move manuscript plots in a dedicated vignette
+* Updated the examples and vignettes
+* Lower the size and time length of the examples
+* Debugging
+* Documentation updated
+
+# gbif.range 1.7.1
+* Updated documentation
+
+# gbif.range 1.7.0
+* Updated documentation
+* Updated package framework
+* Package structure and verbose updated
+
 # gbif.range 1.6.3
 
 * Added pkgdown website.

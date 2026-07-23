@@ -1,5 +1,5 @@
 Package: gbif.range
-Version: 1.7.1
+Version: 1.7.0
 Title: Species Range Mapping from GBIF Using Ecoregion Constraints
 Depends: R (>= 4.0.0)
 Imports: terra, rgbif, CoordinateCleaner, sf, ClusterR, FNN, geometry,
