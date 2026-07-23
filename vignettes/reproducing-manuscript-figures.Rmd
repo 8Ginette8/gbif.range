@@ -1,5 +1,5 @@
 ---
-title: "Supplementary: `gbif.range` manuscript's figures"
+title: "Supplementary: gbif.range manuscript's figures"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Supplementary: `gbif.range`s manuscript's figures}
@@ -13,12 +13,12 @@ This vignette provides the exact code used to reproduce the figures in
 Chauvier-Mendes et al. (2025), currently under review, included for
 transparency and to let readers and reviewers verify how each figure was
 generated from the functions in this package. All chunks are set to
-eval = FALSE; run them locally to regenerate the figures from GBIF and
+`eval = FALSE`; run them locally to regenerate the figures from GBIF and
 the bundled example data — the figures shown below are cached, static
 images.
 
 Note that basemaps here use a low-resolution world map bundled with the
-package, rather than the rnaturalearth::ne_countries(scale = 10) HD
+package, rather than the `rnaturalearth::ne_countries(scale = 10)` HD
 dataset used in the manuscript, so coastline detail and ecoregion colors
 will differ slightly from the published version.
 
@@ -108,7 +108,7 @@ gf.robin <- terra::rast(
 This figure demonstrates a fully custom, high-resolution workflow: ecoregions
 are derived from CHELSA bioclimatic layers (Karger et al. 2017) via
 `make_ecoreg()`, and the species' range is constrained to a small alpine
-extent using a fine occurrence precision filter (`grain = 1`).
+extent.
 
 ```{r fig1a-left, eval = FALSE}
 # Regional range at ~5x5-km resoluiton ('my.eco' resolution)
@@ -174,7 +174,7 @@ graphics::points(
 )
 ```
 
-```{r fig-1a-left, echo = FALSE, out.width = "100%"}
+```{r fig-1a-left, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Fig1a_left.png")
 ```
 
@@ -257,7 +257,7 @@ graphics::points(
 )
 ```
 
-```{r fig-1a-right, echo = FALSE, out.width = "100%"}
+```{r fig-1a-right, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Fig1a_right.png")
 ```
 
@@ -385,7 +385,7 @@ graphics::text(
 )
 ```
 
-```{r fig-2a, echo = FALSE, out.width = "100%"}
+```{r fig-2a, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Fig2a_arcto_cv.png")
 ```
 
@@ -511,7 +511,7 @@ graphics::text(
 )
 ```
 
-```{r fig-2b, echo = FALSE, out.width = "100%"}
+```{r fig-2b, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Fig2b_tiger_cv.png")
 ```
 
@@ -593,7 +593,7 @@ terra::plot(
 )
 ```
 
-```{r fig-2c, echo = FALSE, out.width = "100%"}
+```{r fig-2c, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Fig2c_arcto_eval.png")
 ```
 
@@ -666,7 +666,7 @@ graphics::legend(
 )
 ```
 
-```{r fig-2d, echo = FALSE, out.width = "45%"}
+```{r fig-2d, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Fig2d_tiger_eval.png")
 ```
 
@@ -748,7 +748,7 @@ cscl(
 graphics::par(oldpar)
 ```
 
-```{r fig-3-maps, echo = FALSE, out.width = "45%", fig.show = "hold"}
+```{r fig-3-maps, echo = FALSE, out.width = "50%", fig.show = "hold"}
 knitr::include_graphics(c(
   "../man/figures/Fig3_iucn.png",
   "../man/figures/Fig3_gbifrange.png"
@@ -852,7 +852,7 @@ lapply(seq_along(dat.plot), function(x) {
 graphics::par(oldpar)
 ```
 
-```{r fig-3-scatter, echo = FALSE, out.width = "45%", fig.show = "hold"}
+```{r fig-3-scatter, echo = FALSE, out.width = "80%", fig.show = "hold"}
 knitr::include_graphics(c(
   "../man/figures/Fig3_scatterplots.png"
 ))
