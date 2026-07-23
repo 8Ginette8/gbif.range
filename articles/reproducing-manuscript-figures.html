@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Supplementary: `gbif.range` manuscript's figures • gbif.range</title>
+<title>Supplementary: gbif.range manuscript's figures • gbif.range</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Supplementary: `gbif.range` manuscript's figures">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Supplementary: gbif.range manuscript's figures">
 <style>
 .navbar-brand img {
   height: 100px !important;
@@ -48,7 +48,7 @@
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
-    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: `gbif.range` manuscript's figures</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: gbif.range manuscript's figures</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -71,7 +71,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Supplementary: `gbif.range` manuscript's figures</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Supplementary: gbif.range manuscript's figures</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/main/vignettes/reproducing-manuscript-figures.Rmd" class="external-link"><code>vignettes/reproducing-manuscript-figures.Rmd</code></a></small>
@@ -86,14 +86,15 @@
 <p>This vignette provides the exact code used to reproduce the figures
 in Chauvier-Mendes et al. (2025), currently under review, included for
 transparency and to let readers and reviewers verify how each figure was
-generated from the functions in this package. All chunks are set to eval
-= FALSE; run them locally to regenerate the figures from GBIF and the
-bundled example data — the figures shown below are cached, static
-images.</p>
+generated from the functions in this package. All chunks are set to
+<code>eval = FALSE</code>; run them locally to regenerate the figures
+from GBIF and the bundled example data — the figures shown below are
+cached, static images.</p>
 <p>Note that basemaps here use a low-resolution world map bundled with
-the package, rather than the rnaturalearth::ne_countries(scale = 10) HD
-dataset used in the manuscript, so coastline detail and ecoregion colors
-will differ slightly from the published version.</p>
+the package, rather than the
+<code>rnaturalearth::ne_countries(scale = 10)</code> HD dataset used in
+the manuscript, so coastline detail and ecoregion colors will differ
+slightly from the published version.</p>
 <p>The citation below refers to the current preprint and will be updated
 once the associated manuscript is published.</p>
 <blockquote>
@@ -178,8 +179,7 @@ alpinus</em><a class="anchor" aria-label="anchor" href="#figure-1a-left-custom-e
 <p>This figure demonstrates a fully custom, high-resolution workflow:
 ecoregions are derived from CHELSA bioclimatic layers (Karger et
 al. 2017) via <code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code>, and the species’ range is
-constrained to a small alpine extent using a fine occurrence precision
-filter (<code>grain = 1</code>).</p>
+constrained to a small alpine extent.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Regional range at ~5x5-km resoluiton ('my.eco' resolution)</span></span>
 <span><span class="va">range.arcto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
@@ -242,7 +242,7 @@ filter (<code>grain = 1</code>).</p>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span>
 <span>  <span class="va">pt.plot</span>, col <span class="op">=</span> <span class="va">pt.col3</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.6</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig1a_left.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Fig1a_left.png" class="r-plt" alt="" width="50%"></p>
 </div>
 <div class="section level2">
 <h2 id="figure-1a-right-packaged-ecoregion-range-panthera-tigris">Figure 1a (right) — Packaged ecoregion range: <em>Panthera
@@ -322,7 +322,7 @@ worldwide range built directly from the packaged terrestrial ecoregions
 <span>  <span class="va">out.plot</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">4</span>, cex <span class="op">=</span> <span class="fl">1.5</span>,</span>
 <span>  lwd <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig1a_right.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Fig1a_right.png" class="r-plt" alt="" width="50%"></p>
 </div>
 <div class="section level2">
 <h2 id="figure-2ab-cross-validation-of-ecoregion-constrained-ranges">Figure 2a–b — Cross-validation of ecoregion-constrained ranges<a class="anchor" aria-label="anchor" href="#figure-2ab-cross-validation-of-ecoregion-constrained-ranges"></a>
@@ -447,7 +447,7 @@ tigris</em>) workflows.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  cex <span class="op">=</span> <span class="fl">1.2</span>, font <span class="op">=</span> <span class="fl">2</span>, adj <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig2a_arcto_cv.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Fig2a_arcto_cv.png" class="r-plt" alt="" width="50%"></p>
 <p>The tiger panel follows the same block cross-validation, applied
 instead to the packaged-ecoregion, worldwide range.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -567,7 +567,7 @@ instead to the packaged-ecoregion, worldwide range.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  cex <span class="op">=</span> <span class="fl">1.5</span>, font <span class="op">=</span> <span class="fl">2</span>, adj <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig2b_tiger_cv.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Fig2b_tiger_cv.png" class="r-plt" alt="" width="50%"></p>
 </div>
 <div class="section level2">
 <h2 id="figure-2cd-evaluation-against-external-validation-data">Figure 2c–d — Evaluation against external validation data<a class="anchor" aria-label="anchor" href="#figure-2cd-evaluation-against-external-validation-data"></a>
@@ -646,7 +646,7 @@ occurrences.</p>
 <span>  border <span class="op">=</span> <span class="st">"#383d38"</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  lwd <span class="op">=</span> <span class="fl">1</span>, add <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig2c_arcto_eval.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Fig2c_arcto_eval.png" class="r-plt" alt="" width="50%"></p>
 <p>The tiger panel follows the same external-validation evaluation,
 applied instead to the packaged-ecoregion, worldwide range.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -713,7 +713,7 @@ applied instead to the packaged-ecoregion, worldwide range.</p>
 <span>  cex <span class="op">=</span> <span class="fl">1.1</span>,</span>
 <span>  x.intersp <span class="op">=</span> <span class="fl">0.2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig2d_tiger_eval.png" class="r-plt" alt="" width="45%"></p>
+<p><img src="../reference/figures/Fig2d_tiger_eval.png" class="r-plt" alt="" width="50%"></p>
 </div>
 <div class="section level2">
 <h2 id="figure-3-global-richness-comparison-and-correlation">Figure 3 — Global richness comparison and correlation<a class="anchor" aria-label="anchor" href="#figure-3-global-richness-comparison-and-correlation"></a>
@@ -792,7 +792,7 @@ applied instead to the packaged-ecoregion, worldwide range.</p>
 <span>  labs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">max.gf</span>, <span class="fl">10</span><span class="op">)</span>, titlag <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig3_iucn.png" class="r-plt" alt="" width="45%"><img src="../reference/figures/Fig3_gbifrange.png" class="r-plt" alt="" width="45%"></p>
+<p><img src="../reference/figures/Fig3_iucn.png" class="r-plt" alt="" width="50%"><img src="../reference/figures/Fig3_gbifrange.png" class="r-plt" alt="" width="50%"></p>
 <p>The scatter plots below summarize richness and range-area agreement
 between the two products, reporting Lin’s concordance correlation
 coefficient and Pearson’s r for each.</p>
@@ -887,7 +887,7 @@ coefficient and Pearson’s r for each.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Fig3_scatterplots.png" class="r-plt" alt="" width="45%"></p>
+<p><img src="../reference/figures/Fig3_scatterplots.png" class="r-plt" alt="" width="80%"></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

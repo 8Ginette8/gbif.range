@@ -1,17 +1,17 @@
-# Supplementary: \`gbif.range\` manuscript's figures
+# Supplementary: gbif.range manuscript's figures
 
 ## Scope
 
 This vignette provides the exact code used to reproduce the figures in
 Chauvier-Mendes et al. (2025), currently under review, included for
 transparency and to let readers and reviewers verify how each figure was
-generated from the functions in this package. All chunks are set to eval
-= FALSE; run them locally to regenerate the figures from GBIF and the
-bundled example data — the figures shown below are cached, static
+generated from the functions in this package. All chunks are set to
+`eval = FALSE`; run them locally to regenerate the figures from GBIF and
+the bundled example data — the figures shown below are cached, static
 images.
 
 Note that basemaps here use a low-resolution world map bundled with the
-package, rather than the rnaturalearth::ne_countries(scale = 10) HD
+package, rather than the `rnaturalearth::ne_countries(scale = 10)` HD
 dataset used in the manuscript, so coastline detail and ecoregion colors
 will differ slightly from the published version.
 
@@ -99,8 +99,7 @@ This figure demonstrates a fully custom, high-resolution workflow:
 ecoregions are derived from CHELSA bioclimatic layers (Karger et
 al. 2017) via
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md),
-and the species’ range is constrained to a small alpine extent using a
-fine occurrence precision filter (`grain = 1`).
+and the species’ range is constrained to a small alpine extent.
 
 ``` r
 

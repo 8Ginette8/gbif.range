@@ -10,5 +10,5 @@
   Inference](https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.md):
 - [Part 3: Large Downloaded GBIF
   Tables](https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.md):
-- [Supplementary: \`gbif.range\` manuscript's
+- [Supplementary: gbif.range manuscript's
   figures](https://8ginette8.github.io/gbif.range/articles/reproducing-manuscript-figures.md):
