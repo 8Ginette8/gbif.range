@@ -34,8 +34,6 @@ the associated manuscript is published.
 ```{r setup, include = TRUE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
-library(gbif.range)
-
 ext_file <- function(...) {
   path <- system.file("extdata", ..., package = "gbif.range")
   if (nzchar(path)) {
@@ -43,6 +41,8 @@ ext_file <- function(...) {
   }
   normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
 }
+
+library(gbif.range)
 ```
 
 ## Online data retrieval

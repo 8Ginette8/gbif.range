@@ -10,8 +10,6 @@ vignette: >
 ## Transparent setup
 
 ```{r setup, include = TRUE}
-library(gbif.range)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -27,6 +25,8 @@ ext_file <- function(...) {
   }
   normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
 }
+
+library(gbif.range)
 ```
 
 ## Scope
@@ -184,7 +184,7 @@ can be optionally used to aggregate the geometry:
 plot(merge_range(range_tiger), col = "#238b45")
 ```
 
-```{r fig-merge-range, echo = FALSE, out.width = "100%"}
+```{r fig-merge-range, echo = FALSE, out.width = "50%"}
 knitr::include_graphics("../man/figures/Part0_plot3.png")
 ```
 

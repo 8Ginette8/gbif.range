@@ -10,8 +10,6 @@ vignette: >
 ## Transparent setup
 
 ```{r setup, include = TRUE}
-library(gbif.range)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -27,6 +25,8 @@ ext_file <- function(...) {
   }
   normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
 }
+
+library(gbif.range)
 ```
 
 ## Scope

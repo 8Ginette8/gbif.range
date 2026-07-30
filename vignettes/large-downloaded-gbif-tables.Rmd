@@ -18,8 +18,6 @@ knitr::opts_chunk$set(
   purl = FALSE
 )
 
-library(gbif.range)
-
 has_data_table <- requireNamespace("data.table", quietly = TRUE)
 ext_file <- function(...) {
   path <- system.file("extdata", ..., package = "gbif.range")
@@ -28,6 +26,8 @@ ext_file <- function(...) {
   }
   normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
 }
+
+library(gbif.range)
 ```
 
 ## Scope
