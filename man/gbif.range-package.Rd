@@ -33,8 +33,9 @@ downloaded GBIF tables.
 # -------------------------------------------------------------------------
 
 # Create two simple environmental layers on a small synthetic study area.
-r1 <- terra::rast(ncols = 20, nrows = 20, xmin = 0, xmax = 10,
-  ymin = 0, ymax = 10)
+r1 <- terra::rast(
+  ncols = 20, nrows = 20, xmin = 0, xmax = 10, ymin = 0, ymax = 10
+)
 terra::values(r1) <- rep(seq(0, 1, length.out = 20), each = 20)
 r2 <- terra::rast(r1)
 terra::values(r2) <- rep(seq(0, 1, length.out = 20), times = 20)
@@ -66,16 +67,22 @@ graphics::points(occ, pch = 4)
 # Download all GBIF occurrences for one species
 obs <- get_gbif("Ailuropoda melanoleuca")
 
+# Load a packaged terrestrial ecoregion layer
+eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
+
+# Both calls above depend on remote services and return NULL or an empty
+# table if those are unavailable, so guard the rest of this section
+if (gbif_have(obs, eco_terra)) {
+
 # Remove observation without data, i.e.,
 # probably outdated for a threatned species such as the panda
-obs <- obs[!is.na(obs$year),]
+obs <- obs[!is.na(obs$year), ]
 
 # Inspect the GBIF backbone interpretation used by the package.
 status <- get_status("Ailuropoda melanoleuca")
 status
 
-# Load a packaged terrestrial ecoregion layer and build the range.
-eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
+# Build the range.
 panda_range <- get_range(
   occ_coord = obs,
   ecoreg = eco_terra,
@@ -84,7 +91,7 @@ panda_range <- get_range(
 
 # Plot the predicted terrestrial range and the GBIF occurrences.
 terra::plot(
-  panda_range$rangeOutput,
+  merge_range(panda_range),
   col = 3,
   main = paste("Range:", obs$scientificName[1])
 )
@@ -94,6 +101,8 @@ graphics::points(
   pch = 4,
   col = grDevices::rgb(1, 0, 1, 0.2)
 )
+
+}
 
 # -------------------------------------------------------------------------
 # 3. Large downloaded GBIF table already stored on disk
@@ -127,8 +136,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 
   split_summary[, c("species_name", "n_records", "species_file")]
 
-  # Use the packaged terrestrial ecoregions for the batch range step.
-  # species_csvs_to_ranges() will resolve "eco_terra" with read_ecoreg().
+  # The batch step resolves "eco_terra" with read_ecoreg(), so it needs the
+  # remote source to be reachable.
+  if (gbif_have(read_ecoreg("eco_terra", save_dir = tempdir()))) {
+
   range_summary <- species_csvs_to_ranges(
     species_dir = split_dir,
     ecoreg = "eco_terra",
@@ -164,6 +175,8 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   terra::plot(combined_ext, col = NA, legend = FALSE)
   terra::plot(range_one$rangeOutput, col = grDevices::rgb(0.1, 0.6, 0.2, 0.5), add = TRUE)
   terra::plot(range_two$rangeOutput, col = grDevices::rgb(0.8, 0.3, 0.1, 0.5), add = TRUE)
+
+  }
 }
 
 }

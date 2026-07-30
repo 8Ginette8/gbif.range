@@ -26,6 +26,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
     "eco_terra",
     save_dir = tempdir()
     )
+
+  # read_ecoreg() returns NULL if the remote source is unavailable
+  if (gbif_have(eco_terra)) {
+
   eco_crop <- terra::crop(
     eco_terra,
     terra::ext(
@@ -57,16 +61,6 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 
   range_summary[, c("species_name", "n_points", "range_file")]
 
-  # The same batch call can also resolve the built-in layer internally:
-  range_summary_builtin <- species_csvs_to_ranges(
-    species_dir = split_dir,
-    ecoreg = "eco_terra",
-    ecoreg_name = "ECO_NAME",
-    outdir = range_dir,
-    overwrite = TRUE
-  )
-
-  range_summary_builtin[, c("species_name", "n_points", "range_file")]
+  }
 }
-
 }

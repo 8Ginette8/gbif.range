@@ -19,10 +19,14 @@ get_status("Ailuropoda melanoleuca", search = FALSE)
 
 # --- 5. Cross-check get_status() keys against get_gbif() output ---
 occ <- get_gbif("Ailuropoda melanoleuca", has_xy = TRUE, verbose = FALSE)
+
+# Guard against an unavailable remote source
+if (gbif_have(tax_ch, occ)) {
+
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status %in% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
 
-# Keys in get_status() — backbone taxa (ACCEPTED + CHILDREN)
+# Keys in get_status() - backbone taxa (ACCEPTED + CHILDREN)
 valid_keys
 
 # Keys returned by get_gbif()
@@ -32,13 +36,13 @@ returned_keys
 # FALSE indicates non-backbone entries (e.g. BOLD sequences) are present
 all(returned_keys %in% valid_keys)
 
-# Inspect non-backbone records — typically MATERIAL_SAMPLE, excluded by default
+# Inspect non-backbone records - typically MATERIAL_SAMPLE, excluded by default
 extra_keys <- returned_keys[!returned_keys %in% valid_keys]
 extra_keys
 occ[occ$acceptedTaxonKey %in% extra_keys,
     c("acceptedTaxonKey", "scientificName", "basisOfRecord")]
 
-# Note: not all valid_keys need to appear in returned_keys — some subspecies
+# Note: not all valid_keys need to appear in returned_keys - some subspecies
 # may have no records in GBIF at all (e.g. extinct taxa) or may have been
 # removed by get_gbif() filtering options (e.g. has_xy, basis, grain)
 
@@ -46,4 +50,5 @@ occ[occ$acceptedTaxonKey %in% extra_keys,
 # sp_nameMatch = "INPUT" marks the row closest to the submitted name
 tax_ch[tax_ch$sp_nameMatch == "INPUT", ]
 
+}
 }

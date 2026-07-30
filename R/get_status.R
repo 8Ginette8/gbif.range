@@ -276,16 +276,21 @@ get_status <- function(sp_name = NULL,
   syn.syn <- rgbif::name_usage(accep.key, data = "synonyms")$data
   main.dat <-  rgbif::name_usage(accep.key, data = "all")$data
 
+
   # Fetch children (subspecies/varieties) only when explicitly requested
-  chil.chil <- if (children) {
+  chil.chil <- NULL
+  if (children) {
     ch <- rgbif::name_usage(accep.key, data = "children")$data
-    if (!is.null(ch) && nrow(ch) > 0) {
-      ch[ch$rank %in% c("SUBSPECIES", "VARIETY"), , drop = FALSE]
-    } else {
-      NULL
+    if (!is.null(ch) && nrow(ch) > 0 && "rank" %in% names(ch)) {
+      ch <- as.data.frame(ch[ch$rank %in% c("SUBSPECIES", "VARIETY"), , drop = FALSE])
+      if (nrow(ch) > 0) {
+        # The children endpoint does not always return every name field
+        for (nm in c("canonicalName", "scientificName", "key")) {
+          if (!nm %in% names(ch)) ch[[nm]] <- NA_character_
+        }
+        chil.chil <- ch
+      }
     }
-  } else {
-    NULL
   }
 
   # IUCN status — fetched for accepted key only

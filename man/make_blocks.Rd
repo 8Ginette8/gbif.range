@@ -44,13 +44,16 @@ tries to balance fold sizes as evenly as possible.
 }
 \examples{
 \donttest{
-# Downloading worldwide all the observations of great panda 
-obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+# Downloading worldwide all the observations of the great panda
+obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+
+# Guard against an unavailable remote source
+if (gbif_have(obs_am)) {
 
 # Create a vector of folds (n = 5) spatially blocked (n = 10)
-block.pd <- make_blocks(
+block_am <- make_blocks(
     nfolds = 5,
-    df = obs.pd[, c("decimalLatitude","decimalLongitude")],
+    df = obs_am[, c("decimalLatitude","decimalLongitude")],
     nblocks = 5
 )
 
@@ -58,18 +61,19 @@ block.pd <- make_blocks(
 countries <- terra::vect(
   system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
-countries.focus <- terra::crop(
+countries_focus <- terra::crop(
     countries,
     terra::ext(73.0, 135.0, 18.0, 54.0)
 )
-terra::plot(countries.focus, col = "#bcbddc")
+terra::plot(countries_focus, col = "#bcbddc")
 graphics::points(
-    obs.pd[, c("decimalLongitude","decimalLatitude")],
+    obs_am[, c("decimalLongitude","decimalLatitude")],
     pch = 20,
-    col = block.pd,
+    col = block_am,
     cex = 1
 )
 
+}
 }
 }
 \references{

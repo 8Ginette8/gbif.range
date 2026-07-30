@@ -48,9 +48,9 @@
 #' \code{FALSE}.
 #' @param basis Character. Vector of accepted \code{basisOfRecord} values.
 #' Default excludes specimen-based records (e.g. herbarium sheets, museum
-#' specimens), \code{"MATERIAL_SAMPLE"} records, and records of unknown
-#' basis. See \strong{Details} for the full list of accepted values, and a
-#' note on why \code{"MATERIAL_SAMPLE"} is excluded by default.
+#' specimens) and records of unknown basis. See \strong{Details} for
+#' the full list of accepted values, and a note on why \code{"MATERIAL_SAMPLE"}
+#' can be misleading.
 #' @param establishment Character. Vector of accepted
 #' \code{degreeOfEstablishment} values. Default keeps native and broadly
 #' established records; records lacking this field are always kept
@@ -120,16 +120,13 @@
 #' (\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here})
 #' for a description of each category.
 #'
-#' Records linked to non-taxonomic backbone entries (e.g. BOLD barcode
-#' sequences) are typically registered under
-#' \code{basisOfRecord = "MATERIAL_SAMPLE"}. Because \code{MATERIAL_SAMPLE}
-#' is not a reliable proxy for sequence-based records across all taxonomic
-#' groups, and can also include unrelated bulk or environmental samples, it
-#' is excluded from the default \code{basis} selection. Users who
-#' deliberately include \code{"MATERIAL_SAMPLE"} in \code{basis} should
-#' cross-check returned \code{acceptedTaxonKey} values against
-#' \code{get_status(children = TRUE)} to identify any records linked to
-#' non-backbone entries; see \code{get_status()} examples.
+#' Records linked to non-taxonomic backbone entries (e.g., BOLD barcode
+#' sequences) are typically registered under \code{basisOfRecord = "MATERIAL_SAMPLE"}.
+#' These sequence-based, bulk, or environmental DNA (eDNA) records may
+#' reflect the physical collection site rather than the precise microhabitat. 
+#' However, this spatial imprecision is not critical as the  package is aimed
+#' to operate at macro-ecological scales where local site-level offsets do not
+#' alter the broader range estimations.
 #' 
 #' \strong{establishment}: available \code{degreeOfEstablishment} values are
 #' \code{"native"}, \code{"casual"}, \code{"released"}, \code{"reproducing"},
@@ -205,7 +202,7 @@
 #' \doi{10.1111/2041-210X.13152}
 #'
 #' Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
-#' 1.6-7. \url{https://cran.r-project.org/package=terra}
+#' 1.6-7. \url{https://CRAN.R-project.org/package=terra}
 #' @seealso \code{\link{get_status}}() to inspect the accepted name and synonym
 #' mapping returned by GBIF; the \pkg{rgbif} package for more general GBIF
 #' retrieval workflows; and the \pkg{CoordinateCleaner} package for more
@@ -230,8 +227,9 @@ get_gbif <- function(sp_name = NULL,
 					grain = 100,
 					duplicates = FALSE,
 					absences = FALSE,
-					basis =  c('OBSERVATION', 'HUMAN_OBSERVATION', 'MACHINE_OBSERVATION',
-						'OCCURRENCE', 'MATERIAL_CITATION', 'LITERATURE'),
+					basis =  c("OBSERVATION",
+						"HUMAN_OBSERVATION", "MACHINE_OBSERVATION", "OCCURRENCE",
+						"MATERIAL_CITATION", "MATERIAL_SAMPLE", "LITERATURE"),
 					establishment = c('native','casual','released','reproducing',
 						'established','colonising','invasive','widespreadInvasive'),
 					add_infos = NULL,

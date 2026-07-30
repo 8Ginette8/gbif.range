@@ -63,7 +63,7 @@ Collate: 'make_tiles.R' 'get_gbif.R' 'get_status.R' 'get_doi.R'
  'obs_filter.R' 'get_range.R' 'conv_function.R' 'get_gbif_count.R'
  'make_ecoreg.R' 'get_ecoreg.R' 'evaluate_range.R' 'data.R'
  'make_blocks.R' 'optme.R' 'cv_range.R' 'classes.R' 'helpers.R'
- 'gbif_file_workflows.R' 'gbif.range-package.R'
+ 'gbif_file_workflows.R' 'gbif.range-package.R' 'merge_range.R'
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
 Config/roxygen2/version: 8.0.0

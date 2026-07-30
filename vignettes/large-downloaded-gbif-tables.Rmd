@@ -7,7 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+## Transparent setup
+
+```{r setup, include = TRUE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -51,7 +53,7 @@ For large multi-species downloads, the package therefore separates file handling
 
 This design keeps peak memory use low and makes intermediate files easy to inspect, clean, archive, or parallelize outside R if needed.
 
-It also keeps the biological interpretation clean. Each file still corresponds to one focal GBIF taxon key, and each range is then inferred with the same `get_range()` machinery described in Part 1.
+It also keeps the biological interpretation clean. Each file still corresponds to one focal GBIF taxon key, and each range is then inferred with the same `get_range()` machinery described in Part 1: `vignette("gbif-retrieval-and-taxonomy", package = "gbif.range")`.
 
 ## Example data
 
@@ -105,10 +107,11 @@ For this vignette, the ecoregion layer is a single enclosing polygon built from 
 
 In ordinary use, you would typically replace this with `ecoreg = "eco_terra"`
 or with a spatial object returned by `read_ecoreg("eco_terra")` (Olson et al.
-2001; The Nature Conservancy 2009). More
-generally, any polygon object with a named character column works as `ecoreg`,
-and `make_ecoreg()` accepts any spatially structured raster as input — not
-only climate layers. See Part 1 for full details on both.
+2001; The Nature Conservancy 2009). More generally, any polygon object with a
+named character column works as `ecoreg`, and `make_ecoreg()` accepts any
+spatially structured raster as input — not only climate layers.
+See Part 2: `vignette("ecoregion-constrained-range-inference", package = "gbif.range")`
+for full details on both.
 
 ```{r batch-range-build, eval = has_data_table, warning = FALSE}
 occ_example <- utils::read.delim(gbif_file, sep = "\t", stringsAsFactors = FALSE)
@@ -186,6 +189,7 @@ It is also the most natural way to move from a large terrestrial GBIF export to 
 The offline vignette uses a simple polygon because it must build quickly and without network access. A real downloaded terrestrial workflow would normally look more like this:
 
 ```{r production-batch, eval = FALSE}
+# Non runable example 1
 split_summary <- split_gbif_by_species(
   input_file = "gbif_download.tsv",
   outdir = "species_occurrences",
@@ -195,6 +199,7 @@ split_summary <- split_gbif_by_species(
   overwrite = TRUE
 )
 
+# Non runable example 2
 range_summary <- species_csvs_to_ranges(
   species_dir = "species_occurrences",
   ecoreg = "eco_terra",
@@ -256,12 +261,12 @@ if (nrow(range_summary) > 1) {
 }
 
 terra::plot(combined_ext, col = NA, legend = FALSE, main = "Batch-generated ranges")
-terra::plot(first_range$rangeOutput, add = TRUE, col = range_colors[1])
+terra::plot(merge_range(first_range), add = TRUE, col = range_colors[1])
 
 if (nrow(range_summary) > 1) {
   for (i in 2:nrow(range_summary)) {
     range_i <- read_range_rds(range_summary$range_file[i])
-    terra::plot(range_i$rangeOutput, add = TRUE, col = range_colors[i])
+    terra::plot(merge_range(range_i), add = TRUE, col = range_colors[i])
   }
 }
 ```

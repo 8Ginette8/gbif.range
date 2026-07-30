@@ -1,6 +1,6 @@
 \donttest{
 # Get number of observations with default filters
-obs.pt <- get_gbif_count(
+get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = TRUE,
 	spatial_issue = FALSE,
@@ -8,7 +8,7 @@ obs.pt <- get_gbif_count(
 )
 
 # Get the total number of observations
-obs.pt <- get_gbif_count(
+get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = NULL,
 	spatial_issue = NULL,
@@ -16,7 +16,7 @@ obs.pt <- get_gbif_count(
 )
 
 # Example of setting global 'geo' (all records are still kept)
-obs.pt <- get_gbif_count(
+get_gbif_count(
 	sp_name = "Ailuropoda melanoleuca",
 	has_xy = NULL,
 	spatial_issue = NULL,
@@ -24,7 +24,7 @@ obs.pt <- get_gbif_count(
 )
 
 # Example of fuzzy matching when search is set to FALSE
-obs.pt <- get_gbif_count(
+get_gbif_count(
 	sp_name = "Ailuropoda melanolca",
 	search = FALSE
 )
@@ -36,7 +36,7 @@ shp.lonlat <- terra::vect(
         "/extdata/shp_lonlat.shp"
     )
 )
-obs.pt <- get_gbif_count(
+get_gbif_count(
 	sp_name = "Arctostaphylos alpinus",
 	has_xy = TRUE,
 	spatial_issue = FALSE,

@@ -56,30 +56,34 @@ sensitivity, specificity, and TSS.
 \examples{
 \donttest{
 # Load available ecoregions
-eco.terra <- read_ecoreg(
+eco_terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
     save_dir = tempdir(),
     format = "sf"
 )
 
-# First download the worldwide observations of Panthera tigris from GBIF
-obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+# First download the worldwide observations of the panda from GBIF
+obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+
+# Both calls above depend on remote services and return NULL or an empty
+# table if those are unavailable, so guard the rest of the example
+if (gbif_have(eco_terra, obs_am)) {
 
 # Build a range map from occurrence points
-range.panda <- get_range(
-    occ_coord = obs.pd,
-    ecoreg = eco.terra,
-    clust_pts_outlier = 6,
+range_panda <- get_range(
+    occ_coord = obs_am,
+    ecoreg = eco_terra,
     ecoreg_name = "ECO_NAME",
     format = "sf"
 )
-pd.test <- cv_range(
-    range_object = range.panda,
+am_test <- cv_range(
+    range_object = range_panda,
     cv = "block-cv",
     nfolds = 5,
     nblocks = 2
-);pd.test
+);am_test
 
+}
 }
 }
 \references{

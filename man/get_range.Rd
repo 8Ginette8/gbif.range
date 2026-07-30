@@ -49,8 +49,10 @@ clusters.}
 \item{buff_width_polygon}{Numeric. Buffer width in degrees applied to convex
 hull polygons.}
 
-\item{dir_temp}{Character. String giving the directory used for temporary
-convex-hull files. Defaults to \code{tempdir()}.}
+\item{dir_temp}{Character. String giving the parent directory used for
+temporary convex-hull files. A uniquely named sub-directory is created
+inside it and removed when the function exits; \code{dir_temp} itself is
+never deleted. Defaults to \code{tempdir()}.}
 
 \item{format}{Character. Output format for the range map. One of
 \code{"SpatVector"} (default), \code{"sf"}, or \code{"SpatRaster"}.
@@ -68,6 +70,17 @@ An object of class \code{getRange} with two fields:
 \code{init.args}, containing the arguments and data used to build the map,
 and \code{rangeOutput}, containing the resulting \code{SpatVector},
 \code{sf}, or \code{SpatRaster} object.
+
+For \code{format = "SpatVector"} and \code{format = "sf"}, the range is
+returned as \strong{one feature per occupied ecoregion} rather than a
+single merged polygon. Features may be multipart where a species occupies
+several disjoint patches of the same ecoregion; \code{terra::disagg()}
+separates them. Because ecoregions do not overlap, the features do not
+overlap either, so their areas are additive and
+\code{sum(terra::expanse(x))} gives the total range size. Each feature
+carries the \code{ecoreg_name} field it was clipped to plus a
+\code{species} column. Use \code{merge_range()} to dissolve the features
+into one polygon, or \code{format = "SpatRaster"} for a gridded range.
 }
 \description{
 Estimate ecologically informed species ranges from occurrence data and an
@@ -97,19 +110,21 @@ species, \code{eco_fresh} for freshwater species, and \code{eco_marine} or
 \examples{
 \donttest{
 # Load available ecoregions
-eco.terra <- read_ecoreg(
+eco_terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
     save_dir = tempdir()
 )
 
-# First download the worldwide observations of Panthera tigris from GBIF
-obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+# First download the whole available observations of the panda from GBIF
+obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+
+# Guard against an unavailable remote source
+if (gbif_have(eco_terra, obs_am)) {
 
 # Build a range map from occurrence points
-range.panda <- get_range(
-    occ_coord = obs.pd,
-    ecoreg = eco.terra,
-    clust_pts_outlier = 6,
+range_panda <- get_range(
+    occ_coord = obs_am,
+    ecoreg = eco_terra,
     ecoreg_name = "ECO_NAME",
     format = "SpatRaster"
 )
@@ -124,25 +139,26 @@ terra::plot(
     col = "#bcbddc"
 )
 
-    # Plot range 
+    # Plot range
 terra::plot(
-    range.panda$rangeOutput,
+    range_panda$rangeOutput,
     axes = FALSE,
     box = FALSE,
     legend = FALSE,
     col = "chartreuse4",
-    main = paste("Range:", obs.pd$scientificName[1]),
+    main = paste("Range:", obs_am$scientificName[1]),
     add = TRUE
 )
 
     # Plot the occurrence points
 graphics::points(
-    obs.pd[, c("decimalLongitude","decimalLatitude")],
+    obs_am[, c("decimalLongitude","decimalLatitude")],
     pch = 20,
     col = "#99340470",
     cex = 1.5
 )
 
+}
 }
 }
 \references{
@@ -171,7 +187,7 @@ Units. GIS layers developed by The Nature Conservancy with multiple
 partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
 Cambridge (UK): The Nature Conservancy.
 
-Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferda\enc{ñ}{n}a, Z. A.,
 Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
 Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
 (2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
@@ -198,10 +214,12 @@ Biodiversity Conservation. BioScience, 58(5), 403-414.
 \doi{10.1641/B580507}
 
 Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
-1.6-7. \url{https://cran.r-project.org/package=terra}
+1.6-7. \url{https://CRAN.R-project.org/package=terra}
 }
 \seealso{
 \code{\link{read_ecoreg}}() and \code{\link{make_ecoreg}}() to
 prepare the ecoregion layer used here; \code{\link{cv_range}}() and
-\code{\link{evaluate_range}}() to evaluate the resulting range map.
+\code{\link{evaluate_range}}() to evaluate the resulting range map;
+\code{\link{merge_range}}() to dissolve the returned polygons into a
+single range polygon.
 }

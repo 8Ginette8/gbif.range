@@ -24,7 +24,7 @@ unpack them into a local directory.
 }
 \examples{
 \donttest{
-# Download every ecoregion dataset listed in ecoreg_list
+# Download one of the ecoregion datasets listed in ecoreg_list
 get_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
 }
 }

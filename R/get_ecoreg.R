@@ -102,7 +102,7 @@ get_save_dir <- function(save_dir = NULL) {
 #' \code{\link{read_ecoreg}}() to download and load a layer in one step.
 #' @examples
 #' \donttest{
-#' # Download every ecoregion dataset listed in ecoreg_list
+#' # Download one of the ecoregion datasets listed in ecoreg_list
 #' get_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
 #' }
 #' @export
@@ -236,6 +236,19 @@ check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
       "] will be created and data will be downloaded.
             \n Downloading data...")
     get_ecoreg(ecoreg_name, save_dir)
+
+    # get_ecoreg() reports download and unzip failures but does not raise them,
+    # so confirm the layer is really present. Without this the failure surfaces
+    # later as an unrelated error from terra::vect() on an empty path.
+    if (!(dir.exists(check_dir) &&
+          length(list.files(check_dir, pattern = "\\.shp$")) > 0)) {
+      message(
+        "Could not obtain '", ecoreg_name, "'. The download or extraction ",
+        "failed, or the remote source is currently unavailable. Try again ",
+        "later, or download the layer manually and point 'save_dir' at it."
+      )
+      return(invisible(NULL))
+    }
   }
 }
 
@@ -281,7 +294,7 @@ check_and_get_ecoreg <- function(ecoreg_name = "eco_terra", save_dir = NULL) {
 #' combined from Olson et al. (2001), Bailey 1995 and Wiken 1986. Cambridge
 #' (UK): The Nature Conservancy.
 #' 
-#' Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+#' Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferda\enc{ñ}{n}a, Z. A.,
 #' Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
 #' Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
 #' (2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
@@ -330,6 +343,18 @@ read_ecoreg <- function(ecoreg_name = "eco_terra",
      pattern = "\\.shp$",
      full.names = TRUE
     )
+
+    # Fail gracefully when the layer could not be obtained: an unreachable
+    # remote source must not raise an error (CRAN policy on internet resources)
+    if (length(shp_path) == 0) {
+      message(
+        "No shapefile found for '", ecoreg_name, "' in ", save_dir, ". ",
+        "The layer could not be downloaded, most likely because the remote ",
+        "source is unavailable. Returning NULL."
+      )
+      return(invisible(NULL))
+    }
+
     shp <- terra::vect(shp_path)
 
     # SHP case

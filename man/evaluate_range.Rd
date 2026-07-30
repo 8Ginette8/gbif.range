@@ -61,14 +61,14 @@ when comparing products with different native resolutions.
 }
 \examples{
 ## EcoRM evaluation at different resolutions (<10sec runtime)
-root.dir  <- list.files(
+root_dir  <- list.files(
     system.file(package = "gbif.range"),
     pattern = "extdata",
     full.names = TRUE
 )
 
 res5km <- evaluate_range(
-    root_dir = root.dir, 
+    root_dir = root_dir, 
     valData_dir = "SDM", 
     ecoRM_dir = "EcoRM",
     verbose = TRUE, 
@@ -79,7 +79,7 @@ res5km <- evaluate_range(
 )
 
 res10km <- evaluate_range(
-    root_dir = root.dir, 
+    root_dir = root_dir, 
     valData_dir = "SDM", 
     ecoRM_dir = "EcoRM",
     verbose = TRUE, 
@@ -127,7 +127,7 @@ res10km$df_eval$Mean_SenPrec <-
     (res10km$df_eval$Sen_ecoRM + res10km$df_eval$Prec_ecoRM) / 2
 
   # Combine the data frames and add a Resolution column
-combined.df <- rbind(
+combined_df <- rbind(
     cbind(res5km$df_eval, Resolution = "5km"),
     cbind(res10km$df_eval, Resolution = "10km")
 )
@@ -135,9 +135,9 @@ combined.df <- rbind(
   # Convert to long format
 variables <- c("Sen_ecoRM", "Prec_ecoRM", "Mean_SenPrec")
 long_df <- data.frame(
-    Variable = rep(variables, each = nrow(combined.df)),
-    Value = unlist(combined.df[variables]),
-    Resolution = rep(combined.df$Resolution, times = length(variables))
+    Variable = rep(variables, each = nrow(combined_df)),
+    Value = unlist(combined_df[variables]),
+    Resolution = rep(combined_df$Resolution, times = length(variables))
 )
 
   # Plot boxplots using base R

@@ -33,7 +33,7 @@
 #'
 #' Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., & Hornik, K. (2021).
 #' cluster: Cluster Analysis Basics and Extensions. R package version 2.1.2.
-#' \url{https://CRAN.R-project.org/package=cluster}
+#' \url{https://CRAN.R-project.org/package=cluster/}
 #'
 #' Reynolds, A. P., Richards, G., de la Iglesia, B., & Rayward-Smith, V. J.
 #' (2006). Clustering rules: A comparison of partitioning and hierarchical

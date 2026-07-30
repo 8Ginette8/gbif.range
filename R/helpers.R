@@ -291,3 +291,39 @@ fig_label <- function(
   graphics::text(x1, y1, text, cex=cex, ...)
   return(invisible(c(x, y)))
 }
+
+#' Is a Network-Dependent Object Usable?
+#'
+#' Small predicate used to guard help examples that depend on GBIF or on a
+#' downloaded ecoregion layer. Following CRAN policy, \code{get_gbif()} and
+#' \code{read_ecoreg()} fail gracefully rather than raising an error when the
+#' remote source is unavailable: they return \code{NULL} or an empty table. The
+#' examples therefore have to check before using the result, or an upstream
+#' outage would turn into a check error.
+#'
+#' Accepts several objects at once and returns \code{TRUE} only if all of them
+#' are present and non-empty.
+#'
+#' @param ... One or more objects to test. Typically the value returned by
+#' \code{get_gbif()} or \code{read_ecoreg()}.
+#' @return \code{TRUE} if every object is non-\code{NULL} and, where it has
+#' rows, has at least one; \code{FALSE} otherwise.
+#' @keywords internal
+#' @export
+gbif_have <- function(...) {
+  objs <- list(...)
+  if (length(objs) == 0) {
+    return(FALSE)
+  }
+  all(vapply(objs, function(x) {
+    if (is.null(x)) {
+      return(FALSE)
+    }
+    n <- tryCatch(nrow(x), error = function(e) NULL)
+    # Objects without a row dimension count as present if they are not NULL
+    if (is.null(n)) {
+      return(TRUE)
+    }
+    isTRUE(n > 0)
+  }, logical(1)))
+}

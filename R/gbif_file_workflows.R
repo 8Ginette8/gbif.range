@@ -370,8 +370,11 @@ species_csvs_to_ranges <- function(
 #'
 #' @param file Path to an \code{.rds} range file created by
 #'   \code{\link{species_csvs_to_ranges}()}.
-#' @return A list with \code{init.args} and \code{rangeOutput}, matching the
-#'   structure written by the batch workflow.
+#' @return An object of class \code{getRange}, with fields \code{init.args} and
+#'   \code{rangeOutput}, as returned by \code{\link{get_range}}(). Note that
+#'   \code{init.args$ecoreg} is \code{NULL}: the ecoregion layer is not
+#'   serialized, so it must be re-supplied before the object can be passed to
+#'   \code{\link{cv_range}}().
 #' @seealso \code{\link{species_csvs_to_ranges}}() which creates the files
 #' read by this function.
 #' @example inst/examples/read_range_rds_help.R
@@ -383,8 +386,14 @@ read_range_rds <- function(file) {
   }
 
   obj <- readRDS(file)
-  if (!is.list(obj) || !"rangeOutput" %in% names(obj)) {
+  if (!is.list(obj) || !all(c("init.args", "rangeOutput") %in% names(obj))) {
     stop("The supplied RDS file is not a gbif.range batch range file.")
+  }
+  if (is.null(obj$init.args$ecoreg)) {
+    message(
+      "Note: 'init.args$ecoreg' was not serialized. Re-assign it with ",
+      "x$init.args$ecoreg <- <your ecoregion layer> before calling cv_range()."
+    )
   }
 
   if (inherits(obj$rangeOutput, "gbifPackedSpatVector")) {
@@ -397,7 +406,12 @@ read_range_rds <- function(file) {
     obj$rangeOutput <- terra::unwrap(obj$rangeOutput)
   }
 
-  obj
+  # Rebuild the reference object so the result can be passed to cv_range(),
+  # merge_range() and the other functions that expect a 'getRange'.
+  getRange$new(
+    init.args   = obj$init.args,
+    rangeOutput = obj$rangeOutput
+  )
 }
 
 
@@ -857,7 +871,7 @@ gbif_save_range_output <- function(
     outfile <- file.path(outdir, paste0(stub, ".rds"))
     # Store a simple list rather than the live reference object so the batch
     # files can be read back safely in a new R session.
-    # ecoreg is excluded — live terra pointers cannot survive serialization.
+    # ecoreg is excluded (live terra pointers cannot survive serialization)
     safe_args <- range_obj$init.args
     safe_args$ecoreg <- NULL
     safe_obj <- list(
@@ -882,7 +896,7 @@ gbif_save_range_output <- function(
 
   outfile <- file.path(outdir, paste0(stub, ".tif"))
   if (!inherits(range_obj$rangeOutput, "SpatRaster")) {
-    stop("range_save_as = 'tif' requires get_range(raster = TRUE).")
+    stop("range_save_as = 'tif' requires get_range(format = 'SpatRaster').")
   }
   terra::writeRaster(range_obj$rangeOutput, outfile, overwrite = overwrite)
   outfile

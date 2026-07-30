@@ -11,8 +11,11 @@ read_range_rds(file)
 \code{\link{species_csvs_to_ranges}()}.}
 }
 \value{
-A list with \code{init.args} and \code{rangeOutput}, matching the
-structure written by the batch workflow.
+An object of class \code{getRange}, with fields \code{init.args} and
+\code{rangeOutput}, as returned by \code{\link{get_range}}(). Note that
+\code{init.args$ecoreg} is \code{NULL}: the ecoregion layer is not
+serialized, so it must be re-supplied before the object can be passed to
+\code{\link{cv_range}}().
 }
 \description{
 Convenience wrapper around \code{readRDS()} for range files saved with
@@ -43,6 +46,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
     "eco_terra",
     save_dir = tempdir()
   )
+
+  # read_ecoreg() returns NULL if the remote source is unavailable
+  if (gbif_have(eco_terra)) {
+
   eco_crop <- terra::crop(
     eco_terra,
     terra::ext(
@@ -71,9 +78,12 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   )
 
   rg <- read_range_rds(range_summary$range_file[1])
+  class(rg)
+  nrow(rg$rangeOutput)
   terra::plot(rg$rangeOutput)
-}
 
+  }
+}
 }
 }
 \seealso{

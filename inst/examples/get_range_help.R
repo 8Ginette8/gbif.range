@@ -1,18 +1,20 @@
 \donttest{
 # Load available ecoregions
-eco.terra <- read_ecoreg(
+eco_terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
     save_dir = tempdir()
 )
 
-# First download the worldwide observations of Panthera tigris from GBIF
-obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+# First download the whole available observations of the panda from GBIF
+obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+
+# Guard against an unavailable remote source
+if (gbif_have(eco_terra, obs_am)) {
 
 # Build a range map from occurrence points
-range.panda <- get_range(
-    occ_coord = obs.pd,
-    ecoreg = eco.terra,
-    clust_pts_outlier = 6,
+range_panda <- get_range(
+    occ_coord = obs_am,
+    ecoreg = eco_terra,
     ecoreg_name = "ECO_NAME",
     format = "SpatRaster"
 )
@@ -27,23 +29,24 @@ terra::plot(
     col = "#bcbddc"
 )
 
-    # Plot range 
+    # Plot range
 terra::plot(
-    range.panda$rangeOutput,
+    range_panda$rangeOutput,
     axes = FALSE,
     box = FALSE,
     legend = FALSE,
     col = "chartreuse4",
-    main = paste("Range:", obs.pd$scientificName[1]),
+    main = paste("Range:", obs_am$scientificName[1]),
     add = TRUE
 )
 
     # Plot the occurrence points
 graphics::points(
-    obs.pd[, c("decimalLongitude","decimalLatitude")],
+    obs_am[, c("decimalLongitude","decimalLatitude")],
     pch = 20,
     col = "#99340470",
     cex = 1.5
 )
 
+}
 }

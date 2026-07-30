@@ -28,8 +28,10 @@
 #' clusters.
 #' @param buff_width_polygon Numeric. Buffer width in degrees applied to convex
 #' hull polygons.
-#' @param dir_temp Character. String giving the directory used for temporary
-#' convex-hull files. Defaults to \code{tempdir()}.
+#' @param dir_temp Character. String giving the parent directory used for
+#' temporary convex-hull files. A uniquely named sub-directory is created
+#' inside it and removed when the function exits; \code{dir_temp} itself is
+#' never deleted. Defaults to \code{tempdir()}.
 #' @param format Character. Output format for the range map. One of
 #' \code{"SpatVector"} (default), \code{"sf"}, or \code{"SpatRaster"}.
 #' \code{"SpatRaster"} rasterizes the range at the resolution set by
@@ -60,6 +62,17 @@
 #' \code{init.args}, containing the arguments and data used to build the map,
 #' and \code{rangeOutput}, containing the resulting \code{SpatVector},
 #' \code{sf}, or \code{SpatRaster} object.
+#'
+#' For \code{format = "SpatVector"} and \code{format = "sf"}, the range is
+#' returned as \strong{one feature per occupied ecoregion} rather than a
+#' single merged polygon. Features may be multipart where a species occupies
+#' several disjoint patches of the same ecoregion; \code{terra::disagg()}
+#' separates them. Because ecoregions do not overlap, the features do not
+#' overlap either, so their areas are additive and
+#' \code{sum(terra::expanse(x))} gives the total range size. Each feature
+#' carries the \code{ecoreg_name} field it was clipped to plus a
+#' \code{species} column. Use \code{merge_range()} to dissolve the features
+#' into one polygon, or \code{format = "SpatRaster"} for a gridded range.
 #' @references
 #' Hagen, O., Vaterlaus, L., Albouy, C., Brown, A., Leugger, F., Onstein,
 #' R. E., Novaes de Santana, C., Scotese, C. R., & Pellissier, L. (2019).
@@ -86,7 +99,7 @@
 #' partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
 #' Cambridge (UK): The Nature Conservancy.
 #'
-#' Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+#' Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferda\enc{ñ}{n}a, Z. A.,
 #' Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
 #' Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
 #' (2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
@@ -113,16 +126,18 @@
 #' \doi{10.1641/B580507}
 #'
 #' Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
-#' 1.6-7. \url{https://cran.r-project.org/package=terra}
+#' 1.6-7. \url{https://CRAN.R-project.org/package=terra}
 #' @seealso \code{\link{read_ecoreg}}() and \code{\link{make_ecoreg}}() to
 #' prepare the ecoregion layer used here; \code{\link{cv_range}}() and
-#' \code{\link{evaluate_range}}() to evaluate the resulting range map.
+#' \code{\link{evaluate_range}}() to evaluate the resulting range map;
+#' \code{\link{merge_range}}() to dissolve the returned polygons into a
+#' single range polygon.
 #' @example inst/examples/get_range_help.R
 #' @importFrom methods is new
-#' @importFrom terra vect crds intersect simplifyGeom buffer rast disagg aggregate rasterize crop
+#' @importFrom terra vect crds intersect buffer makeValid aggregate rast disagg rasterize crop
 #' @importFrom FNN knn.dist
 #' @importFrom stats kmeans
-#' @importFrom mclust Mclust mclustBIC
+#' @importFrom mclust Mclust mclustBIC emControl
 #' @importFrom ClusterR KMeans_rcpp
 #' @export
 get_range <- function (occ_coord = NULL, 
@@ -151,6 +166,17 @@ get_range <- function (occ_coord = NULL,
   format <- match.arg(format)
   check_numeric(res, "res")
   check_logical(verbose, "verbose")
+
+  # Convex hulls are written to a PRIVATE sub-directory of 'dir_temp'. The
+  # caller's directory is never deleted: 'dir_temp' defaults to tempdir(),
+  # and removing that would destroy the session's temporary files. on.exit()
+  # guarantees cleanup even if the function exits with an error.
+  if (!dir.exists(dir_temp)) {
+    dir.create(dir_temp, recursive = TRUE, showWarnings = FALSE)
+  }
+  run_dir <- file.path(dir_temp, basename(tempfile("gbif_range_")))
+  dir.create(run_dir, recursive = TRUE, showWarnings = FALSE)
+  on.exit(unlink(run_dir, recursive = TRUE), add = TRUE)
 
   # Spatial class
   spatial.class <- c("SpatialPolygonsDataFrame",
@@ -224,7 +250,7 @@ get_range <- function (occ_coord = NULL,
   if (verbose){
     message(
       paste0(
-        "## Start of computation for species: ", " ", sp.name, " ", " ###", " ", "\n"
+        "## Start of computation for species: ", sp.name, " ###\n"
       ),
       appendLF = FALSE
     )
@@ -283,6 +309,23 @@ get_range <- function (occ_coord = NULL,
   if (length(ovo.coord.mod) == 0) {
     stop("No overlap of ecoregion info, please use another 'ecoreg_name'")
   }
+
+  # Restrict the layer to the occupied ecoregions and repair geometry once.
+  # Simplification used to happen here (and before that, once per loop
+  # iteration). It was dropped: on a global ecoregion layer it removed only
+  # ~5% of vertices for ~6% of total runtime, and because Douglas-Peucker
+  # works feature by feature it displaced each shared border independently of
+  # its neighbour's, which is what produced slivers between adjacent
+  # ecoregions. makeValid() keeps the validity repair without moving vertices.
+  eco_all <- as.data.frame(ecoreg)[, ecoreg_name]
+  keep_eco <- eco_all %in% uniq
+  keep_eco[is.na(keep_eco)] <- FALSE
+
+  ecoreg_s <- terra::makeValid(ecoreg[keep_eco, ])
+
+  # Attribute column used to split ecoregions (hoisted: as.data.frame() on the
+  # full layer inside the loop rebuilt the whole table on every iteration)
+  eco_vals <- as.data.frame(ecoreg_s)[, ecoreg_name]
   
   # Loop over ecoregions
   SP.dist <- list()
@@ -292,51 +335,66 @@ get_range <- function (occ_coord = NULL,
     if (verbose){
       message(
         paste0(
-          'ecoregion'," ",g," "," of "," ",length(uniq)," ",": "," ",uniq[g]," ",'\n'
+          "ecoregion ", g, " of ", length(uniq), ": ", uniq[g], "\n"
         ),
         appendLF = FALSE
       )
     }
 
     # Handle NAs
-    q1 <- as.data.frame(ecoreg)[, ecoreg_name] == uniq[g]
+    q1 <- eco_vals == uniq[g]
     q1[is.na(q1)] <- FALSE
 
-    # Continue (use 'sf', otherwise 'terra' creates artifacts)
-    tmp_sf <- sf::st_make_valid(sf::st_as_sf(ecoreg[q1, ]))
-    tmp_sf <- sf::st_simplify(tmp_sf, dTolerance = 0.001, preserveTopology = TRUE)
-    tmp <- terra::vect(tmp_sf)
+    # Ecoregion polygon (already simplified and made valid before the loop)
+    tmp <- ecoreg_s[q1, ]
+
+    # Zero-width buffer once per ecoregion, not once per cluster
+    b2 <- terra::buffer(tmp, width = 0)
+
     a <- ovo.coord.mod[ovo.coord.mod[[ecoreg_name]][[1]] == uniq[g]]
+
+    # Coordinates are reused several times below; extract once
+    xy <- terra::crds(a)
+
+    # Jitter degenerate configurations so clustering can run. The previous
+    # test (all longitudes equal to their own latitude) never fired, and its
+    # body assigned to terra::crds(a)[, 2], for which no replacement method
+    # exists. The real degenerate case is too few distinct locations, and the
+    # offset must vary by row to actually separate coincident points. It is
+    # deterministic so that results stay reproducible.
+    if (nrow(unique(xy)) < 3) {
+      xy[, 2] <- xy[, 2] + seq_len(nrow(xy)) * 0.00001
+    }
     
     if (length(a) < 3) {
       k <- 1
       cluster.k <- stats::kmeans(
-        x = terra::crds(a),
+        x = xy,
         centers = k
       )
       cluster.k$clusters <- cluster.k$cluster 
 
     } else {
 
-      if (all(terra::crds(a)[, 1] == terra::crds(a)[, 2])) {
-        terra::crds(a)[, 2] <- terra::crds(a)[, 2] + 0.00001
-      }
-      
-      # Determine number of clusters
+      # Determine number of clusters. mclust's default iteration limit is
+      # effectively unlimited (.Machine$integer.max for both the EM loop and
+      # the inner M-step loop used by VEI/VEE/VVE/VEV), so a non-converging
+      # fit can run indefinitely. Capping both guarantees termination.
       m.clust <- mclust::Mclust(
-        data = terra::crds(a) + 1000,
-        verbose = FALSE
+        data = xy + 1000,
+        verbose = FALSE,
+        control = mclust::emControl(itmax = c(1000, 100))
       )
       
-      # k = number of clusters
-      k <- m.clust$G 
+      # k = number of clusters (fall back to 1 if no model could be fitted)
+      k <- if (is.null(m.clust)) 1L else m.clust$G
       
       # Reduce k if necessary so that KMeans_rcpp() will run
       while (k > length(a)-2) {k <- k-1} 
       if (k == 0) {k <- 1}
       
       cluster.k <- ClusterR::KMeans_rcpp(
-        data = terra::crds(a),
+        data = xy,
         clusters = k,
         num_init = 20,
         initializer = 'random'
@@ -345,7 +403,7 @@ get_range <- function (occ_coord = NULL,
       while (length(unique(cluster.k$clusters)) < k) {
         k <- k-1
         cluster.k <- ClusterR::KMeans_rcpp(
-          data = terra::crds(a),
+          data = xy,
           clusters = k,
           num_init = 20,
           initializer = 'random'
@@ -365,21 +423,28 @@ get_range <- function (occ_coord = NULL,
         bwp = buff_width_point,
         bipl = buff_incrmt_pts_line,
         bwpo = buff_width_polygon,
-        temp_dir = dir_temp,
+        temp_dir = run_dir,
         g = g,
         verbose = verbose
       )
       
-      # Intersect polygon with ecoregion (zero buffer to avoid error)
+      # Intersect polygon with ecoregion (zero buffer to avoid error).
+      # 'b2' is constant within this ecoregion and is computed above.
       b1 <- terra::buffer(my.shpe, width = 0)
-      b2 <- terra::buffer(tmp, width = 0)
       polygons.list[[i]] <- terra::intersect(b1, b2)
     }  
     
     SP.dist[[g]] <- do.call("rbind", polygons.list)
   } 
   
-  lala <- SP.dist[!is.na(SP.dist)]
+  # Drop ecoregions that produced nothing. is.na() on a list of SpatVectors
+  # is not a reliable emptiness test.
+  keep <- vapply(
+    SP.dist,
+    function(z) !is.null(z) && nrow(z) > 0,
+    logical(1)
+  )
+  lala <- SP.dist[keep]
   
 
   ### =========================================================================
@@ -387,15 +452,31 @@ get_range <- function (occ_coord = NULL,
   ### =========================================================================
   
 
-  if (!dir.exists(dir_temp)) {
-    unlink(dir_temp, recursive = TRUE)
-  }
-  
   if (length(lala) == 0) {
     stop('No occurrences within ecoregions. Empty raster produced...')
   }
-  shp.species <- terra::aggregate(do.call("rbind", lala))
-  shp.species <- terra::buffer(shp.species, width = 0.0001)
+  shp.species <- do.call("rbind", lala)
+
+  # Keep only the ecoregion label and the species name, so that the returned
+  # schema does not depend on which columns the user's 'ecoreg' layer carried.
+  # Guarded, because terra::intersect() renames fields on name collisions.
+  if (ecoreg_name %in% names(shp.species)) {
+    shp.species <- shp.species[, ecoreg_name]
+  }
+  # Remove the overlaps between buffered hulls of neighbouring clusters by
+  # dissolving WITHIN each ecoregion. All pieces of a given ecoregion were
+  # clipped against the same geometry, so this union has no mismatched borders.
+  # Across ecoregions nothing is merged, which is where slivers would arise.
+  # terra::erase() was used here previously, but the SpatVector it returns is
+  # internally corrupted (terra issue #1710): it prints and validates, yet
+  # fails on column assignment, rasterize() and writeVector().
+  shp.species <- terra::makeValid(shp.species)
+  shp.species <- terra::aggregate(
+    x = shp.species,
+    by = ecoreg_name,
+    count = FALSE
+  )
+  shp.species$species <- occ_coord$input_search[1]
 
   # Convert to requested format
   if (format == "SpatRaster") {
@@ -407,18 +488,14 @@ get_range <- function (occ_coord = NULL,
 
   } else if (format == "sf") {
     shp.species <- sf::st_as_sf(shp.species)
-    shp.species$species <- occ_coord$input_search[1]
-
-  } else {
-    # SpatVector
-    shp.species$species <- occ_coord$input_search[1]
   }
+  # SpatVector: returned as-is, attributes already set
   
   # Final print
   if (verbose){
     message(
       paste0(
-        "## End of computation for species: ", " ", sp.name, " ", " ###", " ", "\n"
+        "## End of computation for species: ", sp.name, " ###\n"
       ),
       appendLF = FALSE
     )

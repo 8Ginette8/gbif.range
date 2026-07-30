@@ -20,7 +20,7 @@ get_gbif(
   duplicates = FALSE,
   absences = FALSE,
   basis = c("OBSERVATION", "HUMAN_OBSERVATION", "MACHINE_OBSERVATION", "OCCURRENCE",
-    "MATERIAL_CITATION", "LITERATURE"),
+    "MATERIAL_CITATION", "MATERIAL_SAMPLE", "LITERATURE"),
   establishment = c("native", "casual", "released", "reproducing", "established",
     "colonising", "invasive", "widespreadInvasive"),
   add_infos = NULL,
@@ -91,9 +91,9 @@ by the number of reported coordinate decimals.}
 
 \item{basis}{Character. Vector of accepted \code{basisOfRecord} values.
 Default excludes specimen-based records (e.g. herbarium sheets, museum
-specimens), \code{"MATERIAL_SAMPLE"} records, and records of unknown
-basis. See \strong{Details} for the full list of accepted values, and a
-note on why \code{"MATERIAL_SAMPLE"} is excluded by default.}
+specimens) and records of unknown basis. See \strong{Details} for
+the full list of accepted values, and a note on why \code{"MATERIAL_SAMPLE"}
+can be misleading.}
 
 \item{establishment}{Character. Vector of accepted
 \code{degreeOfEstablishment} values. Default keeps native and broadly
@@ -202,16 +202,13 @@ specimen-based records and records of unknown basis. See
 (\href{https://docs.gbif.org/course-data-use/en/basis-of-record.html}{here})
 for a description of each category.
 
-Records linked to non-taxonomic backbone entries (e.g. BOLD barcode
-sequences) are typically registered under
-\code{basisOfRecord = "MATERIAL_SAMPLE"}. Because \code{MATERIAL_SAMPLE}
-is not a reliable proxy for sequence-based records across all taxonomic
-groups, and can also include unrelated bulk or environmental samples, it
-is excluded from the default \code{basis} selection. Users who
-deliberately include \code{"MATERIAL_SAMPLE"} in \code{basis} should
-cross-check returned \code{acceptedTaxonKey} values against
-\code{get_status(children = TRUE)} to identify any records linked to
-non-backbone entries; see \code{get_status()} examples.
+Records linked to non-taxonomic backbone entries (e.g., BOLD barcode
+sequences) are typically registered under \code{basisOfRecord = "MATERIAL_SAMPLE"}.
+These sequence-based, bulk, or environmental DNA (eDNA) records may
+reflect the physical collection site rather than the precise microhabitat.
+However, this spatial imprecision is not critical as the  package is aimed
+to operate at macro-ecological scales where local site-level offsets do not
+alter the broader range estimations.
 
 \strong{establishment}: available \code{degreeOfEstablishment} values are
 \code{"native"}, \code{"casual"}, \code{"released"}, \code{"reproducing"},
@@ -264,18 +261,21 @@ Decimal filtering follows these thresholds:\cr
 }
 \examples{
 \donttest{
-# Download all worldwide observations of Ailuropoda melanoleuca, with:
+# Download all worldwide observations of the great panda, with:
 # - 100km grain
 # - after 1990
-# - keeping duplicates and by
+# - keeping duplicates
 # - adding the name of the person who collected the panda records
-obs.am <- get_gbif(
+obs_am <- get_gbif(
        sp_name = "Ailuropoda melanoleuca",
-       grain = 100 ,
+       grain = 100,
        duplicates = TRUE,
        time_period = c(1990,3000),
        add_infos = c("recordedBy","issue")
 )
+
+# Guard against an unavailable remote source
+if (gbif_have(obs_am)) {
 
 # Extract borders
 countries <- terra::vect(
@@ -285,12 +285,13 @@ countries <- terra::vect(
 # Plot
 terra::plot(countries, col = "#bcbddc")
 graphics::points(
-       obs.am[,c("decimalLongitude","decimalLatitude")],
+       obs_am[,c("decimalLongitude","decimalLatitude")],
        pch = 20,
        col = "#238b4550",
        cex = 4
 )
 
+}
 }
 }
 \references{
@@ -309,7 +310,7 @@ Methods in Ecology and Evolution, 10(5), 744-751.
 \doi{10.1111/2041-210X.13152}
 
 Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
-1.6-7. \url{https://cran.r-project.org/package=terra}
+1.6-7. \url{https://CRAN.R-project.org/package=terra}
 }
 \seealso{
 \code{\link{get_status}}() to inspect the accepted name and synonym

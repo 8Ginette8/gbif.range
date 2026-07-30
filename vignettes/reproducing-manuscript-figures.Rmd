@@ -1,5 +1,5 @@
 ---
-title: "Supplementary: gbif.range manuscript's figures"
+title: "Supplementary: manuscript figures"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Supplementary: `gbif.range`s manuscript's figures}
@@ -31,8 +31,18 @@ the associated manuscript is published.
 > maps from occurrence data with seamless GBIF integration*. Authorea
 > preprint. \doi{10.22541/au.175130858.83083354/v1}
 
-```{r setup, include = FALSE}
+```{r setup, include = TRUE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+
+library(gbif.range)
+
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
 ```
 
 ## Online data retrieval
@@ -45,29 +55,15 @@ order.
 
 ```{r data-retrieval, eval = FALSE}
 # Study extent, world boundaries, and packaged terrestrial ecoregions
-shp.lonlat <- terra::vect(
-  paste0(
-    system.file(package = "gbif.range"),
-    "/extdata/shp_lonlat.shp"
-  )
-)
-countries <- terra::vect(
-  system.file(
-    "extdata", "world_countries.shp",
-    package = "gbif.range"
-  )
-)
+shp.lonlat <- terra::vect(ext_file("shp_lonlat.shp"))
+countries <- terra::vect(ext_file("world_countries.shp"))
 eco.terra <- read_ecoreg(
   ecoreg_name = "eco_terra", save_dir = tempdir()
 )
 
 # Custom, high-resolution ecoregions for the Alps study extent
 # ('rst' --> 5x5-km resolution)
-rst.path <- paste0(
-  system.file(package = "gbif.range"),
-  "/extdata/rst.tif"
-)
-rst <- terra::rast(rst.path)
+rst <- terra::rast(ext_file("rst.tif"))
 my.eco <- make_ecoreg(env = rst, nclass = 200, format = "SpatVector")
 
 # Continent extent to keep only terrestrial my.eco
@@ -89,18 +85,8 @@ obs.arcto <- get_gbif(
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Diversity rasters used in Figure 3
-iucn.robin <- terra::rast(
-  paste0(
-    system.file(package = "gbif.range"),
-    "/extdata/iucn_div_robin.tif"
-  )
-)
-gf.robin <- terra::rast(
-  paste0(
-    system.file(package = "gbif.range"),
-    "/extdata/gf_div_robin.tif"
-  )
-)
+iucn.robin <- terra::rast(ext_file("iucn_div_robin.tif"))
+gf.robin <- terra::rast(ext_file("gf_div_robin.tif"))
 ```
 
 ## Figure 1a (left) — Custom ecoregion range: *Arctostaphylos alpinus*
@@ -111,12 +97,12 @@ are derived from CHELSA bioclimatic layers (Karger et al. 2017) via
 extent.
 
 ```{r fig1a-left, eval = FALSE}
-# Regional range at ~5x5-km resoluiton ('my.eco' resolution)
+# Regional range at ~5x5-km resolution ('my.eco' resolution)
 range.arcto <- get_range(
   occ_coord = obs.arcto,
   ecoreg = my.eco,
   ecoreg_name = "EcoRegion",
-  res = 0.05
+  format = "SpatVector"
 )
 
 # Assign colors to ecoregions
@@ -160,7 +146,7 @@ terra::plot(
   axes = FALSE
 )
 terra::plot(
-  terra::as.polygons(range.arctoS),
+  merge_range(range.arctoS),
   border = "black",
   lwd = 1,
   col = "#00000099",
@@ -186,11 +172,12 @@ worldwide range built directly from the packaged terrestrial ecoregions
 requiring no custom ecoregion layer.
 
 ```{r fig1a-right, eval = FALSE}
-# Global range at default ~10x10-km resolution
+# Global range
 range.tiger <- get_range(
   occ_coord = obs.pt,
   ecoreg = eco.terra,
-  ecoreg_name = "ECO_NAME"
+  ecoreg_name = "ECO_NAME",
+  format = "SpatVector"
 )
 
 # Assign colors to ecoregions
@@ -239,7 +226,7 @@ terra::plot(
   axes = FALSE
 )
 terra::plot(
-  terra::as.polygons(range.tiger$rangeOutput),
+  merge_range(range.tiger),
   border = "black",
   lwd = 2,
   col = "#63636399",
@@ -353,7 +340,7 @@ graphics::points(
   pch = 16, cex = 0.5
 )
 terra::plot(
-  terra::as.polygons(range.arcto$rangeOutput),
+  merge_range(range.arctoS),
   border = "black", lwd = 1.7,
   col = "#63636370", add = TRUE
 )
@@ -479,7 +466,7 @@ graphics::points(
   pch = 16, cex = 0.6
 )
 terra::plot(
-  terra::as.polygons(range.tiger$rangeOutput),
+  merge_range(range.tiger),
   border = "black", lwd = 2,
   col = "#63636370", add = TRUE
 )
@@ -528,11 +515,7 @@ held-out occurrences.
 # Arctostaphylos alpinus (custom ecoregion)
 # -------------------------------------
 
-root.dir <- list.files(
-  system.file(package = "gbif.range"),
-  pattern = "extdata",
-  full.names = TRUE
-)
+root.dir <- ext_file()
 
 res5km <- evaluate_range(
   root_dir = root.dir,
@@ -551,7 +534,7 @@ terra::plot(
   axes = FALSE, lwd = 1
 )
 terra::plot(
-  terra::as.polygons(range.arcto$rangeOutput),
+  merge_range(range.arctoS),
   lwd = 0.1, col = "#63636350", add = TRUE
 )
 terra::plot(
@@ -864,7 +847,7 @@ Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to the global
 
 Chauvier-Mendes, Y., Hagen, O., Pinkert, S., Albouy, C., Fopp, F., Brun, P., Descombes, P., Altermatt, F., Pellissier, L., & Csilléry, K. (2025). gbif.range: An R package to generate ecologically-informed species range maps from occurrence data with seamless GBIF integration. Authorea preprint. https://doi.org/10.22541/au.175130858.83083354/v1
 
-IUCN. (2024). The IUCN Red List of Threatened Species. Version 2024-2. https://www.iucnredlist.org. Accessed on 2024-09-25.
+IUCN. (2024). The IUCN Red List of Threatened Species. Version 2024-2. <https://www.iucnredlist.org>. Accessed on 2024-09-25.
 
 Karger, D. N., Conrad, O., Böhner, J., Kawohl, T., Kreft, H., Soria-Auza, R. W., Zimmermann, N. E., Linder, H. P., & Kessler, M. (2017). Climatologies at high resolution for the earth's land surface areas. *Scientific Data*, 4, 170122. https://doi.org/10.1038/sdata.2017.122
 

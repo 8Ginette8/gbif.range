@@ -22,6 +22,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
     "eco_terra",
     save_dir = tempdir()
   )
+
+  # read_ecoreg() returns NULL if the remote source is unavailable
+  if (gbif_have(eco_terra)) {
+
   eco_crop <- terra::crop(
     eco_terra,
     terra::ext(
@@ -50,7 +54,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   )
 
   rg <- read_range_rds(range_summary$range_file[1])
+  class(rg)
+  nrow(rg$rangeOutput)
   terra::plot(rg$rangeOutput)
-}
 
+  }
+}
 }
