@@ -1,5 +1,29 @@
 # Part 3: Large Downloaded GBIF Tables
 
+## Transparent setup
+
+``` r
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  purl = FALSE
+)
+
+has_data_table <- requireNamespace("data.table", quietly = TRUE)
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
+
+library(gbif.range)
+```
+
 ## Scope
 
 This vignette documents the disk-based workflow for large downloaded
@@ -43,7 +67,8 @@ It also keeps the biological interpretation clean. Each file still
 corresponds to one focal GBIF taxon key, and each range is then inferred
 with the same
 [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
-machinery described in Part 1.
+machinery described in Part 1:
+[`vignette("gbif-retrieval-and-taxonomy", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/gbif-retrieval-and-taxonomy.md).
 
 ## Example data
 
@@ -139,7 +164,9 @@ In ordinary use, you would typically replace this with
 works as `ecoreg`, and
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
 accepts any spatially structured raster as input — not only climate
-layers. See Part 1 for full details on both.
+layers. See Part 2:
+[`vignette("ecoregion-constrained-range-inference", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.md)
+for full details on both.
 
 ``` r
 
@@ -243,6 +270,7 @@ normally look more like this:
 
 ``` r
 
+# Non runable example 1
 split_summary <- split_gbif_by_species(
   input_file = "gbif_download.tsv",
   outdir = "species_occurrences",
@@ -252,6 +280,7 @@ split_summary <- split_gbif_by_species(
   overwrite = TRUE
 )
 
+# Non runable example 2
 range_summary <- species_csvs_to_ranges(
   species_dir = "species_occurrences",
   ecoreg = "eco_terra",
@@ -308,7 +337,7 @@ restores them to a simple list with `init.args` and `rangeOutput`.
 # Read the first saved range to inspect its structure.
 first_range <- read_range_rds(range_summary$range_file[1])
 names(first_range)
-#> [1] "init.args"   "rangeOutput"
+#> [1] "rangeOutput"  ".self"        ".refClassDef" "init.args"
 class(first_range$rangeOutput)
 #> [1] "SpatVector"
 #> attr(,"package")
@@ -343,12 +372,12 @@ if (nrow(range_summary) > 1) {
 }
 
 terra::plot(combined_ext, col = NA, legend = FALSE, main = "Batch-generated ranges")
-terra::plot(first_range$rangeOutput, add = TRUE, col = range_colors[1])
+terra::plot(merge_range(first_range), add = TRUE, col = range_colors[1])
 
 if (nrow(range_summary) > 1) {
   for (i in 2:nrow(range_summary)) {
     range_i <- read_range_rds(range_summary$range_file[i])
-    terra::plot(range_i$rangeOutput, add = TRUE, col = range_colors[i])
+    terra::plot(merge_range(range_i), add = TRUE, col = range_colors[i])
   }
 }
 ```

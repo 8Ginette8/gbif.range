@@ -1,11 +1,11 @@
-# Supplementary: gbif.range manuscript's figures
+# Supplementary: manuscript figures
 
 ## Scope
 
 This vignette provides the exact code used to reproduce the figures in
 Chauvier-Mendes et al. (2025), currently under review, included for
 transparency and to let readers and reviewers verify how each figure was
-generated from the functions in this package. All chunks are set to
+generated from the functions of this package. All chunks are set to
 `eval = FALSE`; run them locally to regenerate the figures from GBIF and
 the bundled example data — the figures shown below are cached, static
 images.
@@ -24,6 +24,21 @@ once the associated manuscript is published.
 > species range maps from occurrence data with seamless GBIF
 > integration*. Authorea preprint.
 
+``` r
+
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
+
+library(gbif.range)
+```
+
 ## Online data retrieval
 
 The figures below share a common set of GBIF downloads and ecoregion
@@ -35,29 +50,15 @@ order.
 ``` r
 
 # Study extent, world boundaries, and packaged terrestrial ecoregions
-shp.lonlat <- terra::vect(
-  paste0(
-    system.file(package = "gbif.range"),
-    "/extdata/shp_lonlat.shp"
-  )
-)
-countries <- terra::vect(
-  system.file(
-    "extdata", "world_countries.shp",
-    package = "gbif.range"
-  )
-)
+shp.lonlat <- terra::vect(ext_file("shp_lonlat.shp"))
+countries <- terra::vect(ext_file("world_countries.shp"))
 eco.terra <- read_ecoreg(
   ecoreg_name = "eco_terra", save_dir = tempdir()
 )
 
 # Custom, high-resolution ecoregions for the Alps study extent
 # ('rst' --> 5x5-km resolution)
-rst.path <- paste0(
-  system.file(package = "gbif.range"),
-  "/extdata/rst.tif"
-)
-rst <- terra::rast(rst.path)
+rst <- terra::rast(ext_file("rst.tif"))
 my.eco <- make_ecoreg(env = rst, nclass = 200, format = "SpatVector")
 
 # Continent extent to keep only terrestrial my.eco
@@ -79,18 +80,8 @@ obs.arcto <- get_gbif(
 obs.pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Diversity rasters used in Figure 3
-iucn.robin <- terra::rast(
-  paste0(
-    system.file(package = "gbif.range"),
-    "/extdata/iucn_div_robin.tif"
-  )
-)
-gf.robin <- terra::rast(
-  paste0(
-    system.file(package = "gbif.range"),
-    "/extdata/gf_div_robin.tif"
-  )
-)
+iucn.robin <- terra::rast(ext_file("iucn_div_robin.tif"))
+gf.robin <- terra::rast(ext_file("gf_div_robin.tif"))
 ```
 
 ## Figure 1a (left) — Custom ecoregion range: *Arctostaphylos alpinus*
@@ -103,12 +94,12 @@ and the species’ range is constrained to a small alpine extent.
 
 ``` r
 
-# Regional range at ~5x5-km resoluiton ('my.eco' resolution)
+# Regional range at ~5x5-km resolution ('my.eco' resolution)
 range.arcto <- get_range(
   occ_coord = obs.arcto,
   ecoreg = my.eco,
   ecoreg_name = "EcoRegion",
-  res = 0.05
+  format = "SpatVector"
 )
 
 # Assign colors to ecoregions
@@ -152,7 +143,7 @@ terra::plot(
   axes = FALSE
 )
 terra::plot(
-  terra::as.polygons(range.arctoS),
+  merge_range(range.arctoS),
   border = "black",
   lwd = 1,
   col = "#00000099",
@@ -178,11 +169,12 @@ requiring no custom ecoregion layer.
 
 ``` r
 
-# Global range at default ~10x10-km resolution
+# Global range
 range.tiger <- get_range(
   occ_coord = obs.pt,
   ecoreg = eco.terra,
-  ecoreg_name = "ECO_NAME"
+  ecoreg_name = "ECO_NAME",
+  format = "SpatVector"
 )
 
 # Assign colors to ecoregions
@@ -231,7 +223,7 @@ terra::plot(
   axes = FALSE
 )
 terra::plot(
-  terra::as.polygons(range.tiger$rangeOutput),
+  merge_range(range.tiger),
   border = "black",
   lwd = 2,
   col = "#63636399",
@@ -345,7 +337,7 @@ graphics::points(
   pch = 16, cex = 0.5
 )
 terra::plot(
-  terra::as.polygons(range.arcto$rangeOutput),
+  merge_range(range.arctoS),
   border = "black", lwd = 1.7,
   col = "#63636370", add = TRUE
 )
@@ -470,7 +462,7 @@ graphics::points(
   pch = 16, cex = 0.6
 )
 terra::plot(
-  terra::as.polygons(range.tiger$rangeOutput),
+  merge_range(range.tiger),
   border = "black", lwd = 2,
   col = "#63636370", add = TRUE
 )
@@ -519,11 +511,7 @@ rather than held-out occurrences.
 # Arctostaphylos alpinus (custom ecoregion)
 # -------------------------------------
 
-root.dir <- list.files(
-  system.file(package = "gbif.range"),
-  pattern = "extdata",
-  full.names = TRUE
-)
+root.dir <- ext_file()
 
 res5km <- evaluate_range(
   root_dir = root.dir,
@@ -542,7 +530,7 @@ terra::plot(
   axes = FALSE, lwd = 1
 )
 terra::plot(
-  terra::as.polygons(range.arcto$rangeOutput),
+  merge_range(range.arctoS),
   lwd = 0.1, col = "#63636350", add = TRUE
 )
 terra::plot(

@@ -16,7 +16,7 @@ occurrence table."><meta property="og:image" content="https://8ginette8.github.i
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@ occurrence table."><meta property="og:image" content="https://8ginette8.github.i
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
-    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: gbif.range manuscript's figures</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: manuscript figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -46,7 +46,7 @@ occurrence table."><meta property="og:image" content="https://8ginette8.github.i
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Count GBIF Occurrences Before Downloading Data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/v1.8.0/R/get_gbif_count.R" class="external-link"><code>R/get_gbif_count.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/main/R/get_gbif_count.R" class="external-link"><code>R/get_gbif_count.R</code></a></small>
       <div class="d-none name"><code>get_gbif_count.Rd</code></div>
     </div>
 
@@ -171,7 +171,7 @@ counted by this function.</p></div>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Get number of observations with default filters</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanoleuca"</span>,</span></span>
 <span class="r-in"><span>  has_xy <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
@@ -183,9 +183,10 @@ counted by this function.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300  66</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get the total number of observations</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanoleuca"</span>,</span></span>
 <span class="r-in"><span>  has_xy <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
@@ -197,9 +198,10 @@ counted by this function.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = NULL, has_xy = NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300 300</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example of setting global 'geo' (all records are still kept)</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanoleuca"</span>,</span></span>
 <span class="r-in"><span>  has_xy <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
@@ -211,9 +213,10 @@ counted by this function.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = NULL, has_xy = NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300 300</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example of fuzzy matching when search is set to FALSE</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanolca"</span>,</span></span>
 <span class="r-in"><span>  search <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -223,6 +226,7 @@ counted by this function.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300  66</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example on the European Alps (has_xy = TRUE by default)</span></span></span>
 <span class="r-in"><span><span class="va">shp.lonlat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span></span>
@@ -231,7 +235,7 @@ counted by this function.</p></div>
 <span class="r-in"><span>        <span class="st">"/extdata/shp_lonlat.shp"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">get_gbif_count</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sp_name <span class="op">=</span> <span class="st">"Arctostaphylos alpinus"</span>,</span></span>
 <span class="r-in"><span>  has_xy <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  spatial_issue <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
@@ -243,6 +247,7 @@ counted by this function.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 43155  6348</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

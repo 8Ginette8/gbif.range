@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
-    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: gbif.range manuscript's figures</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: manuscript figures</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -74,12 +74,34 @@
       <img src="../logo.png" class="logo" alt=""><h1>Part 0: Getting Started</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/v1.8.0/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/main/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
       <div class="d-none name"><code>getting-started.Rmd</code></div>
     </div>
 
     
     
+<div class="section level2">
+<h2 id="transparent-setup">Transparent setup<a class="anchor" aria-label="anchor" href="#transparent-setup"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
+<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span>,</span>
+<span>  fig.width <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>  fig.height <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  purl <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ext_file</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">...</span>, package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nzchar</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">".."</span>, <span class="st">"inst"</span>, <span class="st">"extdata"</span>, <span class="va">...</span><span class="op">)</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/8Ginette8/gbif.range" class="external-link">gbif.range</a></span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
 </h2>
@@ -116,7 +138,7 @@ exports.</li>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"8Ginette8/gbif.range"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/8Ginette8/gbif.range" class="external-link">gbif.range</a></span><span class="op">)</span></span></code></pre></div>
 <p>Install with <code>build_vignettes = TRUE</code> so that
@@ -163,42 +185,46 @@ post-processing filters</td>
 <td>Ecoregion-constrained range inference</td>
 </tr>
 <tr class="even">
+<td><code><a href="../reference/merge_range.html">merge_range()</a></code></td>
+<td>Aggregate range geometry into one feature or by polygon id</td>
+</tr>
+<tr class="odd">
 <td><code><a href="../reference/read_ecoreg.html">read_ecoreg()</a></code></td>
 <td>Download and read packaged ecoregion files</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code></td>
 <td>Build a custom ecoregion layer from any set of spatial raster
 layers</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="../reference/make_tiles.html">make_tiles()</a></code></td>
 <td>Generate GBIF-ready <code>POLYGON()</code> tiles for explicit tiling
 workflows</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code><a href="../reference/get_doi.html">get_doi()</a></code></td>
 <td>Create a citable GBIF-derived DOI for downloaded records</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="../reference/evaluate_range.html">evaluate_range()</a></code></td>
 <td>Validate a range map against user-supplied distribution data</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code><a href="../reference/cv_range.html">cv_range()</a></code></td>
 <td>Cross-validate a <code><a href="../reference/get_range.html">get_range()</a></code> output against its
 occurrence data</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="../reference/split_gbif_by_species.html">split_gbif_by_species()</a></code></td>
 <td>Stream a large downloaded GBIF table and write one file per
 species</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code><a href="../reference/species_csvs_to_ranges.html">species_csvs_to_ranges()</a></code></td>
 <td>Build one range per species from per-species occurrence files</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="../reference/read_range_rds.html">read_range_rds()</a></code></td>
 <td>Read a <code>.rds</code> range file saved by
 <code><a href="../reference/species_csvs_to_ranges.html">species_csvs_to_ranges()</a></code>
@@ -216,7 +242,7 @@ species</td>
 <p>Before downloading, <code><a href="../reference/get_status.html">get_status()</a></code> shows which accepted
 name and synonyms <code><a href="../reference/get_gbif.html">get_gbif()</a></code> will use internally, and
 retrieves the current IUCN Red List status from the GBIF backbone.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Accepted name and direct synonyms only (the default)</span></span>
 <span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span><span class="op">)</span></span>
 <span></span>
@@ -230,23 +256,23 @@ used for occurrence retrieval.</p>
 <div class="section level3">
 <h3 id="download-occurrences">Download occurrences<a class="anchor" aria-label="anchor" href="#download-occurrences"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">obs.pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span>sp_name <span class="op">=</span> <span class="st">"Panthera tigris"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">obs_pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span>sp_name <span class="op">=</span> <span class="st">"Panthera tigris"</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/get_gbif.html">get_gbif()</a></code> works without GBIF credentials. It is built
 on top of <code>rgbif</code> (Chamberlain et al. 2022) and harmonizes
 the query to the accepted GBIF taxon key, applies a dynamic
 moving-window tiling strategy when the geographic extent contains more
-than 100,000 records, and runs 13 configurable post-processing filters
+than 10,000 records, and runs 13 configurable post-processing filters
 based on custom logic and <code>CoordinateCleaner</code> (Zizka et
 al. 2019). The function originates from the occurrence retrieval
-workflow first introduced in Chauvier et al. (2021, <em>Ecological
+workflow first employed in Chauvier et al. (2021, <em>Ecological
 Monographs</em>).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"world_countries.shp"</span>, package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span></span>
+<span>  <span class="fu">ext_file</span><span class="op">(</span><span class="st">"world_countries.shp"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span>
-<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs.pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_pt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>       pch <span class="op">=</span> <span class="fl">20</span>, col <span class="op">=</span> <span class="st">"#99340470"</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../reference/figures/Part0_plot1.png" class="r-plt" alt="" width="100%"></p>
 <p>Note that some records of likely captive individuals remain (e.g., in
@@ -263,20 +289,23 @@ cleaning.</p>
 inference algorithm originally developed by Hagen et al. (2019) and can
 accept any types of observations as long as
 ’decimalLongitude<code>,</code>decimalLatitude` columns are valid:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download and read the packaged terrestrial ecoregions (The Nature Conservancy 2009)</span></span>
-<span><span class="va">eco.terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span>ecoreg_name <span class="op">=</span> <span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span>ecoreg_name <span class="op">=</span> <span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">range.tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
-<span>  occ_coord        <span class="op">=</span> <span class="va">obs.pt</span>,</span>
-<span>  ecoreg           <span class="op">=</span> <span class="va">eco.terra</span>,</span>
-<span>  ecoreg_name      <span class="op">=</span> <span class="st">"ECO_NAME"</span>,</span>
-<span>  degrees_outlier  <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  clust_pts_outlier <span class="op">=</span> <span class="fl">4</span></span>
+<span><span class="co"># Range (default)</span></span>
+<span><span class="va">range_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
+<span>  occ_coord <span class="op">=</span> <span class="va">obs_pt</span>,</span>
+<span>  ecoreg <span class="op">=</span> <span class="va">eco_terra</span>,</span>
+<span>  ecoreg_name <span class="op">=</span> <span class="st">"ECO_NAME"</span>,</span>
+<span>  degrees_outlier <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  clust_pts_outlier <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"SpatVector"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Plot</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range.tiger</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#238b45"</span>,</span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_tiger</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#238b45"</span>,</span>
 <span>            add <span class="op">=</span> <span class="cn">TRUE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../reference/figures/Part0_plot2.png" class="r-plt" alt="" width="100%"></p>
 <p><code>degrees_outlier</code> and <code>clust_pts_outlier</code>
@@ -284,7 +313,23 @@ control how isolated clusters of observations are handled before the
 ecoregion lookup. Increasing either parameter produces a more
 conservative range that excludes more distant clusters; the defaults
 (~550 km and ~440 km respectively) already removed the most obvious
-anomalies in Europe, the U.S., and South Africa for this example.</p>
+anomalies in Europe, the U.S., and South Africa for this example. Note
+that default parameters are usually recommended for creating range at
+the global scale — see the <em>“Tuning the main range arguments”</em>
+section of
+<code><a href="../articles/ecoregion-constrained-range-inference.html">vignette("ecoregion-constrained-range-inference")</a></code>.</p>
+<p>Optionally, <code>format</code> controls the geometry type of the
+output range. Three are available: <code>SpatVector</code>,
+<code>sf</code>, and <code>SpatRaster</code>. If polygons, then
+<code>merge_range</code> can be optionally used to aggregate the
+geometry:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/merge_range.html">merge_range</a></span><span class="op">(</span><span class="va">range_tiger</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#238b45"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/Part0_plot3.png" class="r-plt" alt="" width="50%"></p>
+<p>By default, the range output has its number of features defined by
+<code>ecoreg_name</code> for exploratory purposes. If not needed,
+<code>merge_range</code> can be applied to dissolve them into a single
+polygon.</p>
 </div>
 </div>
 <div class="section level2">
@@ -295,35 +340,34 @@ extracts a subsample of <em>n</em> observations per geographic tile
 rather than retrieving all available records. This trades completeness
 for speed and is appropriate for exploratory analysis or very
 broad-extent range inference.</p>
-<p>⚠️ Note that the download takes longer without <code>occ_samp</code>.
-Although giving <strong>less precise observational
-distribution</strong>, <code>occ_samp</code> allows extracting a
-<strong>subsample of <em>n</em> GBIF observations</strong> per created
-tile over the study area.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p><strong>Note:</strong> that the download takes longer without
+<code>occ_samp</code>. Although giving <strong>less precise
+observational distribution</strong>, <code>occ_samp</code> allows
+extracting a <strong>subsample of <em>n</em> GBIF observations</strong>
+per created tile over the study area.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 1000 observations per tile — faster, but less spatially complete</span></span>
-<span><span class="va">obs.dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Delphinus delphis"</span>, occ_samp <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">obs_dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Delphinus delphis"</span>, occ_samp <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># level = "all" includes doubtful or provisional names for manual inspection</span></span>
 <span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Delphinus delphis"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Build range maps at three levels of ecoregion detail</span></span>
-<span><span class="va">eco.marine</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span>ecoreg_name <span class="op">=</span> <span class="st">"eco_marine"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">range.dd1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span><span class="va">obs.dd</span>, <span class="va">eco.marine</span>, <span class="st">"ECOREGION"</span><span class="op">)</span></span>
-<span><span class="va">range.dd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span><span class="va">obs.dd</span>, <span class="va">eco.marine</span>, <span class="st">"PROVINCE"</span><span class="op">)</span></span>
-<span><span class="va">range.dd3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span><span class="va">obs.dd</span>, <span class="va">eco.marine</span>, <span class="st">"REALM"</span><span class="op">)</span></span>
+<span><span class="va">eco_marine</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span>ecoreg_name <span class="op">=</span> <span class="st">"eco_marine"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">range_dd1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span><span class="va">obs_dd</span>, <span class="va">eco_marine</span>, <span class="st">"ECOREGION"</span><span class="op">)</span></span>
+<span><span class="va">range_dd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span><span class="va">obs_dd</span>, <span class="va">eco_marine</span>, <span class="st">"PROVINCE"</span><span class="op">)</span></span>
+<span><span class="va">range_dd3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span><span class="va">obs_dd</span>, <span class="va">eco_marine</span>, <span class="st">"REALM"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot the coarsest result</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range.dd3</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#238b45"</span>,</span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_dd1</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="st">"#238b45"</span>,</span>
 <span>            add <span class="op">=</span> <span class="cn">TRUE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs.dd</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_dd</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>       pch <span class="op">=</span> <span class="fl">20</span>, col <span class="op">=</span> <span class="st">"#99340470"</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Part0_plot3.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="../reference/figures/Part0_plot4.png" class="r-plt" alt="" width="100%"></p>
 <p>The three range levels (<code>"ECOREGION"</code>,
 <code>"PROVINCE"</code>, <code>"REALM"</code>) produce similar results
-here because most observations are near the coast. Because only a
+here because most observations are near the coast. Because only a marine
 subsample was retrieved, the resulting map closely follows the GBIF
 sampling pattern. Increasing or removing <code>occ_samp</code> would
 produce a more complete distributional estimate.</p>
@@ -333,7 +377,7 @@ produce a more complete distributional estimate.</p>
 </h2>
 <p>The <code>ecoreg_list</code> object lists all ecoregion files that
 can be downloaded with <code><a href="../reference/read_ecoreg.html">read_ecoreg()</a></code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ecoreg_list</span></span></code></pre></div>
 <p>The packaged ecoregion layers and their available spatial levels
 are:</p>
@@ -389,69 +433,73 @@ are:</p>
 polygon object as <code>ecoreg</code> — including habitat maps,
 expert-defined units, or bioregions from species composition data
 (Denelle et al. 2025) — as long as it has a named character column for
-<code>ecoreg_name</code>. Similarly, <code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code> accepts
-any spatially structured raster, not just climate layers. See Part 1 for
-full details on both.</p>
+<code>ecoreg_name</code>. See Part 1 for full details on both.</p>
 </div>
 <div class="section level2">
 <h2 id="local-example-custom-ecoregions-with-make_ecoreg">Local example: custom ecoregions with
 <code>make_ecoreg()</code><a class="anchor" aria-label="anchor" href="#local-example-custom-ecoregions-with-make_ecoreg"></a>
 </h2>
 <p>For regional analyses the packaged ecoregions may be too coarse.
-<code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code> builds a custom ecoregion layer by k-means
-clustering of one or more spatial raster layers (Chauvier et al. 2021,
-<em>Global Ecology and Biogeography</em>). Any spatially structured
-raster variable can be used as input — not just climate layers.</p>
+<code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code> builds a custom ecoregion layer by
+k-medoid-based clustering of one or more spatial raster layers (Chauvier
+et al. 2021, <em>Global Ecology and Biogeography</em>). Any spatially
+structured raster variable can be used as input — not just climate
+layers.</p>
 <p>The example below first illustrates what a <code><a href="../reference/make_ecoreg.html">make_ecoreg()</a></code>
 output looks like with 10 classes over the European Alps, using two
 CHELSA bioclimatic layers (Karger et al. 2017) — mean annual temperature
 (bio1) and annual precipitation (bio12) at 5 × 5 km resolution:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bio</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span>, <span class="st">"/extdata/rst.tif"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">eco.eg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ecoreg.html">make_ecoreg</a></span><span class="op">(</span>env <span class="op">=</span> <span class="va">bio</span>, nclass <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eco.eg</span>, col <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Part0_plot4.png" class="r-plt" alt="" width="70%"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bio</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu">ext_file</span><span class="op">(</span><span class="st">"rst.tif"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">eco_eg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ecoreg.html">make_ecoreg</a></span><span class="op">(</span>env <span class="op">=</span> <span class="va">bio</span>, nclass <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eco_eg</span>, col <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/Part0_plot5.png" class="r-plt" alt="" width="70%"></p>
 <p>For a real regional analysis, more classes are appropriate. The full
 workflow with 200 classes and <em>Arctostaphylos alpinus</em>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Two CHELSA bioclimatic layers for the European Alps at 5 x 5 km resolution</span></span>
-<span><span class="va">bio</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span>, <span class="st">"/extdata/rst.tif"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bio</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu">ext_file</span><span class="op">(</span><span class="st">"rst.tif"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 200 ecoregion classes</span></span>
-<span><span class="va">my.eco</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ecoreg.html">make_ecoreg</a></span><span class="op">(</span>env <span class="op">=</span> <span class="va">bio</span>, nclass <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span><span class="va">my_eco</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ecoreg.html">make_ecoreg</a></span><span class="op">(</span>env <span class="op">=</span> <span class="va">bio</span>, nclass <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Download Arctostaphylos alpinus within the Alps bounding box</span></span>
-<span><span class="va">shp.lonlat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span>, <span class="st">"/extdata/shp_lonlat.shp"</span><span class="op">)</span></span>
+<span><span class="va">shp_lonlat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span>
+<span>  <span class="fu">ext_file</span><span class="op">(</span><span class="st">"shp_lonlat.shp"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">obs.arcto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span></span>
+<span><span class="va">obs_arcto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span></span>
 <span>  sp_name <span class="op">=</span> <span class="st">"Arctostaphylos alpinus"</span>,</span>
-<span>  geo     <span class="op">=</span> <span class="va">shp.lonlat</span>,</span>
+<span>  geo     <span class="op">=</span> <span class="va">shp_lonlat</span>,</span>
 <span>  grain   <span class="op">=</span> <span class="fl">1</span>            <span class="co"># 1 km precision — appropriate for a local extent</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Build the range (always use 'EcoRegion' as ecoreg_name for make_ecoreg() output)</span></span>
-<span><span class="va">range.arcto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
-<span>  occ_coord         <span class="op">=</span> <span class="va">obs.arcto</span>,</span>
-<span>  ecoreg            <span class="op">=</span> <span class="va">my.eco</span>,</span>
-<span>  ecoreg_name       <span class="op">=</span> <span class="st">"EcoRegion"</span>,</span>
-<span>  res               <span class="op">=</span> <span class="fl">0.05</span>,        <span class="co"># 5 x 5 km output resolution</span></span>
-<span>  degrees_outlier   <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  clust_pts_outlier <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  buff_width_point <span class="op">=</span> <span class="fl">4</span>,</span>
+<span><span class="va">range_arcto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_range.html">get_range</a></span><span class="op">(</span></span>
+<span>  occ_coord            <span class="op">=</span> <span class="va">obs_arcto</span>,</span>
+<span>  ecoreg               <span class="op">=</span> <span class="va">my_eco</span>,</span>
+<span>  ecoreg_name          <span class="op">=</span> <span class="st">"EcoRegion"</span>,</span>
+<span>  res                  <span class="op">=</span> <span class="fl">0.05</span>,        <span class="co"># 5 x 5 km output resolution</span></span>
+<span>  degrees_outlier      <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  clust_pts_outlier    <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  buff_width_point     <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  buff_incrmt_pts_line <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  buff_width_polygon <span class="op">=</span> <span class="fl">4</span></span>
+<span>  buff_width_polygon   <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"SpatRaster"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot</span></span>
-<span><span class="va">alps.shp</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">countries</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="va">bio</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">r.arcto</span>  <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">range.arcto</span><span class="op">$</span><span class="va">rangeOutput</span>, <span class="va">alps.shp</span><span class="op">)</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">alps.shp</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r.arcto</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"darkgreen"</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs.arcto</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span><span class="va">alps_shp</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">countries</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="va">bio</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">alps_shp</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_arcto</span><span class="op">$</span><span class="va">rangeOutput</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"darkgreen"</span>,</span>
+<span>  axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">obs_arcto</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>       pch <span class="op">=</span> <span class="fl">20</span>, col <span class="op">=</span> <span class="st">"#99340470"</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Part0_plot5.png" class="r-plt" alt="" width="70%"></p>
-<p>Two design choices matter here. First, <code>grain = 1</code> keeps
+<p><img src="../reference/figures/Part0_plot6.png" class="r-plt" alt="" width="70%"></p>
+<p>Three design choices matter here. First, <code>grain = 1</code> keeps
 only records with coordinate uncertainty ≤ 1 km; at larger scales the
 default 100 km grain is appropriate, but for a small alpine extent it
 would retain too many imprecise records. Second, the <code>res</code>
@@ -460,9 +508,9 @@ input environmental layers allow. Third, the outlier and buffer
 parameters above were left at their defaults, which is appropriate here
 because <em>Arctostaphylos alpinus</em> occurs broadly across the Alps
 and Europe wherever conditions are suitable. For species with a more
-spatially restricted or biogeo-constrained distribution, these
-parameters often need tightening — see the <em>“Tuning the main range
-arguments”</em> section of
+spatially restricted or biogeographically constrained distribution,
+these parameters often need tightening — see the <em>“Tuning the main
+range arguments”</em> section of
 <code><a href="../articles/ecoregion-constrained-range-inference.html">vignette("ecoregion-constrained-range-inference")</a></code> for a
 worked example.</p>
 </div>
@@ -473,9 +521,8 @@ worked example.</p>
 downloaded as a single large file, <code>gbif.range</code> provides a
 disk-based batch workflow that avoids loading the full table into
 memory:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gbif_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"occ_example_4sps.csv"</span>, package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span></span>
-<span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gbif_file</span> <span class="op">&lt;-</span> <span class="fu">ext_file</span><span class="op">(</span><span class="st">"occ_example_4sps.csv"</span><span class="op">)</span></span>
 <span><span class="va">split_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"gbif_split"</span><span class="op">)</span></span>
 <span><span class="va">range_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"gbif_ranges"</span><span class="op">)</span></span>
 <span></span>
@@ -503,27 +550,36 @@ memory:</p>
 <span></span>
 <span><span class="co"># 3. Read one saved range back from disk</span></span>
 <span><span class="va">rg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_range_rds.html">read_range_rds</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">$</span><span class="va">range_file</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rg</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Part0_plot6.png" class="r-plt" alt="" width="50%"></p>
-<p>This workflow is described in full in
-<code><a href="../articles/large-downloaded-gbif-tables.html">vignette("large-downloaded-gbif-tables", package = "gbif.range")</a></code>.</p>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/merge_range.html">merge_range</a></span><span class="op">(</span><span class="va">rg</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"darkblue"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/Part0_plot7.png" class="r-plt" alt="" width="50%"></p>
 </div>
 <div class="section level2">
 <h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h2>
-<p>The three focused vignettes cover each part of the workflow in depth.
-Part 1 (<em>GBIF Retrieval, Taxonomy, and Filtering</em>) covers
-<code><a href="../reference/get_status.html">get_status()</a></code>, <code><a href="../reference/get_gbif_count.html">get_gbif_count()</a></code>,
+</div>
+<div class="section level2">
+<h2 id="next-steps-1">Next steps<a class="anchor" aria-label="anchor" href="#next-steps-1"></a>
+</h2>
+<p>The three focused vignettes cover each part of the workflow in
+depth:</p>
+<ul>
+<li>Part 1:
+<code><a href="../articles/gbif-retrieval-and-taxonomy.html">vignette("gbif-retrieval-and-taxonomy", package = "gbif.range")</a></code>
+— <code><a href="../reference/get_status.html">get_status()</a></code>, <code><a href="../reference/get_gbif_count.html">get_gbif_count()</a></code>,
 <code><a href="../reference/get_gbif.html">get_gbif()</a></code>, <code><a href="../reference/obs_filter.html">obs_filter()</a></code>,
-<code><a href="../reference/make_tiles.html">make_tiles()</a></code> and <code><a href="../reference/get_doi.html">get_doi()</a></code>. Part 2
-(<em>Ecoregion-Based Range Inference</em>) documents
-<code><a href="../reference/get_range.html">get_range()</a></code>, the packaged and custom ecoregion options, and
-the evaluation functions <code><a href="../reference/cv_range.html">cv_range()</a></code> and
-<code><a href="../reference/evaluate_range.html">evaluate_range()</a></code>.Part 3 (<em>Large Downloaded GBIF
-Tables</em>) describes the disk-based batch workflow built around
+<code><a href="../reference/make_tiles.html">make_tiles()</a></code> and <code><a href="../reference/get_doi.html">get_doi()</a></code>.</li>
+<li>Part 2:
+<code><a href="../articles/ecoregion-constrained-range-inference.html">vignette("ecoregion-constrained-range-inference", package = "gbif.range")</a></code>
+— <code><a href="../reference/get_range.html">get_range()</a></code>, the packaged and custom ecoregion options,
+<code><a href="../reference/merge_range.html">merge_range()</a></code>, and the evaluation functions
+<code><a href="../reference/cv_range.html">cv_range()</a></code> and <code><a href="../reference/evaluate_range.html">evaluate_range()</a></code>.</li>
+<li>Part 3:
+<code><a href="../articles/large-downloaded-gbif-tables.html">vignette("large-downloaded-gbif-tables", package = "gbif.range")</a></code>
+— the disk-based batch workflow built around
 <code><a href="../reference/split_gbif_by_species.html">split_gbif_by_species()</a></code>,
-<code><a href="../reference/species_csvs_to_ranges.html">species_csvs_to_ranges()</a></code>, and
-<code><a href="../reference/read_range_rds.html">read_range_rds()</a></code>.</p>
+<code><a href="../reference/species_csvs_to_ranges.html">species_csvs_to_ranges()</a></code> and
+<code><a href="../reference/read_range_rds.html">read_range_rds()</a></code>.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -535,12 +591,12 @@ conservation. <em>BioScience</em>, 58(5), 403–414. <a href="https://doi.org/10
 <p>Chamberlain, S., Oldoni, D., &amp; Waller, J. (2022). rgbif:
 interface to the global biodiversity information facility API. <a href="https://doi.org/10.5281/zenodo.6023735" class="external-link uri">https://doi.org/10.5281/zenodo.6023735</a></p>
 <p>Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun,
-P., Thuiller, W., &amp; Qiao, H. (2021). Novel methods to correct for
-observer and sampling bias in presence-only species distribution models.
-<em>Global Ecology and Biogeography</em>, 30(11), 2312–2325. <a href="https://doi.org/10.1111/geb.13383" class="external-link uri">https://doi.org/10.1111/geb.13383</a></p>
+P., &amp; Thuiller, W. (2021). Novel methods to correct for observer and
+sampling bias in presence-only species distribution models. <em>Global
+Ecology and Biogeography</em>, 30(11), 2312–2325. <a href="https://doi.org/10.1111/geb.13383" class="external-link uri">https://doi.org/10.1111/geb.13383</a></p>
 <p>Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
-Karger, D. N., Zimmermann, N. E., &amp; Pellissier, L. (2021). Influence
-of climate, soil, and land cover on plant species distribution in the
+Karger, D. N., Renaud, J., &amp; Zimmermann, N. E. (2021). Influence of
+climate, soil, and land cover on plant species distribution in the
 European Alps. <em>Ecological Monographs</em>, 91(2), e01433. <a href="https://doi.org/10.1002/ecm.1433" class="external-link uri">https://doi.org/10.1002/ecm.1433</a></p>
 <p>Denelle, P., Leroy, B., &amp; Lenormand, M. (2025).
 Bioregionalization analyses with the bioregion R package. <em>Methods in

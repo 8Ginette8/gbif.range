@@ -18,7 +18,7 @@ evaluate the resulting maps against independent data."><meta property="og:image"
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,7 @@ evaluate the resulting maps against independent data."><meta property="og:image"
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
-    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: gbif.range manuscript's figures</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: manuscript figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -48,7 +48,7 @@ evaluate the resulting maps against independent data."><meta property="og:image"
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>gbif.range: Tools for GBIF Retrieval and Ecoregion-Based Species Range Mapping</h1>
-      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/v1.8.0/R/gbif.range-package.R" class="external-link"><code>R/gbif.range-package.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/main/R/gbif.range-package.R" class="external-link"><code>R/gbif.range-package.R</code></a></small>
       <div class="d-none name"><code>gbif.range-package.Rd</code></div>
     </div>
 
@@ -105,8 +105,9 @@ downloaded GBIF tables.</p>
 <span class="r-in"><span><span class="co"># -------------------------------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create two simple environmental layers on a small synthetic study area.</span></span></span>
-<span class="r-in"><span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span>ncols <span class="op">=</span> <span class="fl">20</span>, nrows <span class="op">=</span> <span class="fl">20</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">10</span>,</span></span>
-<span class="r-in"><span>  ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ncols <span class="op">=</span> <span class="fl">20</span>, nrows <span class="op">=</span> <span class="fl">20</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">10</span>, ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">r1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
@@ -156,59 +157,43 @@ downloaded GBIF tables.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       6        60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records      13        47</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0        47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      10        37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection       8        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        39</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 66</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 29</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 37</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 27</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 39</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load a packaged terrestrial ecoregion layer</span></span></span>
+<span class="r-in"><span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Both calls above depend on remote services and return NULL or an empty</span></span></span>
+<span class="r-in"><span><span class="co"># table if those are unavailable, so guard the rest of this section</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gbif_have.html">gbif_have</a></span><span class="op">(</span><span class="va">obs</span>, <span class="va">eco_terra</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Remove observation without data, i.e.,</span></span></span>
 <span class="r-in"><span><span class="co"># probably outdated for a threatned species such as the panda</span></span></span>
-<span class="r-in"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="va">obs</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">obs</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>,<span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="va">obs</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">obs</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect the GBIF backbone interpretation used by the package.</span></span></span>
 <span class="r-in"><span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Ailuropoda melanoleuca"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">status</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  canonicalName    rank gbif_key</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca SPECIES  2433399</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus SPECIES  9387176</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus SPECIES  9379787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034     Ursus melanoleucus SPECIES  7888034</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                               scientificName gbif_status      Genus  Family</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Order    Class   Phylum IUCN_status sp_nameMatch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Load a packaged terrestrial ecoregion layer and build the range.</span></span></span>
-<span class="r-in"><span><span class="va">eco_terra</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Build the range.</span></span></span>
 <span class="r-in"><span><span class="va">panda_range</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_range.html">get_range</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  occ_coord <span class="op">=</span> <span class="va">obs</span>,</span></span>
 <span class="r-in"><span>  ecoreg <span class="op">=</span> <span class="va">eco_terra</span>,</span></span>
 <span class="r-in"><span>  ecoreg_name <span class="op">=</span> <span class="st">"ECO_NAME"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ## Start of computation for species:  Ailuropoda melanoleuca  ### </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 outlier's from 25 | proportion from total points: 8%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 1  of  4 :  Daba Mountains Evergreen Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 2  of  4 :  Qin Ling Mountains Deciduous Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 3  of  4 :  Qionglai-Minshan Conifer Forests </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 4  of  4 :  Southeast Tibet Shrublands And Meadows </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ## End of computation for species:  Ailuropoda melanoleuca  ### </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the predicted terrestrial range and the GBIF occurrences.</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">panda_range</span><span class="op">$</span><span class="va">rangeOutput</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="merge_range.html">merge_range</a></span><span class="op">(</span><span class="va">panda_range</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Range:"</span>, <span class="va">obs</span><span class="op">$</span><span class="va">scientificName</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -218,6 +203,15 @@ downloaded GBIF tables.</p>
 <span class="r-in"><span>  pch <span class="op">=</span> <span class="fl">4</span>,</span></span>
 <span class="r-in"><span>  col <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ## Start of computation for species: Ailuropoda melanoleuca ###</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3 outlier's from 26 | proportion from total points: 12%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 1 of 4: Daba Mountains Evergreen Forests</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 2 of 4: Qin Ling Mountains Deciduous Forests</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 3 of 4: Qionglai-Minshan Conifer Forests</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 4 of 4: Southeast Tibet Shrublands And Meadows</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ## End of computation for species: Ailuropoda melanoleuca ###</span>
 <span class="r-plt img"><img src="gbif.range-package-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># -------------------------------------------------------------------------</span></span></span>
@@ -252,8 +246,10 @@ downloaded GBIF tables.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">split_summary</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species_name"</span>, <span class="st">"n_records"</span>, <span class="st">"species_file"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># Use the packaged terrestrial ecoregions for the batch range step.</span></span></span>
-<span class="r-in"><span>  <span class="co"># species_csvs_to_ranges() will resolve "eco_terra" with read_ecoreg().</span></span></span>
+<span class="r-in"><span>  <span class="co"># The batch step resolves "eco_terra" with read_ecoreg(), so it needs the</span></span></span>
+<span class="r-in"><span>  <span class="co"># remote source to be reachable.</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gbif_have.html">gbif_have</a></span><span class="op">(</span><span class="fu"><a href="read_ecoreg.html">read_ecoreg</a></span><span class="op">(</span><span class="st">"eco_terra"</span>, save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">range_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="species_csvs_to_ranges.html">species_csvs_to_ranges</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    species_dir <span class="op">=</span> <span class="va">split_dir</span>,</span></span>
 <span class="r-in"><span>    ecoreg <span class="op">=</span> <span class="st">"eco_terra"</span>,</span></span>
@@ -289,6 +285,8 @@ downloaded GBIF tables.</p>
 <span class="r-in"><span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">combined_ext</span>, col <span class="op">=</span> <span class="cn">NA</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_one</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">range_two</span><span class="op">$</span><span class="va">rangeOutput</span>, col <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-plt img"><img src="gbif.range-package-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>

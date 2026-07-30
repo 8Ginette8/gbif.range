@@ -1,5 +1,28 @@
 # Part 1: GBIF Retrieval, Taxonomy, and Filtering
 
+## Transparent setup
+
+``` r
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  purl = FALSE
+)
+
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
+
+library(gbif.range)
+```
+
 ## Scope
 
 This vignette covers the package components that sit upstream of range
@@ -55,28 +78,6 @@ harmonizes the query to the accepted GBIF taxon key, but the returned
 occurrence table still preserves both record-level and accepted-name
 fields.
 
-## Strict versus permissive name matching
-
-An important distinction is controlled by `search`. With
-`search = TRUE`,
-[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
-expects a GBIF backbone match for the focal taxon concept. With
-`search = FALSE`, the function becomes more permissive and can return
-records for fuzzy matches or higher-rank names.
-
-``` r
-
-get_gbif("Panthera tigris", search = TRUE)      # records for the tiger concept
-get_gbif("Panthera tigriiis", search = TRUE)    # typically no records
-get_gbif("Panthera tigriiis", search = FALSE)   # permissive fuzzy retrieval
-get_gbif("Acer", search = FALSE)                # higher-rank retrieval
-```
-
-For most single-species analyses the strict setting is preferable,
-because it keeps the biological interpretation clear. The permissive
-mode is more appropriate when the aim is exploratory retrieval, manual
-inspection, or broader higher-rank data collection.
-
 ## Count before download
 
 For broad extents or common taxa, a quick count helps you decide whether
@@ -94,12 +95,39 @@ This is particularly useful if you need to decide between:
   call,
 - a more strongly filtered call with a stricter `grain` or `occ_samp`,
 - or a downloaded GBIF export that will later be processed with the
-  disk-based batch workflow described in Part 3.
+  disk-based batch workflow described in Part 3:
+  [`vignette("large-downloaded-gbif-tables", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.md).
 
 In practice, this is the quickest way to decide whether a direct
 [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
 call remains convenient or whether the project has crossed into the
 “download first, process on disk later” regime.
+
+## Strict versus permissive name matching
+
+An important distinction is controlled by `search`. With
+`search = TRUE`,
+[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
+expects a GBIF backbone match for the focal taxon concept. With
+`search = FALSE`, the function becomes more permissive and can return
+records for fuzzy matches or higher-rank names. Let’s do a quick test
+with
+[`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md),
+as it behaves the same way as
+[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md):
+
+``` r
+
+get_gbif_count("Panthera tigris", search = TRUE)      # records for the tiger concept
+get_gbif_count("Panthera tigriiis", search = TRUE)    # typically no records
+get_gbif_count("Panthera tigriiis", search = FALSE)   # permissive fuzzy retrieval
+get_gbif_count("Acer", search = FALSE)                # higher-rank retrieval
+```
+
+For most single-species analyses the strict setting is preferable,
+because it keeps the biological interpretation clear. The permissive
+mode is more appropriate when the aim is exploratory retrieval, manual
+inspection, or broader higher-rank data collection.
 
 ## Credential-free GBIF retrieval
 
@@ -108,9 +136,9 @@ is a credential-free wrapper around
 [`rgbif::occ_search()`](https://docs.ropensci.org/rgbif/reference/occ_search.html)
 (Chamberlain et al. 2022). The main package contribution is that it
 combines taxonomic harmonization, geographic tiling of large extents,
-and a practical sequence of post-download filters via
+and a practical sequence of post-download filters, custom and via
 `CoordinateCleaner` (Zizka et al. 2019) in one function. The retrieval
-workflow originates from Chauvier et al. (2021, *Ecological
+workflow originates from Chauvier et al. (2021, *Ecological
 Monographs*).
 
 ``` r
@@ -130,7 +158,8 @@ obs_tiger <- get_gbif(
 get_status("Panthera tigris", level = "children")
 ```
 
-The arguments most often worth adjusting are:
+On top of the desired geographic extent (`geo`), the arguments most
+often worth adjusting are:
 
 - `grain`, which filters by coordinate uncertainty and decimal
   precision,
@@ -171,6 +200,7 @@ Sys.setenv(GBIF_USER  = "my_gbif_username")
 Sys.setenv(GBIF_PWD   = "my_gbif_password")
 Sys.setenv(GBIF_EMAIL = "my@email.com")
 
+# Download
 obs_tiger <- get_gbif(
   "Panthera tigris",
   should_use_occ_download = TRUE
@@ -187,30 +217,31 @@ pragmatic for heavy downloads or when processing many species in batch,
 where the overhead of tiling and repeated API calls would otherwise
 dominate.
 
-## A marine large-extent example
+## A terrestrial large-extent example
 
-*Delphinus delphis* is a good example of a case where record volume
-becomes a practical constraint. The point is not that marine workflows
-are special inside the package, but that large extents can require more
-deliberate choices about sampling and ecoregions.
+*Bison bison* is another good example of a case where record volume
+becomes a practical constraint, as large extents can require more
+deliberate choices about sampling and ecoregions (e.g., occ_samp
+argument):
 
 ``` r
 
 # Retrieve a manageable subsample per internally generated tile.
-obs_delphis <- get_gbif(
-  sp_name = "Delphinus delphis",
+obs_bison <- get_gbif(
+  sp_name = "Bison bison",
   occ_samp = 1000
 )
 
 # Inspect the internal get_gbif() logic and all related names.
-get_status("Delphinus delphis", level = "all")
+get_status("Bison bison", level = "all")
 ```
 
 This is exactly the kind of analysis where
 [`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md)
 is useful upstream. If the expected volume is extremely large and the
-project targets many taxa, the disk-based workflow in Part 3 is usually
-the more scalable choice.
+project targets many taxa, the disk-based workflow in Part 3:
+[`vignette("large-downloaded-gbif-tables", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.md)
+is usually the more scalable choice.
 
 ## Post-download thinning with `obs_filter()`
 
@@ -224,7 +255,12 @@ rather than a live web query.
 
 ``` r
 
-occ_raw <- utils::read.delim(ext_file("occ_example_4sps.csv"), sep = "\t", stringsAsFactors = FALSE)
+# Set
+occ_raw <- utils::read.delim(
+  ext_file("occ_example_4sps.csv"),
+  sep = "\t",
+  stringsAsFactors = FALSE
+)
 occ_raw$input_search <- occ_raw$species
 occ_gbif <- getGBIF(occ_raw)
 
@@ -289,6 +325,7 @@ documentation are also required:
 
 ``` r
 
+# Need GBIF Credentials
 doi_result <- get_doi(
   gbifs       = obs_tiger,
   title       = "Panthera tigris GBIF occurrences for range mapping",
@@ -338,7 +375,7 @@ the global biodiversity information facility API.
 <https://doi.org/10.5281/zenodo.6023735>
 
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
-Karger, D. N., Zimmermann, N. E., & Pellissier, L. (2021). Influence of
+Karger, D. N., Renaud, J., & Zimmermann, N. E. (2021). Influence of
 climate, soil, and land cover on plant species distribution in the
 European Alps. *Ecological Monographs*, 91(2), e01433.
 <https://doi.org/10.1002/ecm.1433>

@@ -74,8 +74,10 @@ get_range(
 
 - dir_temp:
 
-  Character. String giving the directory used for temporary convex-hull
-  files. Defaults to
+  Character. String giving the parent directory used for temporary
+  convex-hull files. A uniquely named sub-directory is created inside it
+  and removed when the function exits; `dir_temp` itself is never
+  deleted. Defaults to
   [`tempdir()`](https://rdrr.io/r/base/tempfile.html).
 
 - format:
@@ -99,6 +101,19 @@ get_range(
 An object of class `getRange` with two fields: `init.args`, containing
 the arguments and data used to build the map, and `rangeOutput`,
 containing the resulting `SpatVector`, `sf`, or `SpatRaster` object.
+
+For `format = "SpatVector"` and `format = "sf"`, the range is returned
+as **one feature per occupied ecoregion** rather than a single merged
+polygon. Features may be multipart where a species occupies several
+disjoint patches of the same ecoregion;
+[`terra::disagg()`](https://rspatial.github.io/terra/reference/disaggregate.html)
+separates them. Because ecoregions do not overlap, the features do not
+overlap either, so their areas are additive and `sum(terra::expanse(x))`
+gives the total range size. Each feature carries the `ecoreg_name` field
+it was clipped to plus a `species` column. Use
+[`merge_range()`](https://8ginette8.github.io/gbif.range/reference/merge_range.md)
+to dissolve the features into one polygon, or `format = "SpatRaster"`
+for a gridded range.
 
 ## Details
 
@@ -149,7 +164,7 @@ Units. GIS layers developed by The Nature Conservancy with multiple
 partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
 Cambridge (UK): The Nature Conservancy.
 
-Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
+Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdaña, Z. A.,
 Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
 Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
 (2007). Marine Ecoregions of the World: A Bioregionalization of Coastal
@@ -177,7 +192,7 @@ Biodiversity Conservation. BioScience, 58(5), 403-414.
 [doi:10.1641/B580507](https://doi.org/10.1641/B580507)
 
 Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
-1.6-7. <https://cran.r-project.org/package=terra>
+1.6-7. <https://CRAN.R-project.org/package=terra>
 
 ## See also
 
@@ -188,20 +203,22 @@ to prepare the ecoregion layer used here;
 [`cv_range`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)()
 and
 [`evaluate_range`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md)()
-to evaluate the resulting range map.
+to evaluate the resulting range map;
+[`merge_range`](https://8ginette8.github.io/gbif.range/reference/merge_range.md)()
+to dissolve the returned polygons into a single range polygon.
 
 ## Examples
 
 ``` r
 # \donttest{
 # Load available ecoregions
-eco.terra <- read_ecoreg(
+eco_terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
     save_dir = tempdir()
 )
 
-# First download the worldwide observations of Panthera tigris from GBIF
-obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+# First download the whole available observations of the panda from GBIF
+obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #> |--------------------------------------------|
 #> | Total number (all records)    :        300 |
 #> | Kept records                  :         66 |
@@ -218,33 +235,28 @@ obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #>          Grain filtering       6        60
 #>       Duplicated records      13        47
 #>          Absence records       0        47
-#>          Basis selection      10        37
-#>  Establishment selection       0        37
-#>               Time frame       0        37
-#>        Identical records       0        37
-#>         Raster centroids       0        37
+#>          Basis selection       8        39
+#>  Establishment selection       0        39
+#>               Time frame       0        39
+#>        Identical records       0        39
+#>         Raster centroids       0        39
 #> 
 #> Initial records         : 66
-#> Total removed           : 29
-#> Final records (XY)      : 37
+#> Total removed           : 27
+#> Final records (XY)      : 39
 #> ---------------------------------------------
 #> Final records (no XY)   : 0
 
+# Guard against an unavailable remote source
+if (gbif_have(eco_terra, obs_am)) {
+
 # Build a range map from occurrence points
-range.panda <- get_range(
-    occ_coord = obs.pd,
-    ecoreg = eco.terra,
-    clust_pts_outlier = 6,
+range_panda <- get_range(
+    occ_coord = obs_am,
+    ecoreg = eco_terra,
     ecoreg_name = "ECO_NAME",
     format = "SpatRaster"
 )
-#> ## Start of computation for species:  Ailuropoda melanoleuca  ### 
-#> 12 outlier's from 37 | proportion from total points: 32%
-#> ecoregion 1  of  4 :  Daba Mountains Evergreen Forests 
-#> ecoregion 2  of  4 :  Qin Ling Mountains Deciduous Forests 
-#> ecoregion 3  of  4 :  Qionglai-Minshan Conifer Forests 
-#> ecoregion 4  of  4 :  Southeast Tibet Shrublands And Meadows 
-#> ## End of computation for species:  Ailuropoda melanoleuca  ### 
 
 # Plot
     # Plot political world boundaries
@@ -256,25 +268,34 @@ terra::plot(
     col = "#bcbddc"
 )
 
-    # Plot range 
+    # Plot range
 terra::plot(
-    range.panda$rangeOutput,
+    range_panda$rangeOutput,
     axes = FALSE,
     box = FALSE,
     legend = FALSE,
     col = "chartreuse4",
-    main = paste("Range:", obs.pd$scientificName[1]),
+    main = paste("Range:", obs_am$scientificName[1]),
     add = TRUE
 )
 
     # Plot the occurrence points
 graphics::points(
-    obs.pd[, c("decimalLongitude","decimalLatitude")],
+    obs_am[, c("decimalLongitude","decimalLatitude")],
     pch = 20,
     col = "#99340470",
     cex = 1.5
 )
 
+}
+#> ## Start of computation for species: Ailuropoda melanoleuca ###
+#> 11 outlier's from 39 | proportion from total points: 28%
+#> ecoregion 1 of 5: Daba Mountains Evergreen Forests
+#> ecoregion 2 of 5: Qin Ling Mountains Deciduous Forests
+#> ecoregion 3 of 5: Qionglai-Minshan Conifer Forests
+#> ecoregion 4 of 5: South China-Vietnam Subtropical Evergreen Forests
+#> ecoregion 5 of 5: Southeast Tibet Shrublands And Meadows
+#> ## End of computation for species: Ailuropoda melanoleuca ###
 
 # }
 ```

@@ -1,5 +1,15 @@
 # Changelog
 
+## gbif.range 1.9.0
+
+- Added merge_range()
+- Improved speed of get_range()
+- Corrected cluster convergence bug in get_range()
+- Corrected column error when get_status set with level = “all”
+- CRAN compliance v2
+- Corrected documentation
+- Added gbif_have() helper for example run
+
 ## gbif.range 1.8.0
 
 - Move manuscript plots in a dedicated vignette
@@ -7,6 +17,7 @@
 - Lower the size and time length of the examples
 - Debugging
 - Documentation updated
+- CRAN compliance v1
 
 ## gbif.range 1.7.1
 

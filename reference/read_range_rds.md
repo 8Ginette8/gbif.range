@@ -19,8 +19,12 @@ read_range_rds(file)
 
 ## Value
 
-A list with `init.args` and `rangeOutput`, matching the structure
-written by the batch workflow.
+An object of class `getRange`, with fields `init.args` and
+`rangeOutput`, as returned by
+[`get_range`](https://8ginette8.github.io/gbif.range/reference/get_range.md)().
+Note that `init.args$ecoreg` is `NULL`: the ecoregion layer is not
+serialized, so it must be re-supplied before the object can be passed to
+[`cv_range`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)().
 
 ## See also
 
@@ -54,6 +58,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
     "eco_terra",
     save_dir = tempdir()
   )
+
+  # read_ecoreg() returns NULL if the remote source is unavailable
+  if (gbif_have(eco_terra)) {
+
   eco_crop <- terra::crop(
     eco_terra,
     terra::ext(
@@ -82,9 +90,12 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   )
 
   rg <- read_range_rds(range_summary$range_file[1])
+  class(rg)
+  nrow(rg$rangeOutput)
   terra::plot(rg$rangeOutput)
-}
 
+  }
+}
 
 # }
 ```
