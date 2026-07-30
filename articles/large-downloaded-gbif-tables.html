@@ -74,7 +74,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Part 3: Large Downloaded GBIF Tables</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/v1.9.0/vignettes/large-downloaded-gbif-tables.Rmd" class="external-link"><code>vignettes/large-downloaded-gbif-tables.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/main/vignettes/large-downloaded-gbif-tables.Rmd" class="external-link"><code>vignettes/large-downloaded-gbif-tables.Rmd</code></a></small>
       <div class="d-none name"><code>large-downloaded-gbif-tables.Rmd</code></div>
     </div>
 
@@ -374,11 +374,13 @@ raw downloaded export unchanged.</p>
 </h2>
 <p>The same workflow can resolve packaged ecoregions internally:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">range_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/species_csvs_to_ranges.html">species_csvs_to_ranges</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># Written to its own directory and stored under its own name, so that running</span></span>
+<span><span class="co"># this chunk by hand does not overwrite the offline results built above.</span></span>
+<span><span class="va">range_summary_builtin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/species_csvs_to_ranges.html">species_csvs_to_ranges</a></span><span class="op">(</span></span>
 <span>  species_dir <span class="op">=</span> <span class="va">split_dir</span>,</span>
 <span>  ecoreg <span class="op">=</span> <span class="st">"eco_terra"</span>,</span>
 <span>  ecoreg_name <span class="op">=</span> <span class="st">"ECO_NAME"</span>,</span>
-<span>  outdir <span class="op">=</span> <span class="va">range_dir</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">batch_root</span>, <span class="st">"ranges_eco_terra"</span><span class="op">)</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>This is the most convenient option when your downloaded table and
@@ -452,17 +454,25 @@ names become obvious.</p>
 <h2 id="step-3-read-and-inspect-the-saved-ranges">Step 3: read and inspect the saved ranges<a class="anchor" aria-label="anchor" href="#step-3-read-and-inspect-the-saved-ranges"></a>
 </h2>
 <p>If the range outputs are saved as <code>.rds</code>,
-<code><a href="../reference/read_range_rds.html">read_range_rds()</a></code> restores them to a simple list with
-<code>init.args</code> and <code>rangeOutput</code>.</p>
+<code><a href="../reference/read_range_rds.html">read_range_rds()</a></code> restores them as a <code>getRange</code>
+object with the same <code>init.args</code> and <code>rangeOutput</code>
+fields returned by <code><a href="../reference/get_range.html">get_range()</a></code>, so they can be passed
+straight on to the other package functions. Note that
+<code>init.args$ecoreg</code> is not serialized and must be re-supplied
+before a restored range can be used with <code><a href="../reference/cv_range.html">cv_range()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Read the first saved range to inspect its structure.</span></span>
 <span><span class="va">first_range</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_range_rds.html">read_range_rds</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">$</span><span class="va">range_file</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">first_range</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "rangeOutput"  ".self"        ".refClassDef" "init.args"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">first_range</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "getRange"</span></span>
+<span><span class="co">#&gt; attr(,"package")</span></span>
+<span><span class="co">#&gt; [1] "gbif.range"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">first_range</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "SpatVector"</span></span>
 <span><span class="co">#&gt; attr(,"package")</span></span>
-<span><span class="co">#&gt; [1] "terra"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "terra"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">first_range</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 <p>The example below overlays every saved range in the batch summary.
 This is a useful diagnostic pattern when checking whether a batch run
 produced geometries with the expected extent and shape.</p>
@@ -474,30 +484,41 @@ produced geometries with the expected extent and shape.</p>
 <span>  <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html" class="external-link">rgb</a></span><span class="op">(</span><span class="fl">0.70</span>, <span class="fl">0.65</span>, <span class="fl">0.10</span>, <span class="fl">0.30</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">combined_ext</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="va">first_range</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span></span>
+<span><span class="co"># Read every saved range once, then dissolve each to a single outline</span></span>
+<span><span class="va">ranges</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">$</span><span class="va">range_file</span>, <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/merge_range.html">merge_range</a></span><span class="op">(</span><span class="fu"><a href="../reference/read_range_rds.html">read_range_rds</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">range_i</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_range_rds.html">read_range_rds</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">$</span><span class="va">range_file</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span>    <span class="va">combined_ext</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmin</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmin</a></span><span class="op">(</span><span class="va">range_i</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmax</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmax</a></span><span class="op">(</span><span class="va">range_i</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymin</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymin</a></span><span class="op">(</span><span class="va">range_i</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymax</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymax</a></span><span class="op">(</span><span class="va">range_i</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<span><span class="co"># Extent spanning the whole batch</span></span>
+<span><span class="va">combined_ext</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="va">ranges</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">r</span> <span class="kw">in</span> <span class="va">ranges</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">combined_ext</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmin</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmin</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmax</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">xmax</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymin</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymin</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymax</a></span><span class="op">(</span><span class="va">combined_ext</span><span class="op">)</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xmin.html" class="external-link">ymax</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">combined_ext</span>, col <span class="op">=</span> <span class="cn">NA</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, main <span class="op">=</span> <span class="st">"Batch-generated ranges"</span><span class="op">)</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/merge_range.html">merge_range</a></span><span class="op">(</span><span class="va">first_range</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="va">range_colors</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">range_i</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_range_rds.html">read_range_rds</a></span><span class="op">(</span><span class="va">range_summary</span><span class="op">$</span><span class="va">range_file</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span>    <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/merge_range.html">merge_range</a></span><span class="op">(</span><span class="va">range_i</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="va">range_colors</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<span><span class="co"># Draw the first range with the shared extent, then overlay the rest</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">ranges</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  ext <span class="op">=</span> <span class="va">combined_ext</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">range_colors</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Batch-generated ranges"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">ranges</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ranges</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="va">range_colors</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="large-downloaded-gbif-tables_files/figure-html/plot-ranges-1.png" class="r-plt" alt="" width="672"></p>
+<p>The outlines above are smooth and blocky because <code>ecoreg</code>
+here is a single rectangular polygon, chosen to keep the vignette
+offline: each range is just the buffered hull of a point cluster clipped
+to that rectangle. Running the <code>range_summary_builtin</code> call
+shown above and plotting it instead of <code>range_summary</code> swaps
+that rectangle for <code>eco_terra</code>, which constrains the same
+hulls to real ecoregion boundaries and produces much finer outlines
+following coastlines and habitat limits.</p>
 </div>
 <div class="section level2">
 <h2 id="practical-advice">Practical advice<a class="anchor" aria-label="anchor" href="#practical-advice"></a>
@@ -522,7 +543,7 @@ buffering choices without changing the underlying occurrence input.</p>
 <p>The disk-based workflow turns <code>gbif.range</code> into a
 practical bridge between very large GBIF exports and species-level range
 inference. Instead of treating file splitting and range building as an
-external preprocessing step, Gbif.range provides a coherent, testable,
+external preprocessing step, gbif.range provides a coherent, testable,
 and documented path from a downloaded GBIF table to saved species ranges
 on disk.</p>
 </div>

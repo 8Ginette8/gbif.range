@@ -246,11 +246,13 @@ The same workflow can resolve packaged ecoregions internally:
 
 ``` r
 
-range_summary <- species_csvs_to_ranges(
+# Written to its own directory and stored under its own name, so that running
+# this chunk by hand does not overwrite the offline results built above.
+range_summary_builtin <- species_csvs_to_ranges(
   species_dir = split_dir,
   ecoreg = "eco_terra",
   ecoreg_name = "ECO_NAME",
-  outdir = range_dir,
+  outdir = file.path(batch_root, "ranges_eco_terra"),
   overwrite = TRUE
 )
 ```
@@ -330,18 +332,28 @@ become obvious.
 
 If the range outputs are saved as `.rds`,
 [`read_range_rds()`](https://8ginette8.github.io/gbif.range/reference/read_range_rds.md)
-restores them to a simple list with `init.args` and `rangeOutput`.
+restores them as a `getRange` object with the same `init.args` and
+`rangeOutput` fields returned by
+[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md),
+so they can be passed straight on to the other package functions. Note
+that `init.args$ecoreg` is not serialized and must be re-supplied before
+a restored range can be used with
+[`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md).
 
 ``` r
 
 # Read the first saved range to inspect its structure.
 first_range <- read_range_rds(range_summary$range_file[1])
-names(first_range)
-#> [1] "rangeOutput"  ".self"        ".refClassDef" "init.args"
+class(first_range)
+#> [1] "getRange"
+#> attr(,"package")
+#> [1] "gbif.range"
 class(first_range$rangeOutput)
 #> [1] "SpatVector"
 #> attr(,"package")
 #> [1] "terra"
+nrow(first_range$rangeOutput)
+#> [1] 1
 ```
 
 The example below overlays every saved range in the batch summary. This
@@ -357,32 +369,44 @@ range_colors <- c(
   grDevices::rgb(0.70, 0.65, 0.10, 0.30)
 )
 
-combined_ext <- terra::ext(first_range$rangeOutput)
+# Read every saved range once, then dissolve each to a single outline
+ranges <- lapply(range_summary$range_file, function(f) {
+  merge_range(read_range_rds(f))
+})
 
-if (nrow(range_summary) > 1) {
-  for (i in 2:nrow(range_summary)) {
-    range_i <- read_range_rds(range_summary$range_file[i])
-    combined_ext <- terra::ext(
-      min(terra::xmin(combined_ext), terra::xmin(range_i$rangeOutput)),
-      max(terra::xmax(combined_ext), terra::xmax(range_i$rangeOutput)),
-      min(terra::ymin(combined_ext), terra::ymin(range_i$rangeOutput)),
-      max(terra::ymax(combined_ext), terra::ymax(range_i$rangeOutput))
-    )
-  }
+# Extent spanning the whole batch
+combined_ext <- terra::ext(ranges[[1]])
+for (r in ranges[-1]) {
+  combined_ext <- terra::ext(
+    min(terra::xmin(combined_ext), terra::xmin(r)),
+    max(terra::xmax(combined_ext), terra::xmax(r)),
+    min(terra::ymin(combined_ext), terra::ymin(r)),
+    max(terra::ymax(combined_ext), terra::ymax(r))
+  )
 }
 
-terra::plot(combined_ext, col = NA, legend = FALSE, main = "Batch-generated ranges")
-terra::plot(merge_range(first_range), add = TRUE, col = range_colors[1])
-
-if (nrow(range_summary) > 1) {
-  for (i in 2:nrow(range_summary)) {
-    range_i <- read_range_rds(range_summary$range_file[i])
-    terra::plot(merge_range(range_i), add = TRUE, col = range_colors[i])
-  }
+# Draw the first range with the shared extent, then overlay the rest
+terra::plot(
+  ranges[[1]],
+  ext = combined_ext,
+  col = range_colors[1],
+  main = "Batch-generated ranges"
+)
+for (i in seq_along(ranges)[-1]) {
+  terra::plot(ranges[[i]], add = TRUE, col = range_colors[i])
 }
 ```
 
 ![](large-downloaded-gbif-tables_files/figure-html/plot-ranges-1.png)
+
+The outlines above are smooth and blocky because `ecoreg` here is a
+single rectangular polygon, chosen to keep the vignette offline: each
+range is just the buffered hull of a point cluster clipped to that
+rectangle. Running the `range_summary_builtin` call shown above and
+plotting it instead of `range_summary` swaps that rectangle for
+`eco_terra`, which constrains the same hulls to real ecoregion
+boundaries and produces much finer outlines following coastlines and
+habitat limits.
 
 ## Practical advice
 
@@ -411,7 +435,7 @@ buffering choices without changing the underlying occurrence input.
 The disk-based workflow turns `gbif.range` into a practical bridge
 between very large GBIF exports and species-level range inference.
 Instead of treating file splitting and range building as an external
-preprocessing step, Gbif.range provides a coherent, testable, and
+preprocessing step, gbif.range provides a coherent, testable, and
 documented path from a downloaded GBIF table to saved species ranges on
 disk.
 
