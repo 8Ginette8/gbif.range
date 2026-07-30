@@ -1,5 +1,28 @@
 # Part 2: Ecoregion-Based Range Inference
 
+## Transparent setup
+
+``` r
+
+library(gbif.range)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  purl = FALSE
+)
+
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
+```
+
 ## Scope
 
 This vignette focuses on the core ecological idea behind `gbif.range`:
@@ -79,6 +102,7 @@ range_obj <- get_range(
   verbose = FALSE
 )
 
+# Plot
 terra::plot(
   range_obj$rangeOutput,
   col = "#3c8d5a",
@@ -132,8 +156,10 @@ The public pattern for a terrestrial analysis is:
 
 ``` r
 
+# Read ecoregion
 eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
 
+# Construct range (not run)
 range <- get_range(
   occ_coord = obs,
   ecoreg = eco_terra,
@@ -141,34 +167,30 @@ range <- get_range(
 )
 ```
 
-A full worked version of this pattern, with occurrence retrieval and
-outlier/resolution arguments included, follows in the next section.
+Beyond the packaged layers, any polygon object can serve as the `ecoreg`
+argument — a `SpatVector`, `sf`, or other spatial polygon class —
+provided it contains a character column whose name is passed to
+`ecoreg_name`. Habitat maps, expert-defined biogeographic units, and
+bioregions derived from species composition data (Denelle et al. 2025)
+therefore need no conversion step.
 
-Beyond the packaged layers,
-[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
-accepts any polygon object as the `ecoreg` argument — a `SpatVector`,
-`sf`, or any spatial polygon class — as long as it contains a character
-column whose name is passed to `ecoreg_name`. This meanshabitat maps,
-expert-defined biogeographic units, or bioregions derived from species
-composition data (Denelle et al. 2025) can all serve as the constraining
-layer without any conversion step.
-
-In contrast, regional analyses often benefit from custom ecoregions
-built from raster data with
+When no suitable polygon layer exists,
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
-(Chauvier et al. 2021). Although climate layers are the most common
-input, any spatially structured raster variable can be used — species
-richness surfaces, biodiversity indices, habitat suitability maps, or
-any combination of ecological drivers thought to define meaningful
-spatial units (Denelle et al. 2025). The package ships with raster
-examples under `inst/extdata`, including `rst.tif`, which can be used as
-a starting point:
+builds one by clustering raster data (Chauvier et al. 2021). Climate
+layers are the most common input, but any spatially structured raster
+works — species richness surfaces, biodiversity indices, habitat
+suitability maps, or any combination of drivers thought to define
+meaningful spatial units. This is typically the route for regional
+analyses, where the packaged global layers are too coarse. The package
+ships raster examples under `inst/extdata`, including `rst.tif`:
 
 ``` r
 
+# Construct ecoregion
 rst <- terra::rast(ext_file("rst.tif"))
 my_eco <- make_ecoreg(env = rst, nclass = 200)
 
+# Construct range (not run)
 range <- get_range(
   occ_coord = obs,
   ecoreg = my_eco,
@@ -176,9 +198,6 @@ range <- get_range(
   res = 0.05
 )
 ```
-
-A full worked version of this pattern — including occurrence retrieval
-for the Alps extent — follows in the next section.
 
 The key trade-off is ecological detail versus robustness to sampling
 density. Coarser ecoregions produce broader, smoother ranges. Finer
@@ -194,16 +213,16 @@ world, and infer the range inside those ecoregional boundaries.
 
 ``` r
 
-# Step 1: download global tiger occurrences with a 100 km precision filter.
+# Step 1: download global tiger occurrences with a 100 km precision filter
 obs_tiger <- get_gbif(
   sp_name = "Panthera tigris",
   grain = 100
 )
 
-# Step 2: load the packaged terrestrial ecoregion layer.
+# Step 2: load the packaged terrestrial ecoregion layer
 eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
 
-# Step 3: infer the range at the default 0.1 degree output resolution.
+# Step 3: infer the range with default parameters
 range_tiger <- get_range(
   occ_coord = obs_tiger,
   ecoreg = eco_terra,
@@ -238,7 +257,6 @@ example CHELSA bioclimatic rasters (Karger et al. 2017).
 
 # Step 1: define the Alps study region and retrieve occurrences.
 alps_extent <- terra::vect(ext_file("shp_lonlat.shp"))
-
 obs_arcto <- get_gbif(
   sp_name = "Arctostaphylos alpinus",
   geo = alps_extent,
@@ -249,20 +267,20 @@ obs_arcto <- get_gbif(
 rst <- terra::rast(ext_file("rst.tif"))
 eco_alps <- make_ecoreg(env = rst, nclass = 200)
 
-# Step 3: infer the range at finer output resolution.
+# Step 3: infer the range at finer output resolution (~5x5-km resolution)
 range_arcto <- get_range(
   occ_coord = obs_arcto,
   ecoreg = eco_alps,
   ecoreg_name = "EcoRegion",
-  res = 0.05
+  res = 0.05,
+  format = "SpatRaster"
 )
 
 # Plot
-countries <- terra::vect(
-  system.file("extdata", "world_countries.shp", package = "gbif.range")
-)
-terra::plot(alps_extent, col="#00000010", border = NULL)
-plot(countries, add = TRUE)
+countries <- terra::vect(ext_file("world_countries.shp"))
+terra::plot(alps_extent, col="#00000030", border = NULL)
+plot(countries, col = "#cacee8", add = TRUE)
+terra::plot(alps_extent, col="#00000020", border = NULL, add = TRUE)
 terra::plot(range_arcto$rangeOutput, col = "#3c8d5a", add = TRUE)
 graphics::points(obs_arcto[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
@@ -280,30 +298,29 @@ minor changes in buffer parameters.
 
 The most important
 [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
-arguments usually fall into three groups.
+arguments fall into three groups:
 
-`degrees_outlier` and `clust_pts_outlier` control how aggressively
-isolated occurrences are removed. These matter most when the input
-contains obvious anomalies or disjunct stray clusters.
+| Group | Arguments | Role |
+|----|----|----|
+| Outlier removal | `degrees_outlier`, `clust_pts_outlier` | How aggressively isolated occurrences are discarded. Matters most when the input contains obvious anomalies or disjunct stray clusters of observations. |
+| Buffering | `buff_width_point`, `buff_incrmt_pts_line`, `buff_width_polygon` | How singletons, linear clusters, and polygon hulls are buffered before the final ecoregion intersection. |
+| Output | `format`, `res` | Geometry type and, for rasters, resolution. Vector output suits exploratory work; gridded output is easier to stack across many species. |
 
-`buff_width_point`, `buff_incrmt_pts_line`, and `buff_width_polygon`
-control how singletons, linear clusters, and polygon hulls are buffered
-before the final ecoregion intersection.
+Which group needs attention depends on scale.
 
-`format` and `res` control the output type. In many exploratory
-workflows a vector output is convenient, whereas gridded outputs are
-useful when later stacking many species maps.
+At broad scale the defaults are usually a reasonable starting point,
+since the main goal is simply to remove very isolated records and
+obvious anomalies.
 
-A useful rule of thumb is this: at broad scale, the defaults for outlier
-detection are often a reasonable starting point because the main goal is
-to remove very isolated records or obvious anomalies. At finer regional
-scale, the observation precision filter in
+At regional scale the decisive settings often lie outside
+[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+altogether: the coordinate precision filter (`grain`) in
 [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
-and the granularity of the
+and the granularity (`nclass`) of the
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
-layer usually matter most — but for species with a narrow,
-habitat-constrained distribution, tightening the outlier and buffer
-parameters themselves can also be necessary, as shown below.
+layer. Species with narrow, habitat-constrained distributions are the
+exception — there, tightening the outlier and buffer parameters
+themselves can be necessary, as shown below.
 
 *Paederota bonarota* is a good example: restricted to limestone/dolomite
 rock crevices, its Alpine distribution is essentially limited to the
@@ -311,9 +328,9 @@ Slovenian, Italian, and Austrian sectors regardless of broader climatic
 suitability. Ideally this habitat constraint would be encoded directly
 in the custom ecoregions — e.g. by adding a bedrock or geology layer to
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md).
-Since that is not done here (the ecoregions above use only climate), the
-outlier and buffer parameters are tightened instead, as a geographic
-substitute for the missing environmental constraint:
+Since that is not done here (`eco_alps` uses only climate), the outlier
+and buffer parameters are tightened instead, as a geographic substitute
+for the missing environmental constraint:
 
 ``` r
 
@@ -334,13 +351,16 @@ range_paed <- get_range(
   degrees_outlier = 0.5,
   buff_width_point = 0.5,
   buff_incrmt_pts_line = 0.5,
-  buff_width_polygon = 0.5
+  buff_width_polygon = 0.5,
+  format = "sf"
 )
 
 # Plot
-terra::plot(alps_extent, col="#00000010", border = NULL)
-plot(countries, add = TRUE)
-terra::plot(range_paed$rangeOutput, col = "#3c8d5a",add = TRUE)
+countries <- terra::vect(ext_file("world_countries.shp"))
+terra::plot(alps_extent, col="#00000030", border = NULL)
+plot(countries, col = "#cacee8", add = TRUE)
+terra::plot(alps_extent, col="#00000020", border = NULL, add = TRUE)
+terra::plot(merge_range(range_paed), col = "#3c8d5a", add = TRUE)
 graphics::points(obs_paed[, c("decimalLongitude", "decimalLatitude")], pch = 20)
 ```
 
@@ -358,10 +378,8 @@ rebuilding the map from subsets of the original occurrences:
 
 cv_res <- cv_range(
   range_object = range_obj,
-  cv = "block-cv",
-  nfolds = 3,
-  nblocks = 2,
-  backpoints = 500
+  cv = "random-cv",
+  nfolds = 5
 )
 ```
 
@@ -371,8 +389,10 @@ package includes a small validation example under `inst/extdata`:
 
 ``` r
 
-root_dir <- system.file("extdata", package = "gbif.range")
+# Set root
+root_dir <- ext_file()
 
+# Evaluate
 res_eval <- evaluate_range(
   root_dir = root_dir,
   valData_dir = "SDM",
@@ -382,6 +402,7 @@ res_eval <- evaluate_range(
   valData_type = "TIFF"
 )
 
+# Summary
 head(res_eval$df_eval)
 ```
 
@@ -429,11 +450,10 @@ a new map of biogeographic units for freshwater biodiversity
 conservation. *BioScience*, 58(5), 403–414.
 <https://doi.org/10.1641/B580507>
 
-Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P.,
-Thuiller, W., & Qiao, H. (2021). Novel methods to correct for observer
-and sampling bias in presence-only species distribution models. *Global
-Ecology and Biogeography*, 30(11), 2312–2325.
-<https://doi.org/10.1111/geb.13383>
+Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
+Thuiller, W. (2021). Novel methods to correct for observer and sampling
+bias in presence-only species distribution models. *Global Ecology and
+Biogeography*, 30(11), 2312–2325. <https://doi.org/10.1111/geb.13383>
 
 Denelle, P., Leroy, B., & Lenormand, M. (2025). Bioregionalization
 analyses with the bioregion R package. *Methods in Ecology and

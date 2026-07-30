@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
-    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: gbif.range manuscript's figures</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: manuscript figures</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -80,6 +80,28 @@
 
     
     
+<div class="section level2">
+<h2 id="transparent-setup">Transparent setup<a class="anchor" aria-label="anchor" href="#transparent-setup"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/8Ginette8/gbif.range" class="external-link">gbif.range</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
+<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span>,</span>
+<span>  fig.width <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>  fig.height <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  purl <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ext_file</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">...</span>, package <span class="op">=</span> <span class="st">"gbif.range"</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nzchar</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">".."</span>, <span class="st">"inst"</span>, <span class="st">"extdata"</span>, <span class="va">...</span><span class="op">)</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
 </h2>
@@ -117,7 +139,7 @@ package uses the GBIF backbone to decide which accepted taxon concept a
 query refers to and which synonyms belong to that concept.</p>
 <p>This is why <code><a href="../reference/get_status.html">get_status()</a></code> is often the best first
 step:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Cypripedium calceolus"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span>
 <span><span class="va">tax</span></span></code></pre></div>
 <p>When <code>level = "children"</code>, the output is deliberately
@@ -134,24 +156,6 @@ occurrence table still preserves both record-level and accepted-name
 fields.</p>
 </div>
 <div class="section level2">
-<h2 id="strict-versus-permissive-name-matching">Strict versus permissive name matching<a class="anchor" aria-label="anchor" href="#strict-versus-permissive-name-matching"></a>
-</h2>
-<p>An important distinction is controlled by <code>search</code>. With
-<code>search = TRUE</code>, <code><a href="../reference/get_gbif.html">get_gbif()</a></code> expects a GBIF
-backbone match for the focal taxon concept. With
-<code>search = FALSE</code>, the function becomes more permissive and
-can return records for fuzzy matches or higher-rank names.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, search <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># records for the tiger concept</span></span>
-<span><span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigriiis"</span>, search <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>    <span class="co"># typically no records</span></span>
-<span><span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Panthera tigriiis"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>   <span class="co"># permissive fuzzy retrieval</span></span>
-<span><span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span><span class="st">"Acer"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>                <span class="co"># higher-rank retrieval</span></span></code></pre></div>
-<p>For most single-species analyses the strict setting is preferable,
-because it keeps the biological interpretation clear. The permissive
-mode is more appropriate when the aim is exploratory retrieval, manual
-inspection, or broader higher-rank data collection.</p>
-</div>
-<div class="section level2">
 <h2 id="count-before-download">Count before download<a class="anchor" aria-label="anchor" href="#count-before-download"></a>
 </h2>
 <p>For broad extents or common taxa, a quick count helps you decide
@@ -164,11 +168,32 @@ whether a direct retrieval is appropriate:</p>
 <li>a more strongly filtered call with a stricter <code>grain</code> or
 <code>occ_samp</code>,</li>
 <li>or a downloaded GBIF export that will later be processed with the
-disk-based batch workflow described in Part 3.</li>
+disk-based batch workflow described in Part 3:
+<code><a href="../articles/large-downloaded-gbif-tables.html">vignette("large-downloaded-gbif-tables", package = "gbif.range")</a></code>.</li>
 </ul>
 <p>In practice, this is the quickest way to decide whether a direct
 <code><a href="../reference/get_gbif.html">get_gbif()</a></code> call remains convenient or whether the project
 has crossed into the “download first, process on disk later” regime.</p>
+</div>
+<div class="section level2">
+<h2 id="strict-versus-permissive-name-matching">Strict versus permissive name matching<a class="anchor" aria-label="anchor" href="#strict-versus-permissive-name-matching"></a>
+</h2>
+<p>An important distinction is controlled by <code>search</code>. With
+<code>search = TRUE</code>, <code><a href="../reference/get_gbif.html">get_gbif()</a></code> expects a GBIF
+backbone match for the focal taxon concept. With
+<code>search = FALSE</code>, the function becomes more permissive and
+can return records for fuzzy matches or higher-rank names. Let’s do a
+quick test with <code><a href="../reference/get_gbif_count.html">get_gbif_count()</a></code>, as it behaves the same
+way as <code><a href="../reference/get_gbif.html">get_gbif()</a></code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_gbif_count.html">get_gbif_count</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, search <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># records for the tiger concept</span></span>
+<span><span class="fu"><a href="../reference/get_gbif_count.html">get_gbif_count</a></span><span class="op">(</span><span class="st">"Panthera tigriiis"</span>, search <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>    <span class="co"># typically no records</span></span>
+<span><span class="fu"><a href="../reference/get_gbif_count.html">get_gbif_count</a></span><span class="op">(</span><span class="st">"Panthera tigriiis"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>   <span class="co"># permissive fuzzy retrieval</span></span>
+<span><span class="fu"><a href="../reference/get_gbif_count.html">get_gbif_count</a></span><span class="op">(</span><span class="st">"Acer"</span>, search <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>                <span class="co"># higher-rank retrieval</span></span></code></pre></div>
+<p>For most single-species analyses the strict setting is preferable,
+because it keeps the biological interpretation clear. The permissive
+mode is more appropriate when the aim is exploratory retrieval, manual
+inspection, or broader higher-rank data collection.</p>
 </div>
 <div class="section level2">
 <h2 id="credential-free-gbif-retrieval">Credential-free GBIF retrieval<a class="anchor" aria-label="anchor" href="#credential-free-gbif-retrieval"></a>
@@ -177,10 +202,10 @@ has crossed into the “download first, process on disk later” regime.</p>
 <code><a href="https://docs.ropensci.org/rgbif/reference/occ_search.html" class="external-link">rgbif::occ_search()</a></code> (Chamberlain et al. 2022). The main
 package contribution is that it combines taxonomic harmonization,
 geographic tiling of large extents, and a practical sequence of
-post-download filters via <code>CoordinateCleaner</code> (Zizka et
-al. 2019) in one function. The retrieval workflow originates from
-Chauvier et al. (2021, <em>Ecological Monographs</em>).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+post-download filters, custom and via <code>CoordinateCleaner</code>
+(Zizka et al. 2019) in one function. The retrieval workflow originates
+from Chauvier et al. (2021, <em>Ecological Monographs</em>).</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download global tiger occurrences with the default filters.</span></span>
 <span><span class="va">obs_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Panthera tigris"</span>,</span>
@@ -194,7 +219,8 @@ Chauvier et al. (2021, <em>Ecological Monographs</em>).</p>
 <span></span>
 <span><span class="co"># Inspect the accepted name and synonym mapping used internally.</span></span>
 <span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Panthera tigris"</span>, level <span class="op">=</span> <span class="st">"children"</span><span class="op">)</span></span></code></pre></div>
-<p>The arguments most often worth adjusting are:</p>
+<p>On top of the desired geographic extent (<code>geo</code>), the
+arguments most often worth adjusting are:</p>
 <ul>
 <li>
 <code>grain</code>, which filters by coordinate uncertainty and
@@ -225,7 +251,7 @@ also supports <code><a href="https://docs.ropensci.org/rgbif/reference/occ_downl
 account. Credentials can be supplied directly as arguments or stored as
 environment variables (<code>GBIF_USER</code>, <code>GBIF_PWD</code>,
 <code>GBIF_EMAIL</code>):</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Option 1: pass credentials directly</span></span>
 <span><span class="va">obs_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Panthera tigris"</span>,</span>
@@ -240,6 +266,7 @@ environment variables (<code>GBIF_USER</code>, <code>GBIF_PWD</code>,
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>GBIF_PWD   <span class="op">=</span> <span class="st">"my_gbif_password"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>GBIF_EMAIL <span class="op">=</span> <span class="st">"my@email.com"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Download</span></span>
 <span><span class="va">obs_tiger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Panthera tigris"</span>,</span>
 <span>  should_use_occ_download <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -256,25 +283,27 @@ where the overhead of tiling and repeated API calls would otherwise
 dominate.</p>
 </div>
 <div class="section level2">
-<h2 id="a-marine-large-extent-example">A marine large-extent example<a class="anchor" aria-label="anchor" href="#a-marine-large-extent-example"></a>
+<h2 id="a-terrestrial-large-extent-example">A terrestrial large-extent example<a class="anchor" aria-label="anchor" href="#a-terrestrial-large-extent-example"></a>
 </h2>
-<p><em>Delphinus delphis</em> is a good example of a case where record
-volume becomes a practical constraint. The point is not that marine
-workflows are special inside the package, but that large extents can
-require more deliberate choices about sampling and ecoregions.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p><em>Bison bison</em> is another good example of a case where record
+volume becomes a practical constraint, as large extents can require more
+deliberate choices about sampling and ecoregions (e.g., occ_samp
+argument):</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Retrieve a manageable subsample per internally generated tile.</span></span>
-<span><span class="va">obs_delphis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span></span>
-<span>  sp_name <span class="op">=</span> <span class="st">"Delphinus delphis"</span>,</span>
+<span><span class="va">obs_bison</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gbif.html">get_gbif</a></span><span class="op">(</span></span>
+<span>  sp_name <span class="op">=</span> <span class="st">"Bison bison"</span>,</span>
 <span>  occ_samp <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Inspect the internal get_gbif() logic and all related names.</span></span>
-<span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Delphinus delphis"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/get_status.html">get_status</a></span><span class="op">(</span><span class="st">"Bison bison"</span>, level <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
 <p>This is exactly the kind of analysis where
 <code><a href="../reference/get_gbif_count.html">get_gbif_count()</a></code> is useful upstream. If the expected volume
 is extremely large and the project targets many taxa, the disk-based
-workflow in Part 3 is usually the more scalable choice.</p>
+workflow in Part 3:
+<code><a href="../articles/large-downloaded-gbif-tables.html">vignette("large-downloaded-gbif-tables", package = "gbif.range")</a></code>
+is usually the more scalable choice.</p>
 </div>
 <div class="section level2">
 <h2 id="post-download-thinning-with-obs_filter">Post-download thinning with <code>obs_filter()</code><a class="anchor" aria-label="anchor" href="#post-download-thinning-with-obs_filter"></a>
@@ -285,8 +314,13 @@ want one retained observation per species per cell before a downstream
 analysis.</p>
 <p>The example below uses the bundled offline GBIF-style example table
 rather than a live web query.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">occ_raw</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="fu">ext_file</span><span class="op">(</span><span class="st">"occ_example_4sps.csv"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Set</span></span>
+<span><span class="va">occ_raw</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span></span>
+<span>  <span class="fu">ext_file</span><span class="op">(</span><span class="st">"occ_example_4sps.csv"</span><span class="op">)</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"\t"</span>,</span>
+<span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">occ_raw</span><span class="op">$</span><span class="va">input_search</span> <span class="op">&lt;-</span> <span class="va">occ_raw</span><span class="op">$</span><span class="va">species</span></span>
 <span><span class="va">occ_gbif</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getGBIF.html">getGBIF</a></span><span class="op">(</span><span class="va">occ_raw</span><span class="op">)</span></span>
 <span></span>
@@ -324,7 +358,7 @@ doing early.</p>
 <p><code><a href="../reference/get_gbif.html">get_gbif()</a></code> handles tiling internally, but
 <code><a href="../reference/make_tiles.html">make_tiles()</a></code> is available when you want to create
 GBIF-ready geometry tiles yourself:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_tiles.html">make_tiles</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="op">-</span><span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">0</span>, <span class="fl">60</span><span class="op">)</span>, ntiles <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">tiles</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <p>This is mostly useful for custom <code>rgbif</code> workflows or
@@ -340,8 +374,9 @@ extracts the <code>datasetKey</code> column from the
 <code>getGBIF</code> object to identify the source datasets. A title,
 description, and source URL pointing to the workflow documentation are
 also required:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">doi_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_doi.html">get_doi</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Need GBIF Credentials</span></span>
+<span><span class="va">doi_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_doi.html">get_doi</a></span><span class="op">(</span></span>
 <span>  gbifs       <span class="op">=</span> <span class="va">obs_tiger</span>,</span>
 <span>  title       <span class="op">=</span> <span class="st">"Panthera tigris GBIF occurrences for range mapping"</span>,</span>
 <span>  description <span class="op">=</span> <span class="st">"GBIF occurrence records for Panthera tigris retrieved with gbif.range."</span>,</span>
@@ -385,8 +420,8 @@ reproducibility visible before range inference begins.</p>
 <p>Chamberlain, S., Oldoni, D., &amp; Waller, J. (2022). rgbif:
 interface to the global biodiversity information facility API. <a href="https://doi.org/10.5281/zenodo.6023735" class="external-link uri">https://doi.org/10.5281/zenodo.6023735</a></p>
 <p>Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
-Karger, D. N., Zimmermann, N. E., &amp; Pellissier, L. (2021). Influence
-of climate, soil, and land cover on plant species distribution in the
+Karger, D. N., Renaud, J., &amp; Zimmermann, N. E. (2021). Influence of
+climate, soil, and land cover on plant species distribution in the
 European Alps. <em>Ecological Monographs</em>, 91(2), e01433. <a href="https://doi.org/10.1002/ecm.1433" class="external-link uri">https://doi.org/10.1002/ecm.1433</a></p>
 <p>Zizka, A., Silvestro, D., Andermann, T., Azevedo, J., Duarte Ritter,
 C., Edler, D., … Antonelli, A. (2019). CoordinateCleaner: Standardized

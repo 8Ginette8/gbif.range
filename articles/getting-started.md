@@ -1,5 +1,28 @@
 # Part 0: Getting Started
 
+## Transparent setup
+
+``` r
+
+library(gbif.range)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  purl = FALSE
+)
+
+ext_file <- function(...) {
+  path <- system.file("extdata", ..., package = "gbif.range")
+  if (nzchar(path)) {
+    return(path)
+  }
+  normalizePath(file.path("..", "inst", "extdata", ...), mustWork = TRUE)
+}
+```
+
 ## Scope
 
 This vignette gives a high-level tour of `gbif.range` and covers the
@@ -53,6 +76,7 @@ the `terra` package (Hijmans 2022). The main functions are:
 | [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md) | Credential-free, synonym-aware occurrence download with 13 post-processing filters |
 | [`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md) | Grid-based occurrence thinning |
 | [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md) | Ecoregion-constrained range inference |
+| [`merge_range()`](https://8ginette8.github.io/gbif.range/reference/merge_range.md) | Aggregate range geometry into one feature or by polygon id |
 | [`read_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/read_ecoreg.md) | Download and read packaged ecoregion files |
 | [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md) | Build a custom ecoregion layer from any set of spatial raster layers |
 | [`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md) | Generate GBIF-ready `POLYGON()` tiles for explicit tiling workflows |
@@ -92,26 +116,26 @@ occurrence retrieval.
 
 ``` r
 
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
+obs_pt <- get_gbif(sp_name = "Panthera tigris")
 ```
 
 [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
 works without GBIF credentials. It is built on top of `rgbif`
 (Chamberlain et al. 2022) and harmonizes the query to the accepted GBIF
 taxon key, applies a dynamic moving-window tiling strategy when the
-geographic extent contains more than 100,000 records, and runs 13
+geographic extent contains more than 10,000 records, and runs 13
 configurable post-processing filters based on custom logic and
 `CoordinateCleaner` (Zizka et al. 2019). The function originates from
-the occurrence retrieval workflow first introduced in Chauvier et
+the occurrence retrieval workflow first employed in Chauvier et
 al. (2021, *Ecological Monographs*).
 
 ``` r
 
 countries <- terra::vect(
-  system.file("extdata", "world_countries.shp", package = "gbif.range")
+  ext_file("world_countries.shp")
 )
 terra::plot(countries, col = "#bcbddc")
-graphics::points(obs.pt[, c("decimalLongitude", "decimalLatitude")],
+graphics::points(obs_pt[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1.5)
 ```
 
@@ -136,18 +160,21 @@ are valid:
 ``` r
 
 # Download and read the packaged terrestrial ecoregions (The Nature Conservancy 2009)
-eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = tempdir())
+eco_terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = tempdir())
 
-range.tiger <- get_range(
-  occ_coord        = obs.pt,
-  ecoreg           = eco.terra,
-  ecoreg_name      = "ECO_NAME",
-  degrees_outlier  = 5,
-  clust_pts_outlier = 4
+# Range (default)
+range_tiger <- get_range(
+  occ_coord = obs_pt,
+  ecoreg = eco_terra,
+  ecoreg_name = "ECO_NAME",
+  degrees_outlier = 5,
+  clust_pts_outlier = 4,
+  format = "SpatVector"
 )
 
+# Plot
 terra::plot(countries, col = "#bcbddc")
-terra::plot(range.tiger$rangeOutput, col = "#238b45",
+terra::plot(range_tiger$rangeOutput, col = "#238b45",
             add = TRUE, axes = FALSE, legend = FALSE)
 ```
 
@@ -158,7 +185,25 @@ of observations are handled before the ecoregion lookup. Increasing
 either parameter produces a more conservative range that excludes more
 distant clusters; the defaults (~550 km and ~440 km respectively)
 already removed the most obvious anomalies in Europe, the U.S., and
-South Africa for this example.
+South Africa for this example. Note that default parameters are usually
+recommended for creating range at the global scale — see the *“Tuning
+the main range arguments”* section of
+[`vignette("ecoregion-constrained-range-inference")`](https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.md).
+
+Optionally, `format` controls the geometry type of the output range.
+Three are available: `SpatVector`, `sf`, and `SpatRaster`. If polygons,
+then `merge_range` can be optionally used to aggregate the geometry:
+
+``` r
+
+plot(merge_range(range_tiger), col = "#238b45")
+```
+
+![](../reference/figures/Part0_plot3.png)
+
+By default, the range output has its number of features defined by
+`ecoreg_name` for exploratory purposes. If not needed, `merge_range` can
+be applied to dissolve them into a single polygon.
 
 ## Marine example: *Delphinus delphis*
 
@@ -168,7 +213,7 @@ all available records. This trades completeness for speed and is
 appropriate for exploratory analysis or very broad-extent range
 inference.
 
-⚠️ Note that the download takes longer without `occ_samp`. Although
+**Note:** that the download takes longer without `occ_samp`. Although
 giving **less precise observational distribution**, `occ_samp` allows
 extracting a **subsample of *n* GBIF observations** per created tile
 over the study area.
@@ -176,31 +221,30 @@ over the study area.
 ``` r
 
 # 1000 observations per tile — faster, but less spatially complete
-obs.dd <- get_gbif("Delphinus delphis", occ_samp = 1000)
+obs_dd <- get_gbif("Delphinus delphis", occ_samp = 1000)
 
 # level = "all" includes doubtful or provisional names for manual inspection
 get_status("Delphinus delphis", level = "all")
 
 # Build range maps at three levels of ecoregion detail
-eco.marine <- read_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
-
-range.dd1 <- get_range(obs.dd, eco.marine, "ECOREGION")
-range.dd2 <- get_range(obs.dd, eco.marine, "PROVINCE")
-range.dd3 <- get_range(obs.dd, eco.marine, "REALM")
+eco_marine <- read_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
+range_dd1 <- get_range(obs_dd, eco_marine, "ECOREGION")
+range_dd2 <- get_range(obs_dd, eco_marine, "PROVINCE")
+range_dd3 <- get_range(obs_dd, eco_marine, "REALM")
 
 # Plot the coarsest result
 terra::plot(countries, col = "#bcbddc")
-terra::plot(range.dd3$rangeOutput, col = "#238b45",
+terra::plot(range_dd1$rangeOutput, col = "#238b45",
             add = TRUE, axes = FALSE, legend = FALSE)
-graphics::points(obs.dd[, c("decimalLongitude", "decimalLatitude")],
+graphics::points(obs_dd[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
 ```
 
-![](../reference/figures/Part0_plot3.png)
+![](../reference/figures/Part0_plot4.png)
 
 The three range levels (`"ECOREGION"`, `"PROVINCE"`, `"REALM"`) produce
 similar results here because most observations are near the coast.
-Because only a subsample was retrieved, the resulting map closely
+Because only a marine subsample was retrieved, the resulting map closely
 follows the GBIF sampling pattern. Increasing or removing `occ_samp`
 would produce a more complete distributional estimate.
 
@@ -229,17 +273,14 @@ Beyond the packaged layers,
 accepts any polygon object as `ecoreg` — including habitat maps,
 expert-defined units, or bioregions from species composition data
 (Denelle et al. 2025) — as long as it has a named character column for
-`ecoreg_name`. Similarly,
-[`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
-accepts any spatially structured raster, not just climate layers. See
-Part 1 for full details on both.
+`ecoreg_name`. See Part 1 for full details on both.
 
 ## Local example: custom ecoregions with `make_ecoreg()`
 
 For regional analyses the packaged ecoregions may be too coarse.
 [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md)
-builds a custom ecoregion layer by k-means clustering of one or more
-spatial raster layers (Chauvier et al. 2021, *Global Ecology and
+builds a custom ecoregion layer by k-medoid-based clustering of one or
+more spatial raster layers (Chauvier et al. 2021, *Global Ecology and
 Biogeography*). Any spatially structured raster variable can be used as
 input — not just climate layers.
 
@@ -251,12 +292,12 @@ CHELSA bioclimatic layers (Karger et al. 2017) — mean annual temperature
 
 ``` r
 
-bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
-eco.eg <- make_ecoreg(env = bio, nclass = 10)
-terra::plot(eco.eg, col = grDevices::rainbow(10))
+bio <- terra::rast(ext_file("rst.tif"))
+eco_eg <- make_ecoreg(env = bio, nclass = 10)
+terra::plot(eco_eg, col = grDevices::rainbow(10))
 ```
 
-![](../reference/figures/Part0_plot4.png)
+![](../reference/figures/Part0_plot5.png)
 
 For a real regional analysis, more classes are appropriate. The full
 workflow with 200 classes and *Arctostaphylos alpinus*:
@@ -264,46 +305,51 @@ workflow with 200 classes and *Arctostaphylos alpinus*:
 ``` r
 
 # Two CHELSA bioclimatic layers for the European Alps at 5 x 5 km resolution
-bio <- terra::rast(paste0(system.file(package = "gbif.range"), "/extdata/rst.tif"))
+bio <- terra::rast(ext_file("rst.tif"))
 
 # 200 ecoregion classes
-my.eco <- make_ecoreg(env = bio, nclass = 200)
+my_eco <- make_ecoreg(env = bio, nclass = 200)
 
 # Download Arctostaphylos alpinus within the Alps bounding box
-shp.lonlat <- terra::vect(
-  paste0(system.file(package = "gbif.range"), "/extdata/shp_lonlat.shp")
+shp_lonlat <- terra::vect(
+  ext_file("shp_lonlat.shp")
 )
-obs.arcto <- get_gbif(
+obs_arcto <- get_gbif(
   sp_name = "Arctostaphylos alpinus",
-  geo     = shp.lonlat,
+  geo     = shp_lonlat,
   grain   = 1            # 1 km precision — appropriate for a local extent
 )
 
 # Build the range (always use 'EcoRegion' as ecoreg_name for make_ecoreg() output)
-range.arcto <- get_range(
-  occ_coord         = obs.arcto,
-  ecoreg            = my.eco,
-  ecoreg_name       = "EcoRegion",
-  res               = 0.05,        # 5 x 5 km output resolution
-  degrees_outlier   = 5,
-  clust_pts_outlier = 4,
-  buff_width_point = 4,
+range_arcto <- get_range(
+  occ_coord            = obs_arcto,
+  ecoreg               = my_eco,
+  ecoreg_name          = "EcoRegion",
+  res                  = 0.05,        # 5 x 5 km output resolution
+  degrees_outlier      = 5,
+  clust_pts_outlier    = 4,
+  buff_width_point     = 4,
   buff_incrmt_pts_line = 0.5,
-  buff_width_polygon = 4
+  buff_width_polygon   = 4,
+  format = "SpatRaster"
 )
 
 # Plot
-alps.shp <- terra::crop(countries, terra::ext(bio))
-r.arcto  <- terra::mask(range.arcto$rangeOutput, alps.shp)
-terra::plot(alps.shp, col = "#bcbddc")
-terra::plot(r.arcto, add = TRUE, col = "darkgreen", axes = FALSE, legend = FALSE)
-graphics::points(obs.arcto[, c("decimalLongitude", "decimalLatitude")],
+alps_shp <- terra::crop(countries, terra::ext(bio))
+terra::plot(alps_shp, col = "#bcbddc")
+terra::plot(range_arcto$rangeOutput,
+  add = TRUE,
+  col = "darkgreen",
+  axes = FALSE,
+  legend = FALSE
+)
+graphics::points(obs_arcto[, c("decimalLongitude", "decimalLatitude")],
        pch = 20, col = "#99340470", cex = 1)
 ```
 
-![](../reference/figures/Part0_plot5.png)
+![](../reference/figures/Part0_plot6.png)
 
-Two design choices matter here. First, `grain = 1` keeps only records
+Three design choices matter here. First, `grain = 1` keeps only records
 with coordinate uncertainty ≤ 1 km; at larger scales the default 100 km
 grain is appropriate, but for a small alpine extent it would retain too
 many imprecise records. Second, the `res` argument sets the output
@@ -312,8 +358,8 @@ layers allow. Third, the outlier and buffer parameters above were left
 at their defaults, which is appropriate here because *Arctostaphylos
 alpinus* occurs broadly across the Alps and Europe wherever conditions
 are suitable. For species with a more spatially restricted or
-biogeo-constrained distribution, these parameters often need tightening
-— see the *“Tuning the main range arguments”* section of
+biogeographically constrained distribution, these parameters often need
+tightening — see the *“Tuning the main range arguments”* section of
 [`vignette("ecoregion-constrained-range-inference")`](https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.md)
 for a worked example.
 
@@ -325,8 +371,7 @@ workflow that avoids loading the full table into memory:
 
 ``` r
 
-gbif_file <- system.file("extdata", "occ_example_4sps.csv", package = "gbif.range")
-
+gbif_file <- ext_file("occ_example_4sps.csv")
 split_dir <- file.path(tempdir(), "gbif_split")
 range_dir <- file.path(tempdir(), "gbif_ranges")
 
@@ -354,37 +399,44 @@ range_summary <- species_csvs_to_ranges(
 
 # 3. Read one saved range back from disk
 rg <- read_range_rds(range_summary$range_file[1])
-terra::plot(rg$rangeOutput)
+terra::plot(merge_range(rg), col = "darkblue")
 ```
 
-![](../reference/figures/Part0_plot6.png)
-
-This workflow is described in full in
-[`vignette("large-downloaded-gbif-tables", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.md).
+![](../reference/figures/Part0_plot7.png)
 
 ## Next steps
 
-The three focused vignettes cover each part of the workflow in depth.
-Part 1 (*GBIF Retrieval, Taxonomy, and Filtering*) covers
-[`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md),
-[`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md),
-[`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md),
-[`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md),
-[`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md)
-and
-[`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md).
-Part 2 (*Ecoregion-Based Range Inference*) documents
-[`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md),
-the packaged and custom ecoregion options, and the evaluation functions
-[`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
-and
-[`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md).Part
-3 (*Large Downloaded GBIF Tables*) describes the disk-based batch
-workflow built around
-[`split_gbif_by_species()`](https://8ginette8.github.io/gbif.range/reference/split_gbif_by_species.md),
-[`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md),
-and
-[`read_range_rds()`](https://8ginette8.github.io/gbif.range/reference/read_range_rds.md).
+## Next steps
+
+The three focused vignettes cover each part of the workflow in depth:
+
+- Part 1:
+  [`vignette("gbif-retrieval-and-taxonomy", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/gbif-retrieval-and-taxonomy.md)
+  —
+  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md),
+  [`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md),
+  [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md),
+  [`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md),
+  [`make_tiles()`](https://8ginette8.github.io/gbif.range/reference/make_tiles.md)
+  and
+  [`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md).
+- Part 2:
+  [`vignette("ecoregion-constrained-range-inference", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/ecoregion-constrained-range-inference.md)
+  —
+  [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md),
+  the packaged and custom ecoregion options,
+  [`merge_range()`](https://8ginette8.github.io/gbif.range/reference/merge_range.md),
+  and the evaluation functions
+  [`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
+  and
+  [`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md).
+- Part 3:
+  [`vignette("large-downloaded-gbif-tables", package = "gbif.range")`](https://8ginette8.github.io/gbif.range/articles/large-downloaded-gbif-tables.md)
+  — the disk-based batch workflow built around
+  [`split_gbif_by_species()`](https://8ginette8.github.io/gbif.range/reference/split_gbif_by_species.md),
+  [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md)
+  and
+  [`read_range_rds()`](https://8ginette8.github.io/gbif.range/reference/read_range_rds.md).
 
 ## References
 
@@ -398,14 +450,13 @@ Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
 the global biodiversity information facility API.
 <https://doi.org/10.5281/zenodo.6023735>
 
-Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P.,
-Thuiller, W., & Qiao, H. (2021). Novel methods to correct for observer
-and sampling bias in presence-only species distribution models. *Global
-Ecology and Biogeography*, 30(11), 2312–2325.
-<https://doi.org/10.1111/geb.13383>
+Chauvier, Y., Zimmermann, N. E., Poggiato, G., Bystrova, D., Brun, P., &
+Thuiller, W. (2021). Novel methods to correct for observer and sampling
+bias in presence-only species distribution models. *Global Ecology and
+Biogeography*, 30(11), 2312–2325. <https://doi.org/10.1111/geb.13383>
 
 Chauvier, Y., Thuiller, W., Brun, P., Lavergne, S., Descombes, P.,
-Karger, D. N., Zimmermann, N. E., & Pellissier, L. (2021). Influence of
+Karger, D. N., Renaud, J., & Zimmermann, N. E. (2021). Influence of
 climate, soil, and land cover on plant species distribution in the
 European Alps. *Ecological Monographs*, 91(2), e01433.
 <https://doi.org/10.1002/ecm.1433>

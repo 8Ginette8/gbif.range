@@ -48,25 +48,25 @@ to produce the `getGBIF` object filtered by this function.
 ``` r
 # \donttest{
 # Load data
-shp.path <- paste0(
+shp_path <- paste0(
   system.file(package = "gbif.range"),
   "/extdata/shp_lonlat.shp"
 )
-shp.lonlat <- terra::vect(shp.path)
-rst.path <- paste0(
+shp_lonlat <- terra::vect(shp_path)
+rst_path <- paste0(
   system.file(package = "gbif.range"),
   "/extdata/rst_enl.tif"
 )
-rst <- terra::rast(rst.path)
+rst <- terra::rast(rst_path)
 
 # Download observations for two plant species in the European Alps
-obs.paed <- get_gbif(
+obs_paed <- get_gbif(
   sp_name = "Paederota bonarota",
-  geo = shp.lonlat
+  geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :       1011 |
-#> | Kept records                  :        585 |
+#> | Total number (all records)    :       1024 |
+#> | Kept records                  :        595 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
@@ -77,27 +77,27 @@ obs.paed <- get_gbif(
 #> ...Records (XY) filtering summary:
 #> ----------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering       0       585
-#>       Duplicated records      31       554
-#>          Absence records       0       554
-#>          Basis selection      74       480
-#>  Establishment selection       0       480
-#>               Time frame       0       480
-#>        Identical records       0       480
-#>         Raster centroids       0       480
+#>          Grain filtering       0       595
+#>       Duplicated records      31       564
+#>          Absence records       0       564
+#>          Basis selection      74       490
+#>  Establishment selection       0       490
+#>               Time frame       0       490
+#>        Identical records       0       490
+#>         Raster centroids       0       490
 #> 
-#> Initial records         : 585
+#> Initial records         : 595
 #> Total removed           : 105
-#> Final records (XY)      : 480
+#> Final records (XY)      : 490
 #> ----------------------------------------------
 #> Final records (no XY)   : 0
-obs.saxi <- get_gbif(
+obs_saxi <- get_gbif(
   sp_name = "Saxifraga cernua",
-  geo = shp.lonlat
+  geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      20266 |
-#> | Kept records                  :        407 |
+#> | Total number (all records)    :      20373 |
+#> | Kept records                  :        408 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
@@ -108,57 +108,61 @@ obs.saxi <- get_gbif(
 #> ...Records (XY) filtering summary:
 #> ----------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering       5       402
-#>       Duplicated records     286       116
-#>          Absence records       0       116
-#>          Basis selection      62        54
-#>  Establishment selection       0        54
-#>               Time frame       0        54
-#>        Identical records       0        54
-#>         Raster centroids       0        54
+#>          Grain filtering       5       403
+#>       Duplicated records     286       117
+#>          Absence records       0       117
+#>          Basis selection      61        56
+#>  Establishment selection       0        56
+#>               Time frame       0        56
+#>        Identical records       0        56
+#>         Raster centroids       0        56
 #> 
-#> Initial records         : 407
-#> Total removed           : 353
-#> Final records (XY)      : 54
+#> Initial records         : 408
+#> Total removed           : 352
+#> Final records (XY)      : 56
 #> ----------------------------------------------
 #> Final records (no XY)   : 0
 
+# Guard against an unavailable remote source
+if (gbif_have(obs_paed, obs_saxi)) {
+
 # Test plot
-terra::plot(shp.lonlat)
+terra::plot(shp_lonlat)
 graphics::points(
-  obs.paed[, c("decimalLongitude","decimalLatitude")],
+  obs_paed[, c("decimalLongitude","decimalLatitude")],
   pch = 20,
   col = "#238b4550",
   cex = 1
 )
 graphics::points(
-  obs.saxi[, c("decimalLongitude","decimalLatitude")],
+  obs_saxi[, c("decimalLongitude","decimalLatitude")],
   pch = 20,
   col = "#99000d50",
   cex = 1
 )
-
 
 # Combine both datasets
-both.sp <- rbind(obs.paed,obs.saxi)
+both_sp <- rbind(obs_paed, obs_saxi)
 
 # Run function
-obs.filt <- obs_filter(gbifs = both.sp, grid = rst, threshold = 4)
+obs_filt <- obs_filter(gbifs = both_sp, grid = rst, threshold = 4)
 
 # Check new points
-terra::plot(shp.lonlat)
+terra::plot(shp_lonlat)
 graphics::points(
-  obs.filt[obs.filt$Species%in%"Arctostaphylos alpinus",c("x","y")],
+  obs_filt[obs_filt$Species%in%"Paederota bonarota", c("x","y")],
   pch = 20,
   col = "#238b4550",
   cex = 1
 )
 graphics::points(
-  obs.filt[obs.filt$Species%in%"Saxifraga cernua",c("x","y")],
+  obs_filt[obs_filt$Species%in%"Saxifraga cernua", c("x","y")],
   pch = 20,
   col = "#99000d50",
   cex = 1
 )
+
+}
 
 
 # }

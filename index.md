@@ -9,12 +9,12 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 
 Species ranges can be estimated from expert maps (for example
 [IUCN](https://www.iucnredlist.org/resources/spatial-data-download) and
-[EUFORGEN](https://www.euforgen.org/species/)) or with modelling
+[EUFORGEN](https://www.euforgen.org/species)) or with modelling
 approaches. Expert data, however, remain unavailable for many species,
 whereas modelling workflows often require substantial technical
 expertise and large numbers of occurrence records. [Global Biodiversity
-Information Facility (GBIF)](https://www.gbif.org/) — the largest public
-repository of georeferenced species observations worldwide — offer a
+Information Facility (GBIF)](https://www.gbif.org) — the largest public
+repository of georeferenced species observations worldwide — offers a
 practical alternative, yet retrieving them at scale in R remains
 cumbersome and translating raw occurrences into ecologically meaningful
 range maps is not straightforward, as records often contain erroneous
@@ -61,7 +61,8 @@ range.tiger <- get_range(occ_coord = obs.pt,
                          ecoreg = eco.terra,
                          ecoreg_name = "ECO_NAME",
                          degrees_outlier = 5,
-                         clust_pts_outlier = 4)
+                         clust_pts_outlier = 4,
+                         format = "SpatRaster")
 
 # Plot
 countries <- terra::vect(

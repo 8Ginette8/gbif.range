@@ -70,8 +70,8 @@ which uses this function internally to create cross-validation folds.
 
 ``` r
 # \donttest{
-# Downloading worldwide all the observations of great panda 
-obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+# Downloading worldwide all the observations of the great panda
+obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #> |--------------------------------------------|
 #> | Total number (all records)    :        300 |
 #> | Kept records                  :         66 |
@@ -88,22 +88,25 @@ obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #>          Grain filtering       6        60
 #>       Duplicated records      13        47
 #>          Absence records       0        47
-#>          Basis selection      10        37
-#>  Establishment selection       0        37
-#>               Time frame       0        37
-#>        Identical records       0        37
-#>         Raster centroids       0        37
+#>          Basis selection       8        39
+#>  Establishment selection       0        39
+#>               Time frame       0        39
+#>        Identical records       0        39
+#>         Raster centroids       0        39
 #> 
 #> Initial records         : 66
-#> Total removed           : 29
-#> Final records (XY)      : 37
+#> Total removed           : 27
+#> Final records (XY)      : 39
 #> ---------------------------------------------
 #> Final records (no XY)   : 0
 
+# Guard against an unavailable remote source
+if (gbif_have(obs_am)) {
+
 # Create a vector of folds (n = 5) spatially blocked (n = 10)
-block.pd <- make_blocks(
+block_am <- make_blocks(
     nfolds = 5,
-    df = obs.pd[, c("decimalLatitude","decimalLongitude")],
+    df = obs_am[, c("decimalLatitude","decimalLongitude")],
     nblocks = 5
 )
 
@@ -111,18 +114,19 @@ block.pd <- make_blocks(
 countries <- terra::vect(
   system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
-countries.focus <- terra::crop(
+countries_focus <- terra::crop(
     countries,
     terra::ext(73.0, 135.0, 18.0, 54.0)
 )
-terra::plot(countries.focus, col = "#bcbddc")
+terra::plot(countries_focus, col = "#bcbddc")
 graphics::points(
-    obs.pd[, c("decimalLongitude","decimalLatitude")],
+    obs_am[, c("decimalLongitude","decimalLatitude")],
     pch = 20,
-    col = block.pd,
+    col = block_am,
     cex = 1
 )
 
+}
 
 # }
 ```

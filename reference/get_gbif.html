@@ -24,7 +24,7 @@ and range mapping."><meta property="og:image" content="https://8ginette8.github.
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@ and range mapping."><meta property="og:image" content="https://8ginette8.github.
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
-    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: gbif.range manuscript's figures</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: manuscript figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -86,7 +86,7 @@ and range mapping.</p>
 <span>  duplicates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  absences <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  basis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OBSERVATION"</span>, <span class="st">"HUMAN_OBSERVATION"</span>, <span class="st">"MACHINE_OBSERVATION"</span>, <span class="st">"OCCURRENCE"</span>,</span>
-<span>    <span class="st">"MATERIAL_CITATION"</span>, <span class="st">"LITERATURE"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"MATERIAL_CITATION"</span>, <span class="st">"MATERIAL_SAMPLE"</span>, <span class="st">"LITERATURE"</span><span class="op">)</span>,</span>
 <span>  establishment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"native"</span>, <span class="st">"casual"</span>, <span class="st">"released"</span>, <span class="st">"reproducing"</span>, <span class="st">"established"</span>,</span>
 <span>    <span class="st">"colonising"</span>, <span class="st">"invasive"</span>, <span class="st">"widespreadInvasive"</span><span class="op">)</span>,</span>
 <span>  add_infos <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -190,9 +190,9 @@ by the number of reported coordinate decimals.</p></dd>
 <dt id="arg-basis">basis<a class="anchor" aria-label="anchor" href="#arg-basis"></a></dt>
 <dd><p>Character. Vector of accepted <code>basisOfRecord</code> values.
 Default excludes specimen-based records (e.g. herbarium sheets, museum
-specimens), <code>"MATERIAL_SAMPLE"</code> records, and records of unknown
-basis. See <strong>Details</strong> for the full list of accepted values, and a
-note on why <code>"MATERIAL_SAMPLE"</code> is excluded by default.</p></dd>
+specimens) and records of unknown basis. See <strong>Details</strong> for
+the full list of accepted values, and a note on why <code>"MATERIAL_SAMPLE"</code>
+can be misleading.</p></dd>
 
 
 <dt id="arg-establishment">establishment<a class="anchor" aria-label="anchor" href="#arg-establishment"></a></dt>
@@ -320,16 +320,13 @@ query.</p>
 specimen-based records and records of unknown basis. See
 (<a href="https://docs.gbif.org/course-data-use/en/basis-of-record.html" class="external-link">here</a>)
 for a description of each category.</p>
-<p>Records linked to non-taxonomic backbone entries (e.g. BOLD barcode
-sequences) are typically registered under
-<code>basisOfRecord = "MATERIAL_SAMPLE"</code>. Because <code>MATERIAL_SAMPLE</code>
-is not a reliable proxy for sequence-based records across all taxonomic
-groups, and can also include unrelated bulk or environmental samples, it
-is excluded from the default <code>basis</code> selection. Users who
-deliberately include <code>"MATERIAL_SAMPLE"</code> in <code>basis</code> should
-cross-check returned <code>acceptedTaxonKey</code> values against
-<code>get_status(children = TRUE)</code> to identify any records linked to
-non-backbone entries; see <code><a href="get_status.html">get_status()</a></code> examples.</p>
+<p>Records linked to non-taxonomic backbone entries (e.g., BOLD barcode
+sequences) are typically registered under <code>basisOfRecord = "MATERIAL_SAMPLE"</code>.
+These sequence-based, bulk, or environmental DNA (eDNA) records may
+reflect the physical collection site rather than the precise microhabitat.
+However, this spatial imprecision is not critical as the  package is aimed
+to operate at macro-ecological scales where local site-level offsets do not
+alter the broader range estimations.</p>
 <p><strong>establishment</strong>: available <code>degreeOfEstablishment</code> values are
 <code>"native"</code>, <code>"casual"</code>, <code>"released"</code>, <code>"reproducing"</code>,
 <code>"established"</code>, <code>"colonising"</code>, <code>"invasive"</code>,
@@ -386,7 +383,7 @@ cleaning of occurrence records from biological collection databases.
 Methods in Ecology and Evolution, 10(5), 744-751.
 <a href="https://doi.org/10.1111/2041-210X.13152" class="external-link">doi:10.1111/2041-210X.13152</a></p>
 <p>Hijmans, R. J. (2022). terra: Spatial Data Analysis. R package version
-1.6-7. <a href="https://cran.r-project.org/package=terra" class="external-link">https://cran.r-project.org/package=terra</a></p>
+1.6-7. <a href="https://CRAN.R-project.org/package=terra" class="external-link">https://CRAN.R-project.org/package=terra</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -399,14 +396,14 @@ extensive occurrence cleaning.</p></div>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Download all worldwide observations of Ailuropoda melanoleuca, with:</span></span></span>
+<span class="r-in"><span><span class="co"># Download all worldwide observations of the great panda, with:</span></span></span>
 <span class="r-in"><span><span class="co"># - 100km grain</span></span></span>
 <span class="r-in"><span><span class="co"># - after 1990</span></span></span>
-<span class="r-in"><span><span class="co"># - keeping duplicates and by</span></span></span>
+<span class="r-in"><span><span class="co"># - keeping duplicates</span></span></span>
 <span class="r-in"><span><span class="co"># - adding the name of the person who collected the panda records</span></span></span>
-<span class="r-in"><span><span class="va">obs.am</span> <span class="op">&lt;-</span> <span class="fu">get_gbif</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">obs_am</span> <span class="op">&lt;-</span> <span class="fu">get_gbif</span><span class="op">(</span></span></span>
 <span class="r-in"><span>       sp_name <span class="op">=</span> <span class="st">"Ailuropoda melanoleuca"</span>,</span></span>
-<span class="r-in"><span>       grain <span class="op">=</span> <span class="fl">100</span> ,</span></span>
+<span class="r-in"><span>       grain <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>       duplicates <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>       time_period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1990</span>,<span class="fl">3000</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>       add_infos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"recordedBy"</span>,<span class="st">"issue"</span><span class="op">)</span></span></span>
@@ -426,17 +423,20 @@ extensive occurrence cleaning.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering       6        60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0        60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      22        38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      16        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0        44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0        44</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 66</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 28</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 38</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 22</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 44</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Guard against an unavailable remote source</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gbif_have.html">gbif_have</a></span><span class="op">(</span><span class="va">obs_am</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract borders</span></span></span>
 <span class="r-in"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span></span></span>
@@ -446,13 +446,14 @@ extensive occurrence cleaning.</p></div>
 <span class="r-in"><span><span class="co"># Plot</span></span></span>
 <span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#bcbddc"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>       <span class="va">obs.am</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>       <span class="va">obs_am</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimalLongitude"</span>,<span class="st">"decimalLatitude"</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>       pch <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>       col <span class="op">=</span> <span class="st">"#238b4550"</span>,</span></span>
 <span class="r-in"><span>       cex <span class="op">=</span> <span class="fl">4</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="get_gbif-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="get_gbif-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

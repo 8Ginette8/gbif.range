@@ -14,7 +14,7 @@ range_save_as = "rds".'><meta property="og:image" content="https://8ginette8.git
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@ range_save_as = "rds".'><meta property="og:image" content="https://8ginette8.git
     <li><a class="dropdown-item" href="../articles/gbif-retrieval-and-taxonomy.html">Part 1: GBIF Retrieval, Taxonomy, and Filtering</a></li>
     <li><a class="dropdown-item" href="../articles/ecoregion-constrained-range-inference.html">Part 2: Ecoregion-Based Range Inference</a></li>
     <li><a class="dropdown-item" href="../articles/large-downloaded-gbif-tables.html">Part 3: Large Downloaded GBIF Tables</a></li>
-    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: gbif.range manuscript's figures</a></li>
+    <li><a class="dropdown-item" href="../articles/reproducing-manuscript-figures.html">Supplementary: manuscript figures</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -69,8 +69,11 @@ range_save_as = "rds".'><meta property="og:image" content="https://8ginette8.git
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list with <code>init.args</code> and <code>rangeOutput</code>, matching the
-structure written by the batch workflow.</p>
+    <p>An object of class <code>getRange</code>, with fields <code>init.args</code> and
+<code>rangeOutput</code>, as returned by <code><a href="get_range.html">get_range</a></code>(). Note that
+<code>init.args$ecoreg</code> is <code>NULL</code>: the ecoregion layer is not
+serialized, so it must be re-supplied before the object can be passed to
+<code><a href="cv_range.html">cv_range</a></code>().</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -104,6 +107,10 @@ read by this function.</p></div>
 <span class="r-in"><span>    <span class="st">"eco_terra"</span>,</span></span>
 <span class="r-in"><span>    save_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># read_ecoreg() returns NULL if the remote source is unavailable</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gbif_have.html">gbif_have</a></span><span class="op">(</span><span class="va">eco_terra</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">eco_crop</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="va">eco_terra</span>,</span></span>
 <span class="r-in"><span>    <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span></span></span>
@@ -132,10 +139,13 @@ read by this function.</p></div>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">rg</span> <span class="op">&lt;-</span> <span class="fu">read_range_rds</span><span class="op">(</span><span class="va">range_summary</span><span class="op">$</span><span class="va">range_file</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">rg</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">rg</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rg</span><span class="op">$</span><span class="va">rangeOutput</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-plt img"><img src="read_range_rds-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
