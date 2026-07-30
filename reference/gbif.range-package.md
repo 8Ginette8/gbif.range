@@ -86,9 +86,8 @@ Authors:
 # -------------------------------------------------------------------------
 
 # Create two simple environmental layers on a small synthetic study area.
-r1 <- terra::rast(
-  ncols = 20, nrows = 20, xmin = 0, xmax = 10, ymin = 0, ymax = 10
-)
+r1 <- terra::rast(ncols = 20, nrows = 20, xmin = 0, xmax = 10,
+  ymin = 0, ymax = 10)
 terra::values(r1) <- rep(seq(0, 1, length.out = 20), each = 20)
 r2 <- terra::rast(r1)
 terra::values(r2) <- rep(seq(0, 1, length.out = 20), times = 20)
@@ -138,43 +137,59 @@ obs <- get_gbif("Ailuropoda melanoleuca")
 #>          Grain filtering       6        60
 #>       Duplicated records      13        47
 #>          Absence records       0        47
-#>          Basis selection       8        39
-#>  Establishment selection       0        39
-#>               Time frame       0        39
-#>        Identical records       0        39
-#>         Raster centroids       0        39
+#>          Basis selection      10        37
+#>  Establishment selection       0        37
+#>               Time frame       0        37
+#>        Identical records       0        37
+#>         Raster centroids       0        37
 #> 
 #> Initial records         : 66
-#> Total removed           : 27
-#> Final records (XY)      : 39
+#> Total removed           : 29
+#> Final records (XY)      : 37
 #> ---------------------------------------------
 #> Final records (no XY)   : 0
 
-# Load a packaged terrestrial ecoregion layer
-eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
-
-# Both calls above depend on remote services and return NULL or an empty
-# table if those are unavailable, so guard the rest of this section
-if (gbif_have(obs, eco_terra)) {
-
 # Remove observation without data, i.e.,
 # probably outdated for a threatned species such as the panda
-obs <- obs[!is.na(obs$year), ]
+obs <- obs[!is.na(obs$year),]
 
 # Inspect the GBIF backbone interpretation used by the package.
 status <- get_status("Ailuropoda melanoleuca")
 status
+#>                  canonicalName    rank gbif_key
+#> 2433399 Ailuropoda melanoleuca SPECIES  2433399
+#> 9387176 Aeluropus melanoleucus SPECIES  9387176
+#> 9379787 Ailuropus melanoleucus SPECIES  9379787
+#> 7888034     Ursus melanoleucus SPECIES  7888034
+#>                               scientificName gbif_status      Genus  Family
+#> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae
+#> 9387176 Aeluropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 9379787 Ailuropus melanoleucus (David, 1869)     SYNONYM Ailuropoda Ursidae
+#> 7888034       Ursus melanoleucus David, 1869     SYNONYM Ailuropoda Ursidae
+#>             Order    Class   Phylum IUCN_status sp_nameMatch
+#> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT
+#> 9387176 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 9379787 Carnivora Mammalia Chordata  VULNERABLE        EXACT
+#> 7888034 Carnivora Mammalia Chordata  VULNERABLE        EXACT
 
-# Build the range.
+# Load a packaged terrestrial ecoregion layer and build the range.
+eco_terra <- read_ecoreg("eco_terra", save_dir = tempdir())
 panda_range <- get_range(
   occ_coord = obs,
   ecoreg = eco_terra,
   ecoreg_name = "ECO_NAME"
 )
+#> ## Start of computation for species:  Ailuropoda melanoleuca  ### 
+#> 2 outlier's from 25 | proportion from total points: 8%
+#> ecoregion 1  of  4 :  Daba Mountains Evergreen Forests 
+#> ecoregion 2  of  4 :  Qin Ling Mountains Deciduous Forests 
+#> ecoregion 3  of  4 :  Qionglai-Minshan Conifer Forests 
+#> ecoregion 4  of  4 :  Southeast Tibet Shrublands And Meadows 
+#> ## End of computation for species:  Ailuropoda melanoleuca  ### 
 
 # Plot the predicted terrestrial range and the GBIF occurrences.
 terra::plot(
-  merge_range(panda_range),
+  panda_range$rangeOutput,
   col = 3,
   main = paste("Range:", obs$scientificName[1])
 )
@@ -184,15 +199,6 @@ graphics::points(
   pch = 4,
   col = grDevices::rgb(1, 0, 1, 0.2)
 )
-
-}
-#> ## Start of computation for species: Ailuropoda melanoleuca ###
-#> 3 outlier's from 26 | proportion from total points: 12%
-#> ecoregion 1 of 4: Daba Mountains Evergreen Forests
-#> ecoregion 2 of 4: Qin Ling Mountains Deciduous Forests
-#> ecoregion 3 of 4: Qionglai-Minshan Conifer Forests
-#> ecoregion 4 of 4: Southeast Tibet Shrublands And Meadows
-#> ## End of computation for species: Ailuropoda melanoleuca ###
 
 
 # -------------------------------------------------------------------------
@@ -227,10 +233,8 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 
   split_summary[, c("species_name", "n_records", "species_file")]
 
-  # The batch step resolves "eco_terra" with read_ecoreg(), so it needs the
-  # remote source to be reachable.
-  if (gbif_have(read_ecoreg("eco_terra", save_dir = tempdir()))) {
-
+  # Use the packaged terrestrial ecoregions for the batch range step.
+  # species_csvs_to_ranges() will resolve "eco_terra" with read_ecoreg().
   range_summary <- species_csvs_to_ranges(
     species_dir = split_dir,
     ecoreg = "eco_terra",
@@ -266,8 +270,6 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   terra::plot(combined_ext, col = NA, legend = FALSE)
   terra::plot(range_one$rangeOutput, col = grDevices::rgb(0.1, 0.6, 0.2, 0.5), add = TRUE)
   terra::plot(range_two$rangeOutput, col = grDevices::rgb(0.8, 0.3, 0.1, 0.5), add = TRUE)
-
-  }
 }
 
 

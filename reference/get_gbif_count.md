@@ -123,7 +123,7 @@ to download the occurrence records counted by this function.
 ``` r
 # \donttest{
 # Get number of observations with default filters
-get_gbif_count(
+obs.pt <- get_gbif_count(
   sp_name = "Ailuropoda melanoleuca",
   has_xy = TRUE,
   spatial_issue = FALSE,
@@ -135,10 +135,9 @@ get_gbif_count(
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE
-#> [1] 300  66
 
 # Get the total number of observations
-get_gbif_count(
+obs.pt <- get_gbif_count(
   sp_name = "Ailuropoda melanoleuca",
   has_xy = NULL,
   spatial_issue = NULL,
@@ -150,10 +149,9 @@ get_gbif_count(
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = NULL, has_xy = NULL
-#> [1] 300 300
 
 # Example of setting global 'geo' (all records are still kept)
-get_gbif_count(
+obs.pt <- get_gbif_count(
   sp_name = "Ailuropoda melanoleuca",
   has_xy = NULL,
   spatial_issue = NULL,
@@ -165,10 +163,9 @@ get_gbif_count(
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = NULL, has_xy = NULL
-#> [1] 300 300
 
 # Example of fuzzy matching when search is set to FALSE
-get_gbif_count(
+obs.pt <- get_gbif_count(
   sp_name = "Ailuropoda melanolca",
   search = FALSE
 )
@@ -178,7 +175,6 @@ get_gbif_count(
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE
-#> [1] 300  66
 
 # Example on the European Alps (has_xy = TRUE by default)
 shp.lonlat <- terra::vect(
@@ -187,7 +183,7 @@ shp.lonlat <- terra::vect(
         "/extdata/shp_lonlat.shp"
     )
 )
-get_gbif_count(
+obs.pt <- get_gbif_count(
   sp_name = "Arctostaphylos alpinus",
   has_xy = TRUE,
   spatial_issue = FALSE,
@@ -199,7 +195,6 @@ get_gbif_count(
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
-#> [1] 43155  6348
 
 # }
 ```

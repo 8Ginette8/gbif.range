@@ -265,43 +265,44 @@ get_status("Ailuropoda melanoleuca", search = FALSE)
 
 # --- 5. Cross-check get_status() keys against get_gbif() output ---
 occ <- get_gbif("Ailuropoda melanoleuca", has_xy = TRUE, verbose = FALSE)
-
-# Guard against an unavailable remote source
-if (gbif_have(tax_ch, occ)) {
-
 valid_keys    <- tax_ch$gbif_key[tax_ch$gbif_status %in% c("ACCEPTED", "CHILDREN")]
 returned_keys <- unique(occ$acceptedTaxonKey)
 
-# Keys in get_status() - backbone taxa (ACCEPTED + CHILDREN)
+# Keys in get_status() — backbone taxa (ACCEPTED + CHILDREN)
 valid_keys
+#> [1] "2433399" "9087131" "9460321"
 
 # Keys returned by get_gbif()
 returned_keys
+#> [1] 9087131 2433399 9460321
 
 # Are all occurrence keys known backbone keys?
 # FALSE indicates non-backbone entries (e.g. BOLD sequences) are present
 all(returned_keys %in% valid_keys)
+#> [1] TRUE
 
-# Inspect non-backbone records - typically MATERIAL_SAMPLE, excluded by default
+# Inspect non-backbone records — typically MATERIAL_SAMPLE, excluded by default
 extra_keys <- returned_keys[!returned_keys %in% valid_keys]
 extra_keys
+#> integer(0)
 occ[occ$acceptedTaxonKey %in% extra_keys,
     c("acceptedTaxonKey", "scientificName", "basisOfRecord")]
+#> [1] acceptedTaxonKey scientificName   basisOfRecord   
+#> <0 rows> (or 0-length row.names)
 
-# Note: not all valid_keys need to appear in returned_keys - some subspecies
+# Note: not all valid_keys need to appear in returned_keys — some subspecies
 # may have no records in GBIF at all (e.g. extinct taxa) or may have been
 # removed by get_gbif() filtering options (e.g. has_xy, basis, grain)
 
 # --- 6. Input name flagged correctly regardless of how GBIF resolves it ---
 # sp_nameMatch = "INPUT" marks the row closest to the submitted name
 tax_ch[tax_ch$sp_nameMatch == "INPUT", ]
-
-}
 #>                  canonicalName    rank gbif_key
 #> 2433399 Ailuropoda melanoleuca SPECIES  2433399
 #>                               scientificName gbif_status      Genus  Family
 #> 2433399 Ailuropoda melanoleuca (David, 1869)    ACCEPTED Ailuropoda Ursidae
 #>             Order    Class   Phylum IUCN_status sp_nameMatch
 #> 2433399 Carnivora Mammalia Chordata  VULNERABLE        INPUT
+
 # }
 ```

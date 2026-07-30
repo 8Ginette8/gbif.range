@@ -34,9 +34,6 @@ Build and evaluate ecoregion-constrained range maps
 - [`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md)
   : Evaluate a Range Map by Cross-Validation
 
-- [`merge_range()`](https://8ginette8.github.io/gbif.range/reference/merge_range.md)
-  : Merge the polygons of a species range map
-
 - [`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md)
   : Evaluate Range Maps Against Independent Validation Data
 

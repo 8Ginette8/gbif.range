@@ -96,14 +96,14 @@ for the underlying fold-assignment logic.
 ``` r
 # \donttest{
 # Load available ecoregions
-eco_terra <- read_ecoreg(
+eco.terra <- read_ecoreg(
     ecoreg_name = "eco_terra",
     save_dir = tempdir(),
     format = "sf"
 )
 
-# First download the worldwide observations of the panda from GBIF
-obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
+# First download the worldwide observations of Panthera tigris from GBIF
+obs.pd <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #> |--------------------------------------------|
 #> | Total number (all records)    :        300 |
 #> | Kept records                  :         66 |
@@ -120,45 +120,39 @@ obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #>          Grain filtering       6        60
 #>       Duplicated records      13        47
 #>          Absence records       0        47
-#>          Basis selection       8        39
-#>  Establishment selection       0        39
-#>               Time frame       0        39
-#>        Identical records       0        39
-#>         Raster centroids       0        39
+#>          Basis selection      10        37
+#>  Establishment selection       0        37
+#>               Time frame       0        37
+#>        Identical records       0        37
+#>         Raster centroids       0        37
 #> 
 #> Initial records         : 66
-#> Total removed           : 27
-#> Final records (XY)      : 39
+#> Total removed           : 29
+#> Final records (XY)      : 37
 #> ---------------------------------------------
 #> Final records (no XY)   : 0
 
-# Both calls above depend on remote services and return NULL or an empty
-# table if those are unavailable, so guard the rest of the example
-if (gbif_have(eco_terra, obs_am)) {
-
 # Build a range map from occurrence points
-range_panda <- get_range(
-    occ_coord = obs_am,
-    ecoreg = eco_terra,
+range.panda <- get_range(
+    occ_coord = obs.pd,
+    ecoreg = eco.terra,
+    clust_pts_outlier = 6,
     ecoreg_name = "ECO_NAME",
     format = "sf"
 )
-am_test <- cv_range(
-    range_object = range_panda,
+#> ## Start of computation for species:  Ailuropoda melanoleuca  ### 
+#> 12 outlier's from 37 | proportion from total points: 32%
+#> ecoregion 1  of  4 :  Daba Mountains Evergreen Forests 
+#> ecoregion 2  of  4 :  Qin Ling Mountains Deciduous Forests 
+#> ecoregion 3  of  4 :  Qionglai-Minshan Conifer Forests 
+#> ecoregion 4  of  4 :  Southeast Tibet Shrublands And Meadows 
+#> ## End of computation for species:  Ailuropoda melanoleuca  ### 
+pd.test <- cv_range(
+    range_object = range.panda,
     cv = "block-cv",
     nfolds = 5,
     nblocks = 2
-);am_test
-
-}
-#> ## Start of computation for species: Ailuropoda melanoleuca ###
-#> 11 outlier's from 39 | proportion from total points: 28%
-#> ecoregion 1 of 5: Daba Mountains Evergreen Forests
-#> ecoregion 2 of 5: Qin Ling Mountains Deciduous Forests
-#> ecoregion 3 of 5: Qionglai-Minshan Conifer Forests
-#> ecoregion 4 of 5: South China-Vietnam Subtropical Evergreen Forests
-#> ecoregion 5 of 5: Southeast Tibet Shrublands And Meadows
-#> ## End of computation for species: Ailuropoda melanoleuca ###
+);pd.test
 #> 6 variables with 5, 5, 5, 5, ... levels: 15625 function evaluations required.
 #> ...fold1
 #> ...fold2
@@ -166,12 +160,13 @@ am_test <- cv_range(
 #> ...fold4
 #> ...fold5
 #> 
-#>        TP FA     TA    FP   Precision Sensitivity Specificity         TSS
-#> CV1  12.0  0 1210.0 711.0 0.016597510   1.0000000   0.6298803  0.62988027
-#> CV2   5.0  1 1179.0 288.0 0.017064846   0.8333333   0.8036810  0.63701431
-#> CV3   3.0  2 1366.0 222.0 0.013333333   0.6000000   0.8602015  0.46020151
-#> CV4   3.0  2 2130.0 303.0 0.009803922   0.6000000   0.8754624  0.47546239
-#> CV5   0.0  5 2548.0  43.0 0.000000000   0.0000000   0.9834041 -0.01659591
-#> Mean  4.6  2 1686.6 313.4 0.011359922   0.6066667   0.8305258  0.43719252
+#>       TP  FA     TA     FP   Precision Sensitivity Specificity       TSS
+#> CV1  9.0 0.0   66.0  114.0 0.073170732        1.00   0.3666667 0.3666667
+#> CV2  5.0 0.0 2071.0  665.0 0.007462687        1.00   0.7569444 0.7569444
+#> CV3  5.0 0.0  755.0 1438.0 0.003465003        1.00   0.3442772 0.3442772
+#> CV4  3.0 1.0  570.0  640.0 0.004665630        0.75   0.4710744 0.2210744
+#> CV5  2.0 2.0 2926.0  755.0 0.002642008        0.50   0.7948927 0.2948927
+#> Mean 4.8 0.6 1277.6  722.4 0.018281212        0.85   0.5467711 0.3967711
+
 # }
 ```

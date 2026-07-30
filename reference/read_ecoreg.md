@@ -64,7 +64,7 @@ Units. GIS layers developed by The Nature Conservancy with multiple
 partners, combined from Olson et al. (2001), Bailey 1995 and Wiken 1986.
 Cambridge (UK): The Nature Conservancy.
 
-Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdaña, Z. A.,
+Spalding, M. D., Fox, H. E., Allen, G. R., Davidson, N., Ferdana, Z. A.,
 Finlayson, M., Halpern, B. S., Jorge, M. A., Lombana, A., Lourie, S. A.,
 Martin, K. D., McManus, E., Molnar, J., Recchia, C. A., Robertson, J.
 (2007). Marine Ecoregions of the World: A Bioregionalization of Coastal

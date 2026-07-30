@@ -40,14 +40,14 @@ to download and load a layer in one step.
 
 ``` r
 # \donttest{
-# Download one of the ecoregion datasets listed in ecoreg_list
+# Download every ecoregion dataset listed in ecoreg_list
 get_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
 #> Preparing to download ecoregion eco_marine 
-#>  data file to: /tmp/RtmpkfSaIv
+#>  data file to: /tmp/RtmpQ8EZYS
 #> Downloaded: eco_marine
 #> Description: Marine Ecoregions of the World
 #> Unzipped: eco_marine 
-#>  saved to: /tmp/RtmpkfSaIv/eco_marine 
+#>  saved to: /tmp/RtmpQ8EZYS/eco_marine 
 #>  removed:  eco_marine.zip
 # }
 ```
