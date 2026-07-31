@@ -1,3 +1,6 @@
+# gbif.range 1.9.1
+Fix tiny CRAN compliance regarding examples running time
+
 # gbif.range 1.9.0
 * Added merge_range()
 * Improved speed of get_range()
