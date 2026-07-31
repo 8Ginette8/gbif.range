@@ -406,8 +406,6 @@ terra::plot(merge_range(rg), col = "darkblue")
 
 ## Next steps
 
-## Next steps
-
 The three focused vignettes cover each part of the workflow in depth:
 
 - Part 1:

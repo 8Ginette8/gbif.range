@@ -240,7 +240,7 @@ straightforward to rerun the exact same batch with different ecoregions,
 different range arguments, or stricter deduplication while keeping the
 raw downloaded export unchanged.
 
-## The built-in ecoregion shortcut
+### The built-in ecoregion shortcut
 
 The same workflow can resolve packaged ecoregions internally:
 
@@ -264,7 +264,7 @@ It is also the most natural way to move from a large terrestrial GBIF
 export to a batch of ecoregion-constrained range maps without having to
 pre-load the ecoregion object yourself.
 
-## A production-style terrestrial batch
+### A production-style terrestrial batch
 
 The offline vignette uses a simple polygon because it must build quickly
 and without network access. A real downloaded terrestrial workflow would
@@ -298,7 +298,7 @@ range_summary <- species_csvs_to_ranges(
 This is the clearest batch version of the main terrestrial workflow: one
 GBIF export in, one species file per taxon, one saved range per taxon.
 
-## Inspect one species file before building ranges
+### Inspect one species file before building ranges
 
 One advantage of the split-first design is that you can inspect or clean
 individual species files before generating ranges. This is often useful
