@@ -103,6 +103,6 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 #> 2 Crocuta crocuta        20
 #> 1   Hyaena hyaena        20
 #>                                                                         species_file
-#> 2 /tmp/RtmptcA3DF/gbif_split_help/occurrences_speciesKey_5218781_Crocuta_crocuta.csv
-#> 1   /tmp/RtmptcA3DF/gbif_split_help/occurrences_speciesKey_5218777_Hyaena_hyaena.csv
+#> 2 /tmp/Rtmpk7Ebny/gbif_split_help/occurrences_speciesKey_5218781_Crocuta_crocuta.csv
+#> 1   /tmp/Rtmpk7Ebny/gbif_split_help/occurrences_speciesKey_5218777_Hyaena_hyaena.csv
 ```
