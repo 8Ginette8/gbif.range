@@ -14,7 +14,7 @@ can be used directly in get_range()."><meta property="og:image" content="https:/
 
     <a class="navbar-brand me-2" href="../index.html">gbif.range</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@ can be used directly in get_range()."><meta property="og:image" content="https:/
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Build Custom Ecoregions from Environmental Layers</h1>
-      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/v1.9.0/R/make_ecoreg.R" class="external-link"><code>R/make_ecoreg.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/8Ginette8/gbif.range/blob/v1.9.1/R/make_ecoreg.R" class="external-link"><code>R/make_ecoreg.R</code></a></small>
       <div class="d-none name"><code>make_ecoreg.Rd</code></div>
     </div>
 
@@ -156,9 +156,9 @@ ecoregion layer produced here.</p></div>
 <span class="r-in"><span><span class="va">shp_lonlat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">shp_path</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">rst</span>, <span class="va">shp_lonlat</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Apply the function by inferring 200 environmental classes</span></span></span>
+<span class="r-in"><span><span class="co"># Apply the function by inferring 50 environmental classes</span></span></span>
 <span class="r-in"><span><span class="va">my_eco</span> <span class="op">&lt;-</span> <span class="fu">make_ecoreg</span><span class="op">(</span>env <span class="op">=</span> <span class="va">rst</span>,</span></span>
-<span class="r-in"><span>  nclass <span class="op">=</span> <span class="fl">200</span>,</span></span>
+<span class="r-in"><span>  nclass <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="st">"sf"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> CLARA algorithm processing... </span>
@@ -172,8 +172,8 @@ ecoregion layer produced here.</p></div>
 <span class="r-in"><span>  grain <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       1024 |</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :        595 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Total number (all records)    :       1036 |</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records                  :        610 |</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> |--------------------------------------------|</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | Kept records according to parameters:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)</span>
@@ -184,18 +184,18 @@ ecoregion layer produced here.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ...Records (XY) filtering summary:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     step removed remaining</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering      79       516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records      12       504</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0       504</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      49       455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0       455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0       455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0       455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0       455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Grain filtering      79       531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Duplicated records      12       519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Absence records       0       519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Basis selection      49       470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Establishment selection       0       470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Time frame       0       470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Identical records       0       470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Raster centroids       0       470</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 595</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Initial records         : 610</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Total removed           : 140</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 455</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (XY)      : 470</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final records (no XY)   : 0</span>
 <span class="r-in"><span></span></span>
@@ -237,78 +237,34 @@ ecoregion layer produced here.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ## Start of computation for species: Paederota bonarota ###</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 outlier's from 446 | proportion from total points: 1%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 1 of 71: 100</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 2 of 71: 107</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 3 of 71: 108</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 4 of 71: 109</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 5 of 71: 110</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 6 of 71: 113</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 7 of 71: 114</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 8 of 71: 119</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 9 of 71: 12</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 10 of 71: 121</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 11 of 71: 122</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 12 of 71: 127</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 13 of 71: 128</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 14 of 71: 129</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 15 of 71: 130</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 16 of 71: 131</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 17 of 71: 132</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 18 of 71: 133</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 19 of 71: 138</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 20 of 71: 139</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 21 of 71: 14</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 22 of 71: 140</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 23 of 71: 142</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 24 of 71: 145</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 25 of 71: 147</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 26 of 71: 148</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 27 of 71: 15</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 28 of 71: 151</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 29 of 71: 153</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 30 of 71: 155</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 31 of 71: 156</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 32 of 71: 157</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 33 of 71: 16</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 34 of 71: 17</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 35 of 71: 19</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 36 of 71: 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 37 of 71: 22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 38 of 71: 28</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 39 of 71: 29</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 40 of 71: 30</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 41 of 71: 31</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 42 of 71: 32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 43 of 71: 33</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 44 of 71: 35</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 45 of 71: 40</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 46 of 71: 41</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 47 of 71: 44</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 48 of 71: 5</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 49 of 71: 57</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 50 of 71: 59</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 51 of 71: 60</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 52 of 71: 62</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 53 of 71: 64</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 54 of 71: 68</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 55 of 71: 69</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 56 of 71: 70</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 57 of 71: 71</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 58 of 71: 72</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 59 of 71: 77</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 60 of 71: 79</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 61 of 71: 8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 62 of 71: 81</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 63 of 71: 84</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 64 of 71: 85</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 65 of 71: 86</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 66 of 71: 9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 67 of 71: 92</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 68 of 71: 94</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 69 of 71: 95</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 70 of 71: 98</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 71 of 71: 99</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 outlier's from 459 | proportion from total points: 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 1 of 27: 10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 2 of 27: 11</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 3 of 27: 13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 4 of 27: 16</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 5 of 27: 17</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 6 of 27: 18</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 7 of 27: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 8 of 27: 20</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 9 of 27: 27</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 10 of 27: 28</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 11 of 27: 29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 12 of 27: 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 13 of 27: 30</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 14 of 27: 33</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 15 of 27: 34</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 16 of 27: 35</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 17 of 27: 36</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 18 of 27: 37</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 19 of 27: 38</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 20 of 27: 39</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 21 of 27: 4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 22 of 27: 42</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 23 of 27: 5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 24 of 27: 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 25 of 27: 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 26 of 27: 8</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ecoregion 27 of 27: 9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ## End of computation for species: Paederota bonarota ###</span>
 <span class="r-plt img"><img src="make_ecoreg-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
