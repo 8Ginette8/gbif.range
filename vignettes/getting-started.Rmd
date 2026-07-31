@@ -387,8 +387,6 @@ knitr::include_graphics("../man/figures/Part0_plot7.png")
 
 ## Next steps
 
-## Next steps
-
 The three focused vignettes cover each part of the workflow in depth:
 
 - Part 1: `vignette("gbif-retrieval-and-taxonomy", package = "gbif.range")` —
