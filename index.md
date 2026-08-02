@@ -16,18 +16,18 @@ technical expertise and high-precise, spatially continuous occurrence
 data, which often contain errors that must be identified and removed
 before spatial analyses.
 
-**gbif.range** provides a complete workflow to retrieve, clean, and
-analyze GBIF [Global Biodiversity Information Facility
-(GBIF)](https://www.gbif.org) occurrence records and generate
-ecologically informed species range maps. Range maps are constrained by
-bundled or custom ecoregion layers (terrestrial, marine, and
-freshwater), and can be validated against independent data using
-built-in evaluation and cross-validation functions. Built around the
-GBIF backbone taxonomy, the package handles synonym-aware downloads,
-dynamic tiling for large datasets, and 13 configurable post-processing
-filters via `CoordinateCleaner`. A dedicated disk-based pipeline is also
-available to range-process very large multi-species GBIF exports without
-loading them into memory.
+**gbif.range** provides an user-friendly and integrated workflow to
+retrieve, clean, and analyze GBIF [Global Biodiversity Information
+Facility (GBIF)](https://www.gbif.org) occurrence records and generate
+species range maps based on environmental clusterization and convex
+hulls. Range maps are constrained by bundled or custom ecoregion layers
+(terrestrial, marine, and freshwater), and can be validated against
+independent data using built-in evaluation and cross-validation
+functions. Built around the GBIF backbone taxonomy, the package handles
+synonym-aware downloads, dynamic tiling for large datasets, and 13
+configurable post-processing filters via `CoordinateCleaner`. A
+dedicated disk-based pipeline is also available to range-process very
+large multi-species GBIF exports without loading them into memory.
 
 For full documentation, workflows, and examples, visit the **[package
 website](https://8ginette8.github.io/gbif.range/)**.
