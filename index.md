@@ -10,28 +10,24 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 Species ranges can be estimated from expert maps (for example
 [IUCN](https://www.iucnredlist.org/resources/spatial-data-download) and
 [EUFORGEN](https://www.euforgen.org/species)) or with modelling
-approaches. Expert data, however, remain unavailable for many species,
-whereas modelling workflows often require substantial technical
-expertise and large numbers of occurrence records. [Global Biodiversity
-Information Facility (GBIF)](https://www.gbif.org) — the largest public
-repository of georeferenced species observations worldwide — offers a
-practical alternative, yet retrieving them at scale in R remains
-cumbersome and translating raw occurrences into ecologically meaningful
-range maps is not straightforward, as records often contain erroneous
-coordinates that must be identified and removed before spatial analyses.
+approaches. Expert data, however, remain unavailable for many rare and
+regional species, while modelling workflows often require substantial
+technical expertise and high-precise, spatially continuous occurrence
+data, which often contain errors that must be identified and removed
+before spatial analyses.
 
 **gbif.range** provides a complete workflow to retrieve, clean, and
-analyze GBIF occurrence records and generate ecologically informed
-species range maps. Built around the GBIF backbone taxonomy, the package
-handles synonym-aware downloads, dynamic tiling for large datasets, and
-13 configurable post-processing filters via `CoordinateCleaner`. Range
-maps are constrained by bundled or custom ecoregion layers (terrestrial,
-marine, and freshwater), and can be validated against independent data
-using built-in evaluation and cross-validation functions. A dedicated
-disk-based pipeline allows processing very large multi-species GBIF
-exports without loading them into memory. Additional utilities cover
-GBIF taxonomy inspection, occurrence thinning, geographic tiling, and
-GBIF-derived DOI generation.
+analyze GBIF [Global Biodiversity Information Facility
+(GBIF)](https://www.gbif.org) occurrence records and generate
+ecologically informed species range maps. Range maps are constrained by
+bundled or custom ecoregion layers (terrestrial, marine, and
+freshwater), and can be validated against independent data using
+built-in evaluation and cross-validation functions. Built around the
+GBIF backbone taxonomy, the package handles synonym-aware downloads,
+dynamic tiling for large datasets, and 13 configurable post-processing
+filters via `CoordinateCleaner`. A dedicated disk-based pipeline is also
+available to range-process very large multi-species GBIF exports without
+loading them into memory.
 
 For full documentation, workflows, and examples, visit the **[package
 website](https://8ginette8.github.io/gbif.range/)**.
