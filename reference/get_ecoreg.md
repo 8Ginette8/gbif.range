@@ -43,11 +43,11 @@ to download and load a layer in one step.
 # Download one of the ecoregion datasets listed in ecoreg_list
 get_ecoreg(ecoreg_name = "eco_marine", save_dir = tempdir())
 #> Preparing to download ecoregion eco_marine 
-#>  data file to: /tmp/RtmpH36KTt
+#>  data file to: /tmp/Rtmpf3eJE4
 #> Downloaded: eco_marine
 #> Description: Marine Ecoregions of the World
 #> Unzipped: eco_marine 
-#>  saved to: /tmp/RtmpH36KTt/eco_marine 
+#>  saved to: /tmp/Rtmpf3eJE4/eco_marine 
 #>  removed:  eco_marine.zip
 # }
 ```
