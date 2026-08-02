@@ -7,14 +7,14 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://zenodo.org/badge/553057771.svg)](https://doi.org/10.5281/zenodo.20826609)
 
-Species ranges can be estimated from expert maps (for example
+Species distribution can be estimated from expert maps (for example
 [IUCN](https://www.iucnredlist.org/resources/spatial-data-download) and
 [EUFORGEN](https://www.euforgen.org/species)) or with modelling
-approaches. Expert data, however, remain unavailable for many rare and
-regional species, while modelling workflows often require substantial
-technical expertise and high-precise, spatially continuous occurrence
-data, which often contain errors that must be resolved before spatial
-analyses.
+approaches. Expert range data, however, remain unavailable for many rare
+and regional species, while modelling workflows often require
+substantial technical expertise and high-precise, spatially continuous
+occurrence data, which often contain errors that must be resolved before
+spatial analyses.
 
 **gbif.range** provides an user-friendly and integrated workflow to
 retrieve, clean, and analyze [Global Biodiversity Information Facility
