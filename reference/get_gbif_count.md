@@ -194,12 +194,12 @@ get_gbif_count(
   geo = shp.lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      43153 |
+#> | Total number (all records)    :      43170 |
 #> | Kept records                  :       6351 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
-#> [1] 43153  6351
+#> [1] 43170  6351
 
 # }
 ```

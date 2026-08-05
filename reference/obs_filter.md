@@ -96,7 +96,7 @@ obs_saxi <- get_gbif(
   geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      20383 |
+#> | Total number (all records)    :      20402 |
 #> | Kept records                  :        411 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
@@ -109,9 +109,9 @@ obs_saxi <- get_gbif(
 #> ----------------------------------------------
 #>                     step removed remaining
 #>          Grain filtering       5       406
-#>       Duplicated records     286       120
-#>          Absence records       0       120
-#>          Basis selection      61        59
+#>       Duplicated records     287       119
+#>          Absence records       0       119
+#>          Basis selection      60        59
 #>  Establishment selection       0        59
 #>               Time frame       0        59
 #>        Identical records       0        59
