@@ -65,7 +65,7 @@ obs_paed <- get_gbif(
   geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :       1036 |
+#> | Total number (all records)    :       1033 |
 #> | Kept records                  :        610 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

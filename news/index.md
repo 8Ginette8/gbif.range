@@ -2,17 +2,22 @@
 
 ## gbif.range 1.9.1
 
-- Fix tiny CRAN compliance regarding examples running time
+- CRAN compliance v3
 
 ## gbif.range 1.9.0
 
-- Added merge_range()
-- Improved speed of get_range()
-- Corrected cluster convergence bug in get_range()
-- Corrected column error when get_status set with level = “all”
+- Added
+  [`merge_range()`](https://8ginette8.github.io/gbif.range/reference/merge_range.md)
+- Improved speed of
+  [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+- Corrected cluster convergence bug in
+  [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
+- Corrected column error when get_status set with `level = "all"`
 - CRAN compliance v2
 - Corrected documentation
-- Added gbif_have() helper for example run
+- Added
+  [`gbif_have()`](https://8ginette8.github.io/gbif.range/reference/gbif_have.md)
+  helper for example run
 
 ## gbif.range 1.8.0
 
@@ -35,155 +40,161 @@
 
 ## gbif.range 1.6.3
 
-- Added pkgdown website.
-- Added Part 0 vignette “Getting Started” with pre-computed figures.
-- Updated all vignettes with pre-computed figures.
-- Updated `README.md`.
+- Added pkgdown website
+- Added Part 0 vignette “Getting Started” with pre-computed figures
+- Updated all vignettes with pre-computed figures
+- Updated `README.md`
 - Updated parameters in
   [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
   and
-  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md).
+  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
 
 ## gbif.range 1.6.2
 
-- Updated examples and documentation.
-- Updated vignettes.
+- Updated examples and documentation
+- Updated vignettes
 - Updated
-  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md).
-- Corrected example issues and code incompatibility.
+  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
+- Corrected example issues and code incompatibility
 
 ## gbif.range 1.6.1
 
 - Updated
   [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md):
-  new `level` parameter.
-- Minor naming fix.
+  new `level` parameter
+- Minor naming fix
 - Updated
   [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md):
-  new progress bars.
+  new progress bars
 
 ## gbif.range 1.6.0
 
 - Added disk-based batch workflow for large multi-species GBIF exports:
   [`split_gbif_by_species()`](https://8ginette8.github.io/gbif.range/reference/split_gbif_by_species.md),
   [`species_csvs_to_ranges()`](https://8ginette8.github.io/gbif.range/reference/species_csvs_to_ranges.md),
-  [`read_range_rds()`](https://8ginette8.github.io/gbif.range/reference/read_range_rds.md).
+  [`read_range_rds()`](https://8ginette8.github.io/gbif.range/reference/read_range_rds.md)
 - Added `Collate` field to `DESCRIPTION` for explicit R file load
-  ordering.
-- Added three focused workflow vignettes.
-- Updated `README.md` with Vignettes section.
+  ordering
+- Added three focused workflow vignettes
+- Updated `README.md` with Vignettes section
 
 ## gbif.range 1.5.3
 
 - Improved documentation of package and
-  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md).
+  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
 - Updated
   [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
-  with new backend support (occ_download parameters)
+  with new backend support (`occ_download` parameters)
 
 ## gbif.range 1.5.2
 
 - Added `area_data`: bundled dataset of `gbif.range`- vs. IUCN-derived
   range area estimates, added alongside new examples mirroring the draft
   paper plots.
-- Updated test routine.
+- Updated test routine
 - Updated
-  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md).
+  [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)
 
 ## gbif.range 1.5.1
 
 - Clarified taxonomic harmonization in
   [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
-  documentation.
-- Updated `gbif.range` Rd.
+  documentation
+- Updated `gbif.range` Rd
 
 ## gbif.range 1.5.0
 
-- Polished documentation and CI.
-- Updated evaluation functions and examples.
+- Polished documentation and CI
+- Updated evaluation functions and examples
 - Added
   [`get_gbif_count()`](https://8ginette8.github.io/gbif.range/reference/get_gbif_count.md):
-  estimate record volume before downloading.
-- Changing functions name to: make_ecoreg(), get_ecoreg(),
-  check_and_get_ecoreg()
+  estimate record volume before downloading
+- Changing functions name to:
+  [`make_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/make_ecoreg.md),
+  [`get_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/get_ecoreg.md),
+  [`check_and_get_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/check_and_get_ecoreg.md)
 
 ## gbif.range 1.4.7
 
-- Added package-level help page.
+- Added package-level help page
 - Updated
-  [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md).
-- Used `&&` in GBIF status checks.
-- Updated `.gitignore` and `README.md`.
+  [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
+- Used `&&` in GBIF status checks
+- Updated `.gitignore` and `README.md`
 
 ## gbif.range 1.4.0
 
 - Added
   [`evaluate_range()`](https://8ginette8.github.io/gbif.range/reference/evaluate_range.md):
   validate range maps against independent distribution data (SDMs, IUCN
-  polygons) with precision, sensitivity, specificity, and TSS.
+  polygons) with precision, sensitivity, specificity, and TSS
 - Added
   [`cv_range()`](https://8ginette8.github.io/gbif.range/reference/cv_range.md):
   cross-validate a
   [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
-  output against its own occurrence data using spatial or random folds.
+  output against its own occurrence data using spatial or random folds
 - Added
   [`make_blocks()`](https://8ginette8.github.io/gbif.range/reference/make_blocks.md):
   split observations into balanced random or spatially structured folds
-  for cross-validation workflows.
+  for cross-validation workflows
 - Added `area_data`: bundled dataset of `gbif.range`- vs. IUCN-derived
-  range area estimates for validation examples.
+  range area estimates for validation examples
 - Added internal helper functions (`helpers.R`) for argument checking
-  and shared utilities across functions.
+  and shared utilities across functions
 - Introduced formal R5 reference classes `getRange` and `getGBIF`
-  (`classes.R`) to store function outputs with their original arguments.
+  (`classes.R`) to store function outputs with their original arguments
 - Added `check_and_get_bioreg()` and `get_bioreg()` as helpers for
-  ecoregion download and caching.
+  ecoregion download and caching
 
 ## gbif.range 1.1.0
 
 - Added `make_ecoregion()`: build custom ecoregion layers from
-  environmental rasters via k-means clustering.
+  environmental rasters via k-means clustering
 - Moved dependencies from `Depends` to `Imports` for cleaner namespace
   handling.
-- Added `sf` and `cluster` as dependencies.
+- Added `sf` and `cluster` as dependencies
 - Expanded
   [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
   with additional ecoregion flexibility and resolution control via the
-  `res` argument.
+  `res` argument
 
 ## gbif.range 1.0.0
 
-- First stable release under the name `gbif.range` on GitHub.
+- First stable release under the name `gbif.range` on GitHub
 - Full migration from `raster` to `terra` (SpatRaster/SpatVector
-  compatibility).
+  compatibility)
 - Renamed `get_taxonomy()` to
   [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md):
   added IUCN Red List status retrieval and infra-specific taxa
-  (subspecies, varieties) lookup.
+  (subspecies, varieties) lookup
 - Improved
   [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
-  synonym handling and tiling robustness.
+  synonym handling and tiling robustness
 - Added
   [`read_ecoreg()`](https://8ginette8.github.io/gbif.range/reference/read_ecoreg.md)
-  and `ecoreg_list` for bundled ecoregion management.
+  and `ecoreg_list` for bundled ecoregion management
 
 ## gbif.range 0.2.0
 
-- Renamed package from `wsl.gbif` to `gbif.range`.
-- Same for function containing ‘wsl’: wsl_doi() to get_doi(), wsl_gbif()
-  to get_gbif, wsl_obs_filter() to obs_filter()
+- Renamed package from `wsl.gbif` to `gbif.range`
+- Same for function containing ‘wsl’: `wsl_doi()` to
+  [`get_doi()`](https://8ginette8.github.io/gbif.range/reference/get_doi.md),
+  `wsl_gbif()` to
+  [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md),
+  `wsl_obs_filter()` to
+  [`obs_filter()`](https://8ginette8.github.io/gbif.range/reference/obs_filter.md)
 - Added
   [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md):
-  ecoregion-constrained species range inference.
+  ecoregion-constrained species range inference
 - Added `conv_function()`: internal polygon builder used by
-  [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md).
+  [`get_range()`](https://8ginette8.github.io/gbif.range/reference/get_range.md)
 - Added `get_taxonomy()` (later renamed
   [`get_status()`](https://8ginette8.github.io/gbif.range/reference/get_status.md)):
   GBIF backbone taxonomy inspection including accepted names and
-  synonyms.
+  synonyms
 - Expanded
   [`get_gbif()`](https://8ginette8.github.io/gbif.range/reference/get_gbif.md)
   with dynamic moving-window tiling for \> 100,000 records and improved
-  synonym-aware downloads.
+  synonym-aware downloads
 - Added `ClusterR`, `FNN`, `geometry`, `mclust`, and `rgeos` as
-  dependencies.
+  dependencies

@@ -127,7 +127,7 @@ obs_paed <- get_gbif(
   grain = 1
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :       1036 |
+#> | Total number (all records)    :       1033 |
 #> | Kept records                  :        610 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
