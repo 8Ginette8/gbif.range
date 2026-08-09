@@ -39,13 +39,15 @@ website](https://8ginette8.github.io/gbif.range/)**.
 
 ``` r
 
+# From CRAN
+install.packages("gbif.range")
+
 # From GitHub (development version)
 remotes::install_github("8Ginette8/gbif.range", build_vignettes = TRUE)
+
+# Load
 library(gbif.range)
 ```
-
-> **CRAN submission coming soon.** Once available, the package will also
-> be installable with `install.packages("gbif.range")`.
 
 ## Quick example
 

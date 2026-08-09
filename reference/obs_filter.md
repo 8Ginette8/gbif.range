@@ -65,8 +65,8 @@ obs_paed <- get_gbif(
   geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :       1033 |
-#> | Kept records                  :        610 |
+#> | Total number (all records)    :       1044 |
+#> | Kept records                  :        618 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
@@ -77,18 +77,18 @@ obs_paed <- get_gbif(
 #> ...Records (XY) filtering summary:
 #> ----------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering       0       610
-#>       Duplicated records      31       579
-#>          Absence records       0       579
-#>          Basis selection      74       505
-#>  Establishment selection       0       505
-#>               Time frame       0       505
-#>        Identical records       0       505
-#>         Raster centroids       0       505
+#>          Grain filtering       0       618
+#>       Duplicated records      31       587
+#>          Absence records       0       587
+#>          Basis selection      74       513
+#>  Establishment selection       0       513
+#>               Time frame       0       513
+#>        Identical records       0       513
+#>         Raster centroids       0       513
 #> 
-#> Initial records         : 610
+#> Initial records         : 618
 #> Total removed           : 105
-#> Final records (XY)      : 505
+#> Final records (XY)      : 513
 #> ----------------------------------------------
 #> Final records (no XY)   : 0
 obs_saxi <- get_gbif(
@@ -96,8 +96,8 @@ obs_saxi <- get_gbif(
   geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      20402 |
-#> | Kept records                  :        411 |
+#> | Total number (all records)    :      20423 |
+#> | Kept records                  :        419 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
@@ -108,18 +108,18 @@ obs_saxi <- get_gbif(
 #> ...Records (XY) filtering summary:
 #> ----------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering       5       406
-#>       Duplicated records     287       119
-#>          Absence records       0       119
-#>          Basis selection      60        59
-#>  Establishment selection       0        59
-#>               Time frame       0        59
-#>        Identical records       0        59
-#>         Raster centroids       0        59
+#>          Grain filtering       5       414
+#>       Duplicated records     287       127
+#>          Absence records       0       127
+#>          Basis selection      60        67
+#>  Establishment selection       0        67
+#>               Time frame       0        67
+#>        Identical records       0        67
+#>         Raster centroids       0        67
 #> 
-#> Initial records         : 411
+#> Initial records         : 419
 #> Total removed           : 352
-#> Final records (XY)      : 59
+#> Final records (XY)      : 67
 #> ----------------------------------------------
 #> Final records (no XY)   : 0
 

@@ -368,7 +368,7 @@ obs_am <- get_gbif(
        add_infos = c("recordedBy","issue")
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
+#> | Total number (all records)    :        290 |
 #> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

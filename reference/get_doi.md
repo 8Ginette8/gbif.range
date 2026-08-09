@@ -84,7 +84,7 @@ if (FALSE)  # unknown credentials
 obs_ps <- get_gbif("Phocoena sinus")
 obs_am <- get_gbif("Ailuropoda melanoleuca")
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
+#> | Total number (all records)    :        290 |
 #> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

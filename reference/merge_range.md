@@ -63,7 +63,7 @@ eco_terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = tempdir())
 # Worldwide observations of the giant panda from GBIF
 obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
+#> | Total number (all records)    :        290 |
 #> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

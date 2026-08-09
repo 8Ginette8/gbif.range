@@ -2,6 +2,8 @@
 
 ## gbif.range 1.9.1
 
+CRAN release: 2026-08-07
+
 - CRAN compliance v3
 
 ## gbif.range 1.9.0

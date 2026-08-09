@@ -123,7 +123,7 @@ graphics::points(occ, pch = 4)
 # Download all GBIF occurrences for one species
 obs <- get_gbif("Ailuropoda melanoleuca")
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
+#> | Total number (all records)    :        290 |
 #> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

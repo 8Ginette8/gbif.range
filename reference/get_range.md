@@ -220,7 +220,7 @@ eco_terra <- read_ecoreg(
 # First download the whole available observations of the panda from GBIF
 obs_am <- get_gbif(sp_name = "Ailuropoda melanoleuca")
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
+#> | Total number (all records)    :        290 |
 #> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

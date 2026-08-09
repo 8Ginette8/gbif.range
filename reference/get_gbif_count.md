@@ -130,12 +130,12 @@ get_gbif_count(
   geo = NULL
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
+#> | Total number (all records)    :        290 |
 #> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE
-#> [1] 300  66
+#> [1] 290  66
 
 # Get the total number of observations
 get_gbif_count(
@@ -145,12 +145,12 @@ get_gbif_count(
   geo = NULL
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
-#> | Kept records                  :        300 |
+#> | Total number (all records)    :        290 |
+#> | Kept records                  :        290 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = NULL, has_xy = NULL
-#> [1] 300 300
+#> [1] 290 290
 
 # Example of setting global 'geo' (all records are still kept)
 get_gbif_count(
@@ -160,12 +160,12 @@ get_gbif_count(
   geo = terra::ext()
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
-#> | Kept records                  :        300 |
+#> | Total number (all records)    :        290 |
+#> | Kept records                  :        290 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = NULL, has_xy = NULL
-#> [1] 300 300
+#> [1] 290 290
 
 # Example of fuzzy matching when search is set to FALSE
 get_gbif_count(
@@ -173,12 +173,12 @@ get_gbif_count(
   search = FALSE
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :        300 |
+#> | Total number (all records)    :        290 |
 #> | Kept records                  :         66 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE
-#> [1] 300  66
+#> [1] 290  66
 
 # Example on the European Alps (has_xy = TRUE by default)
 shp.lonlat <- terra::vect(
@@ -194,12 +194,12 @@ get_gbif_count(
   geo = shp.lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      43170 |
-#> | Kept records                  :       6351 |
+#> | Total number (all records)    :      43195 |
+#> | Kept records                  :       6356 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
-#> [1] 43170  6351
+#> [1] 43195  6356
 
 # }
 ```
