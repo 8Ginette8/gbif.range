@@ -4,6 +4,10 @@
 [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://zenodo.org/badge/553057771.svg)](https://doi.org/10.5281/zenodo.20826609)
+[![CRAN Version](https://www.r-pkg.org/badges/version/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
+[![Monthly Downloads](https://cranlogs.r-pkg.org/badges/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
+[![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
+
 
 Mapping species distribution mostly relies on expert ranges (for example, [IUCN](https://www.iucnredlist.org/resources/spatial-data-download) and [EUFORGEN](https://www.euforgen.org/species)) or predictive modeling. However, expert maps remain unavailable for many rare and regional species, while modelling workflows require advanced technical expertise and highly accurate, spatially continuous occurrence data that often demand intensive error-cleaning. The **gbif.range** R package overcomes these limitations by providing a user-friendly, integrated workflow to generate ecologically informed range maps from sparse observations using environmental clustering and convex hulls.
 
