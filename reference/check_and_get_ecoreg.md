@@ -42,15 +42,15 @@ which calls this function internally before loading the layer.
 check_and_get_ecoreg("eco_terra", save_dir = tempdir())
 #> eco_terra directory does not exist or contains no .shp files. 
 #>             
-#>  [/tmp/Rtmpon0IVC/eco_terra/eco_terra] will be created and data will be downloaded.
+#>  [/tmp/RtmpZ1Sp5j/eco_terra/eco_terra] will be created and data will be downloaded.
 #>             
 #>  Downloading data...
 #> Preparing to download ecoregion eco_terra 
-#>  data file to: /tmp/Rtmpon0IVC
+#>  data file to: /tmp/RtmpZ1Sp5j
 #> Downloaded: eco_terra
 #> Description: Terrestrial Ecoregions of the World
 #> Unzipped: eco_terra 
-#>  saved to: /tmp/Rtmpon0IVC/eco_terra 
+#>  saved to: /tmp/RtmpZ1Sp5j/eco_terra 
 #>  removed:  eco_terra.zip
 # }
 ```

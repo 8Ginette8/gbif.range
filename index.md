@@ -6,6 +6,12 @@
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://zenodo.org/badge/553057771.svg)](https://doi.org/10.5281/zenodo.20826609)
+[![CRAN
+Version](https://www.r-pkg.org/badges/version/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
+[![Monthly
+Downloads](https://cranlogs.r-pkg.org/badges/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
+[![Total
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
 
 Mapping species distribution mostly relies on expert ranges (for
 example,
