@@ -96,7 +96,7 @@ obs_saxi <- get_gbif(
   geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      20423 |
+#> | Total number (all records)    :      20425 |
 #> | Kept records                  :        419 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
