@@ -184,7 +184,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 #> 1 Hyaena hyaena hyaena (Linnaeus, 1758)       20
 #> 2      Crocuta crocuta (Erxleben, 1777)       20
 #>                                                                                        range_file
-#> 1 /tmp/RtmpNm5Qqe/gbif_range_help/range_speciesKey_5218777_Hyaena_hyaena_hyaena_Linnaeus_1758.rds
-#> 2      /tmp/RtmpNm5Qqe/gbif_range_help/range_speciesKey_5218781_Crocuta_crocuta_Erxleben_1777.rds
+#> 1 /tmp/RtmpcJxADU/gbif_range_help/range_speciesKey_5218777_Hyaena_hyaena_hyaena_Linnaeus_1758.rds
+#> 2      /tmp/RtmpcJxADU/gbif_range_help/range_speciesKey_5218781_Crocuta_crocuta_Erxleben_1777.rds
 # }
 ```

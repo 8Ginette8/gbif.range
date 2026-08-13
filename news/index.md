@@ -1,5 +1,9 @@
 # Changelog
 
+## gbif.range 1.9.2
+
+- Updated Readme & Description
+
 ## gbif.range 1.9.1
 
 CRAN release: 2026-08-07
