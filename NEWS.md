@@ -1,3 +1,6 @@
+# gbif.range 1.9.2
+* Updated Readme & Description
+
 # gbif.range 1.9.1
 * CRAN compliance v3
 
