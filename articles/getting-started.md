@@ -55,7 +55,7 @@ For deeper coverage of each topic, see the three focused vignettes:
 
 ``` r
 
-remotes::install_github("8Ginette8/gbif.range", build_vignettes = TRUE)
+install.packages("gbif.range")
 library(gbif.range)
 ```
 
