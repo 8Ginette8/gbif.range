@@ -57,23 +57,28 @@ library(gbif.range)
 ``` r
 
 # Download Panthera tigris occurrences
-obs.pt <- get_gbif(sp_name = "Panthera tigris")
+obs_pt <- get_gbif(sp_name = "Panthera tigris")
 
 # Load terrestrial ecoregions and build range map
-eco.terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = tempdir())
-range.tiger <- get_range(occ_coord = obs.pt,
-                         ecoreg = eco.terra,
+eco_terra <- read_ecoreg(ecoreg_name = "eco_terra", save_dir = tempdir())
+range_tiger <- get_range(occ_coord = obs_pt,
+                         ecoreg = eco_terra,
                          ecoreg_name = "ECO_NAME",
                          degrees_outlier = 5,
                          clust_pts_outlier = 4,
                          format = "SpatRaster")
 
-# Plot
+# Plot range
 countries <- terra::vect(
   system.file("extdata", "world_countries.shp", package = "gbif.range")
 )
 terra::plot(countries, col = "#bcbddc")
-terra::plot(range.tiger$rangeOutput, col = "#238b45", add = TRUE, axes = FALSE, legend = FALSE)
+terra::plot(range_tiger$rangeOutput, col = "#238b45",
+            add = TRUE, axes = FALSE, legend = FALSE)
+
+# Visualise points
+graphics::points(obs_pt[, c("decimalLongitude", "decimalLatitude")],
+       pch = 20, col = "#99340470", cex = 1.5)
 ```
 
 ## Citation

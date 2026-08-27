@@ -127,8 +127,8 @@ obs_paed <- get_gbif(
   grain = 1
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :       1044 |
-#> | Kept records                  :        618 |
+#> | Total number (all records)    :       1046 |
+#> | Kept records                  :        620 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
@@ -139,18 +139,18 @@ obs_paed <- get_gbif(
 #> ...Records (XY) filtering summary:
 #> ----------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering      79       539
-#>       Duplicated records      12       527
-#>          Absence records       0       527
-#>          Basis selection      49       478
-#>  Establishment selection       0       478
-#>               Time frame       0       478
-#>        Identical records       0       478
-#>         Raster centroids       0       478
+#>          Grain filtering      80       540
+#>       Duplicated records      12       528
+#>          Absence records       0       528
+#>          Basis selection      49       479
+#>  Establishment selection       0       479
+#>               Time frame       0       479
+#>        Identical records       0       479
+#>         Raster centroids       0       479
 #> 
-#> Initial records         : 618
-#> Total removed           : 140
-#> Final records (XY)      : 478
+#> Initial records         : 620
+#> Total removed           : 141
+#> Final records (XY)      : 479
 #> ----------------------------------------------
 #> Final records (no XY)   : 0
 
@@ -192,7 +192,7 @@ graphics::points(
 
 }
 #> ## Start of computation for species: Paederota bonarota ###
-#> 4 outlier's from 466 | proportion from total points: 1%
+#> 4 outlier's from 467 | proportion from total points: 1%
 #> ecoregion 1 of 27: 10
 #> ecoregion 2 of 27: 11
 #> ecoregion 3 of 27: 13
