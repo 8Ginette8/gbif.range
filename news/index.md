@@ -3,6 +3,7 @@
 ## gbif.range 1.9.2
 
 - Updated Readme & Description
+- Compatibility with new rgbif R package v3.9
 
 ## gbif.range 1.9.1
 

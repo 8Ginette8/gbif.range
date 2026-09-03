@@ -65,8 +65,8 @@ obs_paed <- get_gbif(
   geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :       1046 |
-#> | Kept records                  :        620 |
+#> | Total number (all records)    :       1059 |
+#> | Kept records                  :        633 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:
 #> | spatial_issue = FALSE, has_xy = TRUE by default ('geo' was set)
@@ -77,18 +77,18 @@ obs_paed <- get_gbif(
 #> ...Records (XY) filtering summary:
 #> ----------------------------------------------
 #>                     step removed remaining
-#>          Grain filtering       0       620
-#>       Duplicated records      31       589
-#>          Absence records       0       589
-#>          Basis selection      74       515
-#>  Establishment selection       0       515
-#>               Time frame       0       515
-#>        Identical records       0       515
-#>         Raster centroids       0       515
+#>          Grain filtering       0       633
+#>       Duplicated records      31       602
+#>          Absence records       0       602
+#>          Basis selection      74       528
+#>  Establishment selection       0       528
+#>               Time frame       0       528
+#>        Identical records       0       528
+#>         Raster centroids       0       528
 #> 
-#> Initial records         : 620
+#> Initial records         : 633
 #> Total removed           : 105
-#> Final records (XY)      : 515
+#> Final records (XY)      : 528
 #> ----------------------------------------------
 #> Final records (no XY)   : 0
 obs_saxi <- get_gbif(
@@ -96,7 +96,7 @@ obs_saxi <- get_gbif(
   geo = shp_lonlat
 )
 #> |--------------------------------------------|
-#> | Total number (all records)    :      20535 |
+#> | Total number (all records)    :      20576 |
 #> | Kept records                  :        421 |
 #> |--------------------------------------------|
 #> | Kept records according to parameters:

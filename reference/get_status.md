@@ -121,6 +121,13 @@ subspecies have independent IUCN assessments (e.g. *Panthera tigris
 sumatrae* is Critically Endangered) that are not reflected here; consult
 the IUCN Red List directly for infra-specific status.
 
+Keys are always resolved against the GBIF Backbone Taxonomy, which
+`get_status()` requests explicitly. From rgbif 3.9.0 the package default
+is the COL Extended Release, but
+[`rgbif::name_usage()`](https://docs.ropensci.org/rgbif/reference/name_usage.html)
+and IUCN Red List status remain Backbone-only, so `gbif_key` stays
+numeric.
+
 ## References
 
 Chamberlain, S., Oldoni, D., & Waller, J. (2022). rgbif: interface to
