@@ -327,3 +327,12 @@ gbif_have <- function(...) {
     isTRUE(n > 0)
   }, logical(1)))
 }
+
+#' GBIF Backbone Taxonomy Checklist Key
+#'
+#' rgbif >= 3.9.0 defaults to COL XR. name_usage() stays Backbone-only and
+#' IUCN Red List status is not exposed by COL, so get_status() pins the
+#' backbone explicitly. Harmless on rgbif <= 3.8.5 (parameter exists,
+#' defaults to NULL).
+#' @noRd
+GBIF_BACKBONE_KEY <- "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c"

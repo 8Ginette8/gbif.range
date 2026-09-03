@@ -53,6 +53,11 @@
 #' subspecies have independent IUCN assessments (e.g. \emph{Panthera tigris
 #' sumatrae} is Critically Endangered) that are not reflected here; consult
 #' the IUCN Red List directly for infra-specific status.
+#' 
+#' Keys are always resolved against the GBIF Backbone Taxonomy, which
+#' \code{get_status()} requests explicitly. From rgbif 3.9.0 the package
+#' default is the COL Extended Release, but \code{rgbif::name_usage()} and
+#' IUCN Red List status remain Backbone-only, so \code{gbif_key} stays numeric.
 #' @return A data frame with the columns \code{canonicalName}, \code{rank},
 #' \code{gbif_key}, \code{scientificName}, \code{gbif_status},
 #' \code{Genus}, \code{Family}, \code{Order}, \code{Class},
@@ -128,12 +133,14 @@ get_status <- function(sp_name = NULL,
                                      order = order,
                                      family = family,
                                      verbose = FALSE,
-                                     strict = FALSE)
+                                     strict = FALSE,
+                                     checklistKey = GBIF_BACKBONE_KEY)
   } else {
     # Search input name via strict match and refined search
     bone.search <- rgbif::name_backbone(sp_name,
-                                       verbose = verbose,
-                                       strict = TRUE)
+                                       verbose = TRUE,
+                                       strict = TRUE,
+                                       checklistKey = GBIF_BACKBONE_KEY)
 
     q.crit <- !vapply(
       list(rank, phylum, class, order, family),
@@ -272,9 +279,13 @@ get_status <- function(sp_name = NULL,
   }
 
   # Extract accepted name and save it with its key in the prepared output
-  accep.name <- rgbif::name_usage(accep.key, data = "name")$data
   syn.syn <- rgbif::name_usage(accep.key, data = "synonyms")$data
   main.dat <-  rgbif::name_usage(accep.key, data = "all")$data
+
+  # data = "all" hits /species/{key}, which already carries the key,
+  # scientificName and canonicalName of the accepted usage. A separate
+  # data = "name" request would fetch the same three fields again.
+  accep.name <- main.dat[1, , drop = FALSE]
 
 
   # Fetch children (subspecies/varieties) only when explicitly requested
@@ -377,9 +388,6 @@ get_status <- function(sp_name = NULL,
       accep.name[, c("canonicalName", "key", "scientificName")]
     )
     accep.n$key <- accep.key
-    c.n <- suppressWarnings(
-      main.dat[, c("canonicalName", "key", "scientificName")]
-    )
     r.n <- suppressWarnings(
       unique(do.call("rbind", all.version))
     )

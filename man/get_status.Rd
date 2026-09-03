@@ -93,6 +93,11 @@ GBIF does not currently store subspecies-level IUCN assessments, so the
 subspecies have independent IUCN assessments (e.g. \emph{Panthera tigris
 sumatrae} is Critically Endangered) that are not reflected here; consult
 the IUCN Red List directly for infra-specific status.
+
+Keys are always resolved against the GBIF Backbone Taxonomy, which
+\code{get_status()} requests explicitly. From rgbif 3.9.0 the package
+default is the COL Extended Release, but \code{rgbif::name_usage()} and
+IUCN Red List status remain Backbone-only, so \code{gbif_key} stays numeric.
 }
 \examples{
 \donttest{
