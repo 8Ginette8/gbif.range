@@ -2,8 +2,6 @@
 
 [![Auto-Version](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-Package-Auto-Version.yml)
 [![R-CMD-check](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml/badge.svg?branch=main)](https://github.com/8Ginette8/gbif.range/actions/workflows/R-CMD-check-month-test.yml)
-[![DOI](https://zenodo.org/badge/553057771.svg)](https://doi.org/10.5281/zenodo.20826609)
-[![CRAN Version](https://www.r-pkg.org/badges/version/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
 [![Monthly Downloads](https://cranlogs.r-pkg.org/badges/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/gbif.range)](https://CRAN.R-project.org/package=gbif.range)
 
